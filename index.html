@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DairyVest - Invest in Dairy Cattle</title>
+  <style>
+    /* Base styles */
+    :root {
+      --primary: #8B5CF6;
+      --primary-foreground: #ffffff;
+      --background: #ffffff;
+      --foreground: #171717;
+      --card: #ffffff;
+      --card-foreground: #171717;
+      --border: #e5e7eb;
+      --muted: #f3f4f6;
+      --muted-foreground: #6b7280;
+      --accent: #f9fafb;
+      --accent-foreground: #111827;
+      --secondary: #f3f4f6;
+      --secondary-foreground: #111827;
+      --destructive: #ef4444;
+      --destructive-foreground: #ffffff;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    
+    body {
+      color: var(--foreground);
+      background-color: var(--background);
+    }
+    
+    .min-h-screen {
+      min-height: 100vh;
+    }
+    
+    .flex {
+      display: flex;
+    }
+    
+    .flex-col {
+      flex-direction: column;
+    }
+    
+    .flex-grow {
+      flex-grow: 1;
+    }
+    
+    .mt-auto {
+      margin-top: auto;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Redirect script */
+    #redirect-message {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen flex flex-col">
+    <div id="redirect-message">
+      <div>
+        <h1>Welcome to DairyVest</h1>
+        <p>Redirecting to home page...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Redirect to home page after a short delay
+    setTimeout(function() {
+      window.location.href = 'home_page.html.html';
+    }, 1000);
+  </script>
+</body>
+</html>
