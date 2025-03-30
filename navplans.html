@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InsureHerd - Cattle Insurance Plans</title>
+  <meta name="description" contendairylift@gmail.comprehensive cattle insurance solutions for farmers and investors. Protect your livestock with confidence." />
+  <style>
+    /* Base Styles */
+    :root {
+      --cattle-green: #4D7C0F;
+      --cattle-lightGreen: #84CC16;
+      --cattle-brown: #854D0E;
+      --cattle-lightBrown: #B45309;
+      --cattle-blue: #0891B2;
+      --background: #FFFFFF;
+      --foreground: #1F2937;
+      --muted: #F3F4F6;
+      --muted-foreground: #6B7280;
+      --border: #E5E7EB;
+      --input: #E5E7EB;
+      --ring: #4D7C0F;
+      --radius: 0.5rem;
+    }
+    
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.5;
+    }
+    
+    /* Layout */
+    .container {
+      width: 100%;
+      max-width: 80rem;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .flex {
+      display: flex;
+    }
+    
+    .flex-col {
+      flex-direction: column;
+    }
+    
+    .items-center {
+      align-items: center;
+    }
+    
+    .justify-center {
+      justify-content: center;
+    }
+    
+    .justify-between {
+      justify-content: space-between;
+    }
+    
+    .gap-2 {
+      gap: 0.5rem;
+    }
+    
+    .gap-4 {
+      gap: 1rem;
+    }
+    
+    .gap-6 {
+      gap: 1.5rem;
+    }
+    
+    .gap-8 {
+      gap: 2rem;
+    }
+    
+    .text-center {
+      text-align: center;
+    }
+    
+    .py-4 {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+    
+    .py-8 {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+    
+    .py-16 {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+    
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .py-2 {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    
+    .px-2\.5 {
+      padding-left: 0.625rem;
+      padding-right: 0.625rem;
+    }
+    
+    .py-0\.5 {
+      padding-top: 0.125rem;
+      padding-bottom: 0.125rem;
+    }
+    
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+    
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+    
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+    
+    .mb-8 {
+      margin-bottom: 2rem;
+    }
+    
+    .mb-12 {
+      margin-bottom: 3rem;
+    }
+    
+    .mb-16 {
+      margin-bottom: 4rem;
+    }
+    
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+    
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+    
+    .ml-1 {
+      margin-left: 0.25rem;
+    }
+    
+    .mr-4 {
+      margin-right: 1rem;
+    }
+    
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .space-x-2 > * + * {
+      margin-left: 0.5rem;
+    }
+    
+    .space-x-4 > * + * {
+      margin-left: 1rem;
+    }
+    
+    .space-x-6 > * + * {
+      margin-left: 1.5rem;
+    }
+    
+    .space-y-2 > * + * {
+      margin-top: 0.5rem;
+    }
+    
+    .space-y-3 > * + * {
+      margin-top: 0.75rem;
+    }
+    
+    .space-y-4 > * + * {
+      margin-top: 1rem;
+    }
+    
+    .space-y-6 > * + * {
+      margin-top: 1.5rem;
+    }
+    
+    .space-y-8 > * + * {
+      margin-top: 2rem;
+    }
+    
+    .space-y-10 > * + * {
+      margin-top: 2.5rem;
+    }
+    
+    /* Navigation */
+    .nav {
+      background-color: white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    
+    .nav-logo-icon {
+      background-color: var(--cattle-green);
+      border-radius: 9999px;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .nav-logo-text {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: var(--cattle-green);
+    }
+    
+    .nav-menu {
+      display: flex;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: #4B5563;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-link:hover {
+      color: var(--cattle-green);
+    }
+    
+    .nav-button {
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    
+    .nav-button-primary {
+      background-color: var(--cattle-green);
+      color: white;
+    }
+    
+    .nav-button-primary:hover {
+      background-color: var(--cattle-lightGreen);
+    }
+    
+    .nav-button-outline {
+      background-color: transparent;
+      border: 1px solid var(--cattle-green);
+      color: var(--cattle-green);
+    }
+    
+    .nav-button-outline:hover {
+      background-color: var(--cattle-green);
+      color: white;
+    }
+    
+    .mobile-menu-button {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      padding: 1rem;
+      background-color: white;
+    }
+    
+    /* Footer */
+    .footer {
+      background-color: #1F2937;
+      color: white;
+      padding: 3rem 0;
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    
+    .footer-heading {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-link {
+      color: #D1D5DB;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-link:hover {
+      color: white;
+    }
+    
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .footer-social a {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
+    
+    .footer-social a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 2rem;
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    /* Tabs */
+    .tabs {
+      max-width: 62rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .tabs-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background-color: var(--muted);
+      padding: 0.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+    }
+    
+    .tab-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      border-radius: 0.25rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted-foreground);
+    }
+    
+    .tab-trigger[data-state="active"] {
+      background-color: white;
+      color: var(--foreground);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content[data-state="active"] {
+      display: block;
+    }
+    
+    /* Cards */
+    .card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: white;
+    }
+    
+    .card-header {
+      padding: 1.5rem;
+    }
+    
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-description {
+      color: var(--muted-foreground);
+    }
+    
+    .card-content {
+      padding: 0 1.5rem 1.5rem;
+    }
+    
+    /* Switch */
+    .switch-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    
+    .switch-label {
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    
+    .switch-label.active {
+      color: var(--foreground);
+    }
+    
+    .switch-label.inactive {
+      color: var(--muted-foreground);
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 2.75rem;
+      height: 1.5rem;
+      margin: 0 0.5rem;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 1.25rem;
+      width: 1.25rem;
+      left: 0.125rem;
+      bottom: 0.125rem;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .switch-slider {
+      background-color: var(--cattle-green);
+    }
+    
+    input:checked + .switch-slider:before {
+      transform: translateX(1.25rem);
+    }
+    
+    .save-badge {
+      display: inline-block;
+      background-color: #D1FAE5;
+      color: #047857;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+    }
+    
+    /* Plan Cards */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .plan-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .plan-card.popular {
+      border-color: var(--cattle-green);
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    
+    .plan-card.popular:hover {
+      transform: scale(1.05) translateY(-5px);
+    }
+    
+    .plan-header {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .plan-header.basic {
+      background-color: #F3F4F6;
+      color: #1F2937;
+    }
+    
+    .plan-header.standard {
+      background-color: var(--cattle-blue);
+      color: white;
+    }
+    
+    .plan-header.premium {
+      background-color: var(--cattle-brown);
+      color: white;
+    }
+    
+    .plan-header-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .plan-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    
+    .plan-description {
+      font-size: 0.875rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+    }
+    
+    .plan-price {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    
+    .plan-period {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+    
+    .plan-button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+    
+    .plan-button.basic {
+      background-color: var(--cattle-green);
+      color: white;
+    }
+    
+    .plan-button.basic:hover {
+      background-color: var(--cattle-lightGreen);
+    }
+    
+    .plan-button.standard {
+      background-color: white;
+      color: var(--cattle-blue);
+      border: 1px solid var(--cattle-blue);
+    }
+    
+    .plan-button.standard:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .plan-button.premium {
+      background-color: var(--cattle-brown);
+      color: white;
+    }
+    
+    .plan-button.premium:hover {
+      background-color: var(--cattle-lightBrown);
+    }
+    
+    .plan-features {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .plan-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .plan-feature:last-child {
+      margin-bottom: 0;
+    }
+    
+    .feature-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+    }
+    
+    .feature-name {
+      font-size: 0.875rem;
+    }
+    
+    .feature-included {
+      color: #374151;
+    }
+    
+    .feature-excluded {
+      color: #9CA3AF;
+    }
+    
+    .popular-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: #FCD34D;
+      color: #92400E;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+      z-index: 1;
+    }
+    
+    /* Benefits */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .benefit-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      background-color: white;
+      transition: box-shadow 0.2s;
+    }
+    
+    .benefit-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .benefit-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .benefit-icon {
+      width: 3rem;
+      height: 3rem;
+      color: var(--cattle-green);
+    }
+    
+    .benefit-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    
+    .benefit-description {
+      font-size: 1rem;
+      color: var(--muted-foreground);
+    }
+    
+    /* FAQ */
+    .accordion {
+      width: 100%;
+    }
+    
+    .accordion-item {
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .accordion-trigger {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 1rem 0;
+      text-align: left;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--foreground);
+    }
+    
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+    }
+    
+    .accordion-content-inner {
+      padding: 0 0 1rem;
+      color: var(--muted-foreground);
+    }
+    
+    .accordion-item.active .accordion-content {
+      max-height: 200px;
+    }
+    
+    .accordion-icon {
+      transform: rotate(0deg);
+      transition: transform 0.2s;
+    }
+    
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+    
+    /* Stats */
+    .stats-section {
+      padding: 4rem 0;
+      background-color: rgba(77, 124, 15, 0.05);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .stat-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--cattle-green);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: var(--muted-foreground);
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      padding: 4rem 0;
+      background-color: var(--cattle-green);
+      color: white;
+    }
+    
+    .cta-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .cta-content {
+      margin-bottom: 2rem;
+      text-align: center;
+      max-width: 800px;
+    }
+    
+    .cta-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    
+    .cta-description {
+      font-size: 1.125rem;
+      opacity: 0.9;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      font-size: 1.125rem;
+      font-weight: 500;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    
+    .cta-button-white {
+      background-color: white;
+      color: var(--cattle-green);
+    }
+    
+    .cta-button-white:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .cta-button-outline {
+      background-color: transparent;
+      border: 1px solid white;
+      color: white;
+    }
+    
+    .cta-button-outline:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Responsive */
+    @media (min-width: 640px) {
+      .plans-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .cta-buttons {
+        flex-direction: row;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .nav-menu {
+        display: flex;
+      }
+      
+      .mobile-menu-button {
+        display: none;
+      }
+      
+      .mobile-menu {
+        display: none !important;
+      }
+      
+      .plans-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .cta-container {
+        flex-direction: row;
+      }
+      
+      .cta-content {
+        margin-bottom: 0;
+        text-align: left;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .nav-menu {
+        display: none;
+      }
+      
+      .mobile-menu-button {
+        display: block;
+      }
+      
+      .tab-trigger {
+        font-size: 0.875rem;
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav py-4">
+    <div class="container flex justify-between items-center">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3v4l3 3 1-1 1 1 3-3V3" />
+            <path d="M19 7h1a2 2 0 0 1 2 2v1a3 3 0 0 1-3 3h-5c-1.15 0-2.24-.34-3.15-.93" />
+            <path d="M4 7H3a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3h5c1.15 0 2.24-.34 3.15-.93" />
+            <path d="M12 22v-5" />
+            <path d="M9 14.59A7.5 7.5 0 0 0 5 19.93" />
+            <path d="M15 14.59A7.5 7.5 0 0 1 19 19.93" />
+          </svg>
+        </div>
+        <span class="nav-logo-text">InsureHerd</span>
+      </a>
+
+      <div class="nav-menu space-x-6">
+        <a href="navhome.html" class="nav-link">Home</a>
+        <a href="navplans.html" class="nav-link">Plans</a>
+        <a href="navregister-cattle.html" class="nav-link">Register Cattle</a>
+        <a href="navclaims.html" class="nav-link">Claims</a>
+        <a href="#" class="nav-link">Support</a>
+        <a href="home_page.html" class="nav-button nav-button-primary">Dashboard</a>
+      </div>
+
+      <button class="mobile-menu-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="navhome.html" class="nav-link">Home</a>
+      <a href="navplans.html" class="nav-link">Plans</a>
+      <a href="navregister-cattle.html" class="nav-link">Register Cattle</a>
+      <a href="navclaims.html" class="nav-link">Claims</a>
+      <a href="#" class="nav-link">Support</a>
+      <a href="home_page.html" class="nav-button nav-button-primary">Dashboard</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="py-16 bg-gradient-to-b from-[#F9FAFB] to-white">
+      <div class="container">
+        <div class="max-w-3xl mx-auto text-center mb-12">
+          <h1 class="text-4xl font-bold text-gray-900 mb-4">Cattle Insurance Plans</h1>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Protect your livestock investment with customized coverage options designed for all types of cattle operations.
+          </p>
+        </div>
+
+        <div class="tabs">
+          <div class="tabs-list">
+            <button class="tab-trigger" data-state="active" data-tab="plans">Coverage Plans</button>
+            <button class="tab-trigger" data-tab="benefits">Benefits</button>
+            <button class="tab-trigger" data-tab="faq">FAQ</button>
+          </div>
+          
+          <div class="tab-content" data-tab="plans" data-state="active">
+            <section class="py-8">
+              <div class="container">
+                <div class="switch-container space-x-2">
+                  <label for="billing-cycle" class="switch-label active" id="monthly-label">Monthly</label>
+                  <label class="switch">
+                    <input type="checkbox" id="billing-cycle">
+                    <span class="switch-slider"></span>
+                  </label>
+                  <div class="flex items-center gap-2">
+                    <label for="billing-cycle" class="switch-label inactive" id="annually-label">Annually</label>
+                    <span class="save-badge" id="save-badge" style="display: none;">Save 15%</span>
+                  </div>
+                </div>
+
+                <div class="plans-grid max-w-6xl mx-auto">
+                  <!-- Basic Plan -->
+                  <div class="plan-card">
+                    <div class="plan-header basic">
+                      <div class="plan-header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                        </svg>
+                        <span class="plan-name">Basic</span>
+                      </div>
+                      <p class="plan-description">Essential coverage for small-scale farmers.</p>
+                      <div class="flex items-baseline">
+                        <span class="plan-price">$9.99</span>
+                        <span class="plan-period ml-1">/month/cattle</span>
+                      </div>
+                    </div>
+                    <div class="p-6">
+                      <a href="#" class="plan-button basic">Select Plan</a>
+                    </div>
+                    <div class="plan-features">
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4D7C0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Death coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4D7C0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Disease coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span class="feature-name feature-excluded">Theft coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span class="feature-name feature-excluded">Veterinary expenses</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span class="feature-name feature-excluded">Natural disaster coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span class="feature-name feature-excluded">24/7 Support</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Standard Plan -->
+                  <div class="plan-card popular">
+                    <span class="popular-badge">Most Popular</span>
+                    <div class="plan-header standard">
+                      <div class="plan-header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                        </svg>
+                        <span class="plan-name">Standard</span>
+                      </div>
+                      <p class="pldairylift@gmail.complete protection for most farmers.</p>
+                      <div class="flex items-baseline">
+                        <span class="plan-price">$19.99</span>
+                        <span class="plan-period ml-1">/month/cattle</span>
+                      </div>
+                    </div>
+                    <div class="p-6">
+                      <a href="#" class="plan-button standard">Select Plan</a>
+                    </div>
+                    <div class="plan-features">
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Death coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Disease coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Theft coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Veterinary expenses</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span class="feature-name feature-excluded">Natural disaster coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">24/7 Support</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Premium Plan -->
+                  <div class="plan-card">
+                    <div class="plan-header premium">
+                      <div class="plan-header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                        </svg>
+                        <span class="plan-name">Premium</span>
+                      </div>
+                      <p class="plan-description">Maximum protection for valuable livestock.</p>
+                      <div class="flex items-baseline">
+                        <span class="plan-price">$29.99</span>
+                        <span class="plan-period ml-1">/month/cattle</span>
+                      </div>
+                    </div>
+                    <div class="p-6">
+                      <a href="#" class="plan-button premium">Select Plan</a>
+                    </div>
+                    <div class="plan-features">
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Death coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Disease coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Theft coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Veterinary expenses</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Natural disaster coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">24/7 Support</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          
+          <div class="tab-content" data-tab="benefits">
+            <div class="benefits-grid mb-8">
+              <div class="benefit-card">
+                <div class="benefit-header">
+                  <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                  </svg>
+                  <h3 class=dairylift@gmail.comprehensive Protection</h3>
+                </div>
+                <p class="benefit-description">
+                  Full coverage against disease, accidents, natural disasters, and theft depending on your selected plan.
+                </p>
+              </div>
+              
+              <div class="benefit-card">
+                <div class="benefit-header">
+                  <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                  </svg>
+                  <h3 class="benefit-title">Simple Documentation</h3>
+                </div>
+                <p class="benefit-description">
+                  Minimal paperwork with our streamlined digital application process.
+                </p>
+              </div>
+              
+              <div class="benefit-card">
+                <div class="benefit-header">
+                  <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                    <path d="m9 16 2 2 4-4"></path>
+                  </svg>
+                  <h3 class="benefit-title">Quick Claims Processing</h3>
+                </div>
+                <p class="benefit-description">
+                  Fast claim settlements with our efficient 5-7 day processing timeline.
+                </p>
+              </div>
+              
+              <div class="benefit-card">
+                <div class="benefit-header">
+                  <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                  <h3 class="benefit-title">24/7 Veterinary Support</h3>
+                </div>
+                <p class="benefit-description">
+                  Access to our network of veterinary professionals for emergency consultations.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="tab-content" data-tab="faq">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Frequently Asked Questions</h2>
+                <p class="card-description">
+                  dairylift@gmail.common questions about our cattle insurance plans.
+                </p>
+              </div>
+              <div class="card-content">
+                <div class="accordion">
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      How does cattle insurance work?
+                      <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-content-inner">
+                        Our cattle insurance protects your livestock investment against death, disease, and accidents. You pay a monthly premium per animal, and in case of a codairylift@gmail.compensate you based on your policy terms.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      What are the waiting periods for new policies?
+                      <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-content-inner">
+                        Basic plans have a 14-day waiting period, Standard plans have a 7-day waiting period, and Premium plans offer coverage starting 48 hours after policy activation.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      How do I file a claim?
+                      <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-content-inner">
+                        You can file a claim through our online portal by submitting the required documentation, including veterinary reports and proof of loss. Our claims team typically processes submissions within 5-7 business days.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      Can I insure multiple cattle under one policy?
+                      <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-content-inner">
+                        Yes, we offer multi-animal discounts with rates that decrease based on the number of cattle insured under a single policy.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      What factors affect my premium rates?
+                      <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-content-inner">
+                        Premium rates are calculated based on cattle breed, age, health condition, location, previous medical history, and the coverage plan you select.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="stats-section">
+      <div class="container">
+        <div class="max-w-3xl mx-auto text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Why Choose Our Cattle Insurance?
+          </h2>
+          <p class="text-gray-600 mb-8">
+            With decades of experience in the agricultural sector, we understand the unique challenges faced by livestock farmers.
+          </p>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">98%</div>
+              <p class="stat-label">Claims Satisfaction Rate</p>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">24/7</div>
+              <p class="stat-label">Customer Support</p>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">5-7</div>
+              <p class="stat-label">Days Average Claim Processing</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-container">
+          <div class="cta-content">
+            <h2 class="cta-title">Ready to Protect Your Livestock?</h2>
+            <p class="cta-description">
+              Join thousands of farmers who trust InsureHerd for their cattle insurance needs. Get started today!
+            </p>
+          </div>
+          <div class="cta-buttons">
+            <a href="register-cattle.html" class="cta-button cta-button-white">Get Started</a>
+            <a href="#" class="cta-button cta-button-outline">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 class="footer-heading">InsureHerd</h3>
+          <p class="text-gray-400 mb-4">Protecting your livestock assetsdairylift@gmail.comprehensive insurance solutions.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
+            <a href="#" aria-label="Twitter">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+              </svg>
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="footer-heading">Our Products</h3>
+          <a href="#" class="footer-link">Basic Plan</a>
+          <a href="#" class="footer-link">Standard Plan</a>
+          <a href="#" class="footer-link">Premium Plan</a>
+          <a href="#" class="footer-link">Enterprise Solutions</a>
+        </div>
+        <div>
+          <h3 class="footer-heading">Resources</h3>
+          <a href="#" class="footer-link">Blog</a>
+          <a href="#" class="footer-link">Knowledge Base</a>
+          <a href="#" class="footer-link">Cattle Care Guide</a>
+          <a href="#" class="footer-link">Industry Reports</a>
+        </div>
+        <div>
+          <h3 class="footer-heading">Contact Us</h3>
+          <p class="text-gray-400">123 Farm Street, Rural County</p>
+          <p class="text-gray-400">United States, 12345</p>
+          <p class="text-gray-400 mt-2">
+            <a href="mailto:dairylift@gmail.com" class="text-gray-400 hover:text-white">dairylift@gmail.com</a>
+          </p>
+          <p class="text-gray-400">
+            <a href="tel:+11234567890" class="text-gray-400 hover:text-white">+1 (123) 456-7890</a>
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="text-gray-400">© 2023 InsureHerd. All rights reserved.</p>
+        <div class="flex space-x-4">
+          <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    menuButton.addEventListener('click', () => {
+      mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
+    });
+    
+    // Tab switching
+    const tabTriggers = document.querySelectorAll('.tab-trigger');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        // Remove active state from all triggers
+        tabTriggers.forEach(t => t.setAttribute('data-state', 'inactive'));
+        
+        // Set this trigger as active
+        trigger.setAttribute('data-state', 'active');
+        
+        // Hide all tab contents
+        tabContents.forEach(content => content.setAttribute('data-state', 'inactive'));
+        
+        // Show the selected tab content
+        const tabId = trigger.getAttribute('data-tab');
+        const activeContent = document.querySelector(`.tab-content[data-tab="${tabId}"]`);
+        activeContent.setAttribute('data-state', 'active');
+      });
+    });
+    
+    // Accordion functionality
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    
+    accordionItems.forEach(item => {
+      const trigger = item.querySelector('.accordion-trigger');
+      const content = item.querySelector('.accordion-content');
+      
+      trigger.addEventListener('click', () => {
+        // Toggle active class
+        const isActive = item.classList.contains('active');
+        
+        // Close all items
+        accordionItems.forEach(accItem => {
+          accItem.classList.remove('active');
+          accItem.querySelector('.accordion-content').style.maxHeight = null;
+        });
+        
+        // If it wasn't active, open it
+        if (!isActive) {
+          item.classList.add('active');
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+    });
+    
+    // Billing cycle toggle
+    const billingCycleToggle = document.getElementById('billing-cycle');
+    const monthlyLabel = document.getElementById('monthly-label');
+    const annuallyLabel = document.getElementById('annually-label');
+    const saveBadge = document.getElementById('save-badge');
+    const planPrices = document.querySelectorAll('.plan-price');
+    const planPeriods = document.querySelectorAll('.plan-period');
+    
+    // Store original prices for monthly billing
+    const originalPrices = ['$9.99', '$19.99', '$29.99'];
+    const annualPrices = ['$99.99', '$199.99', '$299.99'];
+    const monthlyPeriods = ['/month/cattle', '/month/cattle', '/month/cattle'];
+    const annualPeriods = ['/year/cattle', '/year/cattle', '/year/cattle'];
+    
+    billingCycleToggle.addEventListener('change', () => {
+      if (billingCycleToggle.checked) {
+        // Annually
+        monthlyLabel.classList.remove('active');
+        monthlyLabel.classList.add('inactive');
+        annuallyLabel.classList.remove('inactive');
+        annuallyLabel.classList.add('active');
+        saveBadge.style.display = 'inline-block';
+        
+        // Update prices
+        planPrices.forEach((price, index) => {
+          price.textContent = annualPrices[index];
+        });
+        
+        // Update periods
+        planPeriods.forEach((period, index) => {
+          period.textContent = annualPeriods[index];
+        });
+      } else {
+        // Monthly
+        monthlyLabel.classList.remove('inactive');
+        monthlyLabel.classList.add('active');
+        annuallyLabel.classList.remove('active');
+        annuallyLabel.classList.add('inactive');
+        saveBadge.style.display = 'none';
+        
+        // Update prices
+        planPrices.forEach((price, index) => {
+          price.textContent = originalPrices[index];
+        });
+        
+        // Update periods
+        planPeriods.forEach((period, index) => {
+          period.textContent = monthlyPeriods[index];
+        });
+      }
+    });
+  </script>
+</body>
+</html>

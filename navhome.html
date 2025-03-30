@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InsureHerd - Cattle Insurance Platform</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cattle-green': '#4D7C0F',
+                        'cattle-lightGreen': '#65A30D',
+                        'cattle-brown': '#854D0E',
+                        'cattle-blue': '#0891B2'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Custom CSS -->
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a202c;
+            line-height: 1.5;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(77, 124, 15, 0.1) 0%, rgba(132, 204, 22, 0.1) 100%);
+        }
+        
+        /* Animation Effects */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.8s ease-in forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Feature Card Hover Effect */
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Button Hover Effects */
+        .btn-primary {
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        /* Mobile Menu Animation */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        /* Testimonial Card Styles */
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Mobile Menu Overlay (Hidden by default) -->
+    <div id="mobile-menu" class="mobile-menu fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden">
+        <div class="bg-white h-full w-64 shadow-lg p-5">
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex items-center gap-2">
+                    <div class="bg-cattle-green rounded-full p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 3v4l3 3 1-1 1 1 3-3V3" />
+                            <path d="M19 7h1a2 2 0 0 1 2 2v1a3 3 0 0 1-3 3h-5c-1.15 0-2.24-.34-3.15-.93" />
+                            <path d="M4 7H3a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3h5c1.15 0 2.24-.34 3.15-.93" />
+                            <path d="M12 22v-5" />
+                            <path d="M9 14.59A7.5 7.5 0 0 0 5 19.93" />
+                            <path d="M15 14.59A7.5 7.5 0 0 1 19 19.93" />
+                        </svg>
+                    </div>
+                    <span class="text-lg font-bold text-cattle-green">InsureHerd</span>
+                </div>
+                <button id="close-menu" class="text-gray-500 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <nav class="flex flex-col space-y-4">
+                <a href="navhome.html" class="text-gray-700 hover:text-cattle-green font-medium py-2">Home</a>
+                <a href="navplans.html" class="text-gray-700 hover:text-cattle-green font-medium py-2">Plans</a>
+                <a href="navregister-cattle.html" class="text-gray-700 hover:text-cattle-green font-medium py-2">Register Cattle</a>
+                <a href="navclaims.html" class="text-gray-700 hover:text-cattle-green font-medium py-2">Claims</a>
+                <a href="#" class="text-gray-700 hover:text-cattle-green font-medium py-2">Support</a>
+                <a href="home_page.html" class="bg-cattle-green text-white px-4 py-2 rounded mt-4 text-center">
+                    Dashboard
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="bg-white shadow-sm py-4 sticky top-0 z-40">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-cattle-green rounded-full p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3v4l3 3 1-1 1 1 3-3V3" />
+                        <path d="M19 7h1a2 2 0 0 1 2 2v1a3 3 0 0 1-3 3h-5c-1.15 0-2.24-.34-3.15-.93" />
+                        <path d="M4 7H3a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3h5c1.15 0 2.24-.34 3.15-.93" />
+                        <path d="M12 22v-5" />
+                        <path d="M9 14.59A7.5 7.5 0 0 0 5 19.93" />
+                        <path d="M15 14.59A7.5 7.5 0 0 1 19 19.93" />
+                    </svg>
+                </div>
+                <span class="text-xl font-bold text-cattle-green">InsureHerd</span>
+            </div>
+
+            <!-- Mobile menu button -->
+            <button id="open-menu" class="md:hidden text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="navhome.html" class="text-gray-700 hover:text-cattle-green font-medium">Home</a>
+                <a href="navplans.html" class="text-gray-700 hover:text-cattle-green font-medium">Plans</a>
+                <a href="navregister-cattle.html" class="text-gray-700 hover:text-cattle-green font-medium">Register Cattle</a>
+                <a href="navclaims.html" class="text-gray-700 hover:text-cattle-green font-medium">Claims</a>
+                <a href="#" class="text-gray-700 hover:text-cattle-green font-medium">Support</a>
+                <a href="home_page.html" class="bg-cattle-green hover:bg-cattle-lightGreen text-white px-4 py-2 rounded">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-gradient py-16 md:py-24">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-8 fade-in">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">
+                        Protect Your <span class="text-cattle-green">Livestock Investment</span> With Confidence
+                    </h1>
+                    <p class="text-lg text-gray-700 mb-8 max-w-lg">
+                        InsureHerd provides comprehensive insurance solutions for farmers and investors, safeguarding your cattle against unexpected losses.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="plans.html" class="btn-primary bg-cattle-green hover:bg-cattle-lightGreen text-white font-medium text-lg px-8 py-6 rounded text-center">
+                            View Plans
+                        </a>
+                        <a href="#" class="btn-primary border border-cattle-green text-cattle-green hover:bg-cattle-green hover:text-white font-medium text-lg px-6 py-6 rounded text-center">
+                            Calculate Premium
+                        </a>
+                    </div>
+                    <div class="mt-8 flex items-center space-x-4">
+                        <div class="flex -space-x-2">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face" alt="Customer" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face" alt="Customer" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop&crop=face" alt="Customer" class="w-10 h-10 rounded-full border-2 border-white">
+                        </div>
+                        <p class="text-gray-700">
+                            <span class="font-medium">1,000+</span> Farmers Trust Us
+                        </p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 fade-in" style="animation-delay: 0.3s;">
+                    <div class="relative">
+                        <div class="bg-white p-3 rounded-lg shadow-lg">
+                            <img src="https://images.unsplash.com/photo-1596733430284-f7437764b1a9?auto=format&fit=crop&q=80&w=1000" alt="Healthy Cattle" class="w-full h-auto rounded-lg">
+                        </div>
+                        <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-md">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-green-100 p-2 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4D7C0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Trusted by Farmers</p>
+                                    <p class="text-xs text-gray-500">Across the country</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute -top-6 -right-6 bg-white p-4 rounded-lg shadow-md">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-blue-100 p-2 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
+                                        <path d="m8 2 4 4 4-4"></path>
+                                        <path d="M2 12h20"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Fast Claims</p>
+                                    <p class="text-xs text-gray-500">48-hour processing</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose InsureHerd?</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    We provide comprehensive cattle insurance solutions designed specifically for farmers and investors.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="feature-card bg-white p-6 rounded-lg border border-gray-100 hover:shadow-md transition-shadow fade-in" style="animation-delay: 0.2s;">
+                    <div class="h-12 w-12 bg-green-50 rounded-lg flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cattle-green">
+                            <path d="m12 14 4-4"></path>
+                            <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Fast Claims Processing</h3>
+                    <p class="text-gray-600">Submit claims easily and get them processed within 48 hours.</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-lg border border-gray-100 hover:shadow-md transition-shadow fade-in" style="animation-delay: 0.4s;">
+                    <div class="h-12 w-12 bg-green-50 rounded-lg flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cattle-green">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Secure Coverage</h3>
+                    <p class="text-gray-600">Rest easy knowing your livestock is protected against various risks.</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-lg border border-gray-100 hover:shadow-md transition-shadow fade-in" style="animation-delay: 0.6s;">
+                    <div class="h-12 w-12 bg-green-50 rounded-lg flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cattle-green">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Comprehensive Protection</h3>
+                    <p class="text-gray-600">Coverage for death, disease, theft, and even natural disasters.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Insurance Plans</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Choose the right coverage plan for your livestock needs.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Basic Plan -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 transition-all hover:shadow-lg fade-in" style="animation-delay: 0.3s;">
+                    <div class="bg-cattle-green bg-opacity-10 p-6">
+                        <h3 class="text-2xl font-bold text-cattle-green">Basic Cover</h3>
+                        <div class="mt-4 flex items-end">
+                            <span class="text-3xl font-bold">$5</span>
+                            <span class="text-gray-600 ml-2">/ animal / month</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-3">
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-cattle-green mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Death Coverage</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-cattle-green mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Basic Disease Coverage</span>
+                            </li>
+                            <li class="flex items-center text-gray-400">
+                                <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Theft Protection</span>
+                            </li>
+                            <li class="flex items-center text-gray-400">
+                                <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Natural Disaster Coverage</span>
+                            </li>
+                        </ul>
+                        <a href="plans.html" class="mt-8 block text-center bg-cattle-green text-white py-3 px-4 rounded-lg hover:bg-cattle-lightGreen transition">
+                            Choose Basic
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Premium Plan -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-cattle-green relative transform scale-105 z-10 fade-in" style="animation-delay: 0.1s;">
+                    <div class="absolute top-0 right-0 bg-cattle-green text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                        POPULAR
+                    </div>
+                    <div class="bg-cattle-green p-6">
+                        <h3 class="text-2xl font-bold text-white">Premium Cover</h3>
+                        <div class="mt-4 flex items-end">
+                            <span class="text-3xl font-bold text-white">$12</span>
+                            <span class="text-white text-opacity-90 ml-2">/ animal / month</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-3">
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-cattle-green mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Death Coverage</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-cattle-green mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Comprehensive Disease Coverage</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-cattle-green mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Theft Protection</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-cattle-green mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Natural Disaster Coverage</span>
+                            </li>
+                        </ul>
+                        <a href="plans.html" class="mt-8 block text-center bg-cattle-green text-white py-3 px-4 rounded-lg hover:bg-cattle-lightGreen transition font-semibold">
+                            Choose Premium
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 transition-all hover:shadow-lg fade-in" style="animation-delay: 0.5s;">
+                    <div class="bg-cattle-blue bg-opacity-10 p-6">
+                        <h3 class="text-2xl font-bold text-cattle-blue">Enterprise Cover</h3>
+                        <div class="mt-4 flex items-end">
+                            <span class="text-3xl font-bold">$20</span>
+                            <span class="text-gray-600 ml-2">/ animal / month</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-3">
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-cattle-blue mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">All Premium Features</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-cattle-blue mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Custom Coverage Options</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-cattle-blue mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Priority Claims Processing</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-cattle-blue mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-gray-700">Dedicated Account Manager</span>
+                            </li>
+                        </ul>
+                        <a href="plans.html" class="mt-8 block text-center bg-cattle-blue text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition">
+                            Choose Enterprise
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <a href="plans.html" class="inline-flex items-center text-cattle-green hover:underline font-medium">
+                    View all plan details
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Hear from the farmers who trust InsureHerd to protect their livestock.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="testimonial-card bg-white p-6 rounded-lg shadow-md fade-in" style="animation-delay: 0.2s;">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" alt="Farmer" class="h-full w-full object-cover">
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">John Peterson</h3>
+                            <p class="text-sm text-gray-600">Dairy Farmer, Wisconsin</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">
+                        "When my prize dairy cow fell ill unexpectedly, InsureHerd processed my claim within 48 hours. The efficient service helped me maintain my farm operations without financial strain."
+                    </p>
+                    <div class="mt-4 flex text-yellow-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card bg-white p-6 rounded-lg shadow-md fade-in" style="animation-delay: 0.4s;">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?w=400&h=400&fit=crop&crop=face" alt="Farmer" class="h-full w-full object-cover">
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Maria Rodriguez</h3>
+                            <p class="text-sm text-gray-600">Cattle Rancher, Texas</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">
+                        "The Premium plan has been a lifesaver for our ranch. After a severe drought affected our herd, InsureHerd's coverage helped us recover without devastating financial losses."
+                    </p>
+                    <div class="mt-4 flex text-yellow-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card bg-white p-6 rounded-lg shadow-md fade-in" style="animation-delay: 0.6s;">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face" alt="Farmer" class="h-full w-full object-cover">
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Robert Thompson</h3>
+                            <p class="text-sm text-gray-600">Livestock Investor, Iowa</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">
+                        "As an investor with multiple herds across different locations, the Enterprise plan gives me peace of mind. The dedicated account manager makes managing claims effortless."
+                    </p>
+                    <div class="mt-4 flex text-yellow-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-cattle-green text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-8 md:mb-0 md:w-2/3">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Protect Your Livestock?</h2>
+                    <p class="text-lg opacity-90 max-w-xl">
+                        Join thousands of farmers who trust InsureHerd for their cattle insurance needs. Get started today!
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="register-cattle.html" class="btn-primary bg-white text-cattle-green hover:bg-gray-100 font-medium text-lg px-8 py-6 rounded text-center">
+                        Get Started
+                    </a>
+                    <a href="#" class="btn-primary border border-white text-white hover:bg-white hover:text-cattle-green font-medium text-lg px-8 py-6 rounded text-center">
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 pt-12 pb-8 border-t">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="bg-cattle-green rounded-full p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M8 3v4l3 3 1-1 1 1 3-3V3" />
+                                <path d="M19 7h1a2 2 0 0 1 2 2v1a3 3 0 0 1-3 3h-5c-1.15 0-2.24-.34-3.15-.93" />
+                                <path d="M4 7H3a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3h5c1.15 0 2.24-.34 3.15-.93" />
+                                <path d="M12 22v-5" />
+                                <path d="M9 14.59A7.5 7.5 0 0 0 5 19.93" />
+                                <path d="M15 14.59A7.5 7.5 0 0 1 19 19.93" />
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-cattle-green">InsureHerd</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Protecting your valuable livestock with comprehensive insurance solutions.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-cattle-green hover:text-cattle-lightGreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-cattle-green hover:text-cattle-lightGreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-cattle-green hover:text-cattle-lightGreen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-span-1">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-900">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="navhome.html" class="text-gray-600 hover:text-cattle-green">Home</a></li>
+                        <li><a href="navplans.html" class="text-gray-600 hover:text-cattle-green">Insurance Plans</a></li>
+                        <li><a href="home_page.html" class="text-gray-600 hover:text-cattle-green">Dashboard</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-span-1">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-900">Services</h3>
+                    <ul class="space-y-3">
+                        <li><a href="navregister-cattle.html" class="text-gray-600 hover:text-cattle-green">Cattle Registration</a></li>
+                        <li><a href="navhome.html" class="text-gray-600 hover:text-cattle-green">Claim Process</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-cattle-green">Premium Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-cattle-green">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-span-1">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-900">Contact Us</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-cattle-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="text-gray-600">123 Farm Street, Rural Area, Country</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-cattle-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            <span class="text-gray-600">+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-cattle-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <span class="text-gray-600">support@insureherd.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 mt-8 pt-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-600 text-sm mb-4 md:mb-0">
+                        © 2024 InsureHerd. All rights reserved.
+                    </p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-600 hover:text-cattle-green text-sm">Privacy Policy</a>
+                        <a href="#" class="text-gray-600 hover:text-cattle-green text-sm">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for interactive elements -->
+    <script>
+        // Mobile menu functionality
+        const openMenuButton = document.getElementById('open-menu');
+        const closeMenuButton = document.getElementById('close-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        openMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+            setTimeout(() => {
+                mobileMenu.querySelector('div').classList.add('open');
+            }, 10);
+        });
+        
+        closeMenuButton.addEventListener('click', () => {
+            mobileMenu.querySelector('div').classList.remove('open');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
+        });
+        
+        // Animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            // Apply initial animation to elements in view
+            fadeElements.forEach(element => {
+                if (isElementInViewport(element)) {
+                    element.style.opacity = '1';
+                }
+            });
+            
+            // Handle scrolling
+            window.addEventListener('scroll', function() {
+                fadeElements.forEach(element => {
+                    if (isElementInViewport(element) && element.style.opacity !== '1') {
+                        element.style.opacity = '1';
+                    }
+                });
+            });
+            
+            // Helper function to check if element is in viewport
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.bottom >= 0
+                );
+            }
+        });
+    </script>
+</body>
+</html>
