@@ -6,1102 +6,2143 @@
   <title>DairyVest - Store</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Base styles */
     :root {
-      --primary: #8B5CF6;
-      --primary-foreground: #ffffff;
-      --background: #ffffff;
-      --foreground: #171717;
+      --background: #f8fbf8;
+      --foreground: #253625;
       --card: #ffffff;
-      --card-foreground: #171717;
-      --border: #e5e7eb;
-      --muted: #f3f4f6;
-      --muted-foreground: #6b7280;
-      --accent: #f9fafb;
-      --accent-foreground: #111827;
-      --secondary: #f3f4f6;
-      --secondary-foreground: #111827;
+      --card-foreground: #253625;
+      --primary: #3d9645;
+      --primary-foreground: #ffffff;
+      --secondary: #c9b458;
+      --secondary-foreground: #ffffff;
+      --muted: #f0f9f0;
+      --muted-foreground: #5d745d;
+      --accent: #f2efd1;
+      --accent-foreground: #253625;
       --destructive: #ef4444;
       --destructive-foreground: #ffffff;
+      --border: #e1ede1;
+      --input: #e1ede1;
+      --ring: #3d9645;
+      --radius: 0.5rem;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
-    
+
     body {
-      color: var(--foreground);
       background-color: var(--background);
-    }
-    
-    .min-h-screen {
+      color: var(--foreground);
       min-height: 100vh;
-    }
-    
-    .flex {
       display: flex;
-    }
-    
-    .flex-col {
       flex-direction: column;
     }
-    
-    .flex-row {
-      flex-direction: row;
-    }
-    
-    .flex-grow {
-      flex-grow: 1;
-    }
-    
+
     .container {
       width: 100%;
-      max-width: 1280px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 0 1rem;
+      padding: 0 2rem;
     }
-    
-    .mx-auto {
-      margin-left: auto;
-      margin-right: auto;
+
+    .navbar {
+      background-color: var(--card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 40;
     }
-    
-    .grid {
-      display: grid;
+
+    .navbar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
     }
-    
-    .grid-cols-1 {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-    
-    .items-center {
+
+    .navbar-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
       align-items: center;
     }
-    
-    .items-start {
-      align-items: flex-start;
-    }
-    
-    .justify-between {
-      justify-content: space-between;
-    }
-    
-    .justify-center {
-      justify-center: center;
-    }
-    
-    .gap-8 {
-      gap: 2rem;
-    }
-    
-    .gap-6 {
-      gap: 1.5rem;
-    }
-    
-    .mb-8 {
-      margin-bottom: 2rem;
-    }
-    
-    .mb-4 {
-      margin-bottom: 1rem;
-    }
-    
-    .mb-2 {
-      margin-bottom: 0.5rem;
-    }
-    
-    .mt-8 {
-      margin-top: 2rem;
-    }
-    
-    .mt-4 {
-      margin-top: 1rem;
-    }
-    
-    .mt-2 {
-      margin-top: 0.5rem;
-    }
-    
-    .mt-1 {
-      margin-top: 0.25rem;
-    }
-    
-    .ml-1 {
-      margin-left: 0.25rem;
-    }
-    
-    .ml-2 {
-      margin-left: 0.5rem;
-    }
-    
-    .mr-2 {
+
+    .navbar-logo i {
       margin-right: 0.5rem;
     }
-    
-    .px-4 {
-      padding-left: 1rem;
-      padding-right: 1rem;
+
+    .navbar-links {
+      display: flex;
+      gap: 1.5rem;
     }
-    
-    .py-8 {
-      padding-top: 2rem;
-      padding-bottom: 2rem;
-    }
-    
-    .py-4 {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-    }
-    
-    .py-2 {
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-    }
-    
-    .px-8 {
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
-    
-    .p-4 {
-      padding: 1rem;
-    }
-    
-    .p-2 {
-      padding: 0.5rem;
-    }
-    
-    .pb-0 {
-      padding-bottom: 0;
-    }
-    
-    .pt-2 {
-      padding-top: 0.5rem;
-    }
-    
-    .pt-0 {
-      padding-top: 0;
-    }
-    
-    .rounded-xl {
-      border-radius: 0.75rem;
-    }
-    
-    .rounded-lg {
-      border-radius: 0.5rem;
-    }
-    
-    .rounded-md {
-      border-radius: 0.375rem;
-    }
-    
-    .rounded-full {
-      border-radius: 9999px;
-    }
-    
-    .shadow-sm {
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    }
-    
-    .shadow-lg {
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-    
-    .border {
-      border: 1px solid var(--border);
-    }
-    
-    .bg-card {
-      background-color: var(--card);
-    }
-    
-    .bg-muted {
-      background-color: var(--muted);
-    }
-    
-    .bg-primary {
-      background-color: var(--primary);
-    }
-    
-    .bg-white {
-      background-color: white;
-    }
-    
-    .bg-yellow-400 {
-      background-color: #facc15;
-    }
-    
-    .text-foreground {
+
+    .navbar-link {
+      text-decoration: none;
       color: var(--foreground);
+      font-weight: 500;
+      transition: color 0.2s;
     }
-    
-    .text-muted-foreground {
-      color: var(--muted-foreground);
-    }
-    
-    .text-primary {
+
+    .navbar-link:hover {
       color: var(--primary);
     }
-    
-    .text-primary-foreground {
+
+    .navbar-link.active {
+      color: var(--primary);
+    }
+
+    .navbar-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      padding: 0.5rem 1rem;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
       color: var(--primary-foreground);
     }
-    
-    .text-white {
-      color: white;
+
+    .btn-primary:hover {
+      background-color: #2d7a34;
     }
-    
-    .text-yellow-400 {
-      color: #facc15;
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
     }
-    
-    .fill-yellow-400 {
-      fill: #facc15;
+
+    .btn-outline:hover {
+      background-color: var(--muted);
     }
-    
-    .text-gray-300 {
-      color: #d1d5db;
-    }
-    
-    .text-red-500 {
-      color: #ef4444;
-    }
-    
-    .text-green-600 {
-      color: #16a34a;
-    }
-    
-    .text-sm {
+
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
       font-size: 0.875rem;
     }
-    
-    .text-xs {
+
+    .btn-icon {
+      padding: 0.5rem;
+    }
+
+    .cart-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--foreground);
+    }
+
+    .cart-button:hover {
+      color: var(--primary);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
       font-size: 0.75rem;
-    }
-    
-    .text-lg {
-      font-size: 1.125rem;
-    }
-    
-    .text-xl {
-      font-size: 1.25rem;
-    }
-    
-    .text-2xl {
-      font-size: 1.5rem;
-    }
-    
-    .font-semibold {
-      font-weight: 600;
-    }
-    
-    .font-bold {
-      font-weight: 700;
-    }
-    
-    .font-medium {
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: 500;
     }
-    
-    .overflow-hidden {
+
+    .main {
+      flex-grow: 1;
+      padding: 2rem 0;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      color: var(--muted-foreground);
+    }
+
+    .store-layout {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .store-sidebar {
+      width: 300px;
+      flex-shrink: 0;
+    }
+
+    .store-main {
+      flex-grow: 1;
+    }
+
+    .card {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .filter-card {
+      padding: 1.5rem;
+      position: sticky;
+      top: 90px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .filter-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-section-title {
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .checkbox {
+      margin-right: 0.5rem;
+    }
+
+    .range-slider {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .search-bar {
+      display: flex;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--ring);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted-foreground);
+    }
+
+    .category-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .category-tag {
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .category-tag:hover {
+      background-color: var(--muted);
+    }
+
+    .category-tag.active {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      border-color: var(--primary);
+    }
+
+    .sort-select {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      outline: none;
+      font-size: 0.875rem;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-image-container {
+      position: relative;
+      aspect-ratio: 1 / 1;
       overflow: hidden;
     }
-    
-    .aspect-square {
-      aspect-ratio: 1 / 1;
-    }
-    
-    .w-full {
+
+    .product-image {
       width: 100%;
-    }
-    
-    .h-full {
       height: 100%;
-    }
-    
-    .h-10 {
-      height: 2.5rem;
-    }
-    
-    .w-10 {
-      width: 2.5rem;
-    }
-    
-    .h-4 {
-      height: 1rem;
-    }
-    
-    .w-4 {
-      width: 1rem;
-    }
-    
-    .h-5 {
-      height: 1.25rem;
-    }
-    
-    .w-5 {
-      width: 1.25rem;
-    }
-    
-    .object-cover {
       object-fit: cover;
+      transition: transform 0.3s ease;
     }
-    
-    .line-clamp-2 {
+
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius);
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .product-badge.out-of-stock {
+      background-color: var(--destructive);
+    }
+
+    .product-actions {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--card);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      transition: all 0.2s;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-btn:hover {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .action-btn.active {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .product-content {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .rating-stars {
+      display: flex;
+      color: #f0c04a;
+      margin-right: 0.25rem;
+    }
+
+    .rating-count {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .product-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-description {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 1rem;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    
-    .h-10 {
-      height: 2.5rem;
+
+    .product-price-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
     }
-    
-    .transition-transform {
-      transition-property: transform;
-      transition-duration: 0.3s;
+
+    .product-price {
+      font-weight: 600;
+      font-size: 1.125rem;
     }
-    
-    .duration-300 {
-      transition-duration: 0.3s;
+
+    .product-stock {
+      font-size: 0.75rem;
     }
-    
-    .hover\:scale-105:hover {
-      transform: scale(1.05);
-    }
-    
-    .hover\:text-primary:hover {
+
+    .in-stock {
       color: var(--primary);
     }
-    
-    .hover\:underline:hover {
-      text-decoration: underline;
+
+    .out-of-stock {
+      color: var(--destructive);
     }
-    
-    .hidden {
-      display: none;
+
+    .product-footer {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
     }
-    
-    .card-hover {
-      transition: transform 0.2s, box-shadow 0.2s;
+
+    .add-to-cart-btn {
+      width: 100%;
     }
-    
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    .footer {
+      background-color: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+      margin-top: auto;
     }
-    
-    .disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
     }
-    
-    /* Header styles */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      background-color: var(--background);
-      border-bottom: 1px solid var(--border);
+
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      display: inline-block;
     }
-    
-    .h-16 {
-      height: 4rem;
+
+    .footer-about {
+      max-width: 300px;
+      margin-bottom: 1rem;
+      color: var(--muted-foreground);
     }
-    
-    .space-x-6 > * + * {
-      margin-left: 1.5rem;
+
+    .footer-socials {
+      display: flex;
+      gap: 1rem;
     }
-    
-    .space-x-4 > * + * {
-      margin-left: 1rem;
-    }
-    
-    .space-x-1 > * + * {
-      margin-left: 0.25rem;
-    }
-    
-    /* Button styles */
-    .btn-primary {
-      display: inline-flex;
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--muted);
+      color: var(--foreground);
+      display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .social-icon:hover {
       background-color: var(--primary);
       color: var(--primary-foreground);
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
-      transition: background-color 0.15s;
-      cursor: pointer;
+    }
+
+    .footer-title {
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-link {
+      color: var(--muted-foreground);
       text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+    }
+
+    .footer-newsletter p {
+      color: var(--muted-foreground);
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+    }
+
+    .newsletter-input {
+      flex-grow: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-right: none;
+      border-top-left-radius: var(--radius);
+      border-bottom-left-radius: var(--radius);
+      outline: none;
+    }
+
+    .newsletter-btn {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.75rem 1rem;
       border: none;
+      border-top-right-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
-    
-    .btn-primary:hover {
-      background-color: rgba(139, 92, 246, 0.9);
-      text-decoration: none;
+
+    .newsletter-btn:hover {
+      background-color: #2d7a34;
     }
-    
-    .btn-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+
+    .copyright {
+      text-align: center;
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
     }
-    
-    .btn-outline {
-      display: inline-flex;
+
+    /* Quick View Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
       align-items: center;
       justify-content: center;
-      background-color: transparent;
-      color: var(--foreground);
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
-      border: 1px solid var(--border);
-      transition: background-color 0.15s;
+      z-index: 100;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-container {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      width: 90%;
+      max-width: 900px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.open .modal-container {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
       cursor: pointer;
-      text-decoration: none;
+      color: var(--muted-foreground);
     }
-    
-    .btn-outline:hover {
-      background-color: var(--accent);
-      text-decoration: none;
+
+    .close-modal:hover {
+      color: var(--foreground);
     }
-    
-    /* Media queries */
+
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
     @media (min-width: 768px) {
-      .md\:grid-cols-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .modal-body {
+        flex-direction: row;
       }
-      
-      .md\:grid-cols-3 {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .modal-image {
+      flex: 1;
+      max-width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .modal-image {
+        max-width: 50%;
       }
-      
-      .md\:grid-cols-4 {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .modal-image img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      object-fit: cover;
+    }
+
+    .modal-content {
+      flex: 1;
+    }
+
+    .modal-product-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-product-price {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .modal-product-description {
+      margin-bottom: 1.5rem;
+      color: var(--muted-foreground);
+    }
+
+    .modal-product-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .meta-label {
+      font-weight: 500;
+      min-width: 120px;
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quantity-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .quantity-btn:first-child {
+      border-top-left-radius: var(--radius);
+      border-bottom-left-radius: var(--radius);
+    }
+
+    .quantity-btn:last-child {
+      border-top-right-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+    }
+
+    .quantity-input {
+      width: 60px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-left: none;
+      border-right: none;
+      text-align: center;
+      outline: none;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .modal-actions .btn {
+      flex: 1;
+    }
+
+    /* Cart Drawer */
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 100%;
+      max-width: 450px;
+      height: 100vh;
+      background-color: var(--card);
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-drawer.open {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .close-cart {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      color: var(--muted-foreground);
+    }
+
+    .close-cart:hover {
+      color: var(--foreground);
+    }
+
+    .cart-body {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+
+    .empty-cart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      color: var(--muted-foreground);
+    }
+
+    .empty-cart-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--muted);
+    }
+
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-item-image {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .cart-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cart-item-content {
+      flex-grow: 1;
+    }
+
+    .cart-item-title {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .cart-item-price {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cart-quantity-btn {
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: var(--radius);
+      font-size: 0.75rem;
+    }
+
+    .cart-quantity-value {
+      width: 24px;
+      text-align: center;
+      font-size: 0.875rem;
+    }
+
+    .cart-item-remove {
+      color: var(--destructive);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      margin-left: auto;
+    }
+
+    .cart-item-subtotal {
+      margin-left: auto;
+      font-weight: 600;
+      align-self: flex-start;
+    }
+
+    .cart-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+    }
+
+    .cart-subtotal {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .cart-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 991px) {
+      .store-layout {
+        flex-direction: column;
       }
-      
-      .md\:flex {
-        display: flex;
+
+      .store-sidebar {
+        width: 100%;
       }
-      
-      .md\:hidden {
+
+      .filter-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+      }
+
+      .navbar-links {
         display: none;
       }
-    }
-    
-    @media (min-width: 1024px) {
-      .lg\:grid-cols-4 {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-      
-      .lg\:px-8 {
-        padding-left: 2rem;
-        padding-right: 2rem;
+
+      .footer-container {
+        grid-template-columns: 1fr;
       }
     }
-    
-    @media (max-width: 767px) {
-      .sm\:px-6 {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+
+    @media (max-width: 576px) {
+      .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       }
-      
-      .sm\:flex {
+
+      .modal-actions {
+        flex-direction: column;
+      }
+    }
+
+    /* Utility classes */
+    .mobile-filter-toggle {
+      display: none;
+    }
+
+    @media (max-width: 991px) {
+      .mobile-filter-toggle {
         display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .store-sidebar {
+        display: none;
+      }
+
+      .store-sidebar.open {
+        display: block;
       }
     }
   </style>
 </head>
 <body>
-  <div class="min-h-screen flex flex-col">
-    <!-- Header/Navbar -->
-    <header class="w-full bg-background sticky top-0 z-40 border-b">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <div class="flex items-center">
-            <a href="home_page.html" class="flex items-center">
-              <span class="text-2xl font-bold text-primary">DairyVest</span>
-            </a>
-          </div>
-
-          <!-- Desktop Navigation -->
-          <nav class="hidden md:flex items-center space-x-6">
-            <a href="home_page.html" class="text-foreground hover:text-primary transition-colors">
-              Home
-            </a>
-            <a href="dashboard.html" class="text-foreground hover:text-primary transition-colors">
-              Dashboard
-            </a>
-            <a href="store.html" class="text-primary transition-colors">
-              Store
-            </a>
-            <a href="admin.html" class="text-foreground hover:text-primary transition-colors">
-              Admin
-            </a>
-          </nav>
-
-          <div class="hidden md:flex items-center space-x-4">
-            <a href="store.html" class="text-primary">
-              <i class="fas fa-shopping-cart h-5 w-5"></i>
-            </a>
-            <a href="login.html">
-              <button class="btn-primary">
-                <i class="fas fa-user h-4 w-4 mr-2"></i>
-                Login
-              </button>
-            </a>
-          </div>
-
-          <!-- Mobile Navigation Toggle -->
-          <div class="flex md:hidden">
-            <button
-              id="mobile-menu-button"
-              class="text-gray-600 hover:text-primary focus:outline-none"
-              aria-label="Toggle menu"
-            >
-              <i class="fas fa-bars h-6 w-6" id="menu-icon"></i>
-              <i class="fas fa-times h-6 w-6 hidden" id="close-icon"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile Navigation Menu -->
-      <div id="mobile-menu" class="md:hidden" style="display: none;">
-        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background border-b">
-          <a
-            href="home_page.html"
-            class="block px-3 py-2 text-foreground hover:text-primary hover:bg-muted rounded-md"
-          >
-            Home
-          </a>
-          <a
-            href="dashboard.html"
-            class="block px-3 py-2 text-foreground hover:text-primary hover:bg-muted rounded-md"
-          >
-            Dashboard
-          </a>
-          <a
-            href="store.html"
-            class="block px-3 py-2 text-primary hover:bg-muted rounded-md"
-          >
-            Store
-          </a>
-          <a
-            href="admin.html"
-            class="block px-3 py-2 text-foreground hover:text-primary hover:bg-muted rounded-md"
-          >
-            Admin
-          </a>
-          <a
-            href="login.html"
-            class="block px-3 py-2 text-primary font-medium hover:bg-primary/10 rounded-md"
-          >
-            Login / Register
-          </a>
-        </div>
-      </div>
-    </header>
-
-    <main class="flex-grow py-8 bg-muted/30">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-bold mb-8">Dairy Products Store</h1>
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="navbar-logo">
+        <i class="fas fa-cow"></i> DairyVest
+      </a>
+      <nav class="navbar-links">
+        <a href="home_page.html" class="navbar-link">Home</a>
+        <a href="dashboard.html" class="navbar-link">Dashboard</a>
+        <a href="store.html" class="navbar-link active">Store</a>
+        <a href="admin.html" class="navbar-link">Admin</a>
         
-        <!-- Filters -->
-        <div class="flex flex-col md:flex-row justify-between mb-8">
-          <div class="mb-4 md:mb-0">
-            <input 
-              type="text" 
-              placeholder="Search products..." 
-              class="px-4 py-2 border rounded-md w-full md:w-64"
-            >
+      </nav>
+      <div class="navbar-actions">
+        <a href="watchliststore.html" class="btn btn-icon">
+          <i class="fas fa-heart"></i>
+        </a>
+        <button class="cart-button" id="cart-toggle">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <div class="page-header">
+        <h1 class="page-title">Dairy Products Store</h1>
+        <p class="page-subtitle">Fresh, high-quality dairy products straight from our farm</p>
+      </div>
+
+      <button class="btn btn-outline mobile-filter-toggle" id="mobile-filter-toggle">
+        <i class="fas fa-filter"></i> Filter Products
+      </button>
+
+      <div class="store-layout">
+        <aside class="store-sidebar" id="store-sidebar">
+          <div class="card filter-card">
+            <h3 class="card-title">Filter Products</h3>
+            
+            <div class="filter-section">
+              <h4 class="filter-section-title">Categories</h4>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="all" checked> All Products
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="milk" checked> Milk
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="cheese" checked> Cheese
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="yogurt" checked> Yogurt
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="butter" checked> Butter
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="icecream" checked> Ice Cream
+                </label>
+              </div>
+            </div>
+            
+            <div class="filter-section">
+              <h4 class="filter-section-title">Price Range</h4>
+              <input type="range" min="0" max="20" value="20" class="range-slider" id="price-range">
+              <div class="range-labels">
+                <span>$0</span>
+                <span id="price-range-value">$20</span>
+              </div>
+            </div>
+            
+            <div class="filter-section">
+              <h4 class="filter-section-title">Availability</h4>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox availability-filter" value="in-stock" checked> In Stock
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox availability-filter" value="out-of-stock"> Out of Stock
+                </label>
+              </div>
+            </div>
+            
+            <div class="filter-section">
+              <h4 class="filter-section-title">Rating</h4>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox rating-filter" value="5" checked> 
+                  <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox rating-filter" value="4" checked> 
+                  <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </div>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox rating-filter" value="3" checked> 
+                  <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="apply-filters">Apply Filters</button>
           </div>
-          <div class="flex flex-col md:flex-row gap-4">
-            <select class="px-4 py-2 border rounded-md">
-              <option value="">All Categories</option>
-              <option value="milk">Milk</option>
-              <option value="cheese">Cheese</option>
-              <option value="yogurt">Yogurt</option>
-              <option value="butter">Butter</option>
-            </select>
-            <select class="px-4 py-2 border rounded-md">
-              <option value="popularity">Sort by Popularity</option>
+        </aside>
+        
+        <div class="store-main">
+          <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="search" class="search-input" id="search-products" placeholder="Search products...">
+          </div>
+          
+          <div class="toolbar">
+            <div class="category-tags">
+              <span class="category-tag active" data-category="all">All Products</span>
+              <span class="category-tag" data-category="milk">Milk</span>
+              <span class="category-tag" data-category="cheese">Cheese</span>
+              <span class="category-tag" data-category="yogurt">Yogurt</span>
+              <span class="category-tag" data-category="butter">Butter</span>
+              <span class="category-tag" data-category="icecream">Ice Cream</span>
+            </div>
+            
+            <select class="sort-select" id="sort-products">
+              <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>
               <option value="price-high">Price: High to Low</option>
-              <option value="rating">Sort by Rating</option>
+              <option value="rating">Highest Rated</option>
+              <option value="newest">Newest</option>
             </select>
           </div>
+          
+          <div class="product-grid" id="product-grid">
+            <!-- Products will be loaded here via JavaScript -->
+          </div>
         </div>
-        
-        <!-- Products Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <!-- Product 1 -->
-          <div class="card-hover overflow-hidden bg-card rounded-xl border">
-            <div class="aspect-square w-full overflow-hidden bg-muted">
-              <img 
-                src="https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=600&q=80" 
-                alt="Organic Whole Milk" 
-                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-            <div class="p-4 pb-0">
-              <div class="flex items-center space-x-1 mb-2">
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <span class="text-sm text-muted-foreground ml-1">(5.0)</span>
-              </div>
-              <h3 class="text-lg font-medium">Organic Whole Milk</h3>
-              <p class="text-sm line-clamp-2 h-10 text-muted-foreground">
-                Fresh organic whole milk from grass-fed cows. Rich in nutrients with a creamy taste.
-              </p>
-            </div>
-            <div class="p-4 pt-2">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-lg font-semibold">₹85.00</p>
-                  <p class="text-xs text-green-600">
-                    In Stock
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="p-4 pt-0">
-              <button class="btn-primary w-full">
-                <i class="fas fa-shopping-cart h-4 w-4 mr-2"></i>
-                Add to Cart
-              </button>
-            </div>
-          </div>
+      </div>
+    </div>
+  </main>
 
-          <!-- Product 2 -->
-          <div class="card-hover overflow-hidden bg-card rounded-xl border">
-            <div class="aspect-square w-full overflow-hidden bg-muted">
-              <img 
-                src="https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=600&q=80" 
-                alt="Artisan Cheese Collection" 
-                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-            <div class="p-4 pb-0">
-              <div class="flex items-center space-x-1 mb-2">
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-gray-300"></i>
-                <span class="text-sm text-muted-foreground ml-1">(4.0)</span>
-              </div>
-              <h3 class="text-lg font-medium">Artisan Cheese Collection</h3>
-              <p class="text-sm line-clamp-2 h-10 text-muted-foreground">
-                Assortment of handcrafted artisan cheeses made from our premium milk.
-              </p>
-            </div>
-            <div class="p-4 pt-2">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-lg font-semibold">₹349.00</p>
-                  <p class="text-xs text-green-600">
-                    In Stock
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="p-4 pt-0">
-              <button class="btn-primary w-full">
-                <i class="fas fa-shopping-cart h-4 w-4 mr-2"></i>
-                Add to Cart
-              </button>
-            </div>
-          </div>
-
-          <!-- Product 3 -->
-          <div class="card-hover overflow-hidden bg-card rounded-xl border">
-            <div class="aspect-square w-full overflow-hidden bg-muted">
-              <img 
-                src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80" 
-                alt="Probiotic Yogurt Pack" 
-                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-            <div class="p-4 pb-0">
-              <div class="flex items-center space-x-1 mb-2">
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star-half-alt text-yellow-400"></i>
-                <span class="text-sm text-muted-foreground ml-1">(4.5)</span>
-              </div>
-              <h3 class="text-lg font-medium">Probiotic Yogurt Pack</h3>
-              <p class="text-sm line-clamp-2 h-10 text-muted-foreground">
-                Set of 6 probiotic yogurts with various flavors. Rich in gut-friendly bacteria.
-              </p>
-            </div>
-            <div class="p-4 pt-2">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-lg font-semibold">₹199.00</p>
-                  <p class="text-xs text-green-600">
-                    In Stock
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="p-4 pt-0">
-              <button class="btn-primary w-full">
-                <i class="fas fa-shopping-cart h-4 w-4 mr-2"></i>
-                Add to Cart
-              </button>
-            </div>
-          </div>
-
-          <!-- Product 4 -->
-          <div class="card-hover overflow-hidden bg-card rounded-xl border">
-            <div class="aspect-square w-full overflow-hidden bg-muted">
-              <img 
-                src="https://images.unsplash.com/photo-1589985270958-ad4b0308f229?auto=format&fit=crop&w=600&q=80" 
-                alt="Grass-Fed Butter" 
-                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-            <div class="p-4 pb-0">
-              <div class="flex items-center space-x-1 mb-2">
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-gray-300"></i>
-                <span class="text-sm text-muted-foreground ml-1">(4.2)</span>
-              </div>
-              <h3 class="text-lg font-medium">Grass-Fed Butter</h3>
-              <p class="text-sm line-clamp-2 h-10 text-muted-foreground">
-                Premium butter made from the milk of grass-fed cows. Rich in flavor and nutrients.
-              </p>
-            </div>
-            <div class="p-4 pt-2">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-lg font-semibold">₹175.00</p>
-                  <p class="text-xs text-green-600">
-                    In Stock
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="p-4 pt-0">
-              <button class="btn-primary w-full">
-                <i class="fas fa-shopping-cart h-4 w-4 mr-2"></i>
-                Add to Cart
-              </button>
-            </div>
-          </div>
-
-          <!-- Product 5 -->
-          <div class="card-hover overflow-hidden bg-card rounded-xl border">
-            <div class="aspect-square w-full overflow-hidden bg-muted">
-              <img 
-                src="https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&w=600&q=80" 
-                alt="Organic Heavy Cream" 
-                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-            <div class="p-4 pb-0">
-              <div class="flex items-center space-x-1 mb-2">
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-gray-300"></i>
-                <span class="text-sm text-muted-foreground ml-1">(4.1)</span>
-              </div>
-              <h3 class="text-lg font-medium">Organic Heavy Cream</h3>
-              <p class="text-sm line-clamp-2 h-10 text-muted-foreground">
-                Rich, organic heavy cream perfect for cooking, baking, or adding to coffee.
-              </p>
-            </div>
-            <div class="p-4 pt-2">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-lg font-semibold">₹120.00</p>
-                  <p class="text-xs text-green-600">
-                    In Stock
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="p-4 pt-0">
-              <button class="btn-primary w-full">
-                <i class="fas fa-shopping-cart h-4 w-4 mr-2"></i>
-                Add to Cart
-              </button>
-            </div>
-          </div>
-
-          <!-- Product 6 -->
-          <div class="card-hover overflow-hidden bg-card rounded-xl border">
-            <div class="aspect-square w-full overflow-hidden bg-muted">
-              <img 
-                src="https://images.unsplash.com/photo-1583252307824-a00a0a53e16c?auto=format&fit=crop&w=600&q=80" 
-                alt="Whey Protein Powder" 
-                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-            <div class="p-4 pb-0">
-              <div class="flex items-center space-x-1 mb-2">
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <span class="text-sm text-muted-foreground ml-1">(4.9)</span>
-              </div>
-              <h3 class="text-lg font-medium">Whey Protein Powder</h3>
-              <p class="text-sm line-clamp-2 h-10 text-muted-foreground">
-                Pure whey protein powder derived from our dairy. No additives or preservatives.
-              </p>
-            </div>
-            <div class="p-4 pt-2">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-lg font-semibold">₹899.00</p>
-                  <p class="text-xs text-green-600">
-                    In Stock
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="p-4 pt-0">
-              <button class="btn-primary w-full">
-                <i class="fas fa-shopping-cart h-4 w-4 mr-2"></i>
-                Add to Cart
-              </button>
-            </div>
-          </div>
-
-          <!-- Product 7 -->
-          <div class="card-hover overflow-hidden bg-card rounded-xl border">
-            <div class="aspect-square w-full overflow-hidden bg-muted">
-              <img 
-                src="https://images.unsplash.com/photo-1626207208568-e3bb4424201c?auto=format&fit=crop&w=600&q=80" 
-                alt="Organic Kefir" 
-                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-            <div class="p-4 pb-0">
-              <div class="flex items-center space-x-1 mb-2">
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star-half-alt text-yellow-400"></i>
-                <span class="text-sm text-muted-foreground ml-1">(4.7)</span>
-              </div>
-              <h3 class="text-lg font-medium">Organic Kefir</h3>
-              <p class="text-sm line-clamp-2 h-10 text-muted-foreground">
-                Fermented milk drink packed with probiotics and essential nutrients.
-              </p>
-            </div>
-            <div class="p-4 pt-2">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-lg font-semibold">₹145.00</p>
-                  <p class="text-xs text-red-500">
-                    Out of Stock
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="p-4 pt-0">
-              <button class="btn-primary w-full" disabled>
-                <i class="fas fa-shopping-cart h-4 w-4 mr-2"></i>
-                Add to Cart
-              </button>
-            </div>
-          </div>
-
-          <!-- Product 8 -->
-          <div class="card-hover overflow-hidden bg-card rounded-xl border">
-            <div class="aspect-square w-full overflow-hidden bg-muted">
-              <img 
-                src="https://images.unsplash.com/photo-1615485290382-441e4d49b5d5?auto=format&fit=crop&w=600&q=80" 
-                alt="Ice Cream Variety Pack" 
-                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-            <div class="p-4 pb-0">
-              <div class="flex items-center space-x-1 mb-2">
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-yellow-400"></i>
-                <i class="fas fa-star text-gray-300"></i>
-                <span class="text-sm text-muted-foreground ml-1">(4.3)</span>
-              </div>
-              <h3 class="text-lg font-medium">Ice Cream Variety Pack</h3>
-              <p class="text-sm line-clamp-2 h-10 text-muted-foreground">
-                Set of 4 premium ice cream flavors made with our creamy dairy milk.
-              </p>
-            </div>
-            <div class="p-4 pt-2">
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="text-lg font-semibold">₹375.00</p>
-                  <p class="text-xs text-green-600">
-                    In Stock
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="p-4 pt-0">
-              <button class="btn-primary w-full">
-                <i class="fas fa-shopping-cart h-4 w-4 mr-2"></i>
-                Add to Cart
-              </button>
-            </div>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-column">
+          <span class="footer-logo">
+            <i class="fas fa-cow"></i> DairyVest
+          </span>
+          <p class="footer-about">
+            DairyVest combines traditional farming with modern technology to create a transparent, profitable, and sustainable investment opportunity.
+          </p>
+          <div class="footer-socials">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
           </div>
         </div>
         
-        <!-- Pagination -->
-        <div class="flex justify-center mt-8">
-          <nav>
-            <ul class="flex items-center">
-              <li>
-                <a href="#" class="px-3 py-1 rounded-md border mr-2">
-                  <i class="fas fa-chevron-left"></i>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="px-3 py-1 rounded-md border mr-2 bg-primary text-white">1</a>
-              </li>
-              <li>
-                <a href="#" class="px-3 py-1 rounded-md border mr-2">2</a>
-              </li>
-              <li>
-                <a href="#" class="px-3 py-1 rounded-md border mr-2">3</a>
-              </li>
-              <li>
-                <a href="#" class="px-3 py-1 rounded-md border">
-                  <i class="fas fa-chevron-right"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
+        <div class="footer-column">
+          <h3 class="footer-title">Quick Links</h3>
+          <div class="footer-links">
+            <a href="home_page.html" class="footer-link">Home</a>
+            <a href="aboutus.html" class="footer-link">About Us</a>
+            <a href="#" class="footer-link">How It Works</a>
+            <a href="#" class="footer-link">Investment Plans</a>
+            <a href="#" class="footer-link">FAQ</a>
+            <a href="#" class="footer-link">Contact</a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Useful Links</h3>
+          <div class="footer-links">
+            <a href="#" class="footer-link">Terms of Service</a>
+            <a href="#" class="footer-link">Privacy Policy</a>
+            <a href="#" class="footer-link">Cookie Policy</a>
+            <a href="#" class="footer-link">Investor Relations</a>
+            <a href="#" class="footer-link">Careers</a>
+            <a href="#" class="footer-link">Blog</a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Newsletter</h3>
+          <p>Subscribe to our newsletter for the latest updates on our dairy farm investments and exclusive offers.</p>
+          <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Your email address">
+            <button type="submit" class="newsletter-btn">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
         </div>
       </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-muted text-foreground mt-auto pt-12">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div class="space-y-4">
-            <h3 class="text-2xl font-bold text-primary">DairyVest</h3>
-            <p class="text-muted-foreground">
-              Invest in cattle, earn from dairy products, and monitor your investment with real-time updates.
-            </p>
-            <div class="flex space-x-4">
-              <a href="#" class="text-muted-foreground hover:text-primary transition-colors">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" class="text-muted-foreground hover:text-primary transition-colors">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="text-muted-foreground hover:text-primary transition-colors">
-                <i class="fab fa-instagram"></i>
-              </a>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            <h4 class="font-semibold text-lg">Quick Links</h4>
-            <ul class="space-y-2">
-              <li>
-                <a href="home_page.html" class="text-muted-foreground hover:text-primary transition-colors">Home</a>
-              </li>
-              <li>
-                <a href="dashboard.html" class="text-muted-foreground hover:text-primary transition-colors">Dashboard</a>
-              </li>
-              <li>
-                <a href="store.html" class="text-muted-foreground hover:text-primary transition-colors">Store</a>
-              </li>
-              <li>
-                <a href="login.html" class="text-muted-foreground hover:text-primary transition-colors">Login</a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="space-y-4">
-            <h4 class="font-semibold text-lg">Resources</h4>
-            <ul class="space-y-2">
-              <li>
-                <a href="#" class="text-muted-foreground hover:text-primary transition-colors">How It Works</a>
-              </li>
-              <li>
-                <a href="#" class="text-muted-foreground hover:text-primary transition-colors">FAQs</a>
-              </li>
-              <li>
-                <a href="#" class="text-muted-foreground hover:text-primary transition-colors">Blog</a>
-              </li>
-              <li>
-                <a href="#" class="text-muted-foreground hover:text-primary transition-colors">Terms & Conditions</a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="space-y-4">
-            <h4 class="font-semibold text-lg">Contact Us</h4>
-            <ul class="space-y-2">
-              <li class="flex items-center space-x-2">
-                <i class="fas fa-envelope text-primary"></i>
-                <span class="text-muted-foreground">info@dairyvest.com</span>
-              </li>
-              <li class="flex items-center space-x-2">
-                <i class="fas fa-phone text-primary"></i>
-                <span class="text-muted-foreground">+1 (234) 567-8901</span>
-              </li>
-              <li class="flex items-start space-x-2">
-                <i class="fas fa-map-marker-alt text-primary mt-1"></i>
-                <span class="text-muted-foreground">123 Dairy Farm Road, Cattle County, CA 90210</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="border-t border-border mt-12 py-6 text-center text-muted-foreground">
-          <p>&copy; <span id="current-year"></span> DairyVest. All rights reserved.</p>
-        </div>
+      
+      <div class="copyright">
+        <p>&copy; 2023 DairyVest. All rights reserved.</p>
       </div>
-    </footer>
+    </div>
+  </footer>
+
+  <!-- Quick View Modal -->
+  <div class="modal-overlay" id="quick-view-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">Product Quick View</h3>
+        <button class="close-modal" id="close-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="quick-view-content">
+        <!-- Quick view content will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3 class="cart-title">Your Shopping Cart</h3>
+      <button class="close-cart" id="close-cart">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="cart-body" id="cart-body">
+      <!-- Cart items will be loaded here -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-subtotal">
+        <span>Subtotal:</span>
+        <span id="cart-subtotal">$0.00</span>
+      </div>
+      <div class="cart-buttons">
+        <a href="cartstore.html" class="btn btn-primary">View Cart</a>
+        <button class="btn btn-outline" id="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    // Mobile menu toggle
-    document.getElementById('mobile-menu-button').addEventListener('click', function() {
-      const mobileMenu = document.getElementById('mobile-menu');
-      const menuIcon = document.getElementById('menu-icon');
-      const closeIcon = document.getElementById('close-icon');
-      
-      if (mobileMenu.style.display === 'block') {
-        mobileMenu.style.display = 'none';
-        menuIcon.classList.remove('hidden');
-        closeIcon.classList.add('hidden');
-      } else {
-        mobileMenu.style.display = 'block';
-        menuIcon.classList.add('hidden');
-        closeIcon.classList.remove('hidden');
+    // Product Data
+    const productsData = [
+      {
+        id: 'prod-001',
+        name: 'Fresh Whole Milk',
+        description: 'Nutrient-rich whole milk straight from our dairy farm. Pasteurized and non-homogenized.',
+        price: 4.99,
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'milk',
+        featured: true,
+        nutritionInfo: {
+          calories: '150 per cup',
+          fat: '8g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-002',
+        name: 'Artisan Cheese',
+        description: 'Handcrafted aged cheese made using traditional methods from our premium milk.',
+        price: 8.50,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1634487359989-3e90c9432133?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'cheese',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per serving',
+          fat: '10g',
+          protein: '7g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-003',
+        name: 'Organic Yogurt',
+        description: 'Creamy, probiotic-rich yogurt made with organic milk from grass-fed cows.',
+        price: 3.99,
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1584278433203-2379d0d46c15?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'yogurt',
+        featured: false,
+        nutritionInfo: {
+          calories: '130 per cup',
+          fat: '4g',
+          protein: '10g',
+          calcium: '25% DV'
+        }
+      },
+      {
+        id: 'prod-004',
+        name: 'Salted Butter',
+        description: 'Rich, creamy salted butter made from the freshest cream of our grass-fed cows.',
+        price: 5.99,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'butter',
+        featured: false,
+        nutritionInfo: {
+          calories: '100 per tbsp',
+          fat: '11g',
+          protein: '0g',
+          calcium: '0% DV'
+        }
+      },
+      {
+        id: 'prod-005',
+        name: 'Chocolate Milk',
+        description: 'Delicious chocolate milk made with real cocoa and our farm-fresh whole milk.',
+        price: 4.50,
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1572472590096-2eb90b472af3?auto=format&fit=crop&w=600&q=80',
+        inStock: false,
+        category: 'milk',
+        featured: false,
+        nutritionInfo: {
+          calories: '170 per cup',
+          fat: '8g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-006',
+        name: 'Greek Yogurt',
+        description: 'Thick, strained Greek yogurt with high protein content and tangy flavor.',
+        price: 4.99,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'yogurt',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per cup',
+          fat: '0g',
+          protein: '22g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-007',
+        name: 'Cottage Cheese',
+        description: 'Fresh cottage cheese with perfect texture, great for both sweet and savory dishes.',
+        price: 3.99,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'cheese',
+        featured: false,
+        nutritionInfo: {
+          calories: '90 per 1/2 cup',
+          fat: '2g',
+          protein: '12g',
+          calcium: '10% DV'
+        }
+      },
+      {
+        id: 'prod-008',
+        name: 'Premium Ice Cream',
+        description: 'Premium ice cream made with our rich cream and natural flavors. No additives.',
+        price: 6.99,
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'icecream',
+        featured: true,
+        nutritionInfo: {
+          calories: '250 per 1/2 cup',
+          fat: '16g',
+          protein: '4g',
+          calcium: '15% DV'
+        }
+      },
+      {
+        id: 'prod-009',
+        name: 'Skim Milk',
+        description: 'Fat-free milk that retains all the essential nutrients of whole milk.',
+        price: 3.99,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1576186726180-63be1996f9c0?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'milk',
+        featured: false,
+        nutritionInfo: {
+          calories: '90 per cup',
+          fat: '0g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-010',
+        name: 'Blue Cheese',
+        description: 'Aged blue cheese with distinctive flavor and creamy texture.',
+        price: 9.99,
+        rating: 3,
+        imageUrl: 'https://images.unsplash.com/photo-1452195100486-9d262538b5a9?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'cheese',
+        featured: false,
+        nutritionInfo: {
+          calories: '150 per serving',
+          fat: '12g',
+          protein: '6g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-011',
+        name: 'Flavored Yogurt Pack',
+        description: 'Pack of 4 different flavored yogurts: strawberry, blueberry, peach, and vanilla.',
+        price: 7.99,
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1562114734-7102f28e2fae?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'yogurt',
+        featured: false,
+        nutritionInfo: {
+          calories: '130 per cup',
+          fat: '3g',
+          protein: '8g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-012',
+        name: 'Whipped Butter',
+        description: 'Light and fluffy whipped butter, perfect for spreading on bread or toast.',
+        price: 4.99,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1531257243018-c547a2e35767?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'butter',
+        featured: false,
+        nutritionInfo: {
+          calories: '70 per tbsp',
+          fat: '8g',
+          protein: '0g',
+          calcium: '0% DV'
+        }
       }
+    ];
+
+    // Utility functions
+    function formatPrice(price) {
+      return `$${price.toFixed(2)}`;
+    }
+
+    function renderStars(rating) {
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        stars += `<i class="fa${i <= rating ? 's' : 'r'} fa-star"></i>`;
+      }
+      return stars;
+    }
+
+    // Cart functionality
+    class Cart {
+      constructor() {
+        this.items = [];
+        this.loadFromStorage();
+        this.initEventListeners();
+        this.updateCartDisplay();
+      }
+
+      loadFromStorage() {
+        const savedCart = localStorage.getItem('dairyvestCart');
+        if (savedCart) {
+          this.items = JSON.parse(savedCart);
+        }
+      }
+
+      saveToStorage() {
+        localStorage.setItem('dairyvestCart', JSON.stringify(this.items));
+      }
+
+      addItem(productId, quantity = 1) {
+        const product = productsData.find(p => p.id === productId);
+        if (!product || !product.inStock) return;
+
+        const existingItem = this.items.find(item => item.id === productId);
+        if (existingItem) {
+          existingItem.quantity += quantity;
+        } else {
+          this.items.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            imageUrl: product.imageUrl,
+            quantity: quantity
+          });
+        }
+
+        this.saveToStorage();
+        this.updateCartDisplay();
+        this.showAddToCartNotification(product.name);
+      }
+
+      removeItem(productId) {
+        this.items = this.items.filter(item => item.id !== productId);
+        this.saveToStorage();
+        this.updateCartDisplay();
+      }
+
+      updateQuantity(productId, newQuantity) {
+        const item = this.items.find(item => item.id === productId);
+        if (item) {
+          if (newQuantity <= 0) {
+            this.removeItem(productId);
+          } else {
+            item.quantity = newQuantity;
+            this.saveToStorage();
+            this.updateCartDisplay();
+          }
+        }
+      }
+
+      getTotal() {
+        return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+      }
+
+      getTotalItems() {
+        return this.items.reduce((total, item) => total + item.quantity, 0);
+      }
+
+      clearCart() {
+        this.items = [];
+        this.saveToStorage();
+        this.updateCartDisplay();
+      }
+
+      updateCartDisplay() {
+        // Update cart count
+        const cartCount = document.getElementById('cart-count');
+        cartCount.textContent = this.getTotalItems();
+
+        // Update cart items in drawer
+        const cartBody = document.getElementById('cart-body');
+        const subtotalEl = document.getElementById('cart-subtotal');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        if (this.items.length === 0) {
+          cartBody.innerHTML = `
+            <div class="empty-cart">
+              <i class="fas fa-shopping-cart empty-cart-icon"></i>
+              <h3>Your cart is empty</h3>
+              <p>Looks like you haven't added any products to your cart yet.</p>
+            </div>
+          `;
+          subtotalEl.textContent = formatPrice(0);
+          checkoutBtn.disabled = true;
+        } else {
+          let cartItemsHTML = '<div class="cart-items">';
+          
+          this.items.forEach(item => {
+            cartItemsHTML += `
+              <div class="cart-item" data-id="${item.id}">
+                <div class="cart-item-image">
+                  <img src="${item.imageUrl}" alt="${item.name}">
+                </div>
+                <div class="cart-item-content">
+                  <h4 class="cart-item-title">${item.name}</h4>
+                  <p class="cart-item-price">${formatPrice(item.price)} each</p>
+                  <div class="cart-item-quantity">
+                    <button class="cart-quantity-btn decrease-qty" data-id="${item.id}">-</button>
+                    <span class="cart-quantity-value">${item.quantity}</span>
+                    <button class="cart-quantity-btn increase-qty" data-id="${item.id}">+</button>
+                    <button class="cart-item-remove" data-id="${item.id}">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="cart-item-subtotal">
+                  ${formatPrice(item.price * item.quantity)}
+                </div>
+              </div>
+            `;
+          });
+
+          cartItemsHTML += '</div>';
+          cartBody.innerHTML = cartItemsHTML;
+          subtotalEl.textContent = formatPrice(this.getTotal());
+          checkoutBtn.disabled = false;
+
+          // Add event listeners to cart items
+          document.querySelectorAll('.decrease-qty').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-id');
+              const item = this.items.find(item => item.id === id);
+              if (item) this.updateQuantity(id, item.quantity - 1);
+            });
+          });
+
+          document.querySelectorAll('.increase-qty').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-id');
+              const item = this.items.find(item => item.id === id);
+              if (item) this.updateQuantity(id, item.quantity + 1);
+            });
+          });
+
+          document.querySelectorAll('.cart-item-remove').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-id');
+              this.removeItem(id);
+            });
+          });
+        }
+      }
+
+      showAddToCartNotification(productName) {
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--primary)';
+        notification.style.color = 'white';
+        notification.style.padding = '10px 20px';
+        notification.style.borderRadius = 'var(--radius)';
+        notification.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        notification.style.zIndex = '1000';
+        notification.style.transition = 'all 0.3s ease';
+        notification.style.transform = 'translateY(100px)';
+        notification.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <div style="font-weight: 500;">${productName}</div>
+              <div style="font-size: 0.875rem;">Added to your cart</div>
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Show notification
+        setTimeout(() => {
+          notification.style.transform = 'translateY(0)';
+        }, 10);
+        
+        // Hide and remove notification
+        setTimeout(() => {
+          notification.style.transform = 'translateY(100px)';
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        }, 3000);
+      }
+
+      initEventListeners() {
+        const cartToggle = document.getElementById('cart-toggle');
+        const closeCart = document.getElementById('close-cart');
+        const cartDrawer = document.getElementById('cart-drawer');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        cartToggle.addEventListener('click', () => {
+          cartDrawer.classList.add('open');
+        });
+
+        closeCart.addEventListener('click', () => {
+          cartDrawer.classList.remove('open');
+        });
+
+        checkoutBtn.addEventListener('click', () => {
+          alert('Proceeding to checkout... This would redirect to the checkout page in a real store.');
+        });
+
+        // Close cart when clicking outside
+        document.addEventListener('click', (event) => {
+          if (cartDrawer.classList.contains('open') && 
+              !cartDrawer.contains(event.target) && 
+              !cartToggle.contains(event.target)) {
+            cartDrawer.classList.remove('open');
+          }
+        });
+      }
+    }
+
+    // Wishlist functionality
+    class Wishlist {
+      constructor() {
+        this.items = [];
+        this.loadFromStorage();
+      }
+
+      loadFromStorage() {
+        const savedWishlist = localStorage.getItem('dairyvestWishlist');
+        if (savedWishlist) {
+          this.items = JSON.parse(savedWishlist);
+        }
+      }
+
+      saveToStorage() {
+        localStorage.setItem('dairyvestWishlist', JSON.stringify(this.items));
+      }
+
+      addItem(productId) {
+        if (!this.items.includes(productId)) {
+          this.items.push(productId);
+          this.saveToStorage();
+        }
+      }
+
+      removeItem(productId) {
+        this.items = this.items.filter(id => id !== productId);
+        this.saveToStorage();
+      }
+
+      toggleItem(productId) {
+        if (this.isInWishlist(productId)) {
+          this.removeItem(productId);
+          return false;
+        } else {
+          this.addItem(productId);
+          return true;
+        }
+      }
+
+      isInWishlist(productId) {
+        return this.items.includes(productId);
+      }
+    }
+
+    // Product listing functionality
+    class ProductListing {
+      constructor(cart, wishlist) {
+        this.cart = cart;
+        this.wishlist = wishlist;
+        this.products = [...productsData];
+        this.filteredProducts = [...this.products];
+        this.sortOrder = 'featured';
+        this.filterCategory = 'all';
+        this.priceRange = 20;
+        this.showInStock = true;
+        this.showOutOfStock = false;
+        this.ratings = [3, 4, 5];
+        this.searchQuery = '';
+        
+        this.initEventListeners();
+        this.render();
+      }
+
+      initEventListeners() {
+        // Mobile filter toggle
+        const mobileFilterToggle = document.getElementById('mobile-filter-toggle');
+        const sidebar = document.getElementById('store-sidebar');
+        mobileFilterToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('open');
+        });
+
+        // Category tag filtering
+        document.querySelectorAll('.category-tag').forEach(tag => {
+          tag.addEventListener('click', () => {
+            document.querySelectorAll('.category-tag').forEach(t => t.classList.remove('active'));
+            tag.classList.add('active');
+            this.filterCategory = tag.getAttribute('data-category');
+            this.applyFilters();
+          });
+        });
+
+        // Sort products
+        const sortSelect = document.getElementById('sort-products');
+        sortSelect.addEventListener('change', () => {
+          this.sortOrder = sortSelect.value;
+          this.applyFilters();
+        });
+
+        // Price range
+        const priceRange = document.getElementById('price-range');
+        const priceRangeValue = document.getElementById('price-range-value');
+        priceRange.addEventListener('input', () => {
+          this.priceRange = parseInt(priceRange.value);
+          priceRangeValue.textContent = `$${this.priceRange}`;
+          this.applyFilters();
+        });
+
+        // Apply filters button
+        document.getElementById('apply-filters').addEventListener('click', () => {
+          this.applyFilters();
+          if (sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+          }
+        });
+
+        // Availability filters
+        document.querySelectorAll('.availability-filter').forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+            if (checkbox.value === 'in-stock') {
+              this.showInStock = checkbox.checked;
+            } else if (checkbox.value === 'out-of-stock') {
+              this.showOutOfStock = checkbox.checked;
+            }
+          });
+        });
+
+        // Rating filters
+        document.querySelectorAll('.rating-filter').forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+            const rating = parseInt(checkbox.value);
+            if (checkbox.checked) {
+              if (!this.ratings.includes(rating)) {
+                this.ratings.push(rating);
+              }
+            } else {
+              this.ratings = this.ratings.filter(r => r !== rating);
+            }
+          });
+        });
+
+        // Category filters
+        document.querySelectorAll('.category-filter').forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+            if (checkbox.value === 'all') {
+              // If 'All Products' is checked/unchecked, update all other checkboxes
+              const checked = checkbox.checked;
+              document.querySelectorAll('.category-filter').forEach(cb => {
+                cb.checked = checked;
+              });
+            }
+          });
+        });
+
+        // Search products
+        const searchInput = document.getElementById('search-products');
+        searchInput.addEventListener('input', () => {
+          this.searchQuery = searchInput.value.toLowerCase();
+          this.applyFilters();
+        });
+      }
+
+      applyFilters() {
+        let filtered = [...this.products];
+
+        // Apply category filter
+        if (this.filterCategory !== 'all') {
+          filtered = filtered.filter(product => product.category === this.filterCategory);
+        }
+
+        // Apply price filter
+        filtered = filtered.filter(product => product.price <= this.priceRange);
+
+        // Apply availability filter
+        filtered = filtered.filter(product => {
+          if (product.inStock && this.showInStock) return true;
+          if (!product.inStock && this.showOutOfStock) return true;
+          return false;
+        });
+
+        // Apply rating filter
+        if (this.ratings.length > 0) {
+          filtered = filtered.filter(product => this.ratings.includes(product.rating));
+        }
+
+        // Apply search filter
+        if (this.searchQuery) {
+          filtered = filtered.filter(product => 
+            product.name.toLowerCase().includes(this.searchQuery) || 
+            product.description.toLowerCase().includes(this.searchQuery) ||
+            product.category.toLowerCase().includes(this.searchQuery)
+          );
+        }
+
+        // Apply sorting
+        switch (this.sortOrder) {
+          case 'price-low':
+            filtered.sort((a, b) => a.price - b.price);
+            break;
+          case 'price-high':
+            filtered.sort((a, b) => b.price - a.price);
+            break;
+          case 'rating':
+            filtered.sort((a, b) => b.rating - a.rating);
+            break;
+          case 'newest':
+            // Assuming the products array is already sorted by newest, we don't need to sort
+            break;
+          case 'featured':
+          default:
+            filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+            break;
+        }
+
+        this.filteredProducts = filtered;
+        this.render();
+      }
+
+      render() {
+        const productGrid = document.getElementById('product-grid');
+        
+        if (this.filteredProducts.length === 0) {
+          productGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 0;">
+              <i class="fas fa-search" style="font-size: 3rem; color: var(--muted); margin-bottom: 1rem;"></i>
+              <h3>No products found</h3>
+              <p>Try adjusting your search or filter criteria</p>
+            </div>
+          `;
+          return;
+        }
+
+        let productsHTML = '';
+        
+        this.filteredProducts.forEach(product => {
+          const isInWishlist = this.wishlist.isInWishlist(product.id);
+          
+          productsHTML += `
+            <div class="card product-card" data-id="${product.id}">
+              <div class="product-image-container">
+                <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                ${product.inStock ? 
+                  (product.featured ? '<span class="product-badge">Featured</span>' : '') : 
+                  '<span class="product-badge out-of-stock">Out of Stock</span>'
+                }
+                <div class="product-actions">
+                  <button class="action-btn wishlist-btn ${isInWishlist ? 'active' : ''}" data-id="${product.id}">
+                    <i class="fa${isInWishlist ? 's' : 'r'} fa-heart"></i>
+                  </button>
+                  <button class="action-btn quick-view-btn" data-id="${product.id}">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="product-content">
+                <div class="product-rating">
+                  <div class="rating-stars">
+                    ${renderStars(product.rating)}
+                  </div>
+                  <span class="rating-count">(${product.rating})</span>
+                </div>
+                <h3 class="product-title">${product.name}</h3>
+                <p class="product-description">${product.description}</p>
+                <div class="product-price-container">
+                  <div class="product-price">${formatPrice(product.price)}</div>
+                  <div class="product-stock ${product.inStock ? 'in-stock' : 'out-of-stock'}">
+                    ${product.inStock ? 'In Stock' : 'Out of Stock'}
+                  </div>
+                </div>
+              </div>
+              <div class="product-footer">
+                <button class="btn btn-primary add-to-cart-btn" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
+                  <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+              </div>
+            </div>
+          `;
+        });
+        
+        productGrid.innerHTML = productsHTML;
+        
+        // Add event listeners to product cards
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+          btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const id = btn.getAttribute('data-id');
+            this.cart.addItem(id);
+          });
+        });
+
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+          btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const id = btn.getAttribute('data-id');
+            const isNowInWishlist = this.wishlist.toggleItem(id);
+            btn.classList.toggle('active', isNowInWishlist);
+            btn.innerHTML = `<i class="fa${isNowInWishlist ? 's' : 'r'} fa-heart"></i>`;
+          });
+        });
+
+        document.querySelectorAll('.quick-view-btn').forEach(btn => {
+          btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const id = btn.getAttribute('data-id');
+            this.openQuickView(id);
+          });
+        });
+      }
+
+      openQuickView(productId) {
+        const product = this.products.find(p => p.id === productId);
+        if (!product) return;
+
+        const isInWishlist = this.wishlist.isInWishlist(productId);
+        const modal = document.getElementById('quick-view-modal');
+        const modalContent = document.getElementById('quick-view-content');
+        
+        modalContent.innerHTML = `
+          <div class="modal-image">
+            <img src="${product.imageUrl}" alt="${product.name}">
+          </div>
+          <div class="modal-content">
+            <h2 class="modal-product-title">${product.name}</h2>
+            <div class="product-rating">
+              <div class="rating-stars">
+                ${renderStars(product.rating)}
+              </div>
+              <span class="rating-count">(${product.rating})</span>
+            </div>
+            <p class="modal-product-price">${formatPrice(product.price)}</p>
+            <p class="modal-product-description">${product.description}</p>
+            
+            <div class="modal-product-meta">
+              <div class="meta-item">
+                <span class="meta-label">Category:</span>
+                <span>${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Availability:</span>
+                <span class="${product.inStock ? 'in-stock' : 'out-of-stock'}">
+                  ${product.inStock ? 'In Stock' : 'Out of Stock'}
+                </span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Nutrition Info:</span>
+              </div>
+              <div style="margin-left: 120px;">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; font-size: 0.875rem;">
+                  <div>Calories: ${product.nutritionInfo.calories}</div>
+                  <div>Fat: ${product.nutritionInfo.fat}</div>
+                  <div>Protein: ${product.nutritionInfo.protein}</div>
+                  <div>Calcium: ${product.nutritionInfo.calcium}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="quantity-selector">
+              <button class="quantity-btn decrease-quantity">-</button>
+              <input type="number" class="quantity-input" value="1" min="1" max="99" id="quick-view-quantity">
+              <button class="quantity-btn increase-quantity">+</button>
+            </div>
+            
+            <div class="modal-actions">
+              <button class="btn btn-primary quick-view-add-to-cart" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+              </button>
+              <button class="btn btn-outline quick-view-add-to-wishlist" data-id="${product.id}">
+                <i class="fa${isInWishlist ? 's' : 'r'} fa-heart"></i> ${isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+              </button>
+            </div>
+          </div>
+        `;
+        
+        modal.classList.add('open');
+        
+        // Add event listeners for the quick view modal
+        const closeModal = document.getElementById('close-modal');
+        closeModal.addEventListener('click', () => {
+          modal.classList.remove('open');
+        });
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            modal.classList.remove('open');
+          }
+        });
+        
+        // Quantity buttons
+        const quantityInput = document.getElementById('quick-view-quantity');
+        const decreaseBtn = document.querySelector('.decrease-quantity');
+        const increaseBtn = document.querySelector('.increase-quantity');
+        
+        decreaseBtn.addEventListener('click', () => {
+          let value = parseInt(quantityInput.value);
+          if (value > 1) {
+            quantityInput.value = value - 1;
+          }
+        });
+        
+        increaseBtn.addEventListener('click', () => {
+          let value = parseInt(quantityInput.value);
+          quantityInput.value = value + 1;
+        });
+        
+        // Add to cart button
+        const addToCartBtn = document.querySelector('.quick-view-add-to-cart');
+        addToCartBtn.addEventListener('click', () => {
+          if (!product.inStock) return;
+          
+          const quantity = parseInt(quantityInput.value);
+          this.cart.addItem(product.id, quantity);
+          modal.classList.remove('open');
+        });
+        
+        // Add to wishlist button
+        const addToWishlistBtn = document.querySelector('.quick-view-add-to-wishlist');
+        addToWishlistBtn.addEventListener('click', () => {
+          const isNowInWishlist = this.wishlist.toggleItem(product.id);
+          addToWishlistBtn.innerHTML = `
+            <i class="fa${isNowInWishlist ? 's' : 'r'} fa-heart"></i> 
+            ${isNowInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+          `;
+          
+          // Also update the heart icon on the product card
+          const wishlistBtn = document.querySelector(`.wishlist-btn[data-id="${product.id}"]`);
+          if (wishlistBtn) {
+            wishlistBtn.classList.toggle('active', isNowInWishlist);
+            wishlistBtn.innerHTML = `<i class="fa${isNowInWishlist ? 's' : 'r'} fa-heart"></i>`;
+          }
+        });
+      }
+    }
+
+    // Initialize classes
+    document.addEventListener('DOMContentLoaded', function() {
+      const cart = new Cart();
+      const wishlist = new Wishlist();
+      const productListing = new ProductListing(cart, wishlist);
     });
-    
-    // Set current year in footer
-    document.getElementById('current-year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>

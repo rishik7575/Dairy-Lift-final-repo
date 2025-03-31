@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - DairyVest</title>
+  <style>
+    /* Base styles */
+    :root {
+      --primary: #222;
+      --primary-foreground: #f9fafb;
+      --background: #f9fafb;
+      --foreground: #111;
+      --card: #fff;
+      --card-foreground: #111;
+      --border: #e2e8f0;
+      --input: #e2e8f0;
+      --ring: #1e293b;
+      --radius: 0.5rem;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --accent: #f1f5f9;
+      --accent-foreground: #0f172a;
+      --destructive: #ef4444;
+      --destructive-foreground: #f9fafb;
+      --secondary: #f1f5f9;
+      --secondary-foreground: #0f172a;
+      
+      --sidebar-background: #fafafa;
+      --sidebar-foreground: #404040;
+      --sidebar-primary: #1a1a1a;
+      --sidebar-accent: #f4f4f5;
+      --sidebar-accent-foreground: #1a1a1a;
+      --sidebar-border: #e4e4e7;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: var(--foreground);
+      min-height: 100vh;
+    }
+
+    /* Layout */
+    .min-h-screen {
+      min-height: 100vh;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .flex-1 {
+      flex: 1 1 0%;
+    }
+
+    .flex-col {
+      flex-direction: column;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .justify-end {
+      justify-content: flex-end;
+    }
+
+    .space-y-6 > * + * {
+      margin-top: 1.5rem;
+    }
+
+    .space-x-4 > * + * {
+      margin-left: 1rem;
+    }
+    
+    .space-x-2 > * + * {
+      margin-left: 0.5rem;
+    }
+    
+    .space-y-4 > * + * {
+      margin-top: 1rem;
+    }
+    
+    .space-y-3 > * + * {
+      margin-top: 0.75rem;
+    }
+    
+    .space-y-2 > * + * {
+      margin-top: 0.5rem;
+    }
+
+    .grid {
+      display: grid;
+    }
+
+    .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    
+    .grid-cols-5 {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .gap-6 {
+      gap: 1.5rem;
+    }
+    
+    .gap-4 {
+      gap: 1rem;
+    }
+    
+    .gap-2 {
+      gap: 0.5rem;
+    }
+
+    /* Header */
+    header {
+      background-color: white;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+      z-index: 10;
+    }
+
+    .p-4 {
+      padding: 1rem;
+    }
+
+    .p-6 {
+      padding: 1.5rem;
+    }
+
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+
+    .font-bold {
+      font-weight: 700;
+    }
+
+    .text-primary {
+      color: var(--primary);
+    }
+
+    .ml-1 {
+      margin-left: 0.25rem;
+    }
+
+    .text-xs {
+      font-size: 0.75rem;
+    }
+
+    .bg-primary {
+      background-color: var(--primary);
+    }
+
+    .text-white {
+      color: white;
+    }
+
+    .px-1 {
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+    }
+
+    .rounded {
+      border-radius: 0.25rem;
+    }
+
+    .h-8 {
+      height: 2rem;
+    }
+
+    .w-8 {
+      width: 2rem;
+    }
+
+    .rounded-full {
+      border-radius: 9999px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background-color: var(--sidebar-background);
+      color: var(--sidebar-foreground);
+      width: 16rem;
+      flex-shrink: 0;
+      position: fixed;
+      inset-y: 0;
+      left: 0;
+      z-index: 50;
+      padding-top: 4rem;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar-hidden {
+      transform: translateX(-100%);
+    }
+
+    @media (min-width: 768px) {
+      .sidebar {
+        position: relative;
+        transform: translateX(0);
+      }
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 40;
+      display: none;
+    }
+
+    .sidebar-overlay.show {
+      display: block;
+    }
+
+    .sidebar nav {
+      padding: 1rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      color: var(--sidebar-foreground);
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 0.375rem;
+      transition: background-color 0.2s, color 0.2s;
+      margin-bottom: 0.25rem;
+    }
+
+    .nav-item:hover {
+      background-color: var(--sidebar-accent);
+      color: var(--sidebar-accent-foreground);
+    }
+
+    .nav-item i {
+      margin-right: 0.75rem;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tab-list {
+      display: grid;
+      width: 100%;
+      border-radius: 0.375rem;
+      background-color: var(--muted);
+      padding: 0.25rem;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      background-color: transparent;
+      color: var(--muted-foreground);
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .tab.active {
+      background-color: white;
+      color: var(--foreground);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-content {
+      margin-top: 1.5rem;
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards */
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    }
+
+    .card-header {
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.025em;
+    }
+
+    .card-description {
+      margin-top: 0.5rem;
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
+    }
+
+    .card-content {
+      padding: 1.5rem;
+      padding-top: 0;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem;
+      padding-top: 0;
+    }
+
+    /* Typography */
+    .text-3xl {
+      font-size: 1.875rem;
+    }
+
+    .tracking-tight {
+      letter-spacing: -0.025em;
+    }
+
+    .text-muted-foreground {
+      color: var(--muted-foreground);
+    }
+    
+    .font-medium {
+      font-weight: 500;
+    }
+    
+    .text-sm {
+      font-size: 0.875rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      height: 2.5rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      transition-property: color, background-color, border-color;
+      transition-duration: 0.15s;
+      cursor: pointer;
+    }
+
+    .btn-default {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-default:hover {
+      background-color: rgba(34, 34, 34, 0.9);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      border: none;
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--accent);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--accent);
+    }
+
+    .w-full {
+      width: 100%;
+    }
+    
+    .mr-2 {
+      margin-right: 0.5rem;
+    }
+    
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      padding-left: 0.625rem;
+      padding-right: 0.625rem;
+      padding-top: 0.125rem;
+      padding-bottom: 0.125rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-outline {
+      border-color: currentColor;
+      background-color: transparent;
+    }
+
+    /* Forms */
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .input {
+      width: 100%;
+      height: 2.5rem;
+      border-radius: 0.375rem;
+      border: 1px solid var(--border);
+      background-color: var(--background);
+      padding: 0 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--ring);
+      box-shadow: 0 0 0 1px var(--ring);
+    }
+
+    .input[readonly] {
+      background-color: var(--muted);
+      cursor: not-allowed;
+    }
+
+    textarea.input {
+      height: auto;
+      min-height: 5rem;
+      padding: 0.75rem;
+      resize: vertical;
+    }
+
+    /* Switch */
+    .switch-container {
+      position: relative;
+      display: inline-block;
+      width: 2.5rem;
+      height: 1.5rem;
+    }
+
+    .switch-input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--muted);
+      transition: 0.3s;
+      border-radius: 1.5rem;
+    }
+
+    .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 1.125rem;
+      width: 1.125rem;
+      left: 0.1875rem;
+      bottom: 0.1875rem;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    .switch-input:checked + .switch-slider {
+      background-color: var(--primary);
+    }
+
+    .switch-input:checked + .switch-slider:before {
+      transform: translateX(1rem);
+    }
+
+    /* Separator */
+    .separator {
+      height: 1px;
+      background-color: var(--border);
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Border */
+    .border {
+      border: 1px solid var(--border);
+    }
+
+    .rounded-md {
+      border-radius: 0.375rem;
+    }
+
+    .p-4 {
+      padding: 1rem;
+    }
+
+    /* Toast styling */
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 50;
+    }
+
+    .toast {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      max-width: 350px;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-description {
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      .md\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .md\:hidden {
+        display: none;
+      }
+
+      .md\:block {
+        display: block;
+      }
+
+      .md\:flex {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .sm\:inline {
+        display: inline;
+      }
+    }
+
+    /* Icons for tabs */
+    .tab i {
+      width: 1rem;
+      height: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="flex items-center justify-between p-4">
+      <div class="flex items-center">
+        <button id="sidebar-toggle" class="btn btn-ghost btn-icon md:hidden mr-2">
+          <i class="lucide-menu"></i>
+        </button>
+        <a href="index.html" class="flex items-center">
+          <span class="text-2xl font-bold text-primary">DairyVest</span>
+          <span class="ml-1 text-xs bg-primary text-white px-1 rounded">Admin</span>
+        </a>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+        <div class="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center">
+          <i class="lucide-user"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar sidebar-hidden md:sidebar">
+      <nav>
+        <a href="admin-dashboard.html" class="nav-item">
+          <i class="lucide-home"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="cattlemanagement.html" class="nav-item">
+          <i class="lucide-users"></i>
+          <span>Cattle Management</span>
+        </a>
+        <a href="investors.html" class="nav-item">
+          <i class="lucide-user"></i>
+          <span>Investors</span>
+        </a>
+        <a href="financialreport.html" class="nav-item">
+          <i class="lucide-bar-chart-3"></i>
+          <span>Financial Reports</span>
+        </a>
+        <a href="store.html" class="nav-item">
+          <i class="lucide-shopping-cart"></i>
+          <span>Store</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i class="lucide-settings"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Overlay for mobile -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Main content -->
+    <main class="flex-1 p-6">
+      <div class="space-y-6">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Settings</h1>
+          <p class="text-muted-foreground">
+            Manage your account settings and preferences
+          </p>
+        </div>
+        
+        <!-- Settings Tabs -->
+        <div class="tabs">
+          <div class="tab-list grid-cols-5">
+            <button class="tab active" data-tab="account">
+              <i class="lucide-user"></i>
+              <span class="hidden sm:inline">Account</span>
+            </button>
+            <button class="tab" data-tab="security">
+              <i class="lucide-lock"></i>
+              <span class="hidden sm:inline">Security</span>
+            </button>
+            <button class="tab" data-tab="notifications">
+              <i class="lucide-bell"></i>
+              <span class="hidden sm:inline">Notifications</span>
+            </button>
+            <button class="tab" data-tab="billing">
+              <i class="lucide-credit-card"></i>
+              <span class="hidden sm:inline">Billing</span>
+            </button>
+            <button class="tab" data-tab="system">
+              <i class="lucide-globe"></i>
+              <span class="hidden sm:inline">System</span>
+            </button>
+          </div>
+          
+          <!-- Account Tab -->
+          <div id="account-tab" class="tab-content active">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Account Information</h3>
+                <div class="card-description">
+                  Update your account details and personal information
+                </div>
+              </div>
+              <div class="card-content space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="space-y-2">
+                    <label for="name">Full Name</label>
+                    <input id="name" class="input" value="John Doe" />
+                  </div>
+                  <div class="space-y-2">
+                    <label for="email">Email Address</label>
+                    <input id="email" class="input" value="john.doe@example.com" />
+                  </div>
+                  <div class="space-y-2">
+                    <label for="role">Role</label>
+                    <input id="role" class="input" value="Administrator" />
+                  </div>
+                  <div class="space-y-2">
+                    <label for="phone">Phone Number</label>
+                    <input id="phone" class="input" value="+1 (555) 123-4567" />
+                  </div>
+                </div>
+                
+                <div class="separator"></div>
+                
+                <div class="space-y-2">
+                  <label for="bio">Bio</label>
+                  <textarea 
+                    id="bio" 
+                    class="input"
+                    rows="4"
+                  >Dairy farm administrator with over 10 years of experience in managing livestock operations and financial reporting.</textarea>
+                </div>
+              </div>
+              <div class="card-footer justify-end">
+                <button id="save-account" class="btn btn-default">
+                  <i class="lucide-save mr-2"></i>
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Security Tab -->
+          <div id="security-tab" class="tab-content">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Security Settings</h3>
+                <div class="card-description">
+                  Manage your password and security preferences
+                </div>
+              </div>
+              <div class="card-content space-y-4">
+                <div class="space-y-2">
+                  <label for="current-password">Current Password</label>
+                  <input id="current-password" type="password" class="input" />
+                </div>
+                <div class="space-y-2">
+                  <label for="new-password">New Password</label>
+                  <input id="new-password" type="password" class="input" />
+                </div>
+                <div class="space-y-2">
+                  <label for="confirm-password">Confirm New Password</label>
+                  <input id="confirm-password" type="password" class="input" />
+                </div>
+                
+                <div class="separator"></div>
+                
+                <div class="space-y-3">
+                  <h3 class="text-sm font-medium">Two-Factor Authentication</h3>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-sm">Enable two-factor authentication</p>
+                      <p class="text-sm text-muted-foreground">Add an extra layer of security to your account</p>
+                    </div>
+                    <div class="switch-container">
+                      <input type="checkbox" class="switch-input" id="tfa-switch">
+                      <span class="switch-slider"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer justify-end">
+                <button id="save-security" class="btn btn-default">
+                  <i class="lucide-save mr-2"></i>
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Notifications Tab -->
+          <div id="notifications-tab" class="tab-content">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Notification Preferences</h3>
+                <div class="card-description">
+                  Manage how and when you receive notifications
+                </div>
+              </div>
+              <div class="card-content space-y-4">
+                <div class="space-y-3">
+                  <h3 class="text-sm font-medium">Email Notifications</h3>
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Milk production alerts</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="milk-alerts-switch" checked>
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Cattle health updates</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="cattle-health-switch" checked>
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Investor reports</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="investor-reports-switch" checked>
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Financial summaries</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="financial-summaries-switch">
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="separator"></div>
+                
+                <div class="space-y-3">
+                  <h3 class="text-sm font-medium">System Notifications</h3>
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Low inventory alerts</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="inventory-alerts-switch" checked>
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Maintenance reminders</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="maintenance-reminders-switch" checked>
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">System updates</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="system-updates-switch">
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer justify-end">
+                <button id="save-notifications" class="btn btn-default">
+                  <i class="lucide-save mr-2"></i>
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Billing Tab -->
+          <div id="billing-tab" class="tab-content">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Billing & Subscription</h3>
+                <div class="card-description">
+                  Manage your subscription and payment methods
+                </div>
+              </div>
+              <div class="card-content space-y-4">
+                <div class="space-y-2">
+                  <h3 class="text-sm font-medium">Current Plan</h3>
+                  <div class="border rounded-md p-4">
+                    <div class="flex justify-between items-center">
+                      <div>
+                        <p class="font-medium">DairyVest Premium</p>
+                        <p class="text-sm text-muted-foreground">₹99.00/month</p>
+                      </div>
+                      <span class="badge badge-outline">Active</span>
+                    </div>
+                    <p class="text-sm text-muted-foreground mt-2">Your next billing date is October 1, 2023</p>
+                  </div>
+                </div>
+                
+                <div class="separator"></div>
+                
+                <div class="space-y-2">
+                  <h3 class="text-sm font-medium">Payment Method</h3>
+                  <div class="border rounded-md p-4">
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center gap-2">
+                        <i class="lucide-credit-card"></i>
+                        <div>
+                          <p class="font-medium">Visa ending in 4242</p>
+                          <p class="text-sm text-muted-foreground">Expires 12/2025</p>
+                        </div>
+                      </div>
+                      <button class="btn btn-outline btn-sm">Change</button>
+                    </div>
+                  </div>
+                  <button class="btn btn-outline w-full mt-2">Add Payment Method</button>
+                </div>
+              </div>
+              <div class="card-footer justify-end">
+                <button class="btn btn-outline mr-2">Cancel Subscription</button>
+                <button id="save-billing" class="btn btn-default">Save Changes</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- System Tab -->
+          <div id="system-tab" class="tab-content">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">System Settings</h3>
+                <div class="card-description">
+                  Manage system preferences and general settings
+                </div>
+              </div>
+              <div class="card-content space-y-4">
+                <div class="space-y-3">
+                  <h3 class="text-sm font-medium">General</h3>
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Enable dark mode</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="dark-mode-switch">
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Automatic updates</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="auto-updates-switch" checked>
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="separator"></div>
+                
+                <div class="space-y-3">
+                  <h3 class="text-sm font-medium">Data Settings</h3>
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Use metric units</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="metric-units-switch" checked>
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Show data analytics</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="data-analytics-switch" checked>
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm">Enable data export</p>
+                      </div>
+                      <div class="switch-container">
+                        <input type="checkbox" class="switch-input" id="data-export-switch" checked>
+                        <span class="switch-slider"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="separator"></div>
+                
+                <div class="space-y-2">
+                  <h3 class="text-sm font-medium">Data Export</h3>
+                  <p class="text-sm text-muted-foreground">Export all your data in various formats</p>
+                  <div class="flex gap-2">
+                    <button class="btn btn-outline">Export as CSV</button>
+                    <button class="btn btn-outline">Export as PDF</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer justify-end">
+                <button id="save-system" class="btn btn-default">
+                  <i class="lucide-save mr-2"></i>
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Load Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Required Lovable script tag -->
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+    
+    // Sidebar toggle functionality
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+    
+    function toggleSidebar() {
+      sidebar.classList.toggle('sidebar-hidden');
+      sidebarOverlay.classList.toggle('show');
+    }
+    
+    // Toast functionality
+    function showToast(title, description, duration = 3000) {
+      const toastContainer = document.getElementById('toast-container');
+      
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div class="toast-title">${title}</div>
+        <div class="toast-description">${description}</div>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      // Force reflow to enable transition
+      toast.offsetHeight;
+      
+      // Show toast
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 10);
+      
+      // Remove toast after duration
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          toastContainer.removeChild(toast);
+        }, 300);
+      }, duration);
+    }
+    
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      showToast('Logged out successfully', 'You have been logged out of your account');
+      // In a real app, perform actual logout logic here
+    });
+    
+    // Tab switching functionality
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabId = tab.getAttribute('data-tab');
+        
+        // Remove active class from all tabs and contents
+        tabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding content
+        tab.classList.add('active');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+      });
+    });
+    
+    // Save settings in each tab
+    document.getElementById('save-account').addEventListener('click', () => {
+      showToast('Settings saved', 'Your account settings have been saved successfully');
+    });
+    
+    document.getElementById('save-security').addEventListener('click', () => {
+      showToast('Settings saved', 'Your security settings have been saved successfully');
+    });
+    
+    document.getElementById('save-notifications').addEventListener('click', () => {
+      showToast('Settings saved', 'Your notification settings have been saved successfully');
+    });
+    
+    document.getElementById('save-billing').addEventListener('click', () => {
+      showToast('Settings saved', 'Your billing settings have been saved successfully');
+    });
+    
+    document.getElementById('save-system').addEventListener('click', () => {
+      showToast('Settings saved', 'Your system settings have been saved successfully');
+    });
+  </script>
+</body>
+</html>
