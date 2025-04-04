@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - DairyVest</title>
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    :root {
+      --primary-color: #3b82f6;
+      --primary-hover: #2563eb;
+      --secondary-color: #f3f4f6;
+      --text-color: #1f2937;
+      --muted-text: #6b7280;
+      --border-color: #e5e7eb;
+      --card-bg: #ffffff;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      --radius: 0.5rem;
+    }
+
+    body {
+      background-color: #f9fafb;
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .flex-col {
+      flex-direction: column;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .gap-2 {
+      gap: 0.5rem;
+    }
+
+    .gap-4 {
+      gap: 1rem;
+    }
+
+    .p-4 {
+      padding: 1rem;
+    }
+
+    .p-6 {
+      padding: 1.5rem;
+    }
+
+    .py-2 {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .text-sm {
+      font-size: 0.875rem;
+    }
+
+    .text-lg {
+      font-size: 1.125rem;
+    }
+
+    .text-xl {
+      font-size: 1.25rem;
+    }
+
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+
+    .font-medium {
+      font-weight: 500;
+    }
+
+    .font-bold {
+      font-weight: 700;
+    }
+
+    .text-white {
+      color: white;
+    }
+
+    .grid {
+      display: grid;
+    }
+
+    .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .rounded-lg {
+      border-radius: var(--radius);
+    }
+
+    .rounded-full {
+      border-radius: 9999px;
+    }
+
+    .border {
+      border: 1px solid var(--border-color);
+    }
+
+    .border-b {
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .shadow-sm {
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .shadow-md {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .bg-primary {
+      background-color: var(--primary-color);
+    }
+
+    .bg-card {
+      background-color: var(--card-bg);
+    }
+
+    .text-muted {
+      color: var(--muted-text);
+    }
+
+    .cursor-pointer {
+      cursor: pointer;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .max-w-3xl {
+      max-width: 48rem;
+    }
+
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+
+    .mt-4 {
+      margin-top: 1rem;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      background-color: white;
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+      z-index: 100;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-badge {
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.125rem 0.25rem;
+      border-radius: 0.25rem;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .notification-badge {
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      top: -0.5rem;
+      right: -0.5rem;
+      background-color: var(--danger);
+      color: white;
+      border-radius: 9999px;
+      font-size: 0.625rem;
+      height: 1rem;
+      width: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      color: var(--muted-text);
+    }
+
+    .header-icon:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .avatar {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9999px;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .large-avatar {
+      width: 6rem;
+      height: 6rem;
+      border-radius: 9999px;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-right: 1.5rem;
+    }
+
+    /* Main Layout */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 4rem);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 16rem;
+      background-color: white;
+      border-right: 1px solid var(--border-color);
+      padding: 1.5rem 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar.collapsed {
+      width: 5rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .nav-item.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .nav-item-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .page-title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-description {
+      color: var(--muted-text);
+    }
+
+    /* Cards */
+    .card {
+      background-color: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transition: all 0.2s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to right, #f9fafb, #f3f4f6);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-content {
+      padding: 1.25rem 1.5rem;
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 1px var(--primary-color);
+    }
+
+    /* Button */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+      border: 1px solid var(--primary-color);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--secondary-color);
+    }
+
+    /* Profile specific */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .profile-info h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .profile-info p {
+      color: var(--muted-text);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-box {
+      background-color: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .stat-box h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: var(--primary-color);
+    }
+
+    .stat-box p {
+      color: var(--muted-text);
+      font-size: 0.875rem;
+    }
+
+    .profile-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-tab {
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-weight: 500;
+    }
+
+    .profile-tab.active {
+      border-bottom-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: -100%;
+        top: 4rem;
+        height: calc(100% - 4rem);
+        z-index: 50;
+        transition: left 0.3s ease;
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .large-avatar {
+        margin-right: 0;
+        margin-bottom: 1rem;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Profile dropdown menu */
+    .profile-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      min-width: 200px;
+      z-index: 50;
+      background-color: white;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .dropdown-content.show {
+      display: block;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+    }
+
+    .dropdown-item {
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      color: var(--text-color);
+      transition: background-color 0.2s;
+      text-decoration: none;
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background-color: var(--border-color);
+      margin: 0;
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast {
+      padding: 1rem;
+      border-radius: var(--radius);
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 300px;
+      max-width: calc(100vw - 2rem);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .toast-success {
+      border-left: 4px solid var(--success);
+    }
+
+    .toast-error {
+      border-left: 4px solid var(--danger);
+    }
+
+    .toast-info {
+      border-left: 4px solid var(--info);
+    }
+
+    .toast-warning {
+      border-left: 4px solid var(--warning);
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-message {
+      color: var(--muted-text);
+      font-size: 0.875rem;
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted-text);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="flex items-center">
+      <button id="menu-toggle" class="header-icon mr-2 md-hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="admin-dashboard.html" class="logo">
+        DairyVest
+        <span class="logo-badge">Admin</span>
+      </a>
+    </div>
+
+    <div class="header-right">
+      <div class="notification-badge">
+        <button class="header-icon" onclick="showToast('info', 'Notifications', 'You have 3 unread notifications')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+        <span class="badge">3</span>
+      </div>
+
+      <button class="header-icon" onclick="showToast('info', 'Messages', 'You have 2 unread messages')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </button>
+      
+      <!-- Profile dropdown -->
+      <div class="profile-dropdown">
+        <div class="avatar" id="profile-toggle">A</div>
+        <div class="dropdown-content" id="profileDropdown">
+          <div class="dropdown-header">My Account</div>
+          <a href="profile.html" class="dropdown-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Profile
+          </a>
+          <a href="#" class="dropdown-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Settings
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item" onclick="handleLogout()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <a href="admin-dashboard.html" class="nav-item">
+        <span class="nav-item-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </span>
+        <span>Dashboard</span>
+      </a>
+      
+      <a href="add_new_cattle.html" class="nav-item">
+        <span class="nav-item-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </span>
+        <span>Cattle Management</span>
+      </a>
+      
+      <a href="new_investor.html" class="nav-item">
+        <span class="nav-item-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </span>
+        <span>Investors</span>
+      </a>
+      
+      <a href="create_report.html" class="nav-item">
+        <span class="nav-item-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="12" rx="2" ry="2"></rect>
+            <line x1="2" y1="20" x2="22" y2="20"></line>
+          </svg>
+        </span>
+        <span>Financial Reports</span>
+      </a>
+      
+      <a href="manage_store.html" class="nav-item">
+        <span class="nav-item-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </span>
+        <span>Store</span>
+      </a>
+      
+      <a href="#" class="nav-item">
+        <span class="nav-item-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </span>
+        <span>Settings</span>
+      </a>
+      
+      <a href="profile.html" class="nav-item active">
+        <span class="nav-item-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </span>
+        <span>Profile</span>
+      </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="max-w-3xl mx-auto">
+        <div class="profile-header">
+          <div class="large-avatar">A</div>
+          <div class="profile-info">
+            <h1>Admin User</h1>
+            <p>admin@dairyvest.com</p>
+            <p class="mt-2">Farm Manager</p>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-box">
+            <h3>148</h3>
+            <p>Cattle Managed</p>
+          </div>
+          <div class="stat-box">
+            <h3>24</h3>
+            <p>Investors</p>
+          </div>
+          <div class="stat-box">
+            <h3>₹45,231</h3>
+            <p>Revenue (Monthly)</p>
+          </div>
+        </div>
+
+        <div class="profile-tabs">
+          <div class="profile-tab active" data-tab="personal">Personal Information</div>
+          <div class="profile-tab" data-tab="security">Security</div>
+          <div class="profile-tab" data-tab="notifications">Notifications</div>
+        </div>
+
+        <!-- Personal Information Section -->
+        <div class="tab-content" id="personal-content">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Personal Information
+              </div>
+            </div>
+            <div class="card-content">
+              <form id="profile-form">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="first-name" class="form-label">First Name</label>
+                    <input type="text" id="first-name" class="form-input" value="Admin" />
+                  </div>
+                  <div class="form-group">
+                    <label for="last-name" class="form-label">Last Name</label>
+                    <input type="text" id="last-name" class="form-input" value="User" />
+                  </div>
+                  <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" class="form-input" value="admin@dairyvest.com" />
+                  </div>
+                  <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" id="phone" class="form-input" value="+91 9876543210" />
+                  </div>
+                  <div class="form-group">
+                    <label for="role" class="form-label">Role</label>
+                    <input type="text" id="role" class="form-input" value="Farm Manager" />
+                  </div>
+                  <div class="form-group">
+                    <label for="joined" class="form-label">Date Joined</label>
+                    <input type="text" id="joined" class="form-input" value="January 15, 2023" readonly />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="address" class="form-label">Address</label>
+                  <input type="text" id="address" class="form-input" value="123 Dairy Lane, Milk County, 560001" />
+                </div>
+                <div class="form-group">
+                  <label for="bio" class="form-label">Bio</label>
+                  <textarea id="bio" class="form-input" rows="4">Experienced farm manager with over 5 years in dairy farm operations and management. Specializing in cattle health, milk production optimization, and investor relations.</textarea>
+                </div>
+                <div class="flex justify-between mt-4">
+                  <button type="button" class="btn btn-outline">Cancel</button>
+                  <button type="button" class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Section (Hidden by default) -->
+        <div class="tab-content" id="security-content" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                Change Password
+              </div>
+            </div>
+            <div class="card-content">
+              <form id="password-form">
+                <div class="form-group">
+                  <label for="current-password" class="form-label">Current Password</label>
+                  <input type="password" id="current-password" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="new-password" class="form-label">New Password</label>
+                  <input type="password" id="new-password" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="confirm-password" class="form-label">Confirm New Password</label>
+                  <input type="password" id="confirm-password" class="form-input" />
+                </div>
+                <div class="flex justify-between mt-4">
+                  <button type="button" class="btn btn-outline">Cancel</button>
+                  <button type="button" class="btn btn-primary" onclick="changePassword()">Update Password</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Two-Factor Authentication
+              </div>
+            </div>
+            <div class="card-content">
+              <p class="mb-4">Secure your account with two-factor authentication.</p>
+              <button type="button" class="btn btn-primary" onclick="setupTwoFactor()">Enable Two-Factor</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications Section (Hidden by default) -->
+        <div class="tab-content" id="notifications-content" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                Notification Preferences
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="form-group">
+                <div class="flex justify-between items-center mb-2">
+                  <label class="form-label">Email Notifications</label>
+                  <input type="checkbox" checked />
+                </div>
+                <p class="text-muted text-sm">Receive email notifications for important updates.</p>
+              </div>
+              
+              <div class="form-group">
+                <div class="flex justify-between items-center mb-2">
+                  <label class="form-label">SMS Notifications</label>
+                  <input type="checkbox" checked />
+                </div>
+                <p class="text-muted text-sm">Receive text messages for critical alerts.</p>
+              </div>
+              
+              <div class="form-group">
+                <div class="flex justify-between items-center mb-2">
+                  <label class="form-label">Push Notifications</label>
+                  <input type="checkbox" checked />
+                </div>
+                <p class="text-muted text-sm">Receive push notifications on your devices.</p>
+              </div>
+              
+              <div class="form-group">
+                <div class="flex justify-between items-center mb-2">
+                  <label class="form-label">Marketing Emails</label>
+                  <input type="checkbox" />
+                </div>
+                <p class="text-muted text-sm">Receive updates about new features and offers.</p>
+              </div>
+              
+              <div class="flex justify-between mt-4">
+                <button type="button" class="btn btn-outline">Reset to Default</button>
+                <button type="button" class="btn btn-primary" onclick="saveNotificationSettings()">Save Settings</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast Container for Notifications -->
+  <div class="toast-container" id="toast-container">
+    <!-- Toasts will be dynamically inserted here -->
+  </div>
+
+  <script>
+    // DOM Elements
+    const toastContainer = document.getElementById('toast-container');
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menu-toggle');
+    const profileToggle = document.getElementById('profile-toggle');
+    const profileDropdown = document.getElementById('profileDropdown');
+    const tabs = document.querySelectorAll('.profile-tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    // Toggle sidebar on mobile
+    menuToggle.addEventListener('click', function() {
+      sidebar.classList.toggle('active');
+    });
+
+    // Profile dropdown toggle
+    profileToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      profileDropdown.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!profileToggle.contains(e.target) && !profileDropdown.contains(e.target)) {
+        profileDropdown.classList.remove('show');
+      }
+    });
+
+    // Tab functionality
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+        
+        // Make all tabs inactive
+        tabs.forEach(t => t.classList.remove('active'));
+        
+        // Hide all tab contents
+        tabContents.forEach(content => {
+          content.style.display = 'none';
+        });
+        
+        // Make clicked tab active
+        this.classList.add('active');
+        
+        // Show corresponding content
+        document.getElementById(`${tabId}-content`).style.display = 'block';
+      });
+    });
+
+    // Toast notification function
+    function showToast(type, title, message, duration = 3000) {
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      let iconSvg = '';
+      switch(type) {
+        case 'success':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+          break;
+        case 'error':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+          break;
+        case 'info':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #3b82f6;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+          break;
+        case 'warning':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+          break;
+      }
+      
+      toast.innerHTML = `
+        ${iconSvg}
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      const closeButton = toast.querySelector('.toast-close');
+      closeButton.addEventListener('click', function() {
+        toast.remove();
+      });
+      
+      // Auto remove after duration
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-out forwards';
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, duration);
+    }
+
+    // Handle profile save
+    function saveProfile() {
+      showToast('success', 'Profile Updated', 'Your profile information has been updated successfully.');
+    }
+
+    // Handle password change
+    function changePassword() {
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      if (!newPassword || !confirmPassword) {
+        showToast('error', 'Error', 'Please fill in all password fields.');
+        return;
+      }
+      
+      if (newPassword !== confirmPassword) {
+        showToast('error', 'Error', 'New passwords do not match.');
+        return;
+      }
+      
+      showToast('success', 'Password Updated', 'Your password has been updated successfully.');
+      
+      // Clear the form fields
+      document.getElementById('current-password').value = '';
+      document.getElementById('new-password').value = '';
+      document.getElementById('confirm-password').value = '';
+    }
+
+    // Handle two-factor setup
+    function setupTwoFactor() {
+      showToast('info', 'Two-Factor Authentication', 'Two-factor authentication setup process initiated.');
+    }
+
+    // Handle notification settings
+    function saveNotificationSettings() {
+      showToast('success', 'Settings Saved', 'Your notification preferences have been updated.');
+    }
+
+    // Handle logout
+    function handleLogout() {
+      showToast('success', 'Logged out successfully', 'You have been logged out of your account');
+      setTimeout(() => {
+        // In a real app, redirect to login page
+        window.location.href = '#';
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

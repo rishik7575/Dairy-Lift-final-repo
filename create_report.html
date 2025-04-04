@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Report - DairyVest Admin</title>
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    :root {
+      --primary-color: #3b82f6;
+      --primary-hover: #2563eb;
+      --secondary-color: #f3f4f6;
+      --text-color: #1f2937;
+      --muted-text: #6b7280;
+      --border-color: #e5e7eb;
+      --card-bg: #ffffff;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      --purple-primary: #8b5cf6;
+      --purple-hover: #7c3aed;
+      --radius: 0.5rem;
+    }
+
+    body {
+      background-color: #f9fafb;
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      background-color: white;
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .logo-badge {
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.125rem 0.25rem;
+      border-radius: 0.25rem;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      background: linear-gradient(to right, #f3f4ff, #e9e9fc);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-description {
+      color: var(--muted-text);
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .card-footer {
+      padding: 1.25rem 1.5rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      background-color: var(--secondary-color);
+    }
+
+    .icon-circle {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background-color: #e9e9fc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0.75rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .form-description {
+      color: var(--muted-text);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--purple-primary);
+      box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+    }
+
+    .form-textarea {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+      resize: vertical;
+      min-height: 6rem;
+    }
+
+    .form-error {
+      color: var(--danger);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--danger);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .checkbox-label {
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      gap: 0.5rem;
+    }
+
+    .btn-purple {
+      background-color: var(--purple-primary);
+      color: white;
+    }
+
+    .btn-purple:hover {
+      background-color: var(--purple-hover);
+    }
+
+    .btn-outline {
+      background-color: white;
+      border-color: var(--border-color);
+      color: var(--text-color);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast {
+      padding: 1rem;
+      border-radius: var(--radius);
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 300px;
+      max-width: calc(100vw - 2rem);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+
+    .toast-success {
+      border-left: 4px solid var(--success);
+    }
+
+    .toast-error {
+      border-left: 4px solid var(--danger);
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-message {
+      color: var(--muted-text);
+      font-size: 0.875rem;
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted-text);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="admin_dashboard.html" class="logo">
+      DairyVest
+      <span class="logo-badge">Admin</span>
+    </a>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <div class="icon-circle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="9" y1="21" x2="9" y2="9"></line>
+          </svg>
+        </div>
+        <div>
+          <h2 class="card-title">Generate Report</h2>
+          <p class="card-description">Configure your report parameters below. Choose the type, date range, and output format.</p>
+        </div>
+      </div>
+      
+      <form id="report-form" onsubmit="handleSubmit(event)">
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="report_type" class="form-label required">Report Type</label>
+              <select id="report_type" name="report_type" class="form-select" required>
+                <option value="">Select report type</option>
+                <option value="financial">Financial Report</option>
+                <option value="operational">Operational Report</option>
+                <option value="inventory">Inventory Report</option>
+                <option value="custom">Custom Report</option>
+              </select>
+              <p class="form-description">Type of report to generate</p>
+            </div>
+            
+            <div class="form-group">
+              <label for="date_range" class="form-label required">Date Range</label>
+              <select id="date_range" name="date_range" class="form-select" required onchange="toggleDateFields()">
+                <option value="">Select date range</option>
+                <option value="week">Last Week</option>
+                <option value="month">Last Month</option>
+                <option value="quarter">Last Quarter</option>
+                <option value="year">Last Year</option>
+                <option value="custom">Custom Range</option>
+              </select>
+            </div>
+            
+            <div class="form-group" id="start_date_group" style="display: none;">
+              <label for="start_date" class="form-label required">Start Date</label>
+              <input type="date" id="start_date" name="start_date" class="form-input">
+            </div>
+            
+            <div class="form-group" id="end_date_group" style="display: none;">
+              <label for="end_date" class="form-label required">End Date</label>
+              <input type="date" id="end_date" name="end_date" class="form-input">
+            </div>
+            
+            <div class="form-group">
+              <label for="format" class="form-label required">Output Format</label>
+              <select id="format" name="format" class="form-select" required>
+                <option value="">Select format</option>
+                <option value="pdf">PDF Document</option>
+                <option value="excel">Excel Spreadsheet</option>
+                <option value="csv">CSV File</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Include Content</label>
+            <div class="checkbox-group">
+              <input type="checkbox" id="include_graphs" name="include_graphs" checked>
+              <label for="include_graphs" class="checkbox-label">Include graphs and charts</label>
+            </div>
+            <div class="checkbox-group">
+              <input type="checkbox" id="include_summary" name="include_summary" checked>
+              <label for="include_summary" class="checkbox-label">Include executive summary</label>
+            </div>
+            <div class="checkbox-group">
+              <input type="checkbox" id="include_tables" name="include_tables" checked>
+              <label for="include_tables" class="checkbox-label">Include data tables</label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="notes" class="form-label">Additional Notes</label>
+            <textarea id="notes" name="notes" class="form-textarea" placeholder="Enter any additional information to include in the report"></textarea>
+          </div>
+        </div>
+        
+        <div class="card-footer">
+          <a href="admin_dashboard.html" class="btn btn-outline">Cancel</a>
+          <button type="submit" class="btn btn-purple">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Generate Report
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container for Notifications -->
+  <div class="toast-container" id="toast-container">
+    <!-- Toasts will be dynamically inserted here -->
+  </div>
+
+  <script>
+    // Show/hide date fields based on selection
+    function toggleDateFields() {
+      const dateRange = document.getElementById('date_range').value;
+      const startDateGroup = document.getElementById('start_date_group');
+      const endDateGroup = document.getElementById('end_date_group');
+      
+      if (dateRange === 'custom') {
+        startDateGroup.style.display = 'block';
+        endDateGroup.style.display = 'block';
+        
+        // Set default dates for custom range
+        const today = new Date();
+        const lastMonth = new Date();
+        lastMonth.setMonth(today.getMonth() - 1);
+        
+        document.getElementById('start_date').valueAsDate = lastMonth;
+        document.getElementById('end_date').valueAsDate = today;
+        
+        // Make fields required
+        document.getElementById('start_date').required = true;
+        document.getElementById('end_date').required = true;
+      } else {
+        startDateGroup.style.display = 'none';
+        endDateGroup.style.display = 'none';
+        
+        // Make fields not required
+        document.getElementById('start_date').required = false;
+        document.getElementById('end_date').required = false;
+      }
+    }
+    
+    // Set default values
+    window.addEventListener('load', function() {
+      // Set default date range to month
+      document.getElementById('date_range').value = 'month';
+      
+      // Set default format to PDF
+      document.getElementById('format').value = 'pdf';
+      
+      // Set default report type to financial
+      document.getElementById('report_type').value = 'financial';
+    });
+
+    // Form submission handler
+    function handleSubmit(event) {
+      event.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(event.target);
+      const reportData = Object.fromEntries(formData.entries());
+      
+      // Validate custom date range if selected
+      if (reportData.date_range === 'custom') {
+        const startDate = new Date(reportData.start_date);
+        const endDate = new Date(reportData.end_date);
+        
+        if (startDate > endDate) {
+          showToast('error', 'Validation Error', 'Start date cannot be after end date.');
+          return;
+        }
+      }
+      
+      // Additional validation
+      if (!reportData.report_type || !reportData.date_range || !reportData.format) {
+        showToast('error', 'Validation Error', 'Please fill in all required fields.');
+        return;
+      }
+      
+      // In a real application, you would send this data to a server
+      console.log('Generating report:', reportData);
+      
+      // Show success message
+      showToast('success', 'Report Generated Successfully', `Your ${reportData.report_type} report has been generated and is ready for download.`);
+      
+      // Show download notification after a short delay
+      setTimeout(() => {
+        showToast('success', 'Report Ready', 'Your report has been generated and is ready for download.');
+      }, 3000);
+      
+      // Reset form after successful submission
+      setTimeout(() => {
+        window.location.href = 'admin_dashboard.html';
+      }, 4000);
+    }
+
+    // Function to show toast notifications
+    function showToast(type, title, message, duration = 3000) {
+      const toastContainer = document.getElementById('toast-container');
+      
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      let iconSvg = '';
+      switch(type) {
+        case 'success':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+          break;
+        case 'error':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+          break;
+      }
+      
+      toast.innerHTML = `
+        ${iconSvg}
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      const closeButton = toast.querySelector('.toast-close');
+      closeButton.addEventListener('click', function() {
+        toast.remove();
+      });
+      
+      // Auto remove after duration
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-out forwards';
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, duration);
+    }
+  </script>
+</body>
+</html>

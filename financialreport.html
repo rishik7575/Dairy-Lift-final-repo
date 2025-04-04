@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Investors - DairyVest</title>
+  <title>Financial Reports - DairyVest</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-icons@0.284.0/dist/umd/lucide.min.css">
   <style>
     /* Base styles */
@@ -71,6 +71,10 @@
 
     .justify-between {
       justify-content: space-between;
+    }
+
+    .justify-center {
+      justify-content: center;
     }
 
     .space-y-6 > * + * {
@@ -252,6 +256,12 @@
       letter-spacing: -0.025em;
     }
 
+    .card-description {
+      margin-top: 0.5rem;
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
+    }
+
     .card-content {
       padding: 1.5rem;
       padding-top: 0;
@@ -262,22 +272,16 @@
       font-size: 1.875rem;
     }
 
+    .text-center {
+      text-align: center;
+    }
+
     .tracking-tight {
       letter-spacing: -0.025em;
     }
 
     .text-muted-foreground {
       color: var(--muted-foreground);
-    }
-
-    /* Stats */
-    .icon-circle {
-      height: 3rem;
-      width: 3rem;
-      border-radius: 9999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .text-green-500 {
@@ -288,20 +292,20 @@
       color: #ef4444;
     }
 
-    .text-blue-500 {
-      color: #3b82f6;
+    .font-medium {
+      font-weight: 500;
     }
 
-    .bg-blue-100 {
-      background-color: #dbeafe;
+    .text-sm {
+      font-size: 0.875rem;
     }
 
-    .bg-green-100 {
-      background-color: #dcfce7;
+    .mt-1 {
+      margin-top: 0.25rem;
     }
 
-    .bg-purple-100 {
-      background-color: #f3e8ff;
+    .mt-2 {
+      margin-top: 0.5rem;
     }
 
     /* Buttons */
@@ -349,140 +353,35 @@
       background-color: var(--accent);
     }
 
-    .btn-sm {
-      height: 2.25rem;
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
-      font-size: 0.875rem;
-    }
-
-    .btn-icon {
-      height: 2.5rem;
-      width: 2.5rem;
-      padding: 0;
-    }
-
-    /* Badge */
-    .badge {
+    /* Dropdowns */
+    .select {
       display: inline-flex;
-      align-items: center;
-      border-radius: 9999px;
-      border: 1px solid transparent;
-      padding-left: 0.625rem;
-      padding-right: 0.625rem;
-      padding-top: 0.125rem;
-      padding-bottom: 0.125rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .badge-default {
-      background-color: var(--primary);
-      color: var(--primary-foreground);
-    }
-
-    .badge-outline {
-      border-color: currentColor;
-      background-color: transparent;
-    }
-
-    .badge-secondary {
-      background-color: var(--secondary);
-      color: var(--secondary-foreground);
-    }
-
-    /* Table */
-    .table-container {
+      height: 2.5rem;
+      width: 180px;
       border-radius: 0.375rem;
       border: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    .table-scroll {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
+      padding: 0 0.75rem;
       font-size: 0.875rem;
-    }
-
-    thead tr {
-      border-bottom: 1px solid var(--border);
-    }
-
-    th {
-      height: 3rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      font-weight: 500;
-      color: var(--foreground);
-      vertical-align: middle;
-      text-align: left;
-    }
-
-    tbody tr {
-      border-bottom: 1px solid var(--border);
-      transition: background-color 0.2s;
-    }
-
-    tbody tr:hover {
-      background-color: rgba(0, 0, 0, 0.025);
-    }
-
-    tbody tr:last-child {
-      border-bottom: none;
-    }
-
-    td {
-      padding: 1rem;
-      vertical-align: middle;
-    }
-
-    td.font-medium {
-      font-weight: 500;
-    }
-
-    /* Input */
-    .relative {
-      position: relative;
-    }
-
-    .input-container {
-      position: relative;
-    }
-
-    .input-icon {
-      position: absolute;
-      left: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted-foreground);
-    }
-
-    .input {
-      width: 100%;
-      border-radius: 0.375rem;
-      border: 1px solid var(--border);
-      padding: 0.5rem 0.75rem;
-      font-size: 0.875rem;
+      line-height: 2.5rem;
       background-color: var(--background);
       color: var(--foreground);
-      height: 2.5rem;
+      appearance: none;
+      background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="m6 9 6 6 6-6"/%3E%3C/svg%3E');
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1rem;
     }
 
-    .input-with-icon {
-      padding-left: 2.5rem;
-    }
-
-    .input:focus {
+    .select:focus {
       outline: none;
       border-color: var(--ring);
       box-shadow: 0 0 0 1px var(--ring);
+    }
+
+    /* Charts */
+    .chart-container {
+      height: 20rem;
+      position: relative;
     }
 
     /* Toast styling */
@@ -525,21 +424,11 @@
       .md\:grid-cols-3 {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-      
-      .md\:flex-row {
-        flex-direction: row;
-      }
-      
-      .md\:items-center {
-        align-items: center;
-      }
-      
-      .md\:w-auto {
-        width: auto;
-      }
-      
-      .md\:w-\[250px\] {
-        width: 250px;
+    }
+
+    @media (min-width: 1024px) {
+      .lg\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -567,11 +456,6 @@
     }
 
     .mr-2 {
-      margin-right: 0.5rem;
-    }
-
-    .mx-2 {
-      margin-left: 0.5rem;
       margin-right: 0.5rem;
     }
   </style>
@@ -619,7 +503,7 @@
           <i class="lucide-bar-chart-3"></i>
           <span>Financial Reports</span>
         </a>
-        <a href="store.html" class="nav-item">
+        <a href="storeadmin.html" class="nav-item">
           <i class="lucide-shopping-cart"></i>
           <span>Store</span>
         </a>
@@ -638,103 +522,101 @@
       <div class="space-y-6">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-3xl font-bold tracking-tight">Investors Management</h1>
+            <h1 class="text-3xl font-bold tracking-tight">Financial Reports</h1>
             <p class="text-muted-foreground">
-              Manage investors and track their returns
+              View and analyze your financial performance
             </p>
           </div>
-          <button id="add-investor-btn" class="btn btn-default">
-            <i class="lucide-plus-circle mr-2"></i>
-            Add Investor
-          </button>
+          <div class="flex items-center gap-2">
+            <select id="year-select" class="select">
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023" selected>2023</option>
+            </select>
+            <button id="export-btn" class="btn btn-default">
+              <i class="lucide-download mr-2"></i>
+              Export
+            </button>
+          </div>
         </div>
         
-        <!-- Investor Stats -->
+        <!-- Financial Summary -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="card">
             <div class="card-content">
-              <div class="flex justify-between">
-                <div>
-                  <p class="text-sm font-medium text-muted-foreground">Total Investors</p>
-                  <h3 class="text-2xl font-bold mt-1">43</h3>
-                </div>
-                <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                  <i class="lucide-user text-blue-500"></i>
-                </div>
+              <div class="text-center">
+                <p class="text-sm font-medium text-muted-foreground">Total Revenue</p>
+                <h3 class="text-3xl font-bold mt-1">₹542,896</h3>
+                <p class="text-sm text-green-500 flex items-center justify-center mt-1">
+                  <i class="lucide-arrow-up-down mr-1"></i>
+                  +12.5% from last year
+                </p>
               </div>
             </div>
           </div>
           
           <div class="card">
             <div class="card-content">
-              <div class="flex justify-between">
-                <div>
-                  <p class="text-sm font-medium text-muted-foreground">Total Investment</p>
-                  <h3 class="text-2xl font-bold mt-1">₹2.4M</h3>
-                </div>
-                <div class="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
-                  <i class="lucide-dollar-sign text-green-500"></i>
-                </div>
+              <div class="text-center">
+                <p class="text-sm font-medium text-muted-foreground">Total Expenses</p>
+                <h3 class="text-3xl font-bold mt-1">₹324,521</h3>
+                <p class="text-sm text-red-500 flex items-center justify-center mt-1">
+                  <i class="lucide-arrow-up-down mr-1"></i>
+                  +8.3% from last year
+                </p>
               </div>
             </div>
           </div>
           
           <div class="card">
             <div class="card-content">
-              <div class="flex justify-between">
-                <div>
-                  <p class="text-sm font-medium text-muted-foreground">Avg. ROI</p>
-                  <h3 class="text-2xl font-bold mt-1">7.5%</h3>
-                </div>
-                <div class="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
-                  <i class="lucide-arrow-up-right text-purple-500"></i>
-                </div>
+              <div class="text-center">
+                <p class="text-sm font-medium text-muted-foreground">Net Profit</p>
+                <h3 class="text-3xl font-bold mt-1">₹218,375</h3>
+                <p class="text-sm text-green-500 flex items-center justify-center mt-1">
+                  <i class="lucide-arrow-up-down mr-1"></i>
+                  +18.7% from last year
+                </p>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- Investors List -->
+        <!-- Revenue vs Expenses Chart -->
         <div class="card">
           <div class="card-header">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <h3 class="card-title">Investors</h3>
-              <div class="flex items-center gap-2">
-                <div class="relative">
-                  <i class="lucide-search input-icon"></i>
-                  <input
-                    type="search"
-                    placeholder="Search investors..."
-                    class="input input-with-icon w-full md:w-[250px]"
-                    id="search-input"
-                  />
-                </div>
-                <button class="btn btn-outline btn-icon">
-                  <i class="lucide-filter"></i>
-                </button>
+            <h3 class="card-title">Revenue vs Expenses</h3>
+            <div class="card-description">Monthly breakdown of revenue, expenses, and profit</div>
+          </div>
+          <div class="card-content">
+            <div class="chart-container" id="revenue-expenses-chart">
+              <!-- Chart will be loaded dynamically -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Revenue Sources and Expense Breakdown -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Revenue Sources</h3>
+              <div class="card-description">Breakdown of revenue by source</div>
+            </div>
+            <div class="card-content">
+              <div class="chart-container" id="revenue-sources-chart">
+                <!-- Chart will be loaded dynamically -->
               </div>
             </div>
           </div>
-          <div class="card-content">
-            <div class="table-container">
-              <div class="table-scroll">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Investment</th>
-                      <th>Join Date</th>
-                      <th>Status</th>
-                      <th>Returns</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="investors-table-body">
-                    <!-- Investor data will be loaded dynamically -->
-                  </tbody>
-                </table>
+          
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Expense Breakdown</h3>
+              <div class="card-description">Breakdown of expenses by category</div>
+            </div>
+            <div class="card-content">
+              <div class="chart-container" id="expense-breakdown-chart">
+                <!-- Chart will be loaded dynamically -->
               </div>
             </div>
           </div>
@@ -747,6 +629,9 @@
 
   <!-- Load Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Load Chart.js for charting -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <script>
     // Initialize Lucide icons
@@ -801,155 +686,209 @@
       // In a real app, perform actual logout logic here
     });
     
-    // Add Investor button
-    document.getElementById('add-investor-btn').addEventListener('click', () => {
-      showToast('Feature in development', "The 'Add Investor' feature is coming soon!");
+    // Export button
+    document.getElementById('export-btn').addEventListener('click', () => {
+      showToast('Report download started', 'Your report is being prepared and will download shortly');
+    });
+    
+    // Year select
+    document.getElementById('year-select').addEventListener('change', (e) => {
+      const year = e.target.value;
+      showToast('Year changed', `Financial data updated for ${year}`);
+      // In a real app, this would update all charts with data for the selected year
     });
 
-    // Search functionality
-    const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('input', filterInvestors);
-
-    function filterInvestors() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const rows = document.querySelectorAll('#investors-table-body tr');
+    // Initialize Revenue vs Expenses Chart
+    function initRevenueExpensesChart() {
+      const ctx = document.createElement('canvas');
+      document.getElementById('revenue-expenses-chart').appendChild(ctx);
       
-      rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        const match = text.includes(searchTerm);
-        row.style.display = match ? '' : 'none';
-      });
-    }
-
-    // Investor data
-    const investorsData = [
-      { 
-        id: 'INV001', 
-        name: 'John Smith', 
-        email: 'john.smith@example.com',
-        investment: 25000,
-        joinDate: '2022-05-15',
-        lastActivity: '2023-09-21',
-        status: 'Active',
-        returns: 8.2,
-        trend: 'up'
-      },
-      { 
-        id: 'INV002', 
-        name: 'Sarah Johnson', 
-        email: 'sarah.j@example.com',
-        investment: 15000,
-        joinDate: '2022-08-03',
-        lastActivity: '2023-09-18',
-        status: 'Active',
-        returns: 7.5,
-        trend: 'up'
-      },
-      { 
-        id: 'INV003', 
-        name: 'Mike Williams', 
-        email: 'mike.w@example.com',
-        investment: 50000,
-        joinDate: '2023-01-22',
-        lastActivity: '2023-09-20',
-        status: 'Pending',
-        returns: 0,
-        trend: 'up'
-      },
-      { 
-        id: 'INV004', 
-        name: 'Elena Rodriguez', 
-        email: 'elena.r@example.com',
-        investment: 35000,
-        joinDate: '2022-04-10',
-        lastActivity: '2023-07-05',
-        status: 'Inactive',
-        returns: 5.2,
-        trend: 'down'
-      },
-      { 
-        id: 'INV005', 
-        name: 'David Chen', 
-        email: 'david.c@example.com',
-        investment: 75000,
-        joinDate: '2022-11-30',
-        lastActivity: '2023-09-15',
-        status: 'Active',
-        returns: 9.1,
-        trend: 'up'
-      },
-    ];
-
-    // Load investor data
-    function loadInvestorData() {
-      const tableBody = document.getElementById('investors-table-body');
+      const data = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [
+          {
+            label: 'Revenue',
+            data: [4000, 3000, 2000, 2780, 1890, 2390, 3490, 3190, 2590, 2290, 3490, 3890],
+            backgroundColor: '#3b82f6',
+            borderRadius: 4
+          },
+          {
+            label: 'Expenses',
+            data: [2400, 1398, 9800, 3908, 4800, 3800, 4300, 4100, 4600, 3800, 4300, 2800],
+            backgroundColor: '#ef4444',
+            borderRadius: 4
+          },
+          {
+            label: 'Profit/Loss',
+            data: [1600, 1602, -7800, -1128, -2910, -1410, -810, -910, -2010, -1510, -810, 1090],
+            backgroundColor: '#10b981',
+            borderRadius: 4
+          }
+        ]
+      };
       
-      investorsData.forEach(investor => {
-        const row = document.createElement('tr');
-        
-        // Determine badge class based on status
-        let badgeClass;
-        switch(investor.status) {
-          case 'Active':
-            badgeClass = 'badge-default';
-            break;
-          case 'Pending':
-            badgeClass = 'badge-outline';
-            break;
-          case 'Inactive':
-            badgeClass = 'badge-secondary';
-            break;
+      new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                drawBorder: false,
+                display: true,
+                drawOnChartArea: true,
+                drawTicks: false,
+                borderDash: [3, 3]
+              },
+              ticks: {
+                display: true,
+                padding: 10,
+                color: '#b2b9bf'
+              }
+            },
+            x: {
+              grid: {
+                drawBorder: false,
+                display: false,
+                drawOnChartArea: false,
+                drawTicks: false
+              },
+              ticks: {
+                display: true,
+                color: '#b2b9bf',
+                padding: 10
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                padding: 10,
+                color: '#b2b9bf'
+              }
+            },
+            tooltip: {
+              backgroundColor: 'white',
+              titleColor: '#666',
+              bodyColor: '#666',
+              borderColor: '#e2e8f0',
+              borderWidth: 1,
+              padding: 10,
+              usePointStyle: true,
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ₹' + context.parsed.y;
+                }
+              }
+            }
+          }
         }
-        
-        row.innerHTML = `
-          <td>${investor.id}</td>
-          <td class="font-medium">${investor.name}</td>
-          <td>${investor.email}</td>
-          <td>₹${investor.investment.toLocaleString()}</td>
-          <td>${investor.joinDate}</td>
-          <td>
-            <span class="badge ${badgeClass}">
-              ${investor.status}
-            </span>
-          </td>
-          <td>
-            <div class="flex items-center gap-2">
-              <i class="lucide-${investor.trend === 'up' ? 'arrow-up-right' : 'arrow-down-right'} ${investor.trend === 'up' ? 'text-green-500' : 'text-red-500'}"></i>
-              <span class="${investor.trend === 'up' ? 'text-green-500' : 'text-red-500'}">${investor.returns}%</span>
-            </div>
-          </td>
-          <td>
-            <div class="flex space-x-2">
-              <button class="btn btn-outline btn-sm investor-action" data-action="View Details" data-id="${investor.id}">
-                Details
-              </button>
-              <button class="btn btn-outline btn-sm investor-action" data-action="Contact" data-id="${investor.id}">
-                Contact
-              </button>
-            </div>
-          </td>
-        `;
-        
-        tableBody.appendChild(row);
       });
-      
-      // Add event listeners to action buttons
-      document.querySelectorAll('.investor-action').forEach(button => {
-        button.addEventListener('click', () => {
-          const action = button.getAttribute('data-action');
-          const id = button.getAttribute('data-id');
-          
-          showToast('Action triggered', `${action} on investor ${id}`);
-        });
-      });
-      
-      // Re-initialize icons for dynamically added content
-      lucide.createIcons();
     }
 
-    // Initialize when DOM is loaded
+    // Initialize Revenue Sources Chart
+    function initRevenueSourcesChart() {
+      const ctx = document.createElement('canvas');
+      document.getElementById('revenue-sources-chart').appendChild(ctx);
+      
+      const data = {
+        labels: ['Milk Sales', 'Cattle Sales', 'Dairy Products', 'Other'],
+        datasets: [{
+          data: [65, 15, 12, 8],
+          backgroundColor: ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'],
+          borderWidth: 0
+        }]
+      };
+      
+      new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                color: '#b2b9bf'
+              }
+            },
+            tooltip: {
+              backgroundColor: 'white',
+              titleColor: '#666',
+              bodyColor: '#666',
+              borderColor: '#e2e8f0',
+              borderWidth: 1,
+              padding: 10,
+              usePointStyle: true,
+              callbacks: {
+                label: function(context) {
+                  return context.label + ': ' + context.parsed + '%';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Initialize Expense Breakdown Chart
+    function initExpenseBreakdownChart() {
+      const ctx = document.createElement('canvas');
+      document.getElementById('expense-breakdown-chart').appendChild(ctx);
+      
+      const data = {
+        labels: ['Feed', 'Labor', 'Equipment', 'Veterinary', 'Other'],
+        datasets: [{
+          data: [45, 25, 15, 10, 5],
+          backgroundColor: ['#8884d8', '#83a6ed', '#8dd1e1', '#82ca9d', '#a4de6c'],
+          borderWidth: 0
+        }]
+      };
+      
+      new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                color: '#b2b9bf'
+              }
+            },
+            tooltip: {
+              backgroundColor: 'white',
+              titleColor: '#666',
+              bodyColor: '#666',
+              borderColor: '#e2e8f0',
+              borderWidth: 1,
+              padding: 10,
+              usePointStyle: true,
+              callbacks: {
+                label: function(context) {
+                  return context.label + ': ' + context.parsed + '%';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Initialize all charts when the page loads
     document.addEventListener('DOMContentLoaded', function() {
-      loadInvestorData();
+      initRevenueExpensesChart();
+      initRevenueSourcesChart();
+      initExpenseBreakdownChart();
     });
   </script>
 </body>

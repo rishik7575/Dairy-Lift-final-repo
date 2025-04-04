@@ -3,1278 +3,1194 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DairyVest - Admin</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>DairyVest Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-icons@0.284.0/dist/umd/lucide.min.css">
   <style>
     /* Base styles */
     :root {
-      --primary: #8B5CF6;
-      --primary-foreground: #ffffff;
-      --background: #ffffff;
-      --foreground: #171717;
-      --card: #ffffff;
-      --card-foreground: #171717;
-      --border: #e5e7eb;
-      --muted: #f3f4f6;
-      --muted-foreground: #6b7280;
-      --accent: #f9fafb;
-      --accent-foreground: #111827;
-      --secondary: #f3f4f6;
-      --secondary-foreground: #111827;
+      --primary: #222;
+      --primary-foreground: #f9fafb;
+      --background: #f9fafb;
+      --foreground: #111;
+      --card: #fff;
+      --card-foreground: #111;
+      --border: #e2e8f0;
+      --input: #e2e8f0;
+      --ring: #1e293b;
+      --radius: 0.5rem;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --accent: #f1f5f9;
+      --accent-foreground: #0f172a;
       --destructive: #ef4444;
-      --destructive-foreground: #ffffff;
+      --destructive-foreground: #f9fafb;
+      --secondary: #f1f5f9;
+      --secondary-foreground: #0f172a;
+      
+      --sidebar-background: #fafafa;
+      --sidebar-foreground: #404040;
+      --sidebar-primary: #1a1a1a;
+      --sidebar-accent: #f4f4f5;
+      --sidebar-accent-foreground: #1a1a1a;
+      --sidebar-border: #e4e4e7;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
     }
-    
+
     body {
+      background-color: #f1f5f9;
       color: var(--foreground);
-      background-color: var(--background);
+      min-height: 100vh;
     }
-    
+
+    /* Layout */
     .min-h-screen {
       min-height: 100vh;
     }
-    
+
     .flex {
       display: flex;
     }
-    
+
+    .flex-1 {
+      flex: 1 1 0%;
+    }
+
     .flex-col {
       flex-direction: column;
     }
-    
-    .flex-row {
-      flex-direction: row;
-    }
-    
-    .flex-grow {
-      flex-grow: 1;
-    }
-    
-    .container {
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-    
-    .mx-auto {
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .grid {
-      display: grid;
-    }
-    
-    .grid-cols-1 {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-    
+
     .items-center {
       align-items: center;
     }
-    
-    .items-start {
-      align-items: flex-start;
-    }
-    
+
     .justify-between {
       justify-content: space-between;
     }
-    
-    .justify-center {
-      justify-content: center;
+
+    .space-y-6 > * + * {
+      margin-top: 1.5rem;
     }
-    
-    .gap-8 {
-      gap: 2rem;
-    }
-    
-    .gap-6 {
-      gap: 1.5rem;
-    }
-    
-    .gap-4 {
-      gap: 1rem;
-    }
-    
-    .mb-8 {
-      margin-bottom: 2rem;
-    }
-    
-    .mb-6 {
-      margin-bottom: 1.5rem;
-    }
-    
-    .mb-4 {
-      margin-bottom: 1rem;
-    }
-    
-    .mb-2 {
-      margin-bottom: 0.5rem;
-    }
-    
-    .mt-8 {
-      margin-top: 2rem;
-    }
-    
-    .mt-4 {
-      margin-top: 1rem;
-    }
-    
-    .mt-2 {
-      margin-top: 0.5rem;
-    }
-    
-    .mt-1 {
-      margin-top: 0.25rem;
-    }
-    
-    .ml-1 {
-      margin-left: 0.25rem;
-    }
-    
-    .ml-2 {
-      margin-left: 0.5rem;
-    }
-    
-    .mr-2 {
-      margin-right: 0.5rem;
-    }
-    
-    .px-4 {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-    
-    .py-8 {
-      padding-top: 2rem;
-      padding-bottom: 2rem;
-    }
-    
-    .py-4 {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-    }
-    
-    .py-2 {
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-    }
-    
-    .px-3 {
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
-    }
-    
-    .p-6 {
-      padding: 1.5rem;
-    }
-    
-    .p-4 {
-      padding: 1rem;
-    }
-    
-    .p-2 {
-      padding: 0.5rem;
-    }
-    
-    .rounded-xl {
-      border-radius: 0.75rem;
-    }
-    
-    .rounded-lg {
-      border-radius: 0.5rem;
-    }
-    
-    .rounded-md {
-      border-radius: 0.375rem;
-    }
-    
-    .rounded-full {
-      border-radius: 9999px;
-    }
-    
-    .shadow-sm {
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    }
-    
-    .border {
-      border: 1px solid var(--border);
-    }
-    
-    .border-t {
-      border-top: 1px solid var(--border);
-    }
-    
-    .bg-card {
-      background-color: var(--card);
-    }
-    
-    .bg-muted {
-      background-color: var(--muted);
-    }
-    
-    .bg-muted\/30 {
-      background-color: rgba(243, 244, 246, 0.3);
-    }
-    
-    .bg-primary {
-      background-color: var(--primary);
-    }
-    
-    .bg-white {
-      background-color: white;
-    }
-    
-    .bg-red-100 {
-      background-color: #fee2e2;
-    }
-    
-    .bg-green-100 {
-      background-color: #dcfce7;
-    }
-    
-    .bg-blue-100 {
-      background-color: #dbeafe;
-    }
-    
-    .bg-yellow-100 {
-      background-color: #fef3c7;
-    }
-    
-    .text-foreground {
-      color: var(--foreground);
-    }
-    
-    .text-muted-foreground {
-      color: var(--muted-foreground);
-    }
-    
-    .text-primary {
-      color: var(--primary);
-    }
-    
-    .text-primary-foreground {
-      color: var(--primary-foreground);
-    }
-    
-    .text-white {
-      color: white;
-    }
-    
-    .text-red-600 {
-      color: #dc2626;
-    }
-    
-    .text-green-600 {
-      color: #16a34a;
-    }
-    
-    .text-blue-600 {
-      color: #2563eb;
-    }
-    
-    .text-yellow-600 {
-      color: #ca8a04;
-    }
-    
-    .text-sm {
-      font-size: 0.875rem;
-    }
-    
-    .text-xs {
-      font-size: 0.75rem;
-    }
-    
-    .text-lg {
-      font-size: 1.125rem;
-    }
-    
-    .text-xl {
-      font-size: 1.25rem;
-    }
-    
-    .text-2xl {
-      font-size: 1.5rem;
-    }
-    
-    .text-3xl {
-      font-size: 1.875rem;
-    }
-    
-    .font-semibold {
-      font-weight: 600;
-    }
-    
-    .font-bold {
-      font-weight: 700;
-    }
-    
-    .font-medium {
-      font-weight: 500;
-    }
-    
-    .whitespace-nowrap {
-      white-space: nowrap;
-    }
-    
-    .rounded-tr-lg {
-      border-top-right-radius: 0.5rem;
-    }
-    
-    .rounded-tl-lg {
-      border-top-left-radius: 0.5rem;
-    }
-    
-    /* Header styles */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      background-color: var(--background);
-      border-bottom: 1px solid var(--border);
-    }
-    
-    .h-16 {
-      height: 4rem;
-    }
-    
-    .space-x-6 > * + * {
-      margin-left: 1.5rem;
-    }
-    
+
     .space-x-4 > * + * {
       margin-left: 1rem;
     }
-    
-    .space-y-4 > * + * {
-      margin-top: 1rem;
+
+    .grid {
+      display: grid;
     }
 
-    .space-y-2 > * + * {
-      margin-top: 0.5rem;
+    .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
     }
-    
-    .transition-colors {
-      transition-property: color, background-color, border-color;
-      transition-duration: 0.15s;
+
+    .gap-6 {
+      gap: 1.5rem;
     }
-    
-    .w-full {
-      width: 100%;
+
+    /* Header */
+    header {
+      background-color: white;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+      z-index: 10;
     }
-    
-    .h-5 {
-      height: 1.25rem;
+
+    .p-4 {
+      padding: 1rem;
     }
-    
-    .w-5 {
-      width: 1.25rem;
-    }
-    
-    .h-4 {
-      height: 1rem;
-    }
-    
-    .w-4 {
-      width: 1rem;
-    }
-    
-    .h-6 {
-      height: 1.5rem;
-    }
-    
-    .w-6 {
-      width: 1.5rem;
-    }
-    
-    /* Admin layout */
-    .admin-layout {
-      display: flex;
-      min-height: calc(100vh - 4rem);
-    }
-    
-    .admin-sidebar {
-      width: 16rem;
-      background-color: var(--card);
-      border-right: 1px solid var(--border);
-    }
-    
-    .admin-content {
-      flex: 1;
+
+    .p-6 {
       padding: 1.5rem;
-      background-color: var(--muted/30);
     }
-    
-    .sidebar-link {
+
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+
+    .font-bold {
+      font-weight: 700;
+    }
+
+    .text-primary {
+      color: var(--primary);
+    }
+
+    .ml-1 {
+      margin-left: 0.25rem;
+    }
+
+    .text-xs {
+      font-size: 0.75rem;
+    }
+
+    .bg-primary {
+      background-color: var(--primary);
+    }
+
+    .text-white {
+      color: white;
+    }
+
+    .px-1 {
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+    }
+
+    .rounded {
+      border-radius: 0.25rem;
+    }
+
+    .h-8 {
+      height: 2rem;
+    }
+
+    .w-8 {
+      width: 2rem;
+    }
+
+    .rounded-full {
+      border-radius: 9999px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background-color: var(--sidebar-background);
+      color: var(--sidebar-foreground);
+      width: 16rem;
+      flex-shrink: 0;
+      position: fixed;
+      inset-y: 0;
+      left: 0;
+      z-index: 50;
+      padding-top: 4rem;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar-hidden {
+      transform: translateX(-100%);
+    }
+
+    @media (min-width: 768px) {
+      .sidebar {
+        position: relative;
+        transform: translateX(0);
+      }
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 40;
+      display: none;
+    }
+
+    .sidebar-overlay.show {
+      display: block;
+    }
+
+    .sidebar nav {
+      padding: 1rem;
+    }
+
+    .nav-item {
       display: flex;
       align-items: center;
       padding: 0.75rem 1rem;
-      color: var(--foreground);
       text-decoration: none;
+      color: var(--sidebar-foreground);
+      font-size: 0.875rem;
+      font-weight: 500;
       border-radius: 0.375rem;
+      transition: background-color 0.2s, color 0.2s;
       margin-bottom: 0.25rem;
     }
-    
-    .sidebar-link:hover {
-      background-color: var(--muted);
+
+    .nav-item:hover {
+      background-color: var(--sidebar-accent);
+      color: var(--sidebar-accent-foreground);
     }
-    
-    .sidebar-link.active {
-      background-color: var(--primary);
-      color: var(--primary-foreground);
+
+    .nav-item i {
+      margin-right: 0.75rem;
     }
-    
-    /* Table styles */
-    .admin-table {
-      width: 100%;
-      border-collapse: collapse;
+
+    /* Cards */
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
     }
-    
-    .admin-table th {
-      padding: 0.75rem 1rem;
-      text-align: left;
+
+    .card-header {
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
       font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.025em;
+    }
+
+    .card-content {
+      padding: 1.5rem;
+      padding-top: 0;
+    }
+
+    /* Typography */
+    .text-3xl {
+      font-size: 1.875rem;
+    }
+
+    .tracking-tight {
+      letter-spacing: -0.025em;
+    }
+
+    .text-muted-foreground {
       color: var(--muted-foreground);
-      border-bottom: 1px solid var(--border);
-      background-color: var(--muted);
     }
-    
-    .admin-table td {
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--border);
+
+    /* Stats */
+    .icon-circle {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    
-    .admin-table tbody tr:hover {
-      background-color: var(--accent);
+
+    .text-green-500 {
+      color: #22c55e;
     }
-    
-    /* Button styles */
-    .btn-primary {
+
+    .text-red-500 {
+      color: #ef4444;
+    }
+
+    .text-blue-500 {
+      color: #3b82f6;
+    }
+
+    .text-orange-500 {
+      color: #f97316;
+    }
+
+    .text-purple-500 {
+      color: #a855f7;
+    }
+
+    .bg-blue-500 {
+      background-color: #3b82f6;
+    }
+
+    .bg-green-500 {
+      background-color: #22c55e;
+    }
+
+    .bg-orange-500 {
+      background-color: #f97316;
+    }
+
+    .bg-purple-500 {
+      background-color: #a855f7;
+    }
+
+    /* Buttons */
+    .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      height: 2.5rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      transition-property: color, background-color, border-color;
+      transition-duration: 0.15s;
+      cursor: pointer;
+    }
+
+    .btn-default {
       background-color: var(--primary);
       color: var(--primary-foreground);
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
-      transition: background-color 0.15s;
-      cursor: pointer;
-      text-decoration: none;
+    }
+
+    .btn-default:hover {
+      background-color: rgba(34, 34, 34, 0.9);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
       border: none;
     }
-    
-    .btn-primary:hover {
-      background-color: rgba(139, 92, 246, 0.9);
-      text-decoration: none;
+
+    .btn-ghost:hover {
+      background-color: var(--accent);
     }
-    
+
     .btn-outline {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
       background-color: transparent;
-      color: var(--foreground);
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
       border: 1px solid var(--border);
-      transition: background-color 0.15s;
-      cursor: pointer;
-      text-decoration: none;
     }
-    
+
     .btn-outline:hover {
       background-color: var(--accent);
-      text-decoration: none;
     }
-    
-    .btn-destructive {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--destructive);
-      color: var(--destructive-foreground);
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
-      transition: background-color 0.15s;
-      cursor: pointer;
-      text-decoration: none;
-      border: none;
-    }
-    
-    .btn-destructive:hover {
-      background-color: rgba(239, 68, 68, 0.9);
-      text-decoration: none;
-    }
-    
+
     .btn-sm {
-      padding: 0.25rem 0.5rem;
+      height: 2.25rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
       font-size: 0.875rem;
     }
-    
-    /* Status badges */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.25rem 0.5rem;
-      border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 500;
+
+    .btn-icon {
+      height: 2.5rem;
+      width: 2.5rem;
+      padding: 0;
     }
-    
-    .badge-success {
-      background-color: rgba(22, 163, 74, 0.1);
-      color: #16a34a;
+
+    /* Charts */
+    .chart-container {
+      height: 20rem;
     }
-    
-    .badge-warning {
-      background-color: rgba(234, 179, 8, 0.1);
-      color: #ca8a04;
+
+    /* Toast styling */
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 50;
     }
-    
-    .badge-danger {
-      background-color: rgba(220, 38, 38, 0.1);
-      color: #dc2626;
-    }
-    
-    .badge-info {
-      background-color: rgba(37, 99, 235, 0.1);
-      color: #2563eb;
-    }
-    
-    /* tabs */
-    .tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 1.5rem;
-    }
-    
-    .tab {
-      padding: 0.75rem 1rem;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-    }
-    
-    .tab.active {
-      border-bottom-color: var(--primary);
-      color: var(--primary);
-      font-weight: 500;
-    }
-    
-    .tab:hover:not(.active) {
-      border-bottom-color: var(--muted);
-    }
-    
-    .tab-content {
-      display: none;
-    }
-    
-    .tab-content.active {
-      display: block;
-    }
-    
-    /* Form elements */
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    
-    .form-input {
-      width: 100%;
-      padding: 0.5rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 0.375rem;
-      background-color: var(--background);
-    }
-    
-    .form-input:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-    
-    .form-select {
-      width: 100%;
-      padding: 0.5rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 0.375rem;
-      background-color: var(--background);
-    }
-    
-    .form-select:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-    
-    /* Mobile nav menu */
-    #mobile-menu {
-      display: none;
-    }
-    
-    /* Summary cards */
-    .summary-card {
+
+    .toast {
+      background-color: white;
       border-radius: 0.5rem;
-      padding: 1.5rem;
-      background-color: var(--card);
-      border: 1px solid var(--border);
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      max-width: 350px;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
-    
-    .hidden {
-      display: none;
+
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
     }
-    
-    /* Media queries */
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-description {
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+
+    /* Responsive */
     @media (min-width: 768px) {
       .md\:grid-cols-2 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      
-      .md\:grid-cols-4 {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-      
-      .md\:flex {
-        display: flex;
-      }
-      
-      .md\:hidden {
-        display: none;
-      }
     }
-    
+
     @media (min-width: 1024px) {
       .lg\:grid-cols-4 {
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
-      
-      .lg\:px-8 {
-        padding-left: 2rem;
-        padding-right: 2rem;
+
+      .lg\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
     }
-    
-    @media (max-width: 767px) {
-      .sm\:px-6 {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+
+    .hidden {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .md\:hidden {
+        display: none;
       }
-      
-      .sm\:flex {
+
+      .md\:block {
+        display: block;
+      }
+
+      .md\:flex {
         display: flex;
       }
-      
-      .admin-layout {
-        flex-direction: column;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      padding-left: 0.625rem;
+      padding-right: 0.625rem;
+      padding-top: 0.125rem;
+      padding-bottom: 0.125rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-default {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .badge-outline {
+      border-color: currentColor;
+      background-color: transparent;
+    }
+
+    .badge-destructive {
+      background-color: var(--destructive);
+      color: var(--destructive-foreground);
+    }
+
+    /* Separator */
+    .separator {
+      height: 1px;
+      background-color: var(--border);
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Utils */
+    .mr-1 {
+      margin-right: 0.25rem;
+    }
+
+    .mr-2 {
+      margin-right: 0.5rem;
+    }
+
+    .mr-3 {
+      margin-right: 0.75rem;
+    }
+
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+
+    .mt-3 {
+      margin-top: 0.75rem;
+    }
+
+    .mt-4 {
+      margin-top: 1rem;
+    }
+
+    .mb-1 {
+      margin-bottom: 0.25rem;
+    }
+
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .col-span-1 {
+      grid-column: span 1 / span 1;
+    }
+
+    .col-span-2 {
+      grid-column: span 2 / span 2;
+    }
+
+    .col-span-3 {
+      grid-column: span 3 / span 3;
+    }
+
+    @media (min-width: 768px) {
+      .md\:col-span-2 {
+        grid-column: span 2 / span 2;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .lg\:col-span-3 {
+        grid-column: span 3 / span 3;
       }
       
-      .admin-sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
+      .lg\:col-span-1 {
+        grid-column: span 1 / span 1;
       }
     }
   </style>
 </head>
 <body>
-  <div class="min-h-screen flex flex-col">
-    <!-- Header/Navbar -->
-    <header class="w-full bg-background sticky top-0 z-40 border-b">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <div class="flex items-center">
-            <a href="home_page.html" class="flex items-center">
-              <span class="text-2xl font-bold text-primary">DairyVest</span>
-            </a>
-          </div>
-
-          <!-- Desktop Navigation -->
-          <nav class="hidden md:flex items-center space-x-6">
-            <a href="home_page.html" class="text-foreground hover:text-primary transition-colors">
-              Home
-            </a>
-            <a href="dashboard.html" class="text-foreground hover:text-primary transition-colors">
-              Dashboard
-            </a>
-            <a href="store.html" class="text-foreground hover:text-primary transition-colors">
-              Store
-            </a>
-            <a href="admin.html" class="text-primary transition-colors">
-              Admin
-            </a>
-          </nav>
-
-          <div class="hidden md:flex items-center space-x-4">
-            <span class="text-sm text-muted-foreground">Admin: John Doe</span>
-            <a href="login.html">
-              <button class="btn-outline">
-                <i class="fas fa-sign-out-alt h-4 w-4 mr-2"></i>
-                Logout
-              </button>
-            </a>
-          </div>
-
-          <!-- Mobile Navigation Toggle -->
-          <div class="flex md:hidden">
-            <button
-              id="mobile-menu-button"
-              class="text-gray-600 hover:text-primary focus:outline-none"
-              aria-label="Toggle menu"
-            >
-              <i class="fas fa-bars h-6 w-6" id="menu-icon"></i>
-              <i class="fas fa-times h-6 w-6 hidden" id="close-icon"></i>
-            </button>
-          </div>
-        </div>
+  <!-- Header -->
+  <header>
+    <div class="flex items-center justify-between p-4">
+      <div class="flex items-center">
+        <button id="sidebar-toggle" class="btn btn-ghost btn-icon md:hidden mr-2">
+          <i class="lucide-menu"></i>
+        </button>
+        <a href="indexadmin.html" class="flex items-center">
+          <span class="text-2xl font-bold text-primary">DairyVest</span>
+          <span class="ml-1 text-xs bg-primary text-white px-1 rounded">Admin</span>
+        </a>
       </div>
-
-      <!-- Mobile Navigation Menu -->
-      <div id="mobile-menu" class="md:hidden" style="display: none;">
-        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background border-b">
-          <a
-            href="home_page.html"
-            class="block px-3 py-2 text-foreground hover:text-primary hover:bg-muted rounded-md"
-          >
-            Home
-          </a>
-          <a
-            href="dashboard.html"
-            class="block px-3 py-2 text-foreground hover:text-primary hover:bg-muted rounded-md"
-          >
-            Dashboard
-          </a>
-          <a
-            href="store.html"
-            class="block px-3 py-2 text-foreground hover:text-primary hover:bg-muted rounded-md"
-          >
-            Store
-          </a>
-          <a
-            href="admin.html"
-            class="block px-3 py-2 text-primary hover:bg-muted rounded-md"
-          >
-            Admin
-          </a>
-          <div class="block px-3 py-2 text-muted-foreground">
-            Admin: John Doe
-          </div>
-          <a
-            href="login.html"
-            class="block px-3 py-2 text-red-600 hover:bg-muted rounded-md"
-          >
-            Logout
-          </a>
-        </div>
-      </div>
-    </header>
-
-    <!-- Admin Layout -->
-    <div class="admin-layout">
-      <!-- Sidebar -->
-      <div class="admin-sidebar hidden md:block">
-        <div class="p-4">
-          <h2 class="text-lg font-semibold mb-4">Admin Panel</h2>
-          <nav>
-            <a href="#" class="sidebar-link active">
-              <i class="fas fa-tachometer-alt w-5 h-5 mr-2"></i>
-              Dashboard
-            </a>
-            <a href="#" class="sidebar-link">
-              <i class="fas fa-cow w-5 h-5 mr-2"></i>
-              Cattle Management
-            </a>
-            <a href="#" class="sidebar-link">
-              <i class="fas fa-users w-5 h-5 mr-2"></i>
-              Investors
-            </a>
-            <a href="#" class="sidebar-link">
-              <i class="fas fa-chart-line w-5 h-5 mr-2"></i>
-              Financial Reports
-            </a>
-            <a href="#" class="sidebar-link">
-              <i class="fas fa-shopping-basket w-5 h-5 mr-2"></i>
-              Store Management
-            </a>
-            <a href="#" class="sidebar-link">
-              <i class="fas fa-box w-5 h-5 mr-2"></i>
-              Orders
-            </a>
-            <a href="#" class="sidebar-link">
-              <i class="fas fa-cog w-5 h-5 mr-2"></i>
-              Settings
-            </a>
-          </nav>
-        </div>
-      </div>
-
-      <!-- Main Content -->
-      <div class="admin-content">
-        <h1 class="text-2xl font-bold mb-6">Admin Dashboard</h1>
-
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div class="summary-card">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="text-sm font-medium text-muted-foreground mb-1">Total Cattle</p>
-                <h3 class="text-2xl font-bold">84</h3>
-                <p class="text-xs text-green-600 mt-1">
-                  <i class="fas fa-arrow-up mr-1"></i>
-                  5 new this month
-                </p>
-              </div>
-              <div class="p-3 rounded-full bg-green-100">
-                <i class="fas fa-cow w-5 h-5 text-green-600"></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="text-sm font-medium text-muted-foreground mb-1">Total Investors</p>
-                <h3 class="text-2xl font-bold">124</h3>
-                <p class="text-xs text-green-600 mt-1">
-                  <i class="fas fa-arrow-up mr-1"></i>
-                  12 new this month
-                </p>
-              </div>
-              <div class="p-3 rounded-full bg-blue-100">
-                <i class="fas fa-users w-5 h-5 text-blue-600"></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="text-sm font-medium text-muted-foreground mb-1">Monthly Revenue</p>
-                <h3 class="text-2xl font-bold">₹284,500</h3>
-                <p class="text-xs text-green-600 mt-1">
-                  <i class="fas fa-arrow-up mr-1"></i>
-                  8.2% from last month
-                </p>
-              </div>
-              <div class="p-3 rounded-full bg-yellow-100">
-                <i class="fas fa-rupee-sign w-5 h-5 text-yellow-600"></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="text-sm font-medium text-muted-foreground mb-1">Milk Production</p>
-                <h3 class="text-2xl font-bold">2,456 L</h3>
-                <p class="text-xs text-red-600 mt-1">
-                  <i class="fas fa-arrow-down mr-1"></i>
-                  3.1% from last week
-                </p>
-              </div>
-              <div class="p-3 rounded-full bg-red-100">
-                <i class="fas fa-tint w-5 h-5 text-red-600"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tabs -->
-        <div class="tabs">
-          <div class="tab active" data-tab="recent-activities">Recent Activities</div>
-          <div class="tab" data-tab="pending-actions">Pending Actions</div>
-          <div class="tab" data-tab="system-health">System Health</div>
-        </div>
-
-        <!-- Tab Content: Recent Activities -->
-        <div class="tab-content active" id="recent-activities">
-          <div class="bg-card p-6 rounded-lg shadow-sm border mb-6">
-            <h2 class="text-xl font-semibold mb-4">Recent Activities</h2>
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Activity</th>
-                  <th>User</th>
-                  <th>Date & Time</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="flex items-center">
-                      <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                        <i class="fas fa-plus text-blue-600 text-xs"></i>
-                      </div>
-                      <div>
-                        <p class="font-medium">New Investor Onboarded</p>
-                        <p class="text-xs text-muted-foreground">Investor ID: INV-29801</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Admin (John)</td>
-                  <td>Today, 10:45 AM</td>
-                  <td><span class="badge badge-success">Completed</span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="flex items-center">
-                      <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                        <i class="fas fa-check text-green-600 text-xs"></i>
-                      </div>
-                      <div>
-                        <p class="font-medium">Health Check Performed</p>
-                        <p class="text-xs text-muted-foreground">Cattle IDs: C-2345, C-2346, C-2347</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Veterinarian (Dr. Smith)</td>
-                  <td>Today, 9:20 AM</td>
-                  <td><span class="badge badge-success">Completed</span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="flex items-center">
-                      <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
-                        <i class="fas fa-rupee-sign text-yellow-600 text-xs"></i>
-                      </div>
-                      <div>
-                        <p class="font-medium">Monthly Dividends Processed</p>
-                        <p class="text-xs text-muted-foreground">Batch ID: BAT-5489</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>System</td>
-                  <td>Yesterday, 11:30 PM</td>
-                  <td><span class="badge badge-success">Completed</span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="flex items-center">
-                      <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
-                        <i class="fas fa-exclamation text-red-600 text-xs"></i>
-                      </div>
-                      <div>
-                        <p class="font-medium">Cattle Health Alert</p>
-                        <p class="text-xs text-muted-foreground">Cattle ID: C-1892 (Fever detected)</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>IoT System</td>
-                  <td>Yesterday, 4:15 PM</td>
-                  <td><span class="badge badge-warning">Attention Required</span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="flex items-center">
-                      <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                        <i class="fas fa-box text-blue-600 text-xs"></i>
-                      </div>
-                      <div>
-                        <p class="font-medium">New Store Order</p>
-                        <p class="text-xs text-muted-foreground">Order ID: ORD-7823</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Customer (Rahul M.)</td>
-                  <td>Yesterday, 2:30 PM</td>
-                  <td><span class="badge badge-info">Processing</span></td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="mt-4 text-center">
-              <button class="btn-outline btn-sm">View All Activities</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab Content: Pending Actions -->
-        <div class="tab-content" id="pending-actions">
-          <div class="bg-card p-6 rounded-lg shadow-sm border mb-6">
-            <h2 class="text-xl font-semibold mb-4">Pending Actions</h2>
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Action Required</th>
-                  <th>Requested By</th>
-                  <th>Due Date</th>
-                  <th>Priority</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div>
-                      <p class="font-medium">Approve new investor application</p>
-                      <p class="text-xs text-muted-foreground">Investor ID: INV-29805</p>
-                    </div>
-                  </td>
-                  <td>System</td>
-                  <td>Today</td>
-                  <td><span class="badge badge-danger">High</span></td>
-                  <td>
-                    <div class="flex space-x-2">
-                      <button class="btn-primary btn-sm">Approve</button>
-                      <button class="btn-outline btn-sm">Reject</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <p class="font-medium">Schedule veterinary check-up</p>
-                      <p class="text-xs text-muted-foreground">Cattle ID: C-2001</p>
-                    </div>
-                  </td>
-                  <td>Farm Manager</td>
-                  <td>Tomorrow</td>
-                  <td><span class="badge badge-warning">Medium</span></td>
-                  <td>
-                    <div class="flex space-x-2">
-                      <button class="btn-primary btn-sm">Schedule</button>
-                      <button class="btn-outline btn-sm">Postpone</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <p class="font-medium">Review milk production report</p>
-                      <p class="text-xs text-muted-foreground">Report ID: REP-4520</p>
-                    </div>
-                  </td>
-                  <td>Data Analyst</td>
-                  <td>May 12, 2023</td>
-                  <td><span class="badge badge-info">Low</span></td>
-                  <td>
-                    <div class="flex space-x-2">
-                      <button class="btn-primary btn-sm">Review</button>
-                      <button class="btn-outline btn-sm">Delegate</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <p class="font-medium">Approve feed purchase order</p>
-                      <p class="text-xs text-muted-foreground">PO: PO-98765</p>
-                    </div>
-                  </td>
-                  <td>Procurement</td>
-                  <td>May 10, 2023</td>
-                  <td><span class="badge badge-warning">Medium</span></td>
-                  <td>
-                    <div class="flex space-x-2">
-                      <button class="btn-primary btn-sm">Approve</button>
-                      <button class="btn-outline btn-sm">Review</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <p class="font-medium">Approve dividend payment</p>
-                      <p class="text-xs text-muted-foreground">Payment Batch: PB-4502</p>
-                    </div>
-                  </td>
-                  <td>Finance Dept.</td>
-                  <td>May 15, 2023</td>
-                  <td><span class="badge badge-danger">High</span></td>
-                  <td>
-                    <div class="flex space-x-2">
-                      <button class="btn-primary btn-sm">Approve</button>
-                      <button class="btn-outline btn-sm">Request Changes</button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Tab Content: System Health -->
-        <div class="tab-content" id="system-health">
-          <div class="bg-card p-6 rounded-lg shadow-sm border mb-6">
-            <h2 class="text-xl font-semibold mb-4">System Health</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div class="border rounded-lg p-4">
-                <h3 class="font-medium mb-4">Server Status</h3>
-                <div class="space-y-2">
-                  <div class="flex justify-between items-center">
-                    <span>API Server</span>
-                    <span class="badge badge-success">Online</span>
-                  </div>
-                  <div class="flex justify-between items-center">
-                    <span>Database Server</span>
-                    <span class="badge badge-success">Online</span>
-                  </div>
-                  <div class="flex justify-between items-center">
-                    <span>IoT Gateway</span>
-                    <span class="badge badge-success">Online</span>
-                  </div>
-                  <div class="flex justify-between items-center">
-                    <span>Storage Server</span>
-                    <span class="badge badge-warning">High Load</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="border rounded-lg p-4">
-                <h3 class="font-medium mb-4">IoT Sensors</h3>
-                <div class="space-y-2">
-                  <div class="flex justify-between items-center">
-                    <span>Temperature Sensors</span>
-                    <span class="badge badge-success">82/82 Online</span>
-                  </div>
-                  <div class="flex justify-between items-center">
-                    <span>Milk Flow Sensors</span>
-                    <span class="badge badge-warning">75/82 Online</span>
-                  </div>
-                  <div class="flex justify-between items-center">
-                    <span>Health Monitors</span>
-                    <span class="badge badge-success">82/82 Online</span>
-                  </div>
-                  <div class="flex justify-between items-center">
-                    <span>Feed Dispensers</span>
-                    <span class="badge badge-danger">70/82 Online</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="border rounded-lg p-4">
-              <h3 class="font-medium mb-4">Recent System Events</h3>
-              <div class="space-y-4">
-                <div>
-                  <div class="flex items-center">
-                    <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
-                      <i class="fas fa-exclamation-triangle text-yellow-600 text-xs"></i>
-                    </div>
-                    <div>
-                      <p class="font-medium">High CPU Usage Detected</p>
-                      <p class="text-xs text-muted-foreground">Database server experienced high CPU usage (92%) for 15 minutes</p>
-                      <p class="text-xs text-muted-foreground mt-1">Today, 08:45 AM</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div class="flex items-center">
-                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
-                      <i class="fas fa-times-circle text-red-600 text-xs"></i>
-                    </div>
-                    <div>
-                      <p class="font-medium">Feed Dispenser Offline</p>
-                      <p class="text-xs text-muted-foreground">Feed dispenser FD-045 went offline</p>
-                      <p class="text-xs text-muted-foreground mt-1">Yesterday, 11:32 PM</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div class="flex items-center">
-                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                      <i class="fas fa-check-circle text-green-600 text-xs"></i>
-                    </div>
-                    <div>
-                      <p class="font-medium">Automatic System Update Completed</p>
-                      <p class="text-xs text-muted-foreground">System updated to version 2.4.5</p>
-                      <p class="text-xs text-muted-foreground mt-1">Yesterday, 03:15 AM</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="bg-card p-6 rounded-lg shadow-sm border">
-          <h2 class="text-xl font-semibold mb-4">Quick Actions</h2>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <button class="btn-primary">
-              <i class="fas fa-plus-circle mr-2"></i>
-              Add New Cattle
-            </button>
-            <button class="btn-primary">
-              <i class="fas fa-user-plus mr-2"></i>
-              Register Investor
-            </button>
-            <button class="btn-primary">
-              <i class="fas fa-chart-bar mr-2"></i>
-              Generate Report
-            </button>
-            <button class="btn-primary">
-              <i class="fas fa-cog mr-2"></i>
-              System Settings
-            </button>
-          </div>
+      
+      <div class="flex items-center space-x-4">
+        <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+        <div class="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center">
+          <i class="lucide-user"></i>
         </div>
       </div>
     </div>
+  </header>
 
-    <!-- Footer -->
-    <footer class="bg-muted text-foreground mt-auto pt-12">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="border-t border-border py-6 text-center text-muted-foreground">
-          <p>&copy; <span id="current-year"></span> DairyVest Admin Panel. All rights reserved.</p>
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar sidebar-hidden md:sidebar">
+      <nav>
+        <a href="admin-dashboard.html" class="nav-item">
+          <i class="lucide-home"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="cattlemanagement.html" class="nav-item">
+          <i class="lucide-users"></i>
+          <span>Cattle Management</span>
+        </a>
+        <a href="investors.html" class="nav-item">
+          <i class="lucide-user"></i>
+          <span>Investors</span>
+        </a>
+        <a href="financialreport.html" class="nav-item">
+          <i class="lucide-bar-chart-3"></i>
+          <span>Financial Reports</span>
+        </a>
+        <a href="storeadmin.html" class="nav-item">
+          <i class="lucide-shopping-cart"></i>
+          <span>Store</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i class="lucide-settings"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Overlay for mobile -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Main content -->
+    <main class="flex-1 p-6">
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold tracking-tight">Dashboard</h1>
+            <p class="text-muted-foreground">
+              Welcome back to DairyVest Admin Panel
+            </p>
+          </div>
+        </div>
+        
+        <!-- Dashboard Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="stats-container">
+          <!-- Stats will be loaded dynamically -->
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <!-- Sales Chart -->
+          <div class="card col-span-1 md:col-span-2 lg:col-span-3">
+            <div class="card-header flex flex-row items-center justify-between">
+              <h3 class="card-title">Revenue Overview</h3>
+              <div class="flex space-x-2">
+                <button class="btn btn-sm time-filter" data-period="week">Week</button>
+                <button class="btn btn-sm time-filter" data-period="month">Month</button>
+                <button class="btn btn-sm btn-default time-filter" data-period="year">Year</button>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="chart-container" id="sales-chart">
+                <!-- Chart will be loaded dynamically -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- Quick Actions -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Quick Actions</h3>
+            </div>
+            <div class="card-content">
+              <div class="grid grid-cols-2 gap-3">
+                <button class="btn btn-outline quick-action" data-action="Add New Cattle" style="height: 6rem; flex-direction: column;">
+                  <i class="lucide-plus-circle"></i>
+                  <span>Add New Cattle</span>
+                </button>
+                <button class="btn btn-outline quick-action" data-action="New Investor" style="height: 6rem; flex-direction: column;">
+                  <i class="lucide-user-plus"></i>
+                  <span>New Investor</span>
+                </button>
+                <button class="btn btn-outline quick-action" data-action="Create Report" style="height: 6rem; flex-direction: column;">
+                  <i class="lucide-bar-chart-3"></i>
+                  <span>Create Report</span>
+                </button>
+                <button class="btn btn-outline quick-action" data-action="Manage Store" style="height: 6rem; flex-direction: column;">
+                  <i class="lucide-shopping-cart"></i>
+                  <span>Manage Store</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Recent Activities -->
+          <div class="card col-span-1 md:col-span-2" id="recent-activities">
+            <div class="card-header">
+              <h3 class="card-title">Recent Activities</h3>
+            </div>
+            <div class="card-content">
+              <!-- Activities will be loaded dynamically -->
+            </div>
+          </div>
+          
+          <!-- Pending Actions -->
+          <div class="card col-span-1 md:col-span-2 lg:col-span-1" id="pending-actions">
+            <div class="card-header">
+              <h3 class="card-title">Pending Actions</h3>
+            </div>
+            <div class="card-content">
+              <!-- Pending actions will be loaded dynamically -->
+            </div>
+          </div>
         </div>
       </div>
-    </footer>
+    </main>
   </div>
 
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Load Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Load Chart.js for charting -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
   <script>
-    // Mobile menu toggle
-    document.getElementById('mobile-menu-button').addEventListener('click', function() {
-      const mobileMenu = document.getElementById('mobile-menu');
-      const menuIcon = document.getElementById('menu-icon');
-      const closeIcon = document.getElementById('close-icon');
+    // Initialize Lucide icons
+    lucide.createIcons();
+    
+    // Sidebar toggle functionality
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+    
+    function toggleSidebar() {
+      sidebar.classList.toggle('sidebar-hidden');
+      sidebarOverlay.classList.toggle('show');
+    }
+    
+    // Toast functionality
+    function showToast(title, description, duration = 3000) {
+      const toastContainer = document.getElementById('toast-container');
       
-      if (mobileMenu.style.display === 'block') {
-        mobileMenu.style.display = 'none';
-        menuIcon.classList.remove('hidden');
-        closeIcon.classList.add('hidden');
-      } else {
-        mobileMenu.style.display = 'block';
-        menuIcon.classList.add('hidden');
-        closeIcon.classList.remove('hidden');
-      }
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div class="toast-title">${title}</div>
+        <div class="toast-description">${description}</div>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      // Force reflow to enable transition
+      toast.offsetHeight;
+      
+      // Show toast
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 10);
+      
+      // Remove toast after duration
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          toastContainer.removeChild(toast);
+        }, 300);
+      }, duration);
+    }
+    
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      showToast('Logged out successfully', 'You have been logged out of your account');
+      // In a real app, perform actual logout logic here
     });
     
-    // Tab functionality
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        // Remove active class from all tabs and content
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    // Quick actions
+    document.querySelectorAll('.quick-action').forEach(button => {
+      button.addEventListener('click', () => {
+        const action = button.getAttribute('data-action');
+        showToast('Action triggered', `You clicked on: ${action}`);
+      });
+    });
+
+    // Time filter for sales chart
+    document.querySelectorAll('.time-filter').forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove default class from all buttons
+        document.querySelectorAll('.time-filter').forEach(btn => {
+          btn.classList.remove('btn-default');
+          btn.classList.add('btn-outline');
+        });
         
-        // Add active class to current tab and its content
-        tab.classList.add('active');
-        const tabId = tab.getAttribute('data-tab');
-        document.getElementById(tabId).classList.add('active');
+        // Add default class to clicked button
+        button.classList.remove('btn-outline');
+        button.classList.add('btn-default');
+        
+        // In a real app, update chart data based on time period
+        const period = button.getAttribute('data-period');
+        updateChartData(period);
       });
     });
     
-    // Set current year in footer
-    document.getElementById('current-year').textContent = new Date().getFullYear();
+    // Load dashboard stats
+    function loadDashboardStats() {
+      const statsContainer = document.getElementById('stats-container');
+      
+      const stats = [
+        { 
+          title: "Total Revenue", 
+          value: "₹24,567", 
+          change: 12.5, 
+          icon: "dollar-sign",
+          iconColor: "bg-blue-500" 
+        },
+        { 
+          title: "Milk Production", 
+          value: "1,243 L", 
+          change: 8.2, 
+          icon: "droplet",
+          iconColor: "bg-green-500" 
+        },
+        { 
+          title: "Total Cattle", 
+          value: "127", 
+          change: -2.4, 
+          icon: "triangle",
+          iconColor: "bg-orange-500" 
+        },
+        { 
+          title: "Investors", 
+          value: "43", 
+          change: 15.3, 
+          icon: "users",
+          iconColor: "bg-purple-500" 
+        }
+      ];
+      
+      stats.forEach(stat => {
+        const statCard = document.createElement('div');
+        statCard.className = 'card';
+        statCard.innerHTML = `
+          <div class="card-content">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-muted-foreground">${stat.title}</p>
+                <h3 class="text-2xl font-bold mt-1">${stat.value}</h3>
+                <div class="flex items-center mt-1">
+                  ${stat.change > 0 
+                    ? `<i class="lucide-arrow-up mr-1 text-green-500"></i>
+                       <span class="text-green-500">${Math.abs(stat.change)}%</span>`
+                    : `<i class="lucide-arrow-down mr-1 text-red-500"></i>
+                       <span class="text-red-500">${Math.abs(stat.change)}%</span>`
+                  }
+                  <span class="text-xs text-muted-foreground ml-1">from last month</span>
+                </div>
+              </div>
+              <div class="h-12 w-12 rounded-lg flex items-center justify-center ${stat.iconColor}">
+                <i class="lucide-${stat.icon} text-white"></i>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        statsContainer.appendChild(statCard);
+      });
+      
+      // Initialize Lucide icons again for the dynamically added content
+      lucide.createIcons();
+    }
+    
+    // Load recent activities
+    function loadRecentActivities() {
+      const activitiesContainer = document.getElementById('recent-activities').querySelector('.card-content');
+      
+      const activities = [
+        {
+          id: 1,
+          title: "Milk Collection Completed",
+          description: "Total of 243 liters collected from Farm A",
+          time: "30 minutes ago",
+          status: "completed"
+        },
+        {
+          id: 2,
+          title: "New Investor Onboarded",
+          description: "Sarah Johnson invested ₹15,000",
+          time: "2 hours ago",
+          status: "completed"
+        },
+        {
+          id: 3,
+          title: "Cattle Health Check",
+          description: "Scheduled vaccination for 12 cattle",
+          time: "In progress",
+          status: "pending"
+        },
+        {
+          id: 4,
+          title: "Equipment Repair",
+          description: "Milking machine #3 maintenance request",
+          time: "1 day ago",
+          status: "failed"
+        },
+        {
+          id: 5,
+          title: "Feed Stock Update",
+          description: "Ordered 2 tons of feed supplements",
+          time: "1 day ago",
+          status: "completed"
+        }
+      ];
+      
+      const activitiesDiv = document.createElement('div');
+      activitiesDiv.className = 'space-y-4';
+      
+      activities.forEach((activity, index) => {
+        const activityDiv = document.createElement('div');
+        
+        let statusIcon;
+        let badgeClass;
+        
+        switch(activity.status) {
+          case 'completed':
+            statusIcon = 'check-circle';
+            badgeClass = 'badge-default';
+            break;
+          case 'pending':
+            statusIcon = 'clock';
+            badgeClass = 'badge-outline';
+            break;
+          case 'failed':
+            statusIcon = 'x-circle';
+            badgeClass = 'badge-destructive';
+            break;
+        }
+        
+        activityDiv.innerHTML = `
+          <div class="flex items-start gap-4">
+            <i class="lucide-${statusIcon} ${activity.status === 'completed' ? 'text-green-500' : activity.status === 'pending' ? 'text-yellow-500' : 'text-red-500'}"></i>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-medium">${activity.title}</h4>
+                <span class="badge ${badgeClass}">
+                  ${activity.status}
+                </span>
+              </div>
+              <p class="text-sm text-muted-foreground mt-1">${activity.description}</p>
+              <span class="text-xs text-muted-foreground mt-1 block">${activity.time}</span>
+            </div>
+          </div>
+          ${index < activities.length - 1 ? '<div class="separator"></div>' : ''}
+        `;
+        
+        activitiesDiv.appendChild(activityDiv);
+      });
+      
+      activitiesContainer.appendChild(activitiesDiv);
+      
+      // Initialize Lucide icons again for the dynamically added content
+      lucide.createIcons();
+    }
+    
+    // Load pending actions
+    function loadPendingActions() {
+      const actionsContainer = document.getElementById('pending-actions').querySelector('.card-content');
+      
+      const actions = [
+        {
+          id: 1,
+          title: "Approve Milk Quality Report",
+          description: "Farm B weekly quality assessment needs approval",
+          dueDate: "Today",
+          requester: "Alex Farmer"
+        },
+        {
+          id: 2,
+          title: "Review Investor Application",
+          description: "New investment request for ₹25,000",
+          dueDate: "Tomorrow",
+          requester: "Maria Garcia"
+        },
+        {
+          id: 3,
+          title: "Sign Off on Equipment Purchase",
+          description: "New milking equipment acquisition",
+          dueDate: "In 2 days",
+          requester: "Operations Team"
+        }
+      ];
+      
+      const actionsDiv = document.createElement('div');
+      actionsDiv.className = 'space-y-4';
+      
+      actions.forEach((action, index) => {
+        const actionDiv = document.createElement('div');
+        
+        actionDiv.innerHTML = `
+          <div class="flex flex-col">
+            <h4 class="text-sm font-medium">${action.title}</h4>
+            <p class="text-sm text-muted-foreground mt-1">${action.description}</p>
+            
+            <div class="flex items-center mt-2 text-xs text-muted-foreground">
+              <i class="lucide-calendar mr-1"></i>
+              <span>Due: ${action.dueDate}</span>
+              <span class="mx-2">•</span>
+              <span>From: ${action.requester}</span>
+            </div>
+            
+            <div class="flex space-x-2 mt-3">
+              <button class="btn btn-sm btn-outline flex-1 action-btn" 
+                     data-action="reject" data-id="${action.id}">
+                Reject
+              </button>
+              <button class="btn btn-sm btn-default flex-1 action-btn" 
+                     data-action="approve" data-id="${action.id}">
+                Approve
+              </button>
+            </div>
+          </div>
+          ${index < actions.length - 1 ? '<div class="separator"></div>' : ''}
+        `;
+        
+        actionsDiv.appendChild(actionDiv);
+      });
+      
+      actionsContainer.appendChild(actionsDiv);
+      
+      // Add event listeners to action buttons
+      document.querySelectorAll('.action-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          const action = button.getAttribute('data-action');
+          const id = button.getAttribute('data-id');
+          
+          showToast(
+            action === 'approve' ? 'Action approved' : 'Action rejected',
+            `You have ${action === 'approve' ? 'approved' : 'rejected'} the request`
+          );
+          
+          // In a real app, remove the action from the list or update its status
+        });
+      });
+      
+      // Initialize Lucide icons again for the dynamically added content
+      lucide.createIcons();
+    }
+    
+    // Initialize and render the sales chart
+    function initializeSalesChart() {
+      const ctx = document.createElement('canvas');
+      document.getElementById('sales-chart').appendChild(ctx);
+      
+      const data = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [
+          {
+            label: 'Milk Sales',
+            data: [4000, 3000, 2000, 2780, 1890, 2390, 3490, 3190, 2590, 2290, 3490, 3890],
+            backgroundColor: '#3b82f6',
+            borderRadius: 4
+          },
+          {
+            label: 'Investments',
+            data: [2400, 1398, 9800, 3908, 4800, 3800, 4300, 4100, 4600, 3800, 4300, 5200],
+            backgroundColor: '#8b5cf6',
+            borderRadius: 4
+          }
+        ]
+      };
+      
+      const chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                drawBorder: false,
+                display: true,
+                drawOnChartArea: true,
+                drawTicks: false,
+                borderDash: [3, 3]
+              },
+              ticks: {
+                display: true,
+                padding: 10,
+                color: '#b2b9bf'
+              }
+            },
+            x: {
+              grid: {
+                drawBorder: false,
+                display: false,
+                drawOnChartArea: false,
+                drawTicks: false
+              },
+              ticks: {
+                display: true,
+                color: '#b2b9bf',
+                padding: 10
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                padding: 10,
+                color: '#b2b9bf'
+              }
+            },
+            tooltip: {
+              backgroundColor: 'white',
+              titleColor: '#666',
+              bodyColor: '#666',
+              borderColor: '#e2e8f0',
+              borderWidth: 1,
+              padding: 10,
+              displayColors: true,
+              usePointStyle: true,
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ₹' + context.parsed.y;
+                }
+              }
+            }
+          }
+        }
+      });
+      
+      // Save the chart instance for later updates
+      window.salesChart = chartInstance;
+    }
+    
+    // Update chart data based on selected time period
+    function updateChartData(period) {
+      // In a real app, we would fetch different data based on the period
+      // Here we just simulate different data
+      let data;
+      
+      if (period === 'week') {
+        data = {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [
+            {
+              label: 'Milk Sales',
+              data: [900, 750, 800, 720, 950, 800, 700],
+              backgroundColor: '#3b82f6',
+              borderRadius: 4
+            },
+            {
+              label: 'Investments',
+              data: [500, 600, 550, 700, 800, 450, 400],
+              backgroundColor: '#8b5cf6',
+              borderRadius: 4
+            }
+          ]
+        };
+      } else if (period === 'month') {
+        data = {
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          datasets: [
+            {
+              label: 'Milk Sales',
+              data: [3000, 3500, 2800, 3200],
+              backgroundColor: '#3b82f6',
+              borderRadius: 4
+            },
+            {
+              label: 'Investments',
+              data: [2000, 2500, 3000, 2800],
+              backgroundColor: '#8b5cf6',
+              borderRadius: 4
+            }
+          ]
+        };
+      } else {
+        // Default to year view - keep original data
+        data = {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [
+            {
+              label: 'Milk Sales',
+              data: [4000, 3000, 2000, 2780, 1890, 2390, 3490, 3190, 2590, 2290, 3490, 3890],
+              backgroundColor: '#3b82f6',
+              borderRadius: 4
+            },
+            {
+              label: 'Investments',
+              data: [2400, 1398, 9800, 3908, 4800, 3800, 4300, 4100, 4600, 3800, 4300, 5200],
+              backgroundColor: '#8b5cf6',
+              borderRadius: 4
+            }
+          ]
+        };
+      }
+      
+      // Update chart data
+      window.salesChart.data = data;
+      window.salesChart.update();
+    }
+    
+    // Initialize all components when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadDashboardStats();
+      loadRecentActivities();
+      loadPendingActions();
+      initializeSalesChart();
+      
+      // Show a welcome toast
+      showToast("Welcome back!", "You are now viewing the dashboard");
+    });
   </script>
 </body>
 </html>

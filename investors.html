@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cattle Management - DairyVest</title>
+  <title>Investors - DairyVest</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-icons@0.284.0/dist/umd/lucide.min.css">
   <style>
     /* Base styles */
@@ -270,6 +270,40 @@
       color: var(--muted-foreground);
     }
 
+    /* Stats */
+    .icon-circle {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .text-green-500 {
+      color: #22c55e;
+    }
+
+    .text-red-500 {
+      color: #ef4444;
+    }
+
+    .text-blue-500 {
+      color: #3b82f6;
+    }
+
+    .bg-blue-100 {
+      background-color: #dbeafe;
+    }
+
+    .bg-green-100 {
+      background-color: #dcfce7;
+    }
+
+    .bg-purple-100 {
+      background-color: #f3e8ff;
+    }
+
     /* Buttons */
     .btn {
       display: inline-flex;
@@ -354,9 +388,9 @@
       background-color: transparent;
     }
 
-    .badge-destructive {
-      background-color: var(--destructive);
-      color: var(--destructive-foreground);
+    .badge-secondary {
+      background-color: var(--secondary);
+      color: var(--secondary-foreground);
     }
 
     /* Table */
@@ -488,8 +522,8 @@
 
     /* Responsive */
     @media (min-width: 768px) {
-      .md\:grid-cols-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .md\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
       
       .md\:flex-row {
@@ -525,6 +559,20 @@
       .md\:flex {
         display: flex;
       }
+    }
+
+    /* Utils */
+    .mr-1 {
+      margin-right: 0.25rem;
+    }
+
+    .mr-2 {
+      margin-right: 0.5rem;
+    }
+
+    .mx-2 {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
     }
   </style>
 </head>
@@ -571,7 +619,7 @@
           <i class="lucide-bar-chart-3"></i>
           <span>Financial Reports</span>
         </a>
-        <a href="store.html" class="nav-item">
+        <a href="storeadmin.html" class="nav-item">
           <i class="lucide-shopping-cart"></i>
           <span>Store</span>
         </a>
@@ -590,28 +638,73 @@
       <div class="space-y-6">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-3xl font-bold tracking-tight">Cattle Management</h1>
+            <h1 class="text-3xl font-bold tracking-tight">Investors Management</h1>
             <p class="text-muted-foreground">
-              Manage your cattle inventory and health records
+              Manage investors and track their returns
             </p>
           </div>
-          <button id="add-cattle-btn" class="btn btn-default">
+          <button id="add-investor-btn" class="btn btn-default">
             <i class="lucide-plus-circle mr-2"></i>
-            Add Cattle
+            Add Investor
           </button>
         </div>
         
-        <!-- Cattle List -->
+        <!-- Investor Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="card">
+            <div class="card-content">
+              <div class="flex justify-between">
+                <div>
+                  <p class="text-sm font-medium text-muted-foreground">Total Investors</p>
+                  <h3 class="text-2xl font-bold mt-1">43</h3>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                  <i class="lucide-user text-blue-500"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-content">
+              <div class="flex justify-between">
+                <div>
+                  <p class="text-sm font-medium text-muted-foreground">Total Investment</p>
+                  <h3 class="text-2xl font-bold mt-1">₹2.4M</h3>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
+                  <i class="lucide-dollar-sign text-green-500"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-content">
+              <div class="flex justify-between">
+                <div>
+                  <p class="text-sm font-medium text-muted-foreground">Avg. ROI</p>
+                  <h3 class="text-2xl font-bold mt-1">7.5%</h3>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
+                  <i class="lucide-arrow-up-right text-purple-500"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Investors List -->
         <div class="card">
           <div class="card-header">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <h3 class="card-title">Cattle Inventory</h3>
+              <h3 class="card-title">Investors</h3>
               <div class="flex items-center gap-2">
                 <div class="relative">
                   <i class="lucide-search input-icon"></i>
                   <input
                     type="search"
-                    placeholder="Search cattle..."
+                    placeholder="Search investors..."
                     class="input input-with-icon w-full md:w-[250px]"
                     id="search-input"
                   />
@@ -630,16 +723,16 @@
                     <tr>
                       <th>ID</th>
                       <th>Name</th>
-                      <th>Age</th>
-                      <th>Breed</th>
-                      <th>Health</th>
-                      <th>Production (L/day)</th>
-                      <th>Last Checkup</th>
+                      <th>Email</th>
+                      <th>Investment</th>
+                      <th>Join Date</th>
+                      <th>Status</th>
+                      <th>Returns</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
-                  <tbody id="cattle-table-body">
-                    <!-- Cattle data will be loaded dynamically -->
+                  <tbody id="investors-table-body">
+                    <!-- Investor data will be loaded dynamically -->
                   </tbody>
                 </table>
               </div>
@@ -708,18 +801,18 @@
       // In a real app, perform actual logout logic here
     });
     
-    // Add Cattle button
-    document.getElementById('add-cattle-btn').addEventListener('click', () => {
-      showToast('Feature in development', "The 'Add Cattle' feature is coming soon!");
+    // Add Investor button
+    document.getElementById('add-investor-btn').addEventListener('click', () => {
+      showToast('Feature in development', "The 'Add Investor' feature is coming soon!");
     });
 
     // Search functionality
     const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('input', filterCattle);
+    searchInput.addEventListener('input', filterInvestors);
 
-    function filterCattle() {
+    function filterInvestors() {
       const searchTerm = searchInput.value.toLowerCase();
-      const rows = document.querySelectorAll('#cattle-table-body tr');
+      const rows = document.querySelectorAll('#investors-table-body tr');
       
       rows.forEach(row => {
         const text = row.textContent.toLowerCase();
@@ -728,55 +821,110 @@
       });
     }
 
-    // Cattle data
-    const cattleData = [
-      { id: 'C001', name: 'Bessie', age: 3, breed: 'Holstein', health: 'Healthy', milkProduction: 28, lastCheckup: '2023-09-15' },
-      { id: 'C002', name: 'Daisy', age: 4, breed: 'Jersey', health: 'Under Treatment', milkProduction: 22, lastCheckup: '2023-09-20' },
-      { id: 'C003', name: 'Buttercup', age: 2, breed: 'Guernsey', health: 'Healthy', milkProduction: 25, lastCheckup: '2023-09-18' },
-      { id: 'C004', name: 'Clover', age: 5, breed: 'Holstein', health: 'Sick', milkProduction: 15, lastCheckup: '2023-09-21' },
-      { id: 'C005', name: 'Bella', age: 3, breed: 'Jersey', health: 'Healthy', milkProduction: 26, lastCheckup: '2023-09-14' },
+    // Investor data
+    const investorsData = [
+      { 
+        id: 'INV001', 
+        name: 'John Smith', 
+        email: 'john.smith@example.com',
+        investment: 25000,
+        joinDate: '2022-05-15',
+        lastActivity: '2023-09-21',
+        status: 'Active',
+        returns: 8.2,
+        trend: 'up'
+      },
+      { 
+        id: 'INV002', 
+        name: 'Sarah Johnson', 
+        email: 'sarah.j@example.com',
+        investment: 15000,
+        joinDate: '2022-08-03',
+        lastActivity: '2023-09-18',
+        status: 'Active',
+        returns: 7.5,
+        trend: 'up'
+      },
+      { 
+        id: 'INV003', 
+        name: 'Mike Williams', 
+        email: 'mike.w@example.com',
+        investment: 50000,
+        joinDate: '2023-01-22',
+        lastActivity: '2023-09-20',
+        status: 'Pending',
+        returns: 0,
+        trend: 'up'
+      },
+      { 
+        id: 'INV004', 
+        name: 'Elena Rodriguez', 
+        email: 'elena.r@example.com',
+        investment: 35000,
+        joinDate: '2022-04-10',
+        lastActivity: '2023-07-05',
+        status: 'Inactive',
+        returns: 5.2,
+        trend: 'down'
+      },
+      { 
+        id: 'INV005', 
+        name: 'David Chen', 
+        email: 'david.c@example.com',
+        investment: 75000,
+        joinDate: '2022-11-30',
+        lastActivity: '2023-09-15',
+        status: 'Active',
+        returns: 9.1,
+        trend: 'up'
+      },
     ];
 
-    // Load cattle data
-    function loadCattleData() {
-      const tableBody = document.getElementById('cattle-table-body');
+    // Load investor data
+    function loadInvestorData() {
+      const tableBody = document.getElementById('investors-table-body');
       
-      cattleData.forEach(cattle => {
+      investorsData.forEach(investor => {
         const row = document.createElement('tr');
         
-        // Determine badge class based on health status
+        // Determine badge class based on status
         let badgeClass;
-        switch(cattle.health) {
-          case 'Healthy':
+        switch(investor.status) {
+          case 'Active':
             badgeClass = 'badge-default';
             break;
-          case 'Under Treatment':
+          case 'Pending':
             badgeClass = 'badge-outline';
             break;
-          case 'Sick':
-            badgeClass = 'badge-destructive';
+          case 'Inactive':
+            badgeClass = 'badge-secondary';
             break;
         }
         
         row.innerHTML = `
-          <td>${cattle.id}</td>
-          <td class="font-medium">${cattle.name}</td>
-          <td>${cattle.age} years</td>
-          <td>${cattle.breed}</td>
+          <td>${investor.id}</td>
+          <td class="font-medium">${investor.name}</td>
+          <td>${investor.email}</td>
+          <td>₹${investor.investment.toLocaleString()}</td>
+          <td>${investor.joinDate}</td>
           <td>
             <span class="badge ${badgeClass}">
-              ${cattle.health}
+              ${investor.status}
             </span>
           </td>
-          <td>${cattle.milkProduction} L</td>
-          <td>${cattle.lastCheckup}</td>
+          <td>
+            <div class="flex items-center gap-2">
+              <i class="lucide-${investor.trend === 'up' ? 'arrow-up-right' : 'arrow-down-right'} ${investor.trend === 'up' ? 'text-green-500' : 'text-red-500'}"></i>
+              <span class="${investor.trend === 'up' ? 'text-green-500' : 'text-red-500'}">${investor.returns}%</span>
+            </div>
+          </td>
           <td>
             <div class="flex space-x-2">
-              <button class="btn btn-outline btn-sm cattle-action" data-action="Edit" data-id="${cattle.id}">
-                Edit
+              <button class="btn btn-outline btn-sm investor-action" data-action="View Details" data-id="${investor.id}">
+                Details
               </button>
-              <button class="btn btn-outline btn-sm cattle-action" data-action="Health Check" data-id="${cattle.id}">
-                Health Check
+              <button class="btn btn-outline btn-sm investor-action" data-action="Contact" data-id="${investor.id}">
+                Contact
               </button>
             </div>
           </td>
@@ -786,19 +934,22 @@
       });
       
       // Add event listeners to action buttons
-      document.querySelectorAll('.cattle-action').forEach(button => {
+      document.querySelectorAll('.investor-action').forEach(button => {
         button.addEventListener('click', () => {
           const action = button.getAttribute('data-action');
           const id = button.getAttribute('data-id');
           
-          showToast('Action triggered', `Action ${action} on cattle ${id}`);
+          showToast('Action triggered', `${action} on investor ${id}`);
         });
       });
+      
+      // Re-initialize icons for dynamically added content
+      lucide.createIcons();
     }
 
     // Initialize when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
-      loadCattleData();
+      loadInvestorData();
     });
   </script>
 </body>

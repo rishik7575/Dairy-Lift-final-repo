@@ -1,0 +1,490 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Cattle - DairyVest Admin</title>
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    :root {
+      --primary-color: #3b82f6;
+      --primary-hover: #2563eb;
+      --secondary-color: #f3f4f6;
+      --text-color: #1f2937;
+      --muted-text: #6b7280;
+      --border-color: #e5e7eb;
+      --card-bg: #ffffff;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      --radius: 0.5rem;
+    }
+
+    body {
+      background-color: #f9fafb;
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      background-color: white;
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .logo-badge {
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.125rem 0.25rem;
+      border-radius: 0.25rem;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      background: linear-gradient(to right, #eff6ff, #dbeafe);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-description {
+      color: var(--muted-text);
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .card-footer {
+      padding: 1.25rem 1.5rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      background-color: var(--secondary-color);
+    }
+
+    .icon-circle {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background-color: #dbeafe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0.75rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .form-description {
+      color: var(--muted-text);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+    }
+
+    .form-textarea {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+      resize: vertical;
+      min-height: 6rem;
+    }
+
+    .form-error {
+      color: var(--danger);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--danger);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-outline {
+      background-color: white;
+      border-color: var(--border-color);
+      color: var(--text-color);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast {
+      padding: 1rem;
+      border-radius: var(--radius);
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 300px;
+      max-width: calc(100vw - 2rem);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+
+    .toast-success {
+      border-left: 4px solid var(--success);
+    }
+
+    .toast-error {
+      border-left: 4px solid var(--danger);
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-message {
+      color: var(--muted-text);
+      font-size: 0.875rem;
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted-text);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="admin_dashboard.html" class="logo">
+      DairyVest
+      <span class="logo-badge">Admin</span>
+    </a>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <div class="icon-circle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+        </div>
+        <div>
+          <h2 class="card-title">Add New Cattle</h2>
+          <p class="card-description">Enter the details below to register new cattle to your farm inventory.</p>
+        </div>
+      </div>
+      
+      <form id="cattle-form" onsubmit="handleSubmit(event)">
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="tag" class="form-label required">Tag ID</label>
+              <input type="text" id="tag" name="tag" class="form-input" required placeholder="Enter cattle tag ID">
+              <p class="form-description">Unique identifier for the cattle.</p>
+            </div>
+            
+            <div class="form-group">
+              <label for="breed" class="form-label required">Breed</label>
+              <select id="breed" name="breed" class="form-select" required>
+                <option value="">Select breed</option>
+                <option value="holstein">Holstein</option>
+                <option value="jersey">Jersey</option>
+                <option value="guernsey">Guernsey</option>
+                <option value="ayrshire">Ayrshire</option>
+                <option value="brown_swiss">Brown Swiss</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="age" class="form-label required">Age (years)</label>
+              <input type="number" id="age" name="age" class="form-input" required min="0" step="0.1" placeholder="Enter age">
+            </div>
+            
+            <div class="form-group">
+              <label for="gender" class="form-label required">Gender</label>
+              <select id="gender" name="gender" class="form-select" required>
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="health_status" class="form-label required">Health Status</label>
+              <select id="health_status" name="health_status" class="form-select" required>
+                <option value="">Select health status</option>
+                <option value="excellent">Excellent</option>
+                <option value="good">Good</option>
+                <option value="fair">Fair</option>
+                <option value="poor">Poor</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="purchase_price" class="form-label required">Purchase Price (₹)</label>
+              <input type="number" id="purchase_price" name="purchase_price" class="form-input" required min="0" placeholder="Enter purchase price">
+            </div>
+            
+            <div class="form-group">
+              <label for="purchase_date" class="form-label required">Purchase Date</label>
+              <input type="date" id="purchase_date" name="purchase_date" class="form-input" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="notes" class="form-label">Additional Notes</label>
+            <textarea id="notes" name="notes" class="form-textarea" placeholder="Enter any additional information about the cattle"></textarea>
+          </div>
+        </div>
+        
+        <div class="card-footer">
+          <a href="admin_dashboard.html" class="btn btn-outline">Cancel</a>
+          <button type="submit" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            Register Cattle
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container for Notifications -->
+  <div class="toast-container" id="toast-container">
+    <!-- Toasts will be dynamically inserted here -->
+  </div>
+
+  <script>
+    // Set default date to today
+    document.getElementById('purchase_date').valueAsDate = new Date();
+
+    // Form submission handler
+    function handleSubmit(event) {
+      event.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(event.target);
+      const cattleData = Object.fromEntries(formData.entries());
+      
+      // Validate form (could be expanded)
+      if (!cattleData.tag || !cattleData.breed || !cattleData.age) {
+        showToast('error', 'Validation Error', 'Please fill in all required fields.');
+        return;
+      }
+      
+      // In a real application, you would send this data to a server
+      console.log('Submitting cattle data:', cattleData);
+      
+      // Show success message
+      showToast('success', 'Cattle Added Successfully', `Cattle with tag ${cattleData.tag} has been added to your inventory.`);
+      
+      // Reset form after successful submission
+      setTimeout(() => {
+        window.location.href = 'admin_dashboard.html';
+      }, 2000);
+    }
+
+    // Function to show toast notifications
+    function showToast(type, title, message, duration = 3000) {
+      const toastContainer = document.getElementById('toast-container');
+      
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      let iconSvg = '';
+      switch(type) {
+        case 'success':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+          break;
+        case 'error':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+          break;
+      }
+      
+      toast.innerHTML = `
+        ${iconSvg}
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      const closeButton = toast.querySelector('.toast-close');
+      closeButton.addEventListener('click', function() {
+        toast.remove();
+      });
+      
+      // Auto remove after duration
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-out forwards';
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, duration);
+    }
+  </script>
+</body>
+</html>
