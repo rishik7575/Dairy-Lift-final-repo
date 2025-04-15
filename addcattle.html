@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Cattle - DairyVest</title>
+  <meta name="description" content="Add new cattle to your farm inventory">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Required scripts -->
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dairyvest: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* Base styles */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: rgb(248, 250, 252);
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Required class for label with asterisk */
+    .required:after {
+      content: " *";
+      color: rgb(239, 68, 68);
+    }
+
+    /* Toast notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      z-index: 9999;
+    }
+    
+    .toast {
+      background-color: white;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #0284c7;
+      border-radius: 0.375rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      max-width: 24rem;
+      animation: slideInFromRight 0.3s forwards;
+    }
+    
+    .toast.destructive {
+      border-left: 4px solid #ef4444;
+    }
+    
+    @keyframes slideInFromRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .toast-title {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #1e293b;
+    }
+    
+    .toast-description {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+    <div class="container max-w-7xl mx-auto py-3 px-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <a href="add_new_cattle.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-dairyvest-600">
+            <path d="M12 22c-4.97 0-9-2.69-9-6s4.03-6 9-6 9 2.69 9 6-4.03 6-9 6z"></path>
+            <path d="M9 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+            <path d="M15 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+            <path d="M12 8h.01"></path>
+            <path d="M12 19v-4"></path>
+          </svg>
+          <span class="text-dairyvest-600 font-bold text-2xl">DairyVest</span>
+        </a>
+      </div>
+      
+      <a href="add_new_cattle.html" class="text-sm text-dairyvest-600 hover:underline">
+        Back to Dashboard
+      </a>
+    </div>
+  </header>
+
+  <main class="container max-w-4xl mx-auto px-4 py-8">
+    <form id="cattle-form" class="w-full">
+      <div class="bg-white border border-slate-200 rounded-lg shadow">
+        <div class="bg-gradient-to-r from-blue-50 to-blue-100 border-b border-slate-200 p-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
+                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+                <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-slate-800" id="form-title">Add New Cattle</h2>
+              <p class="text-sm text-slate-500" id="form-description">Enter the details below to register new cattle to your farm inventory</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="p-6">
+          <div class="mb-6">
+            <ul role="tablist" class="grid w-full grid-cols-3 gap-2 rounded-md bg-slate-100 p-1">
+              <li>
+                <button type="button" role="tab" data-tab="basic" class="w-full rounded-md bg-white py-2 px-3 text-sm font-medium shadow">
+                  Basic Info
+                </button>
+              </li>
+              <li>
+                <button type="button" role="tab" data-tab="health" class="w-full rounded-md py-2 px-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+                  Health & Vaccination
+                </button>
+              </li>
+              <li>
+                <button type="button" role="tab" data-tab="additional" class="w-full rounded-md py-2 px-3 text-sm font-medium text-slate-600 hover:bg-slate-50">
+                  Additional Details
+                </button>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="tab-content" id="tab-basic">
+            <div class="flex flex-col md:flex-row gap-6">
+              <div class="md:w-1/3 space-y-2 flex flex-col items-center justify-center">
+                <div class="w-full aspect-square bg-slate-100 rounded-md border-2 border-dashed border-slate-300 flex flex-col items-center justify-center overflow-hidden relative">
+                  <div id="image-preview-container" class="w-full h-full flex flex-col items-center justify-center p-4 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 mb-2">
+                      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                      <circle cx="12" cy="13" r="3"></circle>
+                    </svg>
+                    <p class="text-sm text-slate-500">Upload cattle image</p>
+                    <p class="text-xs text-slate-400 mt-1">For better identification</p>
+                  </div>
+                  <img id="image-preview" class="w-full h-full object-cover hidden" alt="Cattle preview" />
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    id="cattle-image"
+                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  />
+                </div>
+                
+                <div class="w-full mt-4 flex flex-col space-y-4">
+                  <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                      <label for="tagId" class="required block text-sm font-medium text-slate-700">Tag ID</label>
+                      <button 
+                        type="button" 
+                        id="generate-tag-btn"
+                        class="inline-flex h-7 items-center justify-center rounded-md border border-input bg-background px-3 text-xs hover:bg-accent hover:text-accent-foreground"
+                      >
+                        Generate
+                      </button>
+                    </div>
+                    <input 
+                      id="tagId"
+                      name="tagId"
+                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                      placeholder="Enter cattle tag ID"
+                      required
+                    />
+                    <p class="text-xs text-slate-500">Unique identifier for the cattle</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="md:w-2/3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="space-y-2">
+                    <label for="breed" class="required block text-sm font-medium text-slate-700">Breed</label>
+                    <select 
+                      id="breed"
+                      name="breed"
+                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                      required
+                    >
+                      <option value="" selected disabled>Select breed</option>
+                      <option value="holstein">Holstein</option>
+                      <option value="jersey">Jersey</option>
+                      <option value="guernsey">Guernsey</option>
+                      <option value="ayrshire">Ayrshire</option>
+                      <option value="brown_swiss">Brown Swiss</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  
+                  <div class="space-y-2">
+                    <label for="dob" class="required block text-sm font-medium text-slate-700">Date of Birth</label>
+                    <input
+                      type="date"
+                      id="dob"
+                      name="dob"
+                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                      required
+                    />
+                  </div>
+                  
+                  <div class="space-y-2">
+                    <label for="age" class="block text-sm font-medium text-slate-700">Age (years)</label>
+                    <input
+                      type="number"
+                      id="age"
+                      name="age"
+                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                      placeholder="Calculated from DOB"
+                      readonly
+                    />
+                  </div>
+                  
+                  <div class="space-y-2">
+                    <label for="gender" class="required block text-sm font-medium text-slate-700">Gender</label>
+                    <select 
+                      id="gender"
+                      name="gender"
+                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                      required
+                    >
+                      <option value="" selected disabled>Select gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                  </div>
+                  
+                  <div class="space-y-2">
+                    <label for="weight" class="block text-sm font-medium text-slate-700">Weight (kg)</label>
+                    <input
+                      type="number"
+                      id="weight"
+                      name="weight"
+                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                      min="0"
+                      placeholder="Enter weight in kg"
+                    />
+                  </div>
+                  
+                  <div id="milk-production-field" class="space-y-2 hidden">
+                    <label for="expectedMilkProduction" class="block text-sm font-medium text-slate-700">Expected Milk (L/day)</label>
+                    <input
+                      type="number"
+                      id="expectedMilkProduction"
+                      name="expectedMilkProduction"
+                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                      min="0"
+                      step="0.1"
+                      placeholder="Enter expected milk production"
+                    />
+                  </div>
+                  
+                  <div class="space-y-2">
+                    <label for="purchasePrice" class="required block text-sm font-medium text-slate-700">Purchase Price (₹)</label>
+                    <input
+                      type="number"
+                      id="purchasePrice"
+                      name="purchasePrice"
+                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                      min="0"
+                      placeholder="Enter purchase price"
+                      required
+                    />
+                    <p id="breed-price" class="text-xs text-slate-500 hidden">
+                      Average price is around ₹65,000
+                    </p>
+                  </div>
+                  
+                  <div class="space-y-2">
+                    <label for="purchaseDate" class="required block text-sm font-medium text-slate-700">Purchase Date</label>
+                    <input
+                      type="date"
+                      id="purchaseDate"
+                      name="purchaseDate"
+                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="tab-content hidden" id="tab-health">
+            <div class="space-y-6">
+              <div class="space-y-2">
+                <label for="healthStatus" class="required block text-sm font-medium text-slate-700">Health Status</label>
+                <select 
+                  id="healthStatus"
+                  name="healthStatus"
+                  class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                  required
+                >
+                  <option value="" selected disabled>Select health status</option>
+                  <option value="excellent">Excellent</option>
+                  <option value="good">Good</option>
+                  <option value="fair">Fair</option>
+                  <option value="poor">Poor</option>
+                </select>
+              </div>
+              
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <label class="block text-sm font-medium text-slate-700">Vaccination Records</label>
+                  <button 
+                    type="button" 
+                    id="add-vaccination-btn"
+                    class="inline-flex items-center justify-center rounded-md border border-input bg-background px-3 h-9 text-xs hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1">
+                      <path d="M5 12h14"></path>
+                      <path d="M12 5v14"></path>
+                    </svg>
+                    Add Vaccination
+                  </button>
+                </div>
+                
+                <div id="vaccination-records-container">
+                  <p class="text-sm text-slate-500 italic">No vaccination records yet. Click "Add Vaccination" to add records.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="tab-content hidden" id="tab-additional">
+            <div class="space-y-6">
+              <div class="space-y-2">
+                <label for="notes" class="block text-sm font-medium text-slate-700">Additional Notes</label>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  placeholder="Enter any additional information about the cattle"
+                  rows="5"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-slate-50 border-t border-slate-200 p-6 flex justify-between">
+          <a href="add_new_cattle.html" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+            Cancel
+          </a>
+          <button type="submit" id="submit-button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 bg-dairyvest-600 text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1">
+              <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+              <circle cx="12" cy="13" r="3"></circle>
+            </svg>
+            <span id="submit-text">Register Cattle</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script>
+    // Vaccination records
+    let vaccinationRecords = [];
+    
+    // Edit mode variables
+    let isEditMode = false;
+    let editCattleId = null;
+    let originalCattleData = null;
+    
+    // DOM Elements
+    const cattleForm = document.getElementById('cattle-form');
+    const tabButtons = document.querySelectorAll('[role="tab"]');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const genderSelect = document.getElementById('gender');
+    const milkProductionField = document.getElementById('milk-production-field');
+    const addVaccinationBtn = document.getElementById('add-vaccination-btn');
+    const vaccinationRecordsContainer = document.getElementById('vaccination-records-container');
+    const generateTagBtn = document.getElementById('generate-tag-btn');
+    const dobInput = document.getElementById('dob');
+    const ageInput = document.getElementById('age');
+    const breedSelect = document.getElementById('breed');
+    const breedPrice = document.getElementById('breed-price');
+    const purchasePriceInput = document.getElementById('purchasePrice');
+    const cattleImage = document.getElementById('cattle-image');
+    const imagePreview = document.getElementById('image-preview');
+    const imagePreviewContainer = document.getElementById('image-preview-container');
+    const formTitle = document.getElementById('form-title');
+    const formDescription = document.getElementById('form-description');
+    const submitButton = document.getElementById('submit-button');
+    const submitText = document.getElementById('submit-text');
+
+    // Initialize Purchase Date to today
+    document.getElementById('purchaseDate').valueAsDate = new Date();
+
+    // Check for edit mode on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check URL for edit parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const editId = urlParams.get('edit');
+      
+      if (editId) {
+        setupEditMode(editId);
+      }
+      
+      // Set up event listeners
+      setupEventListeners();
+    });
+    
+    // Set up edit mode
+    function setupEditMode(id) {
+      // Load cattle data from localStorage
+      const cattleData = JSON.parse(localStorage.getItem('cattle')) || [];
+      const cattleToEdit = cattleData.find(c => c.id === id);
+      
+      if (!cattleToEdit) {
+        showToast('Error', 'Cattle record not found', 'error');
+        return;
+      }
+      
+      // Store original data for reference
+      originalCattleData = cattleToEdit;
+      isEditMode = true;
+      editCattleId = id;
+      
+      // Update form title and button text
+      formTitle.textContent = 'Edit Cattle';
+      formDescription.textContent = `Editing cattle with tag ${cattleToEdit.tagId}`;
+      submitText.textContent = 'Update Cattle';
+      
+      // Fill form with cattle data
+      document.getElementById('tagId').value = cattleToEdit.tagId;
+      document.getElementById('breed').value = cattleToEdit.breed;
+      document.getElementById('dob').value = cattleToEdit.dob;
+      document.getElementById('age').value = cattleToEdit.age;
+      document.getElementById('gender').value = cattleToEdit.gender;
+      
+      // Show milk production field if female
+      if (cattleToEdit.gender === 'female') {
+        milkProductionField.classList.remove('hidden');
+        document.getElementById('expectedMilkProduction').value = cattleToEdit.expectedMilkProduction;
+      }
+      
+      document.getElementById('weight').value = cattleToEdit.weight;
+      document.getElementById('healthStatus').value = cattleToEdit.healthStatus;
+      document.getElementById('purchasePrice').value = cattleToEdit.purchasePrice;
+      document.getElementById('purchaseDate').value = cattleToEdit.purchaseDate;
+      document.getElementById('notes').value = cattleToEdit.notes;
+      
+      // Set image if available
+      if (cattleToEdit.imageUrl) {
+        imagePreview.src = cattleToEdit.imageUrl;
+        imagePreview.classList.remove('hidden');
+        imagePreviewContainer.classList.add('hidden');
+      }
+      
+      // Load vaccination records
+      if (cattleToEdit.vaccinations && cattleToEdit.vaccinations.length > 0) {
+        vaccinationRecordsContainer.innerHTML = '';
+        cattleToEdit.vaccinations.forEach(record => {
+          vaccinationRecords.push({...record});
+          addVaccinationRecord(record.id, record);
+        });
+      }
+      
+      // Update breed price info
+      updateBreedPrice();
+      
+      // Disable tag ID editing and generate button in edit mode
+      document.getElementById('tagId').readOnly = true;
+      generateTagBtn.disabled = true;
+      generateTagBtn.classList.add('opacity-50');
+    }
+    
+    // Set up event listeners
+    function setupEventListeners() {
+      // Tab Switching
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove active state from all tabs
+          tabButtons.forEach(btn => {
+            btn.classList.remove('bg-white', 'shadow');
+            btn.classList.add('text-slate-600', 'hover:bg-slate-50');
+          });
+          
+          // Hide all tab contents
+          tabContents.forEach(content => {
+            content.classList.add('hidden');
+          });
+          
+          // Set active state for clicked tab
+          button.classList.add('bg-white', 'shadow');
+          button.classList.remove('text-slate-600', 'hover:bg-slate-50');
+          
+          // Show corresponding tab content
+          const tabId = button.getAttribute('data-tab');
+          document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+        });
+      });
+
+      // Show/hide milk production field based on gender
+      genderSelect.addEventListener('change', () => {
+        if (genderSelect.value === 'female') {
+          milkProductionField.classList.remove('hidden');
+        } else {
+          milkProductionField.classList.add('hidden');
+          document.getElementById('expectedMilkProduction').value = '';
+        }
+      });
+
+      // Add vaccination record
+      addVaccinationBtn.addEventListener('click', () => {
+        const id = Date.now().toString();
+        addVaccinationRecord(id);
+      });
+      
+      // Generate Tag ID
+      generateTagBtn.addEventListener('click', () => {
+        const prefix = 'DV-CAT-';
+        const randomNum = Math.floor(1000 + Math.random() * 9000);
+        document.getElementById('tagId').value = `${prefix}${randomNum}`;
+      });
+      
+      // Calculate age from date of birth
+      dobInput.addEventListener('change', () => {
+        if (dobInput.value) {
+          const birthDate = new Date(dobInput.value);
+          const today = new Date();
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const m = today.getMonth() - birthDate.getMonth();
+          
+          if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+          }
+          
+          ageInput.value = age.toString();
+        }
+      });
+      
+      // Show price info when breed and price are selected
+      breedSelect.addEventListener('change', updateBreedPrice);
+      purchasePriceInput.addEventListener('input', updateBreedPrice);
+      
+      // Image Preview
+      cattleImage.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            imagePreview.classList.remove('hidden');
+            imagePreviewContainer.classList.add('hidden');
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      // Form Submission
+      cattleForm.addEventListener('submit', handleFormSubmit);
+    }
+    
+    // Update breed price info
+    function updateBreedPrice() {
+      if (breedSelect.value && purchasePriceInput.value) {
+        const breedName = breedSelect.options[breedSelect.selectedIndex].text;
+        breedPrice.textContent = `Average ${breedName} price is around ₹65,000`;
+        breedPrice.classList.remove('hidden');
+      } else {
+        breedPrice.classList.add('hidden');
+      }
+    }
+    
+    // Add vaccination record
+    function addVaccinationRecord(id, data = null) {
+      // Clear the "no records" message if it's the first record
+      if (vaccinationRecords.length === 0 || vaccinationRecordsContainer.innerHTML.includes('No vaccination records yet')) {
+        vaccinationRecordsContainer.innerHTML = '';
+      }
+      
+      // Add to records array if this is a new record
+      if (!data) {
+        vaccinationRecords.push({
+          id,
+          vaccineName: '',
+          vaccinationDate: '',
+          nextDueDate: '',
+        });
+      }
+      
+      // Create HTML element
+      const recordDiv = document.createElement('div');
+      recordDiv.className = 'grid grid-cols-1 md:grid-cols-12 gap-3 items-center border border-slate-200 rounded-md p-3 bg-slate-50 mb-3';
+      recordDiv.dataset.id = id;
+      
+      recordDiv.innerHTML = `
+        <div class="md:col-span-4 space-y-1">
+          <label for="vaccine-name-${id}" class="text-xs block text-sm font-medium text-slate-700">Vaccine Name</label>
+          <input 
+            id="vaccine-name-${id}"
+            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            placeholder="Enter vaccine name"
+            value="${data?.vaccineName || ''}"
+          />
+        </div>
+        
+        <div class="md:col-span-3 space-y-1">
+          <label for="vacc-date-${id}" class="text-xs block text-sm font-medium text-slate-700">Vaccination Date</label>
+          <input 
+            type="date"
+            id="vacc-date-${id}"
+            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            value="${data?.vaccinationDate || ''}"
+          />
+        </div>
+        
+        <div class="md:col-span-3 space-y-1">
+          <label for="next-date-${id}" class="text-xs block text-sm font-medium text-slate-700">Next Due Date</label>
+          <input 
+            type="date"
+            id="next-date-${id}"
+            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            value="${data?.nextDueDate || ''}"
+          />
+        </div>
+        
+        <div class="md:col-span-2 flex justify-end items-end h-full">
+          <button 
+            type="button" 
+            class="h-9 text-slate-500 hover:text-red-500 inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+      `;
+      
+      vaccinationRecordsContainer.appendChild(recordDiv);
+      
+      // Add remove event
+      const removeBtn = recordDiv.querySelector('button');
+      removeBtn.addEventListener('click', () => {
+        recordDiv.remove();
+        vaccinationRecords = vaccinationRecords.filter(record => record.id !== id);
+        
+        // Show the "no records" message if all records are removed
+        if (vaccinationRecords.length === 0) {
+          vaccinationRecordsContainer.innerHTML = '<p class="text-sm text-slate-500 italic">No vaccination records yet. Click "Add Vaccination" to add records.</p>';
+        }
+      });
+      
+      // Add input change events
+      const nameInput = recordDiv.querySelector(`#vaccine-name-${id}`);
+      const dateInput = recordDiv.querySelector(`#vacc-date-${id}`);
+      const nextDateInput = recordDiv.querySelector(`#next-date-${id}`);
+      
+      nameInput.addEventListener('input', (e) => {
+        updateVaccinationRecord(id, 'vaccineName', e.target.value);
+      });
+      
+      dateInput.addEventListener('input', (e) => {
+        updateVaccinationRecord(id, 'vaccinationDate', e.target.value);
+      });
+      
+      nextDateInput.addEventListener('input', (e) => {
+        updateVaccinationRecord(id, 'nextDueDate', e.target.value);
+      });
+    }
+    
+    // Update vaccination record
+    function updateVaccinationRecord(id, field, value) {
+      vaccinationRecords = vaccinationRecords.map(record => 
+        record.id === id ? { ...record, [field]: value } : record
+      );
+    }
+    
+    // Handle form submission
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      // Validate required fields
+      const requiredFields = ['tagId', 'breed', 'dob', 'gender', 'healthStatus', 'purchasePrice', 'purchaseDate'];
+      let isValid = true;
+      
+      requiredFields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value) {
+          isValid = false;
+          input.classList.add('border-red-500');
+          setTimeout(() => {
+            input.classList.remove('border-red-500');
+          }, 3000);
+        }
+      });
+      
+      if (!isValid) {
+        showToast('Validation Error', 'Please fill in all required fields', 'error');
+        return;
+      }
+      
+      // Get form data
+      const imageUrl = imagePreview.classList.contains('hidden') ? null : imagePreview.src;
+      
+      const formData = {
+        tagId: document.getElementById('tagId').value,
+        breed: document.getElementById('breed').value,
+        dob: document.getElementById('dob').value,
+        age: document.getElementById('age').value,
+        gender: document.getElementById('gender').value,
+        healthStatus: document.getElementById('healthStatus').value,
+        purchasePrice: document.getElementById('purchasePrice').value,
+        purchaseDate: document.getElementById('purchaseDate').value,
+        notes: document.getElementById('notes').value,
+        weight: document.getElementById('weight').value,
+        expectedMilkProduction: document.getElementById('expectedMilkProduction').value || '0',
+        imageUrl: imageUrl,
+        vaccinations: vaccinationRecords.map(record => ({...record}))
+      };
+      
+      // Get existing data from localStorage
+      const existingCattle = JSON.parse(localStorage.getItem('cattle')) || [];
+      
+      if (isEditMode) {
+        // Update existing cattle
+        const updatedCattle = existingCattle.map(c => 
+          c.id === editCattleId ? { ...c, ...formData } : c
+        );
+        
+        // Save to localStorage
+        localStorage.setItem('cattle', JSON.stringify(updatedCattle));
+        
+        // Show success message
+        showToast(
+          'Cattle Updated Successfully', 
+          `Cattle with tag ${formData.tagId} has been updated`
+        );
+      } else {
+        // Add new cattle
+        const newCattle = {
+          id: Date.now().toString(),
+          ...formData
+        };
+        
+        // Add to existing cattle
+        existingCattle.push(newCattle);
+        
+        // Save to localStorage
+        localStorage.setItem('cattle', JSON.stringify(existingCattle));
+        
+        // Show success message
+        showToast(
+          'Cattle Added Successfully', 
+          `Cattle with tag ${formData.tagId} has been added to inventory`
+        );
+      }
+      
+      // Redirect to main app after a brief delay
+      setTimeout(() => {
+        window.location.href = 'add_new_cattle.html';
+      }, 1000);
+    }
+    
+    // Display toast notification
+    function showToast(title, message, type = 'success') {
+      const toastContainer = document.getElementById('toast-container');
+      
+      const toast = document.createElement('div');
+      toast.className = `toast ${type === 'error' ? 'destructive' : ''}`;
+      
+      toast.innerHTML = `
+        <div>
+          <div class="toast-title">${title}</div>
+          <div class="toast-description">${message}</div>
+        </div>
+        <button onclick="this.parentElement.remove()" class="ml-4 text-gray-400 hover:text-gray-600">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
+        </button>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      // Auto-remove toast after 5 seconds
+      setTimeout(() => {
+        if (toast.parentNode === toastContainer) {
+          toast.remove();
+        }
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

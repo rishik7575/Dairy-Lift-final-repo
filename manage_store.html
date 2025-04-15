@@ -3,857 +3,2339 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Store - DairyVest Admin</title>
+  <title>DairyVest - Store Manager</title>
   <style>
-    /* Global Styles */
+    /* Base Styles */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
-
-    :root {
-      --primary-color: #3b82f6;
-      --primary-hover: #2563eb;
-      --secondary-color: #f3f4f6;
-      --text-color: #1f2937;
-      --muted-text: #6b7280;
-      --border-color: #e5e7eb;
-      --card-bg: #ffffff;
-      --danger: #ef4444;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --info: #3b82f6;
-      --orange-primary: #f97316;
-      --orange-hover: #ea580c;
-      --radius: 0.5rem;
-    }
-
+    
     body {
       background-color: #f9fafb;
-      color: var(--text-color);
-      min-height: 100vh;
+      color: #1f2937;
+      line-height: 1.5;
     }
-
+    
     .container {
-      max-width: 800px;
-      margin: 2rem auto;
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
       padding: 0 1rem;
     }
-
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 1.5rem;
+    
+    /* Header Styles */
+    header {
       background-color: white;
-      border-bottom: 1px solid var(--border-color);
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
-
+    
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+    }
+    
     .logo {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: var(--primary-color);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      font-weight: bold;
       text-decoration: none;
     }
-
-    .logo-badge {
-      background-color: var(--primary-color);
+    
+    .logo h1 {
+      color: #f97316;
+      font-size: 1.25rem;
+    }
+    
+    .logo span {
+      margin-left: 0.5rem;
+      background-color: #f97316;
       color: white;
       font-size: 0.75rem;
       padding: 0.125rem 0.25rem;
       border-radius: 0.25rem;
     }
-
-    .card {
-      background-color: white;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      overflow: hidden;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    }
-
-    .card-header {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--border-color);
+    
+    .mobile-menu-btn {
       display: flex;
       align-items: center;
-      background: linear-gradient(to right, #fff7ed, #ffedd5);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
     }
-
-    .card-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--text-color);
+    
+    .mobile-menu-btn:hover {
+      background-color: #f3f4f6;
+    }
+    
+    .nav-link {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-    }
-
-    .card-description {
-      color: var(--muted-text);
-      margin-top: 0.5rem;
+      gap: 0.375rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.375rem;
+      text-decoration: none;
+      color: #4b5563;
       font-size: 0.875rem;
+      font-weight: 500;
     }
-
-    .card-body {
-      padding: 1.5rem;
+    
+    .nav-link:hover {
+      background-color: #fff7ed;
+      color: #f97316;
     }
-
-    .card-footer {
-      padding: 1.25rem 1.5rem;
-      border-top: 1px solid var(--border-color);
+    
+    /* Main Content */
+    .main-container {
+      min-height: 100vh;
+      padding: 2rem 0;
+    }
+    
+    .panel {
+      background-color: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+    }
+    
+    .panel-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #e5e7eb;
+      background: linear-gradient(to right, #fff7ed, #ffedd5);
       display: flex;
-      justify-content: flex-end;
-      background-color: var(--secondary-color);
+      align-items: center;
     }
-
-    .icon-circle {
+    
+    .panel-icon {
       width: 2.5rem;
       height: 2.5rem;
-      border-radius: 50%;
-      background-color: #ffedd5;
+      background-color: #fff7ed;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .panel-icon svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: #f97316;
+    }
+    
+    .panel-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .panel-subtitle {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+    
+    .panel-body {
+      padding: 1rem 1.5rem;
+    }
+    
+    /* Dashboard Stats */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    @media (min-width: 640px) {
+      .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .stats-container {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+    
+    .stat-card {
+      background-color: white;
+      border-radius: 0.375rem;
+      border: 1px solid #e5e7eb;
+      padding: 1rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .stat-card-inner {
+      display: flex;
+      align-items: center;
+    }
+    
+    .stat-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: 0.75rem;
     }
-
-    .header-action {
+    
+    .stat-label {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      gap: 0.5rem;
+    }
+    
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .btn-primary {
+      background-color: #f97316;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #ea580c;
+    }
+    
+    .btn-outline {
+      background-color: white;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .btn-outline:hover {
+      background-color: #f9fafb;
+    }
+    
+    .btn-icon {
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
+      justify-content: center;
     }
-
-    .section-title {
+    
+    .btn-icon svg {
+      width: 1rem;
+      height: 1rem;
+    }
+    
+    .btn-danger {
+      background-color: #ef4444;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+    
+    /* Product Table Styles */
+    .table-header {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    @media (min-width: 640px) {
+      .table-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    
+    .table-title {
       font-size: 1.125rem;
       font-weight: 500;
     }
-
-    /* Table Styles */
+    
+    .search-filter-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+    }
+    
+    @media (min-width: 640px) {
+      .search-filter-container {
+        flex-direction: row;
+        align-items: center;
+        width: auto;
+      }
+    }
+    
+    .search-container {
+      position: relative;
+    }
+    
+    .search-input {
+      padding: 0.5rem 0.75rem;
+      padding-left: 2.25rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      width: 100%;
+      min-width: 200px;
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+    
+    .filter-select {
+      padding: 0.5rem 2.25rem 0.5rem 0.75rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      background-color: white;
+      background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%236b7280\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'m6 9 6 6 6-6\'/%3E%3C/svg%3E');
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1rem;
+      appearance: none;
+    }
+    
     .table-container {
       overflow-x: auto;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
     }
-
-    .table {
+    
+    .product-table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 0.875rem;
     }
-
-    .table th {
-      background-color: var(--secondary-color);
+    
+    .product-table th {
       padding: 0.75rem 1rem;
       text-align: left;
       font-weight: 500;
-      color: var(--text-color);
-      border-bottom: 1px solid var(--border-color);
+      color: #4b5563;
+      border-bottom: 1px solid #e5e7eb;
     }
-
-    .table td {
+    
+    .product-table td {
       padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: middle;
     }
-
-    .table tr:last-child td {
+    
+    .product-table tr:last-child td {
       border-bottom: none;
     }
-
-    .table tr:hover {
+    
+    .product-table tbody tr:hover {
       background-color: #f9fafb;
     }
-
-    .table-actions {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: flex-end;
+    
+    .product-image {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.25rem;
+      object-fit: cover;
+      border: 1px solid #e5e7eb;
+      background-color: #f9fafb;
     }
-
-    /* Badge Styles */
-    .badge {
+    
+    .product-name {
+      font-weight: 500;
+      color: #1f2937;
+    }
+    
+    .product-category {
       display: inline-flex;
-      align-items: center;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      background-color: #f3f4f6;
+      color: #4b5563;
+    }
+    
+    .stock-badge {
+      display: inline-flex;
       padding: 0.25rem 0.5rem;
       border-radius: 9999px;
       font-size: 0.75rem;
       font-weight: 500;
     }
-
-    .badge-green {
+    
+    .stock-badge.in-stock {
       background-color: #dcfce7;
       color: #166534;
     }
-
-    .badge-yellow {
+    
+    .stock-badge.low-stock {
       background-color: #fef9c3;
       color: #854d0e;
     }
-
-    .badge-red {
+    
+    .stock-badge.out-of-stock {
       background-color: #fee2e2;
       color: #b91c1c;
     }
-
-    /* Form Styles */
-    .form-panel {
-      margin-bottom: 1.5rem;
-      padding: 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      background-color: #fafafa;
+    
+    .action-cell {
+      display: flex;
+      gap: 0.25rem;
+      justify-content: flex-end;
     }
-
-    .form-panel-header {
+    
+    .empty-state {
+      padding: 3rem 1rem;
+      text-align: center;
+      color: #6b7280;
+    }
+    
+    .empty-state-icon {
+      margin: 0 auto 1rem;
+      width: 3rem;
+      height: 3rem;
+      color: #d1d5db;
+    }
+    
+    .empty-state-title {
+      font-weight: 500;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       display: flex;
       align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      padding: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+    
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background-color: white;
+      border-radius: 0.5rem;
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .modal-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .modal-description {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+    
+    .modal-body {
+      padding: 1.5rem;
+    }
+    
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    /* Form styles */
+    .form-group {
       margin-bottom: 1rem;
     }
-
-    .form-panel-title {
-      font-weight: 500;
+    
+    .form-label {
+      display: block;
       font-size: 0.875rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 0.5rem;
     }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-    }
-
+    
     .form-input {
       width: 100%;
       padding: 0.5rem 0.75rem;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      background-color: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
       font-size: 0.875rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-
-    .btn {
-      display: inline-flex;
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #f97316;
+      box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.1);
+    }
+    
+    .form-select {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      appearance: none;
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+      padding-right: 2rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    
+    .form-select:focus {
+      outline: none;
+      border-color: #f97316;
+      box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.1);
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    @media (min-width: 640px) {
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    .form-grid-full {
+      grid-column: 1 / -1;
+    }
+    
+    /* Image upload styles */
+    .image-upload-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    
+    .image-preview {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 0.375rem;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      background-color: #f9fafb;
+      display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: var(--radius);
-      font-weight: 500;
+    }
+    
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .upload-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      background-color: #f9fafb;
       font-size: 0.875rem;
-      padding: 0.5rem 1rem;
+      color: #374151;
       cursor: pointer;
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
+    }
+    
+    .upload-button:hover {
+      background-color: #f3f4f6;
+    }
+    
+    .remove-image-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      color: #ef4444;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    
+    /* Tabs */
+    .tabs {
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 1rem;
+      display: flex;
       gap: 0.5rem;
     }
-
-    .btn-orange {
-      background-color: var(--orange-primary);
-      color: white;
+    
+    .tab-button {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #6b7280;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
     }
-
-    .btn-orange:hover {
-      background-color: var(--orange-hover);
+    
+    .tab-button.active {
+      color: #f97316;
+      border-bottom-color: #f97316;
     }
-
-    .btn-outline {
-      background-color: white;
-      border-color: var(--border-color);
-      color: var(--text-color);
-    }
-
-    .btn-outline:hover {
-      background-color: var(--secondary-color);
-    }
-
-    .btn-sm {
-      padding: 0.25rem 0.5rem;
-      font-size: 0.75rem;
-    }
-
-    .btn-icon {
-      padding: 0.25rem;
-      border-radius: 0.25rem;
-    }
-
-    .btn-edit {
-      color: var(--primary-color);
-    }
-
-    .btn-delete {
-      color: var(--danger);
-    }
-
-    /* Toast Notifications */
+    
+    /* Toast notification */
     .toast-container {
       position: fixed;
       top: 1rem;
       right: 1rem;
-      z-index: 1000;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-width: 320px;
+    }
+    
+    .toast {
+      display: flex;
+      padding: 1rem;
+      background-color: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    .toast-success {
+      border-left: 4px solid #10b981;
+    }
+    
+    .toast-error {
+      border-left: 4px solid #ef4444;
+    }
+    
+    .toast-warning {
+      border-left: 4px solid #f59e0b;
+    }
+    
+    .toast-icon {
+      flex-shrink: 0;
+      margin-right: 0.75rem;
+    }
+    
+    .toast-content {
+      flex-grow: 1;
+    }
+    
+    .toast-title {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #1f2937;
+    }
+    
+    .toast-message {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+    
+    /* Modal History Styles */
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    .history-table th,
+    .history-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .history-table th {
+      font-weight: 500;
+      color: #6b7280;
+    }
+    
+    .price-change {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    
+    .price-up {
+      color: #10b981;
+    }
+    
+    .price-down {
+      color: #ef4444;
+    }
+    
+    .price-neutral {
+      color: #9ca3af;
+    }
+    
+    /* Mobile responsive adjustments */
+    @media (max-width: 640px) {
+      .panel-body {
+        padding: 1rem;
+      }
+      
+      .product-table th:nth-child(3),
+      .product-table td:nth-child(3) {
+        display: none;
+      }
+      
+      .product-table th:nth-child(5),
+      .product-table td:nth-child(5) {
+        display: none;
+      }
+    }
+    
+    /* Mobile sidebar */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 250px;
+      height: 100vh;
+      background-color: white;
+      z-index: 100;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+    }
+    
+    .mobile-sidebar.active {
+      transform: translateX(0);
+    }
+    
+    .sidebar-header {
+      padding: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .sidebar-body {
+      padding: 1rem;
+    }
+    
+    .sidebar-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    
+    .sidebar-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .mobile-nav {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
     }
-
-    .toast {
-      padding: 1rem;
-      border-radius: var(--radius);
-      background-color: white;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    
+    .mobile-nav-link {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      width: 300px;
-      max-width: calc(100vw - 2rem);
-      animation: slideIn 0.3s ease-out;
+      padding: 0.75rem 0.5rem;
+      border-radius: 0.375rem;
+      text-decoration: none;
+      color: #4b5563;
     }
-
-    @keyframes slideIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
+    
+    .mobile-nav-link:hover {
+      background-color: #f3f4f6;
     }
-
-    @keyframes slideOut {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(100%); opacity: 0; }
+    
+    .mobile-nav-icon {
+      color: #6b7280;
     }
-
-    .toast-success {
-      border-left: 4px solid var(--success);
-    }
-
-    .toast-error {
-      border-left: 4px solid var(--danger);
-    }
-
-    .toast-content {
-      flex: 1;
-    }
-
-    .toast-title {
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-
-    .toast-message {
-      color: var(--muted-text);
-      font-size: 0.875rem;
-    }
-
-    .toast-close {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--muted-text);
-    }
-
-    /* Modal Styles */
-    .modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+    
+    /* Utility classes */
+    .flex {
       display: flex;
+    }
+    
+    .items-center {
       align-items: center;
-      justify-content: center;
-      z-index: 1000;
     }
-
-    .modal {
-      background-color: white;
-      border-radius: var(--radius);
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    .justify-between {
+      justify-content: space-between;
     }
-
-    .modal-header {
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--border-color);
+    
+    .mb-4 {
+      margin-bottom: 1rem;
     }
-
-    .modal-title {
-      font-size: 1.125rem;
-      font-weight: 600;
+    
+    .mb-2 {
+      margin-bottom: 0.5rem;
     }
-
-    .modal-body {
-      padding: 1.5rem;
-    }
-
-    .modal-footer {
-      padding: 1rem 1.5rem;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: flex-end;
+    
+    .gap-2 {
       gap: 0.5rem;
     }
-
+    
+    .w-full {
+      width: 100%;
+    }
+    
+    .text-right {
+      text-align: right;
+    }
+    
+    .text-xs {
+      font-size: 0.75rem;
+    }
+    
+    .text-sm {
+      font-size: 0.875rem;
+    }
+    
+    .text-gray-500 {
+      color: #6b7280;
+    }
+    
+    .font-medium {
+      font-weight: 500;
+    }
+    
     .hidden {
       display: none;
+    }
+    
+    @media (min-width: 640px) {
+      .sm\:flex {
+        display: flex;
+      }
+      
+      .sm\:hidden {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
   <!-- Header -->
-  <header class="header">
-    <a href="admin_dashboard.html" class="logo">
-      DairyVest
-      <span class="logo-badge">Admin</span>
-    </a>
-  </header>
-
-  <div class="container">
-    <div class="card">
-      <div class="card-header">
-        <div class="icon-circle">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+  <header>
+    <div class="container header-container">
+      <a href="#" class="logo">
+        <h1>DairyVest</h1>
+        <span>Admin</span>
+      </a>
+      
+      <nav class="hidden sm:flex">
+        <a href="#" class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+            <path d="M3 6h18"></path>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
+          Store Manager
+        </a>
+      </nav>
+      
+      <button class="mobile-menu-btn sm:hidden" id="mobile-menu-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12"></line>
+          <line x1="4" x2="20" y1="6" y2="6"></line>
+          <line x1="4" x2="20" y1="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+  
+  <!-- Mobile Sidebar -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+  <div class="mobile-sidebar" id="mobile-sidebar">
+    <div class="sidebar-header">
+      <h2 class="text-lg font-medium text-orange-500">DairyVest Admin</h2>
+    </div>
+    <div class="sidebar-body">
+      <nav class="mobile-nav">
+        <a href="#" class="mobile-nav-link">
+          <span class="mobile-nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+              <path d="M3 6h18"></path>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </span>
+          Store Manager
+        </a>
+      </nav>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <main class="main-container">
+    <div class="container">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+              <path d="M3 6h18"></path>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="panel-title">Store Manager</h2>
+            <p class="panel-subtitle">Manage your dairy product inventory and sales.</p>
+          </div>
         </div>
-        <div>
-          <h2 class="card-title">Store Manager</h2>
-          <p class="card-description">Manage your dairy product inventory and sales. Add new products, update prices, and track stock levels.</p>
+        
+        <div class="panel-body">
+          <!-- Dashboard Stats -->
+          <div class="stats-container" id="stats-container">
+            <!-- Stats will be populated by JavaScript -->
+          </div>
+          
+          <!-- Product Table -->
+          <div class="table-header">
+            <h3 class="table-title">Product Inventory</h3>
+            <div class="search-filter-container">
+              <div class="search-container">
+                <input id="search-input" type="text" placeholder="Search products..." class="search-input">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.3-4.3"></path>
+                </svg>
+              </div>
+              <select id="category-filter" class="filter-select">
+                <option value="all">All Categories</option>
+                <option value="milk">Milk</option>
+                <option value="ghee">Ghee</option>
+                <option value="yogurt">Yogurt</option>
+                <option value="paneer">Paneer</option>
+                <option value="butter">Butter</option>
+                <option value="cheese">Cheese</option>
+                <option value="other">Other</option>
+              </select>
+              <button id="add-product-btn" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="M12 5v14"></path>
+                </svg>
+                Add Product
+              </button>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <table class="product-table" id="product-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Status</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="product-table-body">
+                <!-- Products will be populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      
-      <div class="card-body">
-        <div class="header-action">
-          <h3 class="section-title">Product Inventory</h3>
-          <button id="add-product-btn" class="btn btn-orange">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            Add Product
-          </button>
-        </div>
-        
-        <!-- Add Product Form -->
-        <div id="add-product-form" class="form-panel hidden">
-          <div class="form-panel-header">
-            <h4 class="form-panel-title">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-              </svg>
-              New Product
-            </h4>
-          </div>
-          
+    </div>
+  </main>
+  
+  <!-- Add/Edit Product Modal -->
+  <div class="modal" id="product-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Add New Product</h3>
+      </div>
+      <div class="modal-body">
+        <form id="product-form">
           <div class="form-grid">
-            <input type="text" id="product-name" class="form-input" placeholder="Product Name">
-            <input type="number" id="product-price" class="form-input" placeholder="Price (₹)" min="0" step="0.01">
-            <input type="number" id="product-stock" class="form-input" placeholder="Stock Quantity" min="0">
+            <div class="form-group form-grid-full">
+              <label for="product-name" class="form-label">Product Name</label>
+              <input type="text" id="product-name" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="product-category" class="form-label">Category</label>
+              <select id="product-category" class="form-select" required>
+                <option value="">Select category</option>
+                <option value="milk">Milk</option>
+                <option value="ghee">Ghee</option>
+                <option value="yogurt">Yogurt</option>
+                <option value="paneer">Paneer</option>
+                <option value="butter">Butter</option>
+                <option value="cheese">Cheese</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="product-price" class="form-label">Price (₹)</label>
+              <input type="number" id="product-price" class="form-input" min="0" step="0.01" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="product-stock" class="form-label">Stock Quantity</label>
+              <input type="number" id="product-stock" class="form-input" min="0" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="product-discount" class="form-label">Discount (%)</label>
+              <input type="number" id="product-discount" class="form-input" min="0" max="100" value="0">
+            </div>
+            
+            <div class="form-group form-grid-full">
+              <label class="form-label">Product Image</label>
+              <div class="image-upload-container">
+                <div class="image-preview" id="image-preview">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='none' stroke='%23d1d5db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='3' rx='2' ry='2'/%3E%3Ccircle cx='9' cy='9' r='2'/%3E%3Cpath d='m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21'/%3E%3C/svg%3E" id="preview-img" alt="Product">
+                </div>
+                
+                <div class="upload-controls">
+                  <label class="upload-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Upload Image
+                    <input type="file" id="product-image" accept="image/*" style="display:none;">
+                  </label>
+                  
+                  <button type="button" id="remove-image-btn" class="remove-image-btn" style="display:none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="15" y1="9" x2="9" y2="15"></line>
+                      <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    Remove
+                  </button>
+                </div>
+              </div>
+              <p class="text-xs text-gray-500 mt-2">Max size: 2MB. Recommended dimensions: 200x200px.</p>
+            </div>
           </div>
           
-          <div class="table-actions" style="margin-top: 1rem;">
-            <button id="cancel-add" class="btn btn-sm btn-outline">Cancel</button>
-            <button id="confirm-add" class="btn btn-sm btn-orange">Add Product</button>
-          </div>
+          <input type="hidden" id="product-id">
+          <input type="hidden" id="product-created-at">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" id="modal-cancel-btn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="modal-save-btn">Save Product</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Product History Modal -->
+  <div class="modal" id="history-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Product History</h3>
+        <p class="modal-description" id="history-product-name"></p>
+      </div>
+      <div class="modal-body">
+        <div class="tabs">
+          <button class="tab-button active" data-tab="price">Price History</button>
+          <button class="tab-button" data-tab="stock">Stock History</button>
         </div>
         
-        <!-- Products Table -->
-        <div class="table-container">
-          <table class="table" id="products-table">
+        <div class="tab-content" id="price-history-tab">
+          <table class="history-table" id="price-history-table">
             <thead>
               <tr>
-                <th>Product</th>
-                <th>Price (₹)</th>
-                <th>Stock</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>Date</th>
+                <th class="text-right">Price (₹)</th>
+                <th class="text-right">Change</th>
               </tr>
             </thead>
-            <tbody id="products-body">
-              <!-- Products will be dynamically inserted here -->
+            <tbody id="price-history-body">
+              <!-- Price history will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="tab-content" id="stock-history-tab" style="display:none;">
+          <table class="history-table" id="stock-history-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th class="text-right">Stock Level</th>
+                <th class="text-right">Change</th>
+              </tr>
+            </thead>
+            <tbody id="stock-history-body">
+              <!-- Stock history will be populated by JavaScript -->
             </tbody>
           </table>
         </div>
       </div>
-      
-      <div class="card-footer">
-        <a href="admin_dashboard.html" class="btn btn-outline">
-          Back to Dashboard
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Edit Product Modal -->
-  <div id="edit-modal" class="modal-backdrop hidden">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title">Edit Product</h3>
-      </div>
-      <div class="modal-body">
-        <div style="margin-bottom: 1rem;">
-          <label for="edit-name" style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem;">Product Name</label>
-          <input type="text" id="edit-name" class="form-input" placeholder="Product Name">
-        </div>
-        <div style="margin-bottom: 1rem;">
-          <label for="edit-price" style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem;">Price (₹)</label>
-          <input type="number" id="edit-price" class="form-input" placeholder="Price" min="0" step="0.01">
-        </div>
-        <div>
-          <label for="edit-stock" style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem;">Stock Quantity</label>
-          <input type="number" id="edit-stock" class="form-input" placeholder="Stock" min="0">
-        </div>
-        <input type="hidden" id="edit-id">
-      </div>
       <div class="modal-footer">
-        <button id="cancel-edit" class="btn btn-outline btn-sm">Cancel</button>
-        <button id="save-edit" class="btn btn-orange btn-sm">Save Changes</button>
+        <button type="button" class="btn btn-outline" id="history-close-btn">Close</button>
       </div>
     </div>
   </div>
-
+  
   <!-- Delete Confirmation Modal -->
-  <div id="delete-modal" class="modal-backdrop hidden">
-    <div class="modal">
+  <div class="modal" id="delete-modal">
+    <div class="modal-content" style="max-width: 400px;">
       <div class="modal-header">
         <h3 class="modal-title">Confirm Deletion</h3>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete this product? This action cannot be undone.</p>
-        <input type="hidden" id="delete-id">
+        <p>Are you sure you want to delete <strong id="delete-product-name"></strong>? This action cannot be undone.</p>
       </div>
       <div class="modal-footer">
-        <button id="cancel-delete" class="btn btn-outline btn-sm">Cancel</button>
-        <button id="confirm-delete" class="btn btn-sm" style="background-color: #ef4444; color: white;">Delete</button>
+        <button type="button" class="btn btn-outline" id="delete-cancel-btn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="delete-confirm-btn">Delete</button>
       </div>
     </div>
   </div>
-
-  <!-- Toast Container for Notifications -->
+  
+  <!-- Toast Container -->
   <div class="toast-container" id="toast-container">
-    <!-- Toasts will be dynamically inserted here -->
+    <!-- Toasts will be populated by JavaScript -->
   </div>
-
+  
   <script>
-    // Initial products data
-    const products = [
-      { id: 1, name: "Fresh Milk (500ml)", price: 45, stock: 120, status: "in-stock" },
-      { id: 2, name: "Premium Ghee (200g)", price: 180, stock: 50, status: "in-stock" },
-      { id: 3, name: "Yogurt (400g)", price: 60, stock: 85, status: "in-stock" },
-      { id: 4, name: "Paneer (250g)", price: 120, stock: 5, status: "low-stock" },
-      { id: 5, name: "Butter (100g)", price: 75, stock: 0, status: "out-of-stock" }
-    ];
-
-    // DOM Elements
-    const productsBody = document.getElementById('products-body');
-    const addProductBtn = document.getElementById('add-product-btn');
-    const addProductForm = document.getElementById('add-product-form');
+    // Product Type Definitions (for documentation purposes)
+    /*
+    type ProductStatus = "in-stock" | "low-stock" | "out-of-stock" | "inactive";
+    type ProductCategory = "milk" | "ghee" | "yogurt" | "paneer" | "butter" | "cheese" | "other";
+    
+    interface Product {
+      id: number;
+      name: string;
+      price: number;
+      stock: number;
+      status: ProductStatus;
+      category: ProductCategory;
+      imageUrl?: string;
+      discount?: number;
+      active: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+    }
+    
+    interface PriceHistoryEntry {
+      date: Date;
+      price: number;
+    }
+    
+    interface StockHistoryEntry {
+      date: Date;
+      stock: number;
+      change: number;
+    }
+    
+    interface ProductHistory {
+      productId: number;
+      priceHistory: PriceHistoryEntry[];
+      stockHistory: StockHistoryEntry[];
+    }
+    */
+    
+    // Global state
+    let products = [];
+    let productHistory = {};
+    let activeHistoryTab = 'price';
+    
+    // DOM elements
+    const productTableBody = document.getElementById('product-table-body');
+    const searchInput = document.getElementById('search-input');
+    const categoryFilter = document.getElementById('category-filter');
+    const statsContainer = document.getElementById('stats-container');
+    
+    // Product Modal elements
+    const productModal = document.getElementById('product-modal');
+    const productForm = document.getElementById('product-form');
     const productNameInput = document.getElementById('product-name');
+    const productCategoryInput = document.getElementById('product-category');
     const productPriceInput = document.getElementById('product-price');
     const productStockInput = document.getElementById('product-stock');
-    const confirmAddBtn = document.getElementById('confirm-add');
-    const cancelAddBtn = document.getElementById('cancel-add');
+    const productDiscountInput = document.getElementById('product-discount');
+    const productIdInput = document.getElementById('product-id');
+    const productCreatedAtInput = document.getElementById('product-created-at');
+    const productImageInput = document.getElementById('product-image');
+    const previewImg = document.getElementById('preview-img');
+    const removeImageBtn = document.getElementById('remove-image-btn');
+    const modalTitle = document.getElementById('modal-title');
+    const modalSaveBtn = document.getElementById('modal-save-btn');
+    const modalCancelBtn = document.getElementById('modal-cancel-btn');
     
-    const editModal = document.getElementById('edit-modal');
-    const editNameInput = document.getElementById('edit-name');
-    const editPriceInput = document.getElementById('edit-price');
-    const editStockInput = document.getElementById('edit-stock');
-    const editIdInput = document.getElementById('edit-id');
-    const saveEditBtn = document.getElementById('save-edit');
-    const cancelEditBtn = document.getElementById('cancel-edit');
+    // History Modal elements
+    const historyModal = document.getElementById('history-modal');
+    const historyProductName = document.getElementById('history-product-name');
+    const priceHistoryTab = document.getElementById('price-history-tab');
+    const stockHistoryTab = document.getElementById('stock-history-tab');
+    const priceHistoryBody = document.getElementById('price-history-body');
+    const stockHistoryBody = document.getElementById('stock-history-body');
+    const historyCloseBtn = document.getElementById('history-close-btn');
+    const tabButtons = document.querySelectorAll('.tab-button');
     
+    // Delete Modal elements
     const deleteModal = document.getElementById('delete-modal');
-    const deleteIdInput = document.getElementById('delete-id');
-    const confirmDeleteBtn = document.getElementById('confirm-delete');
-    const cancelDeleteBtn = document.getElementById('cancel-delete');
-
-    // Event Listeners
-    addProductBtn.addEventListener('click', toggleAddProductForm);
-    cancelAddBtn.addEventListener('click', toggleAddProductForm);
-    confirmAddBtn.addEventListener('click', addProduct);
+    const deleteProductName = document.getElementById('delete-product-name');
+    const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
+    const deleteCancelBtn = document.getElementById('delete-cancel-btn');
     
-    cancelEditBtn.addEventListener('click', () => editModal.classList.add('hidden'));
-    saveEditBtn.addEventListener('click', saveEditChanges);
+    // Add Product button
+    const addProductBtn = document.getElementById('add-product-btn');
     
-    cancelDeleteBtn.addEventListener('click', () => deleteModal.classList.add('hidden'));
-    confirmDeleteBtn.addEventListener('click', deleteProduct);
-
-    // Function to determine product status based on stock
+    // Mobile menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileSidebar = document.getElementById('mobile-sidebar');
+    const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+    
+    // =========================
+    // Utility functions
+    // =========================
+    
+    // Format date
+    function formatDate(date) {
+      const d = new Date(date);
+      const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return d.toLocaleDateString('en-US', options);
+    }
+    
+    // Determine product status based on stock
     function determineStatus(stock) {
       if (stock <= 0) return "out-of-stock";
       if (stock <= 10) return "low-stock";
       return "in-stock";
     }
-
-    // Function to generate status badge
-    function getStatusBadge(status) {
-      switch (status) {
-        case "in-stock":
-          return `<span class="badge badge-green">In Stock</span>`;
-        case "low-stock":
-          return `<span class="badge badge-yellow">Low Stock</span>`;
-        case "out-of-stock":
-          return `<span class="badge badge-red">Out of Stock</span>`;
-        default:
-          return `<span class="badge">${status}</span>`;
-      }
+    
+    // Format currency
+    function formatCurrency(amount) {
+      return '₹' + parseFloat(amount).toFixed(2);
     }
-
-    // Function to render the products table
-    function renderProducts() {
-      productsBody.innerHTML = '';
-      
-      if (products.length === 0) {
-        productsBody.innerHTML = `
-          <tr>
-            <td colspan="5" style="text-align: center; padding: 2rem 0; color: var(--muted-text);">
-              No products available. Add a new product to get started.
-            </td>
-          </tr>
-        `;
-        return;
-      }
-      
-      products.forEach(product => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td class="font-medium">${product.name}</td>
-          <td style="text-align: right;">${product.price.toFixed(2)}</td>
-          <td style="text-align: right;">${product.stock}</td>
-          <td>${getStatusBadge(product.status)}</td>
-          <td>
-            <div class="table-actions">
-              <button class="btn-icon btn-edit" onclick="editProduct(${product.id})">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                </svg>
-              </button>
-              <button class="btn-icon btn-delete" onclick="showDeleteModal(${product.id})">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                  <line x1="10" y1="11" x2="10" y2="17"></line>
-                  <line x1="14" y1="11" x2="14" y2="17"></line>
-                </svg>
-              </button>
-            </div>
-          </td>
-        `;
-        productsBody.appendChild(row);
-      });
+    
+    // Generate a unique ID
+    function generateId() {
+      return products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
     }
-
-    // Function to toggle add product form
-    function toggleAddProductForm() {
-      addProductForm.classList.toggle('hidden');
-      
-      if (!addProductForm.classList.contains('hidden')) {
-        productNameInput.focus();
-      } else {
-        // Clear form inputs
-        productNameInput.value = '';
-        productPriceInput.value = '';
-        productStockInput.value = '';
-      }
-    }
-
-    // Function to add a new product
-    function addProduct() {
-      const name = productNameInput.value.trim();
-      const price = parseFloat(productPriceInput.value);
-      const stock = parseInt(productStockInput.value);
-      
-      // Validate inputs
-      if (!name) {
-        showToast('error', 'Validation Error', 'Please enter a product name.');
-        return;
-      }
-      
-      if (isNaN(price) || price < 0) {
-        showToast('error', 'Validation Error', 'Please enter a valid price.');
-        return;
-      }
-      
-      if (isNaN(stock) || stock < 0) {
-        showToast('error', 'Validation Error', 'Please enter a valid stock quantity.');
-        return;
-      }
-      
-      // Generate a new ID (in a real app, this would come from the server)
-      const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-      
-      // Determine status based on stock level
-      const status = determineStatus(stock);
-      
-      // Add the new product
-      products.push({
-        id: newId,
-        name,
-        price,
-        stock,
-        status
-      });
-      
-      // Render the updated products table
-      renderProducts();
-      
-      // Hide the form
-      toggleAddProductForm();
-      
-      // Show success toast
-      showToast('success', 'Product Added', `${name} has been added to your store.`);
-    }
-
-    // Function to show the edit modal
-    function editProduct(id) {
-      const product = products.find(p => p.id === id);
-      
-      if (product) {
-        editNameInput.value = product.name;
-        editPriceInput.value = product.price;
-        editStockInput.value = product.stock;
-        editIdInput.value = id;
-        
-        editModal.classList.remove('hidden');
-        editNameInput.focus();
-      }
-    }
-
-    // Function to save edit changes
-    function saveEditChanges() {
-      const id = parseInt(editIdInput.value);
-      const name = editNameInput.value.trim();
-      const price = parseFloat(editPriceInput.value);
-      const stock = parseInt(editStockInput.value);
-      
-      // Validate inputs
-      if (!name) {
-        showToast('error', 'Validation Error', 'Please enter a product name.');
-        return;
-      }
-      
-      if (isNaN(price) || price < 0) {
-        showToast('error', 'Validation Error', 'Please enter a valid price.');
-        return;
-      }
-      
-      if (isNaN(stock) || stock < 0) {
-        showToast('error', 'Validation Error', 'Please enter a valid stock quantity.');
-        return;
-      }
-      
-      // Find the product and update it
-      const productIndex = products.findIndex(p => p.id === id);
-      
-      if (productIndex !== -1) {
-        // Update the product
-        products[productIndex] = {
-          ...products[productIndex],
-          name,
-          price,
-          stock,
-          status: determineStatus(stock)
-        };
-        
-        // Render the updated products table
-        renderProducts();
-        
-        // Hide the modal
-        editModal.classList.add('hidden');
-        
-        // Show success toast
-        showToast('success', 'Product Updated', `${name} has been updated successfully.`);
-      }
-    }
-
-    // Function to show the delete confirmation modal
-    function showDeleteModal(id) {
-      deleteIdInput.value = id;
-      deleteModal.classList.remove('hidden');
-    }
-
-    // Function to delete a product
-    function deleteProduct() {
-      const id = parseInt(deleteIdInput.value);
-      
-      // Find the product to delete
-      const productIndex = products.findIndex(p => p.id === id);
-      
-      if (productIndex !== -1) {
-        const deletedProduct = products[productIndex];
-        
-        // Remove the product
-        products.splice(productIndex, 1);
-        
-        // Render the updated products table
-        renderProducts();
-        
-        // Hide the modal
-        deleteModal.classList.add('hidden');
-        
-        // Show success toast
-        showToast('success', 'Product Removed', `${deletedProduct.name} has been removed from your store.`);
-      }
-    }
-
-    // Function to show toast notifications
-    function showToast(type, title, message, duration = 3000) {
+    
+    // =========================
+    // Toast notifications
+    // =========================
+    
+    function showToast(title, message, type = 'success') {
       const toastContainer = document.getElementById('toast-container');
       
+      // Create toast element
       const toast = document.createElement('div');
       toast.className = `toast toast-${type}`;
       
+      // Set icon based on type
       let iconSvg = '';
-      switch(type) {
-        case 'success':
-          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
-          break;
-        case 'error':
-          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
-          break;
+      if (type === 'success') {
+        iconSvg = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-500" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        `;
+      } else if (type === 'error') {
+        iconSvg = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-500" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+        `;
+      } else if (type === 'warning') {
+        iconSvg = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+            <path d="M12 9v4"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+        `;
       }
       
+      // Set toast content
       toast.innerHTML = `
-        ${iconSvg}
-        <div class="toast-content">
-          <div class="toast-title">${title}</div>
-          <div class="toast-message">${message}</div>
+        <div class="toast-icon">
+          ${iconSvg}
         </div>
-        <button class="toast-close">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
+        <div class="toast-content">
+          <h4 class="toast-title">${title}</h4>
+          <p class="toast-message">${message}</p>
+        </div>
       `;
       
+      // Add to container
       toastContainer.appendChild(toast);
       
-      const closeButton = toast.querySelector('.toast-close');
-      closeButton.addEventListener('click', function() {
-        toast.remove();
-      });
-      
-      // Auto remove after duration
+      // Animate toast in
       setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s ease-out forwards';
+        toast.classList.add('show');
+      }, 10);
+      
+      // Auto remove after 3 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
         setTimeout(() => {
           toast.remove();
         }, 300);
-      }, duration);
+      }, 3000);
     }
-
-    // Initialize the products table on page load
-    window.addEventListener('load', function() {
+    
+    // =========================
+    // Data Management
+    // =========================
+    
+    // Load products from localStorage or use initial data
+    function loadProducts() {
+      const storedProducts = localStorage.getItem('dairyvestProducts');
+      
+      if (storedProducts) {
+        products = JSON.parse(storedProducts, (key, value) => {
+          // Convert date strings back to Date objects
+          if (key === 'createdAt' || key === 'updatedAt') {
+            return new Date(value);
+          }
+          return value;
+        });
+      } else {
+        // Initialize with demo data
+        const now = new Date();
+        products = [
+          { 
+            id: 1, 
+            name: "Fresh Milk (500ml)", 
+            price: 45, 
+            stock: 120, 
+            status: "in-stock", 
+            category: "milk",
+            active: true,
+            createdAt: now,
+            updatedAt: now
+          },
+          { 
+            id: 2, 
+            name: "Premium Ghee (200g)", 
+            price: 180, 
+            stock: 50, 
+            status: "in-stock", 
+            category: "ghee",
+            active: true,
+            createdAt: now,
+            updatedAt: now
+          },
+          { 
+            id: 3, 
+            name: "Yogurt (400g)", 
+            price: 60, 
+            stock: 85, 
+            status: "in-stock", 
+            category: "yogurt",
+            active: true,
+            createdAt: now,
+            updatedAt: now 
+          },
+          { 
+            id: 4, 
+            name: "Paneer (250g)", 
+            price: 120, 
+            stock: 5, 
+            status: "low-stock", 
+            category: "paneer",
+            active: true,
+            createdAt: now,
+            updatedAt: now 
+          },
+          { 
+            id: 5, 
+            name: "Butter (100g)", 
+            price: 75, 
+            stock: 0, 
+            status: "out-of-stock", 
+            category: "butter",
+            active: true,
+            createdAt: now,
+            updatedAt: now 
+          }
+        ];
+        
+        saveProducts();
+      }
+    }
+    
+    // Load product history from localStorage or initialize
+    function loadProductHistory() {
+      const storedHistory = localStorage.getItem('dairyvestProductHistory');
+      
+      if (storedHistory) {
+        productHistory = JSON.parse(storedHistory, (key, value) => {
+          // Convert date strings back to Date objects
+          if (key === 'date') {
+            return new Date(value);
+          }
+          return value;
+        });
+      } else {
+        // Initialize history for each product
+        const now = new Date();
+        products.forEach(product => {
+          productHistory[product.id] = {
+            productId: product.id,
+            priceHistory: [{ date: now, price: product.price }],
+            stockHistory: [{ date: now, stock: product.stock, change: product.stock }]
+          };
+        });
+        
+        saveProductHistory();
+      }
+    }
+    
+    // Save products to localStorage
+    function saveProducts() {
+      localStorage.setItem('dairyvestProducts', JSON.stringify(products));
+    }
+    
+    // Save product history to localStorage
+    function saveProductHistory() {
+      localStorage.setItem('dairyvestProductHistory', JSON.stringify(productHistory));
+    }
+    
+    // Add a new product
+    function addProduct(productData) {
+      const now = new Date();
+      const newId = generateId();
+      
+      const newProduct = {
+        id: newId,
+        name: productData.name,
+        price: productData.price,
+        stock: productData.stock,
+        status: determineStatus(productData.stock),
+        category: productData.category,
+        discount: productData.discount || 0,
+        imageUrl: productData.imageUrl || '',
+        active: true,
+        createdAt: now,
+        updatedAt: now
+      };
+      
+      products.push(newProduct);
+      
+      // Initialize history for new product
+      productHistory[newId] = {
+        productId: newId,
+        priceHistory: [{ date: now, price: productData.price }],
+        stockHistory: [{ date: now, stock: productData.stock, change: productData.stock }]
+      };
+      
+      saveProducts();
+      saveProductHistory();
+      
+      showToast('Success', `${productData.name} has been added to your store.`);
       renderProducts();
-    });
+      updateStats();
+    }
+    
+    // Update an existing product
+    function updateProduct(id, productData) {
+      const now = new Date();
+      
+      const index = products.findIndex(p => p.id === id);
+      if (index === -1) return;
+      
+      const oldProduct = products[index];
+      
+      const updatedProduct = {
+        ...oldProduct,
+        name: productData.name,
+        price: productData.price,
+        stock: productData.stock,
+        status: determineStatus(productData.stock),
+        category: productData.category,
+        discount: productData.discount || 0,
+        imageUrl: productData.imageUrl || oldProduct.imageUrl,
+        updatedAt: now
+      };
+      
+      products[index] = updatedProduct;
+      
+      // Update product history if price or stock changed
+      if (oldProduct.price !== productData.price || oldProduct.stock !== productData.stock) {
+        const history = productHistory[id];
+        
+        // Only add to history if values actually changed
+        if (oldProduct.price !== productData.price) {
+          history.priceHistory.push({ date: now, price: productData.price });
+        }
+        
+        if (oldProduct.stock !== productData.stock) {
+          history.stockHistory.push({ 
+            date: now, 
+            stock: productData.stock, 
+            change: productData.stock - oldProduct.stock 
+          });
+        }
+        
+        productHistory[id] = history;
+      }
+      
+      saveProducts();
+      saveProductHistory();
+      
+      showToast('Success', `${productData.name} has been updated successfully.`);
+      renderProducts();
+      updateStats();
+    }
+    
+    // Delete a product
+    function deleteProduct(id) {
+      const productToDelete = products.find(p => p.id === id);
+      if (!productToDelete) return;
+      
+      // Remove the product
+      products = products.filter(p => p.id !== id);
+      
+      // Remove product history
+      delete productHistory[id];
+      
+      // Remove any low stock alerts for this product
+      localStorage.removeItem(`lowStockAlert-${id}`);
+      
+      saveProducts();
+      saveProductHistory();
+      
+      showToast('Product Removed', `${productToDelete.name} has been removed from your store.`);
+      renderProducts();
+      updateStats();
+    }
+    
+    // Toggle product active status
+    function toggleProductStatus(id) {
+      const index = products.findIndex(p => p.id === id);
+      if (index === -1) return;
+      
+      products[index].active = !products[index].active;
+      products[index].updatedAt = new Date();
+      
+      saveProducts();
+      
+      const status = products[index].active ? 'activated' : 'deactivated';
+      showToast('Status Updated', `${products[index].name} has been ${status}.`);
+      renderProducts();
+    }
+    
+    // Check for low stock and show alerts
+    function checkLowStock() {
+      products.forEach(product => {
+        if (product.stock > 0 && product.stock <= 5) {
+          const hasShownAlert = localStorage.getItem(`lowStockAlert-${product.id}`);
+          
+          if (!hasShownAlert) {
+            showToast('Low Stock Alert', `${product.name} is running low (${product.stock} units left)`, 'warning');
+            localStorage.setItem(`lowStockAlert-${product.id}`, 'true');
+          }
+        } else if (product.stock > 5) {
+          // Reset the alert if stock goes above threshold
+          localStorage.removeItem(`lowStockAlert-${product.id}`);
+        }
+      });
+    }
+    
+    // =========================
+    // UI Rendering
+    // =========================
+    
+    // Render products table
+    function renderProducts() {
+      if (!productTableBody) return;
+      
+      // Get filter values
+      const searchTerm = searchInput.value.toLowerCase();
+      const categoryValue = categoryFilter.value;
+      
+      // Apply filters
+      const filteredProducts = products.filter(product => {
+        // Search term filter
+        const matchesSearch = product.name.toLowerCase().includes(searchTerm);
+        
+        // Category filter
+        const matchesCategory = categoryValue === 'all' || product.category === categoryValue;
+        
+        return matchesSearch && matchesCategory;
+      });
+      
+      // Clear current table rows
+      productTableBody.innerHTML = '';
+      
+      // Check if no products after filtering
+      if (filteredProducts.length === 0) {
+        const emptyRow = document.createElement('tr');
+        emptyRow.innerHTML = `
+          <td colspan="6">
+            <div class="empty-state">
+              <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path>
+              </svg>
+              <h4 class="empty-state-title">No products found</h4>
+              <p>Try adjusting your search or filter to find what you're looking for.</p>
+            </div>
+          </td>
+        `;
+        productTableBody.appendChild(emptyRow);
+        return;
+      }
+      
+      // Create table rows
+      filteredProducts.forEach(product => {
+        const row = document.createElement('tr');
+        
+        // Determine status badge class
+        let statusBadgeClass = '';
+        switch (product.status) {
+          case 'in-stock':
+            statusBadgeClass = 'in-stock';
+            break;
+          case 'low-stock':
+            statusBadgeClass = 'low-stock';
+            break;
+          case 'out-of-stock':
+            statusBadgeClass = 'out-of-stock';
+            break;
+        }
+        
+        // Get placeholder image
+        const placeholderImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='none' stroke='%23d1d5db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='3' rx='2' ry='2'/%3E%3Ccircle cx='9' cy='9' r='2'/%3E%3Cpath d='m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21'/%3E%3C/svg%3E";
+        
+        // Render table cell content
+        row.innerHTML = `
+          <td>
+            <div class="flex items-center gap-2">
+              <img src="${product.imageUrl || placeholderImg}" alt="${product.name}" class="product-image">
+              <span class="product-name">${product.name}</span>
+            </div>
+          </td>
+          <td>
+            <span class="product-category">${product.category}</span>
+          </td>
+          <td>${formatCurrency(product.price)}</td>
+          <td>${product.stock}</td>
+          <td>
+            <span class="stock-badge ${statusBadgeClass}">${product.status.replace('-', ' ')}</span>
+          </td>
+          <td class="action-cell">
+            <button class="btn btn-icon btn-outline history-btn" data-id="${product.id}" title="View History">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20v-6M6 20V10M18 20V4"></path>
+              </svg>
+            </button>
+            <button class="btn btn-icon btn-outline edit-btn" data-id="${product.id}" title="Edit Product">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                <path d="m15 5 4 4"></path>
+              </svg>
+            </button>
+            <button class="btn btn-icon btn-outline toggle-btn" data-id="${product.id}" title="${product.active ? 'Deactivate' : 'Activate'}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 12h6"></path>
+                <path d="M12 9v6"></path>
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+            </button>
+            <button class="btn btn-icon btn-outline delete-btn" data-id="${product.id}" data-name="${product.name}" title="Delete Product">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18"></path>
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+            </button>
+          </td>
+        `;
+        
+        // Add row to table
+        productTableBody.appendChild(row);
+      });
+      
+      // Add event listeners to buttons
+      document.querySelectorAll('.history-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const productId = parseInt(btn.getAttribute('data-id'));
+          const product = products.find(p => p.id === productId);
+          showHistoryModal(product);
+        });
+      });
+      
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const productId = parseInt(btn.getAttribute('data-id'));
+          const product = products.find(p => p.id === productId);
+          showEditModal(product);
+        });
+      });
+      
+      document.querySelectorAll('.toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const productId = parseInt(btn.getAttribute('data-id'));
+          toggleProductStatus(productId);
+        });
+      });
+      
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const productId = parseInt(btn.getAttribute('data-id'));
+          const productName = btn.getAttribute('data-name');
+          showDeleteModal(productId, productName);
+        });
+      });
+    }
+    
+    // Update dashboard stats
+    function updateStats() {
+      if (!statsContainer) return;
+      
+      const totalProducts = products.length;
+      const inStockProducts = products.filter(p => p.status === "in-stock").length;
+      const outOfStockProducts = products.filter(p => p.status === "out-of-stock").length;
+      const lowStockProducts = products.filter(p => p.status === "low-stock").length;
+      
+      // Calculate total inventory value
+      const inventoryValue = products.reduce((total, product) => {
+        return total + (product.price * product.stock);
+      }, 0);
+      
+      // Create stats HTML
+      statsContainer.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-card-inner">
+            <div class="stat-icon" style="background-color: #fff7ed;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                <path d="M3 6h18"></path>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-label">Total Products</p>
+              <p class="stat-value">${totalProducts}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-card-inner">
+            <div class="stat-icon" style="background-color: #f0fdf4;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-label">In Stock</p>
+              <p class="stat-value">${inStockProducts}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-card-inner">
+            <div class="stat-icon" style="background-color: #fefce8;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                <path d="M12 9v4"></path>
+                <path d="M12 17h.01"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-label">Low Stock</p>
+              <p class="stat-value">${lowStockProducts}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-card-inner">
+            <div class="stat-icon" style="background-color: #fef2f2;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-label">Out of Stock</p>
+              <p class="stat-value">${outOfStockProducts}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-card-inner">
+            <div class="stat-icon" style="background-color: #eff6ff;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path>
+                <path d="M12 18V6"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-label">Inventory Value</p>
+              <p class="stat-value">${formatCurrency(inventoryValue)}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    
+    // =========================
+    // Modal Management
+    // =========================
+    
+    // Show modal for adding a new product
+    function showAddModal() {
+      // Reset form
+      productForm.reset();
+      productIdInput.value = '';
+      productCreatedAtInput.value = '';
+      previewImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='none' stroke='%23d1d5db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='3' rx='2' ry='2'/%3E%3Ccircle cx='9' cy='9' r='2'/%3E%3Cpath d='m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21'/%3E%3C/svg%3E";
+      removeImageBtn.style.display = 'none';
+      
+      // Update modal title
+      modalTitle.textContent = 'Add New Product';
+      modalSaveBtn.textContent = 'Add Product';
+      
+      // Show modal
+      productModal.classList.add('active');
+    }
+    
+    // Show modal for editing an existing product
+    function showEditModal(product) {
+      // Populate form with product data
+      productNameInput.value = product.name;
+      productCategoryInput.value = product.category;
+      productPriceInput.value = product.price;
+      productStockInput.value = product.stock;
+      productDiscountInput.value = product.discount || 0;
+      productIdInput.value = product.id;
+      productCreatedAtInput.value = product.createdAt;
+      
+      // Set product image if exists
+      if (product.imageUrl) {
+        previewImg.src = product.imageUrl;
+        removeImageBtn.style.display = 'flex';
+      } else {
+        previewImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='none' stroke='%23d1d5db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='3' rx='2' ry='2'/%3E%3Ccircle cx='9' cy='9' r='2'/%3E%3Cpath d='m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21'/%3E%3C/svg%3E";
+        removeImageBtn.style.display = 'none';
+      }
+      
+      // Update modal title
+      modalTitle.textContent = 'Edit Product';
+      modalSaveBtn.textContent = 'Save Changes';
+      
+      // Show modal
+      productModal.classList.add('active');
+    }
+    
+    // Show confirmation dialog for deleting a product
+    function showDeleteModal(productId, productName) {
+      deleteProductName.textContent = productName;
+      
+      // Set product ID to delete button data
+      deleteConfirmBtn.setAttribute('data-id', productId);
+      
+      // Show modal
+      deleteModal.classList.add('active');
+    }
+    
+    // Show product history modal
+    function showHistoryModal(product) {
+      if (!product) return;
+      
+      // Set product name
+      historyProductName.textContent = product.name;
+      
+      // Get product history
+      const history = productHistory[product.id];
+      if (!history) return;
+      
+      // Set active tab to price history by default
+      document.querySelector('.tab-button[data-tab="price"]').classList.add('active');
+      document.querySelector('.tab-button[data-tab="stock"]').classList.remove('active');
+      priceHistoryTab.style.display = 'block';
+      stockHistoryTab.style.display = 'none';
+      activeHistoryTab = 'price';
+      
+      // Render price history
+      renderPriceHistory(history.priceHistory);
+      
+      // Render stock history
+      renderStockHistory(history.stockHistory);
+      
+      // Show modal
+      historyModal.classList.add('active');
+    }
+    
+    // Render price history table
+    function renderPriceHistory(priceHistory) {
+      // Sort by date descending
+      const sortedHistory = [...priceHistory].sort((a, b) => b.date - a.date);
+      
+      // Clear current table rows
+      priceHistoryBody.innerHTML = '';
+      
+      // Check if no history
+      if (sortedHistory.length === 0) {
+        const emptyRow = document.createElement('tr');
+        emptyRow.innerHTML = `
+          <td colspan="3" class="text-center py-4 text-gray-500">
+            No price change history available
+          </td>
+        `;
+        priceHistoryBody.appendChild(emptyRow);
+        return;
+      }
+      
+      // Create table rows
+      sortedHistory.forEach((entry, index) => {
+        const row = document.createElement('tr');
+        
+        // Calculate price change
+        const prevPrice = index < sortedHistory.length - 1 ? sortedHistory[index + 1].price : entry.price;
+        const change = entry.price - prevPrice;
+        
+        let changeHtml = '';
+        if (index === sortedHistory.length - 1) {
+          changeHtml = `
+            <span class="price-change price-neutral">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+              </svg>
+              Initial
+            </span>
+          `;
+        } else if (change > 0) {
+          changeHtml = `
+            <span class="price-change price-up">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m18 15-6-6-6 6"></path>
+              </svg>
+              +${formatCurrency(change)}
+            </span>
+          `;
+        } else if (change < 0) {
+          changeHtml = `
+            <span class="price-change price-down">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+              ${formatCurrency(change)}
+            </span>
+          `;
+        } else {
+          changeHtml = `
+            <span class="price-change price-neutral">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+              </svg>
+              No change
+            </span>
+          `;
+        }
+        
+        row.innerHTML = `
+          <td>${formatDate(entry.date)}</td>
+          <td class="text-right">${formatCurrency(entry.price)}</td>
+          <td class="text-right">${changeHtml}</td>
+        `;
+        
+        priceHistoryBody.appendChild(row);
+      });
+    }
+    
+    // Render stock history table
+    function renderStockHistory(stockHistory) {
+      // Sort by date descending
+      const sortedHistory = [...stockHistory].sort((a, b) => b.date - a.date);
+      
+      // Clear current table rows
+      stockHistoryBody.innerHTML = '';
+      
+      // Check if no history
+      if (sortedHistory.length === 0) {
+        const emptyRow = document.createElement('tr');
+        emptyRow.innerHTML = `
+          <td colspan="3" class="text-center py-4 text-gray-500">
+            No stock change history available
+          </td>
+        `;
+        stockHistoryBody.appendChild(emptyRow);
+        return;
+      }
+      
+      // Create table rows
+      sortedHistory.forEach((entry, index) => {
+        const row = document.createElement('tr');
+        
+        let changeHtml = '';
+        if (index === sortedHistory.length - 1) {
+          changeHtml = `
+            <span class="price-change price-neutral">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+              </svg>
+              Initial
+            </span>
+          `;
+        } else if (entry.change > 0) {
+          changeHtml = `
+            <span class="price-change price-up">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m18 15-6-6-6 6"></path>
+              </svg>
+              +${entry.change}
+            </span>
+          `;
+        } else if (entry.change < 0) {
+          changeHtml = `
+            <span class="price-change price-down">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+              ${entry.change}
+            </span>
+          `;
+        } else {
+          changeHtml = `
+            <span class="price-change price-neutral">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+              </svg>
+              No change
+            </span>
+          `;
+        }
+        
+        row.innerHTML = `
+          <td>${formatDate(entry.date)}</td>
+          <td class="text-right">${entry.stock}</td>
+          <td class="text-right">${changeHtml}</td>
+        `;
+        
+        stockHistoryBody.appendChild(row);
+      });
+    }
+    
+    // =========================
+    // Event Handlers
+    // =========================
+    
+    // Handle form submission for adding/editing products
+    function handleProductFormSubmit() {
+      // Get form data
+      const name = productNameInput.value;
+      const category = productCategoryInput.value;
+      const price = parseFloat(productPriceInput.value);
+      const stock = parseInt(productStockInput.value);
+      const discount = parseInt(productDiscountInput.value) || 0;
+      
+      // Validate form data
+      if (!name || !category || isNaN(price) || isNaN(stock)) {
+        showToast('Error', 'Please fill all required fields correctly', 'error');
+        return;
+      }
+      
+      // Get the preview image (if any)
+      const imageUrl = previewImg.src;
+      const isPlaceholder = imageUrl.includes('data:image/svg+xml');
+      
+      // Prepare product data
+      const productData = {
+        name,
+        category,
+        price,
+        stock,
+        discount,
+        imageUrl: isPlaceholder ? '' : imageUrl
+      };
+      
+      // Check if adding or editing
+      const productId = parseInt(productIdInput.value);
+      if (productId) {
+        // Update existing product
+        updateProduct(productId, productData);
+      } else {
+        // Add new product
+        addProduct(productData);
+      }
+      
+      // Close modal
+      productModal.classList.remove('active');
+    }
+    
+    // Handle image upload
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      // Validate file size (max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        showToast('Error', 'Image file size must be less than 2MB', 'error');
+        return;
+      }
+      
+      // Read file as data URL
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImg.src = e.target.result;
+        removeImageBtn.style.display = 'flex';
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    // Handle image removal
+    function handleRemoveImage() {
+      previewImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='none' stroke='%23d1d5db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='3' rx='2' ry='2'/%3E%3Ccircle cx='9' cy='9' r='2'/%3E%3Cpath d='m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21'/%3E%3C/svg%3E";
+      removeImageBtn.style.display = 'none';
+      productImageInput.value = '';
+    }
+    
+    // Handle tab switching in history modal
+    function handleTabSwitch(e) {
+      const tabName = e.target.getAttribute('data-tab');
+      
+      // Update active tab button
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      e.target.classList.add('active');
+      
+      // Show/hide tab content
+      if (tabName === 'price') {
+        priceHistoryTab.style.display = 'block';
+        stockHistoryTab.style.display = 'none';
+        activeHistoryTab = 'price';
+      } else if (tabName === 'stock') {
+        priceHistoryTab.style.display = 'none';
+        stockHistoryTab.style.display = 'block';
+        activeHistoryTab = 'stock';
+      }
+    }
+    
+    // Handle delete confirmation
+    function handleDeleteConfirm() {
+      const productId = parseInt(deleteConfirmBtn.getAttribute('data-id'));
+      if (productId) {
+        deleteProduct(productId);
+      }
+      deleteModal.classList.remove('active');
+    }
+    
+    // =========================
+    // Event Listeners
+    // =========================
+    
+    // Initialize event listeners
+    function initEventListeners() {
+      // Search and filter
+      if (searchInput) {
+        searchInput.addEventListener('input', renderProducts);
+      }
+      
+      if (categoryFilter) {
+        categoryFilter.addEventListener('change', renderProducts);
+      }
+      
+      // Add Product button
+      if (addProductBtn) {
+        addProductBtn.addEventListener('click', showAddModal);
+      }
+      
+      // Product form save button
+      if (modalSaveBtn) {
+        modalSaveBtn.addEventListener('click', handleProductFormSubmit);
+      }
+      
+      // Product form cancel button
+      if (modalCancelBtn) {
+        modalCancelBtn.addEventListener('click', () => {
+          productModal.classList.remove('active');
+        });
+      }
+      
+      // Image upload
+      if (productImageInput) {
+        productImageInput.addEventListener('change', handleImageUpload);
+      }
+      
+      // Remove image button
+      if (removeImageBtn) {
+        removeImageBtn.addEventListener('click', handleRemoveImage);
+      }
+      
+      // Tab buttons in history modal
+      if (tabButtons) {
+        tabButtons.forEach(btn => {
+          btn.addEventListener('click', handleTabSwitch);
+        });
+      }
+      
+      // History modal close button
+      if (historyCloseBtn) {
+        historyCloseBtn.addEventListener('click', () => {
+          historyModal.classList.remove('active');
+        });
+      }
+      
+      // Delete modal buttons
+      if (deleteConfirmBtn) {
+        deleteConfirmBtn.addEventListener('click', handleDeleteConfirm);
+      }
+      
+      if (deleteCancelBtn) {
+        deleteCancelBtn.addEventListener('click', () => {
+          deleteModal.classList.remove('active');
+        });
+      }
+      
+      // Mobile menu
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+          mobileSidebar.classList.add('active');
+          sidebarBackdrop.classList.add('active');
+        });
+      }
+      
+      if (sidebarBackdrop) {
+        sidebarBackdrop.addEventListener('click', () => {
+          mobileSidebar.classList.remove('active');
+          sidebarBackdrop.classList.remove('active');
+        });
+      }
+      
+      // Close modals when clicking outside
+      window.addEventListener('click', (e) => {
+        if (e.target === productModal) {
+          productModal.classList.remove('active');
+        }
+        if (e.target === historyModal) {
+          historyModal.classList.remove('active');
+        }
+        if (e.target === deleteModal) {
+          deleteModal.classList.remove('active');
+        }
+      });
+    }
+    
+    // =========================
+    // Initialization
+    // =========================
+    
+    // Initialize app
+    function init() {
+      // Load data
+      loadProducts();
+      loadProductHistory();
+      
+      // Render UI
+      renderProducts();
+      updateStats();
+      
+      // Set up event listeners
+      initEventListeners();
+      
+      // Check for low stock
+      checkLowStock();
+    }
+    
+    // Start the app
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>

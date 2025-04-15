@@ -3,1166 +3,1740 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Profile - DairyVest</title>
+  <title>Dairy-Lift Admin Profile</title>
+  
+  <!-- Embedding all styles -->
   <style>
-    /* Global Styles */
+    /* Base styles */
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 222.2 84% 4.9%;
+      --card: 0 0% 100%;
+      --card-foreground: 222.2 84% 4.9%;
+      --popover: 0 0% 100%;
+      --popover-foreground: 222.2 84% 4.9%;
+      --primary: 210 100% 50%;
+      --primary-foreground: 210 40% 98%;
+      --secondary: 210 40% 96.1%;
+      --secondary-foreground: 222.2 47.4% 11.2%;
+      --muted: 210 40% 96.1%;
+      --muted-foreground: 215.4 16.3% 46.9%;
+      --accent: 210 40% 96.1%;
+      --accent-foreground: 222.2 47.4% 11.2%;
+      --destructive: 0 84.2% 60.2%;
+      --destructive-foreground: 210 40% 98%;
+      --border: 214.3 31.8% 91.4%;
+      --input: 214.3 31.8% 91.4%;
+      --ring: 222.2 84% 4.9%;
+      --radius: 0.5rem;
+      --success: 142.1 76.2% 36.3%;
+      --success-foreground: 355.7 100% 97.3%;
+      --warning: 38 92% 50%;
+      --warning-foreground: 355.7 100% 97.3%;
+      --info: 221.2 83.2% 53.3%;
+      --info-foreground: 355.7 100% 97.3%;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    }
-
-    :root {
-      --primary-color: #3b82f6;
-      --primary-hover: #2563eb;
-      --secondary-color: #f3f4f6;
-      --text-color: #1f2937;
-      --muted-text: #6b7280;
-      --border-color: #e5e7eb;
-      --card-bg: #ffffff;
-      --danger: #ef4444;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --info: #3b82f6;
-      --radius: 0.5rem;
+      border-color: hsl(var(--border));
     }
 
     body {
-      background-color: #f9fafb;
-      color: var(--text-color);
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+      line-height: 1.5;
     }
 
-    .flex {
-      display: flex;
-    }
-
-    .flex-col {
-      flex-direction: column;
-    }
-
-    .items-center {
-      align-items: center;
-    }
-
-    .justify-between {
-      justify-content: space-between;
-    }
-
-    .gap-2 {
-      gap: 0.5rem;
-    }
-
-    .gap-4 {
-      gap: 1rem;
-    }
-
-    .p-4 {
-      padding: 1rem;
-    }
-
-    .p-6 {
-      padding: 1.5rem;
-    }
-
-    .py-2 {
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-    }
-
-    .px-4 {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
-    .text-sm {
-      font-size: 0.875rem;
-    }
-
-    .text-lg {
-      font-size: 1.125rem;
-    }
-
-    .text-xl {
-      font-size: 1.25rem;
-    }
-
-    .text-2xl {
-      font-size: 1.5rem;
-    }
-
-    .font-medium {
-      font-weight: 500;
-    }
-
-    .font-bold {
-      font-weight: 700;
-    }
-
-    .text-white {
-      color: white;
-    }
-
-    .grid {
-      display: grid;
-    }
-
-    .grid-cols-1 {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-
-    .grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .rounded-lg {
-      border-radius: var(--radius);
-    }
-
-    .rounded-full {
-      border-radius: 9999px;
-    }
-
-    .border {
-      border: 1px solid var(--border-color);
-    }
-
-    .border-b {
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .shadow-sm {
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    }
-
-    .shadow-md {
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-
-    .bg-primary {
-      background-color: var(--primary-color);
-    }
-
-    .bg-card {
-      background-color: var(--card-bg);
-    }
-
-    .text-muted {
-      color: var(--muted-text);
-    }
-
-    .cursor-pointer {
+    button {
       cursor: pointer;
     }
 
-    .w-full {
-      width: 100%;
-    }
+    /* Typography */
+    .text-xs { font-size: 0.75rem; }
+    .text-sm { font-size: 0.875rem; }
+    .text-base { font-size: 1rem; }
+    .text-lg { font-size: 1.125rem; }
+    .text-xl { font-size: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; }
+    
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    
+    /* Colors */
+    .bg-background { background-color: hsl(var(--background)); }
+    .bg-card { background-color: hsl(var(--card)); }
+    .bg-primary { background-color: hsl(var(--primary)); }
+    .bg-primary\/10 { background-color: hsla(var(--primary), 0.1); }
+    .bg-secondary { background-color: hsl(var(--secondary)); }
+    .bg-muted { background-color: hsl(var(--muted)); }
+    .bg-destructive { background-color: hsl(var(--destructive)); }
+    .bg-success\/10 { background-color: hsla(var(--success), 0.1); }
+    .bg-warning\/10 { background-color: hsla(var(--warning), 0.1); }
+    .bg-info\/10 { background-color: hsla(var(--info), 0.1); }
+    
+    .text-foreground { color: hsl(var(--foreground)); }
+    .text-primary { color: hsl(var(--primary)); }
+    .text-primary-foreground { color: hsl(var(--primary-foreground)); }
+    .text-secondary-foreground { color: hsl(var(--secondary-foreground)); }
+    .text-muted-foreground { color: hsl(var(--muted-foreground)); }
+    .text-destructive { color: hsl(var(--destructive)); }
+    .text-success { color: hsl(var(--success)); }
+    .text-warning { color: hsl(var(--warning)); }
+    .text-info { color: hsl(var(--info)); }
+    .text-white { color: white; }
 
-    .max-w-3xl {
-      max-width: 48rem;
-    }
-
-    .mx-auto {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .mb-4 {
-      margin-bottom: 1rem;
-    }
-
-    .mb-6 {
-      margin-bottom: 1.5rem;
-    }
-
-    .mt-2 {
-      margin-top: 0.5rem;
-    }
-
-    .mt-4 {
-      margin-top: 1rem;
-    }
-
-    /* Header */
-    .header {
-      position: sticky;
-      top: 0;
-      background-color: white;
-      border-bottom: 1px solid var(--border-color);
-      padding: 1rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 4rem;
-      z-index: 100;
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    }
-
-    .logo {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: var(--primary-color);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .logo-badge {
-      background-color: var(--primary-color);
-      color: white;
-      font-size: 0.75rem;
-      padding: 0.125rem 0.25rem;
-      border-radius: 0.25rem;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .notification-badge {
-      position: relative;
-    }
-
-    .badge {
-      position: absolute;
-      top: -0.5rem;
-      right: -0.5rem;
-      background-color: var(--danger);
-      color: white;
-      border-radius: 9999px;
-      font-size: 0.625rem;
-      height: 1rem;
-      width: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .header-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 9999px;
-      cursor: pointer;
-      color: var(--muted-text);
-    }
-
-    .header-icon:hover {
-      background-color: var(--secondary-color);
-    }
-
-    .avatar {
-      width: 2rem;
-      height: 2rem;
-      border-radius: 9999px;
-      background-color: var(--primary-color);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .large-avatar {
-      width: 6rem;
-      height: 6rem;
-      border-radius: 9999px;
-      background-color: var(--primary-color);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      font-weight: 700;
-      margin-right: 1.5rem;
-    }
-
-    /* Main Layout */
-    .layout {
-      display: flex;
-      min-height: calc(100vh - 4rem);
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 16rem;
-      background-color: white;
-      border-right: 1px solid var(--border-color);
-      padding: 1.5rem 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .sidebar.collapsed {
-      width: 5rem;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem 1rem;
-      border-radius: var(--radius);
-      color: var(--text-color);
-      margin-bottom: 0.5rem;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .nav-item:hover {
-      background-color: var(--secondary-color);
-    }
-
-    .nav-item.active {
-      background-color: var(--primary-color);
-      color: white;
-    }
-
-    .nav-item-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      padding: 1.5rem;
-      overflow-y: auto;
-    }
-
-    .page-header {
-      margin-bottom: 1.5rem;
-    }
-
-    .page-title {
-      font-size: 1.875rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .page-description {
-      color: var(--muted-text);
-    }
-
-    /* Cards */
+    /* Layout */
+    .container { width: 100%; max-width: 80rem; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+    .flex { display: flex; }
+    .inline-flex { display: inline-flex; }
+    .grid { display: grid; }
+    .hidden { display: none; }
+    .h-3 { height: 0.75rem; }
+    .h-4 { height: 1rem; }
+    .h-5 { height: 1.25rem; }
+    .h-6 { height: 1.5rem; }
+    .h-8 { height: 2rem; }
+    .h-9 { height: 2.25rem; }
+    .h-10 { height: 2.5rem; }
+    .h-12 { height: 3rem; }
+    .h-16 { height: 4rem; }
+    .h-24 { height: 6rem; }
+    .h-full { height: 100%; }
+    .w-2 { width: 0.5rem; }
+    .w-3 { width: 0.75rem; }
+    .w-4 { width: 1rem; }
+    .w-5 { width: 1.25rem; }
+    .w-6 { width: 1.5rem; }
+    .w-8 { width: 2rem; }
+    .w-9 { width: 2.25rem; }
+    .w-10 { width: 2.5rem; }
+    .w-11 { width: 2.75rem; }
+    .w-12 { width: 3rem; }
+    .w-24 { width: 6rem; }
+    .w-44 { width: 11rem; }
+    .w-56 { width: 14rem; }
+    .w-64 { width: 16rem; }
+    .w-full { width: 100%; }
+    .max-w-6xl { max-width: 72rem; }
+    .flex-1 { flex: 1 1 0%; }
+    .shrink-0 { flex-shrink: 0; }
+    .flex-col { flex-direction: column; }
+    .items-start { align-items: flex-start; }
+    .items-center { align-items: center; }
+    .justify-start { justify-content: flex-start; }
+    .justify-center { justify-content: center; }
+    .justify-end { justify-content: flex-end; }
+    .justify-between { justify-content: space-between; }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-6 { gap: 1.5rem; }
+    .space-y-1 > * + * { margin-top: 0.25rem; }
+    .space-y-2 > * + * { margin-top: 0.5rem; }
+    .space-y-3 > * + * { margin-top: 0.75rem; }
+    .space-y-6 > * + * { margin-top: 1.5rem; }
+    .space-x-2 > * + * { margin-left: 0.5rem; }
+    .divide-y > * + * { border-top-width: 1px; }
+    
+    /* Spacing */
+    .p-0 { padding: 0; }
+    .p-1 { padding: 0.25rem; }
+    .p-2 { padding: 0.5rem; }
+    .p-4 { padding: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .px-1 { padding-left: 0.25rem; padding-right: 0.25rem; }
+    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .py-0 { padding-top: 0; padding-bottom: 0; }
+    .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .pt-0 { padding-top: 0; }
+    .pt-6 { padding-top: 1.5rem; }
+    .pt-16 { padding-top: 4rem; }
+    .pb-4 { padding-bottom: 1rem; }
+    
+    .m-0 { margin: 0; }
+    .m-1 { margin: 0.25rem; }
+    .m-2 { margin: 0.5rem; }
+    .m-4 { margin: 1rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .ml-1 { margin-left: 0.25rem; }
+    .ml-2 { margin-left: 0.5rem; }
+    .ml-3 { margin-left: 0.75rem; }
+    .ml-6 { margin-left: 1.5rem; }
+    .ml-8 { margin-left: 2rem; }
+    .ml-auto { margin-left: auto; }
+    .mr-1 { margin-right: 0.25rem; }
+    .mr-2 { margin-right: 0.5rem; }
+    .mr-3 { margin-right: 0.75rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .-top-1 { top: -0.25rem; }
+    .-right-1 { right: -0.25rem; }
+    
+    /* Borders */
+    .rounded { border-radius: 0.25rem; }
+    .rounded-md { border-radius: calc(var(--radius) - 2px); }
+    .rounded-lg { border-radius: var(--radius); }
+    .rounded-full { border-radius: 9999px; }
+    .border { border-width: 1px; }
+    .border-2 { border-width: 2px; }
+    .border-4 { border-width: 4px; }
+    .border-b { border-bottom-width: 1px; }
+    .border-t { border-top-width: 1px; }
+    .border-white { border-color: white; }
+    .border-input { border-color: hsl(var(--input)); }
+    .border-gray-300 { border-color: rgb(209 213 219); }
+    
+    /* Effects */
+    .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+    .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    
+    /* Positioning */
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .sticky { position: sticky; }
+    .fixed { position: fixed; }
+    .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+    .inset-y-0 { top: 0; bottom: 0; }
+    .top-0 { top: 0; }
+    .top-1\/2 { top: 50%; }
+    .bottom-0 { bottom: 0; }
+    .right-0 { right: 0; }
+    .right-3 { right: 0.75rem; }
+    .right-4 { right: 1rem; }
+    .left-0 { left: 0; }
+    .z-10 { z-index: 10; }
+    .z-30 { z-index: 30; }
+    .z-40 { z-index: 40; }
+    .z-50 { z-index: 50; }
+    
+    /* Transforms */
+    .translate-x-0 { transform: translateX(0); }
+    .-translate-x-full { transform: translateX(-100%); }
+    .-translate-y-1\/2 { transform: translateY(-50%); }
+    
+    /* Utilities */
+    .hidden { display: none; }
+    .opacity-0 { opacity: 0; }
+    .opacity-70 { opacity: 0.7; }
+    .opacity-100 { opacity: 1; }
+    .cursor-pointer { cursor: pointer; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-y-auto { overflow-y: auto; }
+    .whitespace-nowrap { white-space: nowrap; }
+    .text-center { text-align: center; }
+    .text-left { text-align: left; }
+    .align-text-top { vertical-align: text-top; }
+    
+    /* Transitions */
+    .transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .transition-opacity { transition-property: opacity; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .transition-transform { transition-property: transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    
+    /* Custom components */
     .card {
-      background-color: white;
+      background-color: hsl(var(--card));
       border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      overflow: hidden;
-      transition: all 0.2s ease;
-      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     }
-
+    
     .card-header {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--border-color);
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      padding: 1.5rem 1.5rem 0;
+    }
+    
+    .card-gradient-header {
       background: linear-gradient(to right, #f9fafb, #f3f4f6);
+      border-top-left-radius: var(--radius);
+      border-top-right-radius: var(--radius);
+      padding: 1rem 1.5rem;
     }
-
+    
     .card-title {
-      font-size: 1.25rem;
+      font-size: 1.125rem;
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      color: hsl(var(--card-foreground));
     }
-
+    
     .card-content {
-      padding: 1.25rem 1.5rem;
+      padding: 1.5rem;
     }
-
-    /* Form */
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-
-    @media (min-width: 768px) {
-      .form-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 0.5rem 0.75rem;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      background-color: white;
-      font-size: 0.875rem;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 1px var(--primary-color);
-    }
-
-    /* Button */
+    
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      white-space: nowrap;
       border-radius: var(--radius);
       font-weight: 500;
-      padding: 0.5rem 1rem;
       font-size: 0.875rem;
-      line-height: 1.25rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      gap: 0.5rem;
+      height: 2.5rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      transition-property: color, background-color, border-color;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
     }
-
+    
     .btn-primary {
-      background-color: var(--primary-color);
-      color: white;
-      border: 1px solid var(--primary-color);
+      background-color: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
     }
-
+    
     .btn-primary:hover {
-      background-color: var(--primary-hover);
+      background-color: hsla(var(--primary), 0.9);
     }
-
+    
     .btn-outline {
+      border: 1px solid hsl(var(--input));
       background-color: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-color);
+      color: hsl(var(--foreground));
     }
-
+    
     .btn-outline:hover {
-      background-color: var(--secondary-color);
+      background-color: hsl(var(--accent));
+      color: hsl(var(--accent-foreground));
     }
-
-    /* Profile specific */
-    .profile-header {
+    
+    .btn-ghost {
+      background-color: transparent;
+      color: hsl(var(--foreground));
+    }
+    
+    .btn-ghost:hover {
+      background-color: hsl(var(--accent));
+      color: hsl(var(--accent-foreground));
+    }
+    
+    .btn-sm {
+      height: 2.25rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      border-radius: calc(var(--radius) - 2px);
+    }
+    
+    .avatar {
+      position: relative;
       display: flex;
       align-items: center;
-      margin-bottom: 2rem;
+      justify-content: center;
+      overflow: hidden;
+      background-color: hsl(var(--muted));
+      border-radius: 9999px;
     }
-
-    .profile-info h1 {
-      font-size: 1.875rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
+    
+    .avatar-image {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
     }
-
-    .profile-info p {
-      color: var(--muted-text);
-    }
-
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .stat-box {
-      background-color: white;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .stat-box h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-      color: var(--primary-color);
-    }
-
-    .stat-box p {
-      color: var(--muted-text);
-      font-size: 0.875rem;
-    }
-
-    .profile-tabs {
+    
+    .avatar-fallback {
+      height: 100%;
+      width: 100%;
       display: flex;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 1.5rem;
-    }
-
-    .profile-tab {
-      padding: 0.75rem 1.25rem;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
+      align-items: center;
+      justify-content: center;
       font-weight: 500;
     }
-
-    .profile-tab.active {
-      border-bottom-color: var(--primary-color);
-      color: var(--primary-color);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .sidebar {
-        position: fixed;
-        left: -100%;
-        top: 4rem;
-        height: calc(100% - 4rem);
-        z-index: 50;
-        transition: left 0.3s ease;
-      }
-
-      .sidebar.active {
-        left: 0;
-      }
-
-      .profile-header {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .large-avatar {
-        margin-right: 0;
-        margin-bottom: 1rem;
-      }
-
-      .stats-row {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Profile dropdown menu */
-    .profile-dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dropdown-content {
-      display: none;
+    
+    .dropdown-menu {
       position: absolute;
-      right: 0;
-      min-width: 200px;
       z-index: 50;
-      background-color: white;
-      border-radius: var(--radius);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      border: 1px solid var(--border-color);
+      min-width: 8rem;
       overflow: hidden;
+      background-color: hsl(var(--popover));
+      border-radius: var(--radius);
+      border: 1px solid hsl(var(--border));
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      animation: fadeIn 0.2s ease-out forwards;
     }
-
-    .dropdown-content.show {
-      display: block;
-      animation: fadeIn 0.2s ease-out;
+    
+    .dropdown-menu-content {
+      padding: 0.5rem;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .dropdown-header {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border-color);
+    
+    .dropdown-menu-label {
+      padding: 0.5rem;
+      font-size: 0.875rem;
       font-weight: 600;
+      color: hsl(var(--foreground));
     }
-
-    .dropdown-item {
-      padding: 0.75rem 1rem;
+    
+    .dropdown-menu-separator {
+      height: 1px;
+      margin: 0.25rem -0.5rem;
+      background-color: hsl(var(--border));
+    }
+    
+    .dropdown-menu-item {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: calc(var(--radius) - 2px);
       cursor: pointer;
-      color: var(--text-color);
-      transition: background-color 0.2s;
-      text-decoration: none;
+      user-select: none;
+    }
+    
+    .dropdown-menu-item:hover {
+      background-color: hsl(var(--accent));
     }
 
-    .dropdown-item:hover {
-      background-color: var(--secondary-color);
+    .progress {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background-color: hsl(var(--secondary));
+      border-radius: 9999px;
     }
-
-    .dropdown-divider {
-      height: 1px;
-      background-color: var(--border-color);
-      margin: 0;
+    
+    .progress-indicator {
+      height: 100%;
+      background-color: hsl(var(--primary));
+      transition: width 0.2s ease;
     }
-
-    /* Toast Notifications */
-    .toast-container {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      z-index: 1000;
+    
+    .input {
+      width: 100%;
+      height: 2.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid hsl(var(--input));
+      background-color: hsl(var(--background));
+      font-size: 0.875rem;
+    }
+    
+    .input:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px hsla(var(--ring), 0.3);
+    }
+    
+    .input:read-only {
+      background-color: hsl(var(--muted));
+      cursor: not-allowed;
+    }
+    
+    .textarea {
+      width: 100%;
+      min-height: 6rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid hsl(var(--input));
+      background-color: hsl(var(--background));
+      font-size: 0.875rem;
+      resize: vertical;
+    }
+    
+    .textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px hsla(var(--ring), 0.3);
+    }
+    
+    .tabs {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
     }
-
-    .toast {
-      padding: 1rem;
-      border-radius: var(--radius);
-      background-color: white;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    
+    .tabs-list {
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      width: 300px;
-      max-width: calc(100vw - 2rem);
-      animation: slideIn 0.3s ease-out;
+      background-color: hsl(var(--muted));
+      padding: 0.25rem;
+      border-radius: var(--radius);
     }
-
-    @keyframes slideIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    .toast-success {
-      border-left: 4px solid var(--success);
-    }
-
-    .toast-error {
-      border-left: 4px solid var(--danger);
-    }
-
-    .toast-info {
-      border-left: 4px solid var(--info);
-    }
-
-    .toast-warning {
-      border-left: 4px solid var(--warning);
-    }
-
-    .toast-content {
+    
+    .tabs-trigger {
       flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: hsl(var(--muted-foreground));
+      border-radius: calc(var(--radius) - 2px);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .tabs-trigger[data-state="active"] {
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+    
+    .tabs-content {
+      margin-top: 0.5rem;
     }
 
+    .switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      width: 2.75rem;
+      height: 1.5rem;
+      border-radius: 9999px;
+      background-color: hsl(var(--input));
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .switch[data-state="checked"] {
+      background-color: hsl(var(--primary));
+    }
+    
+    .switch-thumb {
+      position: absolute;
+      left: 0.125rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 9999px;
+      background-color: white;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+    
+    .switch[data-state="checked"] .switch-thumb {
+      transform: translateX(1.25rem);
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      padding: 1rem;
+      width: 100%;
+      max-width: 24rem;
+      z-index: 50;
+    }
+    
+    .toast {
+      display: flex;
+      background-color: hsl(var(--background));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+      margin-top: 0.5rem;
+      animation: slideIn 0.2s ease-out;
+    }
+    
     .toast-title {
       font-weight: 600;
       margin-bottom: 0.25rem;
     }
-
-    .toast-message {
-      color: var(--muted-text);
+    
+    .toast-description {
       font-size: 0.875rem;
+      color: hsl(var(--muted-foreground));
     }
 
-    .toast-close {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--muted-text);
+    /* Responsive utilities */
+    @media (min-width: 640px) {
+      .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sm\:text-left { text-align: left; }
+      .sm\:justify-end { justify-content: flex-end; }
+      .sm\:flex-row { flex-direction: row; }
+      .sm\:space-x-2 > * + * { margin-left: 0.5rem; }
+    }
+    
+    @media (min-width: 768px) {
+      .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .md\:col-span-2 { grid-column: span 2 / span 2; }
+      .md\:col-span-3 { grid-column: span 3 / span 3; }
+      .md\:flex-row { flex-direction: row; }
+      .md\:items-start { align-items: flex-start; }
+      .md\:justify-start { justify-content: flex-start; }
+      .md\:text-left { text-align: left; }
+      .md\:ml-6 { margin-left: 1.5rem; }
+      .md\:inline { display: inline; }
+      .md\:block { display: block; }
+      .md\:translate-x-0 { transform: translateX(0); }
+      .md\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+    
+    @media (min-width: 1024px) {
+      .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    /* Animation keyframes */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
     }
   </style>
+
+  <!-- Icons from Lucide (Feather) -->
+  <script>
+    // Minimal implementation of Lucide icons as inline SVG
+    function createIcon(name, path) {
+      window[name] = function(props = {}) {
+        const size = props.size || 24;
+        const color = props.color || 'currentColor';
+        const strokeWidth = props.strokeWidth || 2;
+        
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', size);
+        svg.setAttribute('height', size);
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('fill', 'none');
+        svg.setAttribute('stroke', color);
+        svg.setAttribute('stroke-width', strokeWidth);
+        svg.setAttribute('stroke-linecap', 'round');
+        svg.setAttribute('stroke-linejoin', 'round');
+        svg.innerHTML = path;
+        
+        return svg;
+      };
+    }
+
+    // Define icons
+    createIcon('Bell', '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>');
+    createIcon('Menu', '<line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/>');
+    createIcon('LogOut', '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>');
+    createIcon('User', '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>');
+    createIcon('Settings', '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>');
+    createIcon('Home', '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>');
+    createIcon('LayoutDashboard', '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>');
+    createIcon('Store', '<path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/>');
+    createIcon('Camera', '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>');
+    createIcon('Eye', '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>');
+    createIcon('EyeOff', '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>');
+    createIcon('Lock', '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>');
+    createIcon('ShieldCheck', '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>');
+    createIcon('Link2', '<path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/>');
+    createIcon('BarChart2', '<line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/>');
+    createIcon('Users', '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>');
+    createIcon('DollarSign', '<line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>');
+    createIcon('Beef', '<path d="M12.83 9.37a2.71 2.71 0 0 0-1.42-2.23 2.63 2.63 0 0 0-1.9-.18 2.72 2.72 0 0 1 .21-5.45 2.71 2.71 0 0 0-1.82 2.41c-2.2.94-3.35 2-3.35 3.65 0 3.64 6.4 8.25 10.92 10.66a2.72 2.72 0 0 1-2.69 2.27A2.72 2.72 0 0 0 15.51 18c.19-.62.76-1.1 1.38-1.65 2.13-1.88 4.56-4 4.56-7.79 0-2.58-1.94-2.55-1.94-5.06 0-.65.14-1.24.7-1.79"/>');
+    createIcon('FileText', '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/>');
+    createIcon('ShoppingBag', '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>');
+    createIcon('MessageSquare', '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>');
+    createIcon('Coins', '<circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 0 10.37 18.09"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/>');
+    createIcon('TrendingUp', '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>');
+    createIcon('LineChart', '<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>');
+    createIcon('Circle', '<circle cx="12" cy="12" r="10"/>');
+    createIcon('CheckCircle', '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>');
+    createIcon('Clock', '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>');
+    createIcon('Calendar', '<rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/>');
+    createIcon('MapPin', '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>');
+    createIcon('Monitor', '<rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>');
+    createIcon('Key', '<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>');
+    createIcon('LogIn', '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/>');
+  </script>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="flex items-center">
-      <button id="menu-toggle" class="header-icon mr-2 md-hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-      <a href="admin-dashboard.html" class="logo">
-        DairyVest
-        <span class="logo-badge">Admin</span>
-      </a>
-    </div>
-
-    <div class="header-right">
-      <div class="notification-badge">
-        <button class="header-icon" onclick="showToast('info', 'Notifications', 'You have 3 unread notifications')">
+  <div class="relative min-h-screen bg-background">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-6">
+      <div class="flex items-center">
+        <div class="h-5 w-5 mr-3 cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="6" x2="20" y2="6"></line>
+            <line x1="4" y1="18" x2="20" y2="18"></line>
           </svg>
-        </button>
-        <span class="badge">3</span>
-      </div>
-
-      <button class="header-icon" onclick="showToast('info', 'Messages', 'You have 2 unread messages')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-      </button>
-      
-      <!-- Profile dropdown -->
-      <div class="profile-dropdown">
-        <div class="avatar" id="profile-toggle">A</div>
-        <div class="dropdown-content" id="profileDropdown">
-          <div class="dropdown-header">My Account</div>
-          <a href="profile.html" class="dropdown-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            Profile
-          </a>
-          <a href="#" class="dropdown-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-            Settings
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item" onclick="handleLogout()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-            Logout
-          </a>
         </div>
+        <a href="/" class="flex items-center">
+          <span class="text-xl font-bold text-primary">Dairy-Lift</span>
+          <span class="ml-2 rounded bg-primary px-1 py-0.5 text-xs text-white">Admin</span>
+        </a>
       </div>
-    </div>
-  </header>
 
-  <!-- Main Layout -->
-  <div class="layout">
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-      <a href="admin-dashboard.html" class="nav-item">
-        <span class="nav-item-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="flex items-center ml-8 gap-2">
+        <a href="/" class="btn btn-ghost btn-sm flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
           </svg>
-        </span>
-        <span>Dashboard</span>
-      </a>
-      
-      <a href="add_new_cattle.html" class="nav-item">
-        <span class="nav-item-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          <span class="hidden md:inline">Home</span>
+        </a>
+        <a href="/dashboard" class="btn btn-ghost btn-sm flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+            <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+            <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+            <rect width="7" height="5" x="3" y="16" rx="1"></rect>
           </svg>
-        </span>
-        <span>Cattle Management</span>
-      </a>
-      
-      <a href="new_investor.html" class="nav-item">
-        <span class="nav-item-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
+          <span class="hidden md:inline">Dashboard</span>
+        </a>
+        <a href="/store" class="btn btn-ghost btn-sm flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path>
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+            <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path>
+            <path d="M2 7h20"></path>
+            <path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"></path>
           </svg>
-        </span>
-        <span>Investors</span>
-      </a>
-      
-      <a href="create_report.html" class="nav-item">
-        <span class="nav-item-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="12" rx="2" ry="2"></rect>
-            <line x1="2" y1="20" x2="22" y2="20"></line>
-          </svg>
-        </span>
-        <span>Financial Reports</span>
-      </a>
-      
-      <a href="manage_store.html" class="nav-item">
-        <span class="nav-item-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
-          </svg>
-        </span>
-        <span>Store</span>
-      </a>
-      
-      <a href="#" class="nav-item">
-        <span class="nav-item-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-        </span>
-        <span>Settings</span>
-      </a>
-      
-      <a href="profile.html" class="nav-item active">
-        <span class="nav-item-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </span>
-        <span>Profile</span>
-      </a>
-    </nav>
+          <span class="hidden md:inline">Store</span>
+        </a>
+      </div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <div class="max-w-3xl mx-auto">
-        <div class="profile-header">
-          <div class="large-avatar">A</div>
-          <div class="profile-info">
-            <h1>Admin User</h1>
-            <p>admin@dairyvest.com</p>
-            <p class="mt-2">Farm Manager</p>
-          </div>
-        </div>
-
-        <div class="stats-row">
-          <div class="stat-box">
-            <h3>148</h3>
-            <p>Cattle Managed</p>
-          </div>
-          <div class="stat-box">
-            <h3>24</h3>
-            <p>Investors</p>
-          </div>
-          <div class="stat-box">
-            <h3>₹45,231</h3>
-            <p>Revenue (Monthly)</p>
-          </div>
-        </div>
-
-        <div class="profile-tabs">
-          <div class="profile-tab active" data-tab="personal">Personal Information</div>
-          <div class="profile-tab" data-tab="security">Security</div>
-          <div class="profile-tab" data-tab="notifications">Notifications</div>
-        </div>
-
-        <!-- Personal Information Section -->
-        <div class="tab-content" id="personal-content">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
+      <div class="ml-auto flex items-center gap-4">
+        <button class="relative" id="notificationBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-white">
+            3
+          </span>
+        </button>
+        
+        <div class="dropdown">
+          <button class="relative h-8 w-8 rounded-full" id="userDropdown">
+            <div class="avatar h-8 w-8">
+              <div class="avatar-fallback bg-primary text-primary-foreground">A</div>
+            </div>
+          </button>
+          <div class="dropdown-menu hidden" id="userMenu">
+            <div class="dropdown-menu-content">
+              <div class="dropdown-menu-label">My Account</div>
+              <div class="dropdown-menu-separator"></div>
+              <div class="dropdown-menu-group">
+                <a href="/" class="dropdown-menu-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  <span>Profile</span>
+                </a>
+                <a href="/settings" class="dropdown-menu-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                  </svg>
+                  <span>Settings</span>
+                </a>
+              </div>
+              <div class="dropdown-menu-separator"></div>
+              <button class="dropdown-menu-item" id="logoutBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
                 </svg>
-                Personal Information
-              </div>
-            </div>
-            <div class="card-content">
-              <form id="profile-form">
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label for="first-name" class="form-label">First Name</label>
-                    <input type="text" id="first-name" class="form-input" value="Admin" />
-                  </div>
-                  <div class="form-group">
-                    <label for="last-name" class="form-label">Last Name</label>
-                    <input type="text" id="last-name" class="form-input" value="User" />
-                  </div>
-                  <div class="form-group">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input type="email" id="email" class="form-input" value="admin@dairyvest.com" />
-                  </div>
-                  <div class="form-group">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <input type="tel" id="phone" class="form-input" value="+91 9876543210" />
-                  </div>
-                  <div class="form-group">
-                    <label for="role" class="form-label">Role</label>
-                    <input type="text" id="role" class="form-input" value="Farm Manager" />
-                  </div>
-                  <div class="form-group">
-                    <label for="joined" class="form-label">Date Joined</label>
-                    <input type="text" id="joined" class="form-input" value="January 15, 2023" readonly />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="address" class="form-label">Address</label>
-                  <input type="text" id="address" class="form-input" value="123 Dairy Lane, Milk County, 560001" />
-                </div>
-                <div class="form-group">
-                  <label for="bio" class="form-label">Bio</label>
-                  <textarea id="bio" class="form-input" rows="4">Experienced farm manager with over 5 years in dairy farm operations and management. Specializing in cattle health, milk production optimization, and investor relations.</textarea>
-                </div>
-                <div class="flex justify-between mt-4">
-                  <button type="button" class="btn btn-outline">Cancel</button>
-                  <button type="button" class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <!-- Security Section (Hidden by default) -->
-        <div class="tab-content" id="security-content" style="display: none;">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-                Change Password
-              </div>
-            </div>
-            <div class="card-content">
-              <form id="password-form">
-                <div class="form-group">
-                  <label for="current-password" class="form-label">Current Password</label>
-                  <input type="password" id="current-password" class="form-input" />
-                </div>
-                <div class="form-group">
-                  <label for="new-password" class="form-label">New Password</label>
-                  <input type="password" id="new-password" class="form-input" />
-                </div>
-                <div class="form-group">
-                  <label for="confirm-password" class="form-label">Confirm New Password</label>
-                  <input type="password" id="confirm-password" class="form-input" />
-                </div>
-                <div class="flex justify-between mt-4">
-                  <button type="button" class="btn btn-outline">Cancel</button>
-                  <button type="button" class="btn btn-primary" onclick="changePassword()">Update Password</button>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="16" x2="12" y2="12"></line>
-                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                </svg>
-                Two-Factor Authentication
-              </div>
-            </div>
-            <div class="card-content">
-              <p class="mb-4">Secure your account with two-factor authentication.</p>
-              <button type="button" class="btn btn-primary" onclick="setupTwoFactor()">Enable Two-Factor</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Notifications Section (Hidden by default) -->
-        <div class="tab-content" id="notifications-content" style="display: none;">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-                Notification Preferences
-              </div>
-            </div>
-            <div class="card-content">
-              <div class="form-group">
-                <div class="flex justify-between items-center mb-2">
-                  <label class="form-label">Email Notifications</label>
-                  <input type="checkbox" checked />
-                </div>
-                <p class="text-muted text-sm">Receive email notifications for important updates.</p>
-              </div>
-              
-              <div class="form-group">
-                <div class="flex justify-between items-center mb-2">
-                  <label class="form-label">SMS Notifications</label>
-                  <input type="checkbox" checked />
-                </div>
-                <p class="text-muted text-sm">Receive text messages for critical alerts.</p>
-              </div>
-              
-              <div class="form-group">
-                <div class="flex justify-between items-center mb-2">
-                  <label class="form-label">Push Notifications</label>
-                  <input type="checkbox" checked />
-                </div>
-                <p class="text-muted text-sm">Receive push notifications on your devices.</p>
-              </div>
-              
-              <div class="form-group">
-                <div class="flex justify-between items-center mb-2">
-                  <label class="form-label">Marketing Emails</label>
-                  <input type="checkbox" />
-                </div>
-                <p class="text-muted text-sm">Receive updates about new features and offers.</p>
-              </div>
-              
-              <div class="flex justify-between mt-4">
-                <button type="button" class="btn btn-outline">Reset to Default</button>
-                <button type="button" class="btn btn-primary" onclick="saveNotificationSettings()">Save Settings</button>
-              </div>
+                <span>Logout</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </main>
-  </div>
+    </header>
 
-  <!-- Toast Container for Notifications -->
-  <div class="toast-container" id="toast-container">
-    <!-- Toasts will be dynamically inserted here -->
-  </div>
+    <div class="flex">
+      <main class="flex-1 px-4 pt-6 md:px-6">
+        <div class="container mx-auto max-w-6xl">
+          <div class="mb-6">
+            <h1 class="text-2xl font-bold">Your Profile</h1>
+            <p class="text-muted-foreground">
+              View and manage your personal information and account settings
+            </p>
+          </div>
+          
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <!-- Profile Header -->
+            <div class="md:col-span-3">
+              <div class="mb-8 flex flex-col items-center md:flex-row md:items-start">
+                <div class="relative" id="profile-image-container">
+                  <div class="avatar h-24 w-24 rounded-full border-4 border-white shadow-md">
+                    <div class="avatar-fallback bg-primary text-2xl text-primary-foreground">A</div>
+                  </div>
+                  
+                  <label for="profile-image" class="absolute bottom-0 right-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm opacity-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                      <circle cx="12" cy="13" r="3"></circle>
+                    </svg>
+                    <input type="file" id="profile-image" class="hidden" accept="image/*">
+                  </label>
+                </div>
+                
+                <div class="mt-4 text-center md:ml-6 md:text-left">
+                  <h1 class="text-2xl font-bold">Admin User</h1>
+                  <p class="text-muted-foreground">admin@dairy-lift.com</p>
+                  <p class="mt-1 text-sm">Farm Manager</p>
+                  
+                  <div class="mt-3 flex gap-2 justify-center md:justify-start">
+                    <button class="btn btn-outline btn-sm" id="editProfileBtn">Edit Profile</button>
+                    <button class="btn btn-outline btn-sm" id="exportPdfBtn">Export PDF</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Profile Stats -->
+            <div class="md:col-span-3">
+              <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="card">
+                  <div class="card-content flex flex-col items-center p-6">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" x2="18" y1="20" y2="10"></line>
+                        <line x1="12" x2="12" y1="20" y2="4"></line>
+                        <line x1="6" x2="6" y1="20" y2="14"></line>
+                      </svg>
+                    </div>
+                    <h3 class="mt-3 text-2xl font-bold">148</h3>
+                    <p class="text-sm text-muted-foreground">Cattle Managed</p>
+                  </div>
+                </div>
+                
+                <div class="card">
+                  <div class="card-content flex flex-col items-center p-6">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                      </svg>
+                    </div>
+                    <h3 class="mt-3 text-2xl font-bold">24</h3>
+                    <p class="text-sm text-muted-foreground">Investors</p>
+                  </div>
+                </div>
+                
+                <div class="card">
+                  <div class="card-content flex flex-col items-center p-6">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" x2="12" y1="2" y2="22"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                      </svg>
+                    </div>
+                    <h3 class="mt-3 text-2xl font-bold">₹45,231</h3>
+                    <p class="text-sm text-muted-foreground">Revenue (Monthly)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Profile Tabs and Content -->
+            <div class="md:col-span-2 space-y-6">
+              <div class="tabs" id="profileTabs">
+                <div class="tabs-list grid grid-cols-4 w-full">
+                  <button class="tabs-trigger" data-tab="personal" data-state="active">Personal Info</button>
+                  <button class="tabs-trigger" data-tab="security">Security</button>
+                  <button class="tabs-trigger" data-tab="notifications">Notifications</button>
+                  <button class="tabs-trigger" data-tab="social">Social Links</button>
+                </div>
+                
+                <div class="tabs-content mt-2">
+                  <!-- Personal Info Tab -->
+                  <div class="tab-panel" id="personal-tab" data-active="true">
+                    <div class="card mb-8" id="personal">
+                      <div class="card-gradient-header">
+                        <div class="card-title flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                          </svg>
+                          Personal Information
+                        </div>
+                      </div>
+                      <div class="card-content p-6">
+                        <form id="personalInfoForm">
+                          <div class="grid gap-6 md:grid-cols-2">
+                            <div class="space-y-2">
+                              <label for="firstName" class="text-sm font-medium">First Name</label>
+                              <input id="firstName" class="input" value="Admin">
+                            </div>
+                            
+                            <div class="space-y-2">
+                              <label for="lastName" class="text-sm font-medium">Last Name</label>
+                              <input id="lastName" class="input" value="User">
+                            </div>
+                            
+                            <div class="space-y-2">
+                              <label for="email" class="text-sm font-medium">Email Address</label>
+                              <input id="email" type="email" class="input" value="admin@dairy-lift.com">
+                            </div>
+                            
+                            <div class="space-y-2">
+                              <label for="phone" class="text-sm font-medium">Phone Number</label>
+                              <input id="phone" class="input" value="+91 9876543210">
+                            </div>
+                            
+                            <div class="space-y-2">
+                              <label for="role" class="text-sm font-medium">Role</label>
+                              <input id="role" class="input" value="Farm Manager">
+                            </div>
+                            
+                            <div class="space-y-2">
+                              <label for="joined" class="text-sm font-medium">Date Joined</label>
+                              <input id="joined" class="input bg-muted" value="January 15, 2023" readonly>
+                            </div>
+                          </div>
+                          
+                          <div class="mt-6 space-y-2">
+                            <label for="address" class="text-sm font-medium">Address</label>
+                            <input id="address" class="input" value="123 Dairy Lane, Milk County, 560001">
+                          </div>
+                          
+                          <div class="mt-6 space-y-2">
+                            <label for="bio" class="text-sm font-medium">Bio</label>
+                            <textarea id="bio" class="textarea" rows="4">Experienced farm manager with over 5 years in dairy farm operations and management. Specializing in cattle health, milk production optimization, and investor relations.</textarea>
+                          </div>
+                          
+                          <div class="mt-6 flex justify-end gap-2">
+                            <button type="button" class="btn btn-outline" id="cancelPersonalBtn">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Security Tab -->
+                  <div class="tab-panel hidden" id="security-tab">
+                    <div class="card mb-8">
+                      <div class="card-gradient-header">
+                        <div class="card-title flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                          </svg>
+                          Change Password
+                        </div>
+                      </div>
+                      <div class="card-content p-6">
+                        <form id="passwordForm">
+                          <div class="space-y-6">
+                            <div class="space-y-2">
+                              <label for="currentPassword" class="text-sm font-medium">Current Password</label>
+                              <div class="relative">
+                                <input id="currentPassword" type="password" class="input">
+                                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 toggle-password" data-for="currentPassword">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                                    <line x1="2" x2="22" y1="2" y2="22"></line>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                              <label for="newPassword" class="text-sm font-medium">New Password</label>
+                              <div class="relative">
+                                <input id="newPassword" type="password" class="input">
+                                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 toggle-password" data-for="newPassword">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                                    <line x1="2" x2="22" y1="2" y2="22"></line>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                              <label for="confirmPassword" class="text-sm font-medium">Confirm New Password</label>
+                              <div class="relative">
+                                <input id="confirmPassword" type="password" class="input">
+                                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 toggle-password" data-for="confirmPassword">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                                    <line x1="2" x2="22" y1="2" y2="22"></line>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="mt-6 flex justify-end gap-2">
+                            <button type="button" class="btn btn-outline">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
 
-  <script>
-    // DOM Elements
-    const toastContainer = document.getElementById('toast-container');
-    const sidebar = document.getElementById('sidebar');
-    const menuToggle = document.getElementById('menu-toggle');
-    const profileToggle = document.getElementById('profile-toggle');
-    const profileDropdown = document.getElementById('profileDropdown');
-    const tabs = document.querySelectorAll('.profile-tab');
-    const tabContents = document.querySelectorAll('.tab-content');
-    
-    // Toggle sidebar on mobile
-    menuToggle.addEventListener('click', function() {
-      sidebar.classList.toggle('active');
-    });
-
-    // Profile dropdown toggle
-    profileToggle.addEventListener('click', function(e) {
-      e.stopPropagation();
-      profileDropdown.classList.toggle('show');
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(e) {
-      if (!profileToggle.contains(e.target) && !profileDropdown.contains(e.target)) {
-        profileDropdown.classList.remove('show');
-      }
-    });
-
-    // Tab functionality
-    tabs.forEach(tab => {
-      tab.addEventListener('click', function() {
-        const tabId = this.getAttribute('data-tab');
-        
-        // Make all tabs inactive
-        tabs.forEach(t => t.classList.remove('active'));
-        
-        // Hide all tab contents
-        tabContents.forEach(content => {
-          content.style.display = 'none';
-        });
-        
-        // Make clicked tab active
-        this.classList.add('active');
-        
-        // Show corresponding content
-        document.getElementById(`${tabId}-content`).style.display = 'block';
-      });
-    });
-
-    // Toast notification function
-    function showToast(type, title, message, duration = 3000) {
-      const toast = document.createElement('div');
-      toast.className = `toast toast-${type}`;
-      
-      let iconSvg = '';
-      switch(type) {
-        case 'success':
-          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
-          break;
-        case 'error':
-          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
-          break;
-        case 'info':
-          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #3b82f6;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
-          break;
-        case 'warning':
-          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
-          break;
-      }
-      
-      toast.innerHTML = `
-        ${iconSvg}
-        <div class="toast-content">
-          <div class="toast-title">${title}</div>
-          <div class="toast-message">${message}</div>
+                    <div class="card mb-8">
+                      <div class="card-gradient-header">
+                        <div class="card-title flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                          </svg>
+                          Two-Factor Authentication
+                        </div>
+                      </div>
+                      <div class="card-content p-6">
+                        <p class="mb-4">
+                          Secure your account with two-factor authentication. When enabled, you'll be required to provide an additional authentication code when logging in.
+                        </p>
+                        <button class="btn btn-primary" id="enable2FABtn">Enable Two-Factor</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Notifications Tab -->
+                  <div class="tab-panel hidden" id="notifications-tab">
+                    <div class="card mb-8">
+                      <div class="card-gradient-header">
+                        <div class="card-title flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                          </svg>
+                          Notification Preferences
+                        </div>
+                      </div>
+                      <div class="card-content p-6">
+                        <div class="space-y-6">
+                          <div class="flex items-center justify-between">
+                            <div>
+                              <h4 class="font-medium">Email Notifications</h4>
+                              <p class="text-sm text-muted-foreground">Receive email notifications for important updates.</p>
+                            </div>
+                            <div class="switch" data-state="checked">
+                              <div class="switch-thumb"></div>
+                            </div>
+                          </div>
+                          
+                          <div class="flex items-center justify-between">
+                            <div>
+                              <h4 class="font-medium">SMS Notifications</h4>
+                              <p class="text-sm text-muted-foreground">Receive text messages for critical alerts.</p>
+                            </div>
+                            <div class="switch" data-state="checked">
+                              <div class="switch-thumb"></div>
+                            </div>
+                          </div>
+                          
+                          <div class="flex items-center justify-between">
+                            <div>
+                              <h4 class="font-medium">Push Notifications</h4>
+                              <p class="text-sm text-muted-foreground">Receive push notifications on your devices.</p>
+                            </div>
+                            <div class="switch" data-state="checked">
+                              <div class="switch-thumb"></div>
+                            </div>
+                          </div>
+                          
+                          <div class="flex items-center justify-between">
+                            <div>
+                              <h4 class="font-medium">Marketing Emails</h4>
+                              <p class="text-sm text-muted-foreground">Receive updates about new features and offers.</p>
+                            </div>
+                            <div class="switch" data-state="unchecked">
+                              <div class="switch-thumb"></div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="mt-6 flex justify-between">
+                          <button class="btn btn-outline" id="resetDefaultsBtn">Reset to Default</button>
+                          <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Social Links Tab -->
+                  <div class="tab-panel hidden" id="social-tab">
+                    <div class="card mb-8">
+                      <div class="card-gradient-header">
+                        <div class="card-title flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5">
+                            <path d="M9 17H7A5 5 0 0 1 7 7h2"></path>
+                            <path d="M15 7h2a5 5 0 1 1 0 10h-2"></path>
+                            <line x1="8" x2="16" y1="12" y2="12"></line>
+                          </svg>
+                          Social Media Links
+                        </div>
+                      </div>
+                      <div class="card-content p-6">
+                        <div class="space-y-6">
+                          <div class="space-y-2">
+                            <label for="linkedin" class="text-sm font-medium">LinkedIn</label>
+                            <input id="linkedin" class="input" placeholder="https://linkedin.com/in/username" value="https://linkedin.com/in/adminuser">
+                          </div>
+                          
+                          <div class="space-y-2">
+                            <label for="twitter" class="text-sm font-medium">Twitter</label>
+                            <input id="twitter" class="input" placeholder="https://twitter.com/username" value="">
+                          </div>
+                          
+                          <div class="space-y-2">
+                            <label for="facebook" class="text-sm font-medium">Facebook</label>
+                            <input id="facebook" class="input" placeholder="https://facebook.com/username" value="https://facebook.com/adminuser">
+                          </div>
+                          
+                          <div class="space-y-2">
+                            <label for="instagram" class="text-sm font-medium">Instagram</label>
+                            <input id="instagram" class="input" placeholder="https://instagram.com/username" value="">
+                          </div>
+                        </div>
+                        
+                        <div class="mt-6 flex justify-end">
+                          <button class="btn btn-primary" id="saveSocialBtn">Save Links</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Sidebar Content -->
+            <div class="space-y-6">
+              <!-- Profile Completion -->
+              <div class="card mb-8">
+                <div class="card-gradient-header">
+                  <div class="card-title">Profile Completion</div>
+                </div>
+                <div class="card-content pt-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium">Your profile is 60% complete</span>
+                    <span class="text-sm font-medium">60%</span>
+                  </div>
+                  <div class="progress h-2 mb-6">
+                    <div class="progress-indicator" style="width: 60%"></div>
+                  </div>
+                  
+                  <div class="space-y-3">
+                    <div class="flex items-center text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-success">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                      <span>Personal Info</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-muted-foreground">
+                        <circle cx="12" cy="12" r="10"></circle>
+                      </svg>
+                      <span>Profile Image</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-success">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                      <span>Contact Details</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-success">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                      <span>Bio</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-muted-foreground">
+                        <circle cx="12" cy="12" r="10"></circle>
+                      </svg>
+                      <span>Social Links</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Investor Summary -->
+              <div class="card mb-8">
+                <div class="card-gradient-header">
+                  <div class="card-title">Investor Performance Summary</div>
+                </div>
+                <div class="card-content p-6">
+                  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div class="flex items-center gap-4">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary">
+                          <circle cx="8" cy="8" r="6"></circle>
+                          <path d="M18.09 10.37A6 6 0 1 0 10.37 18.09"></path>
+                          <path d="M7 6h1v4"></path>
+                          <path d="m16.71 13.88.7.71-2.82 2.82"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm text-muted-foreground">Total Investment</p>
+                        <p class="text-xl font-semibold">₹2,50,000</p>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-success/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-success">
+                          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                          <polyline points="16 7 22 7 22 13"></polyline>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm text-muted-foreground">Returns Earned</p>
+                        <p class="text-xl font-semibold">₹32,125</p>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-warning/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-warning">
+                          <path d="M12.83 9.37a2.71 2.71 0 0 0-1.42-2.23 2.63 2.63 0 0 0-1.9-.18 2.72 2.72 0 0 1 .21-5.45 2.71 2.71 0 0 0-1.82 2.41c-2.2.94-3.35 2-3.35 3.65 0 3.64 6.4 8.25 10.92 10.66a2.72 2.72 0 0 1-2.69 2.27A2.72 2.72 0 0 0 15.51 18c.19-.62.76-1.1 1.38-1.65 2.13-1.88 4.56-4 4.56-7.79 0-2.58-1.94-2.55-1.94-5.06 0-.65.14-1.24.7-1.79"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm text-muted-foreground">Active Cattle Owned</p>
+                        <p class="text-xl font-semibold">5</p>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-info/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-info">
+                          <path d="M3 3v18h18"></path>
+                          <path d="m19 9-5 5-4-4-3 3"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm text-muted-foreground">Monthly Profit</p>
+                        <p class="text-xl font-semibold">₹4,125</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Quick Links -->
+              <div class="card mb-8">
+                <div class="card-gradient-header">
+                  <div class="card-title">Quick Links</div>
+                </div>
+                <div class="card-content p-6">
+                  <div class="grid grid-cols-2 gap-4">
+                    <a href="/cattle" class="btn btn-outline w-full justify-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                        <path d="M12.83 9.37a2.71 2.71 0 0 0-1.42-2.23 2.63 2.63 0 0 0-1.9-.18 2.72 2.72 0 0 1 .21-5.45 2.71 2.71 0 0 0-1.82 2.41c-2.2.94-3.35 2-3.35 3.65 0 3.64 6.4 8.25 10.92 10.66a2.72 2.72 0 0 1-2.69 2.27A2.72 2.72 0 0 0 15.51 18c.19-.62.76-1.1 1.38-1.65 2.13-1.88 4.56-4 4.56-7.79 0-2.58-1.94-2.55-1.94-5.06 0-.65.14-1.24.7-1.79"></path>
+                      </svg>
+                      Manage Cattle
+                    </a>
+                    
+                    <a href="/reports" class="btn btn-outline w-full justify-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" x2="8" y1="13" y2="13"></line>
+                        <line x1="16" x2="8" y1="17" y2="17"></line>
+                        <line x1="10" x2="8" y1="9" y2="9"></line>
+                      </svg>
+                      View Reports
+                    </a>
+                    
+                    <a href="/store" class="btn btn-outline w-full justify-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" x2="21" y1="6" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                      </svg>
+                      View Store
+                    </a>
+                    
+                    <a href="/support" class="btn btn-outline w-full justify-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                      Contact Support
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Activity Log -->
+            <div class="md:col-span-2">
+              <div class="card mb-8">
+                <div class="card-gradient-header">
+                  <div class="card-title">Recent Activity</div>
+                </div>
+                <div class="card-content p-0">
+                  <div class="divide-y">
+                    <div class="flex items-center gap-3 p-4">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium">Updated Profile</p>
+                        <div class="flex items-center text-xs text-muted-foreground">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          <span>2025-04-10, 10:30 AM</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 p-4">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <circle cx="7.5" cy="15.5" r="5.5"></circle>
+                          <path d="m21 2-9.6 9.6"></path>
+                          <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium">Changed Password</p>
+                        <div class="flex items-center text-xs text-muted-foreground">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          <span>2025-04-09, 04:12 PM</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 p-4">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                          <polyline points="10 17 15 12 10 7"></polyline>
+                          <line x1="15" x2="3" y1="12" y2="12"></line>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium">Logged In</p>
+                        <div class="flex items-center text-xs text-muted-foreground">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          <span>2025-04-09, 01:02 PM</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 p-4">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium">Updated Cattle Records</p>
+                        <div class="flex items-center text-xs text-muted-foreground">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          <span>2025-04-08, 11:45 AM</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 p-4">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                          <polyline points="10 17 15 12 10 7"></polyline>
+                          <line x1="15" x2="3" y1="12" y2="12"></line>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium">Logged In</p>
+                        <div class="flex items-center text-xs text-muted-foreground">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          <span>2025-04-08, 09:17 AM</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Login Stats -->
+            <div>
+              <div class="card mb-8">
+                <div class="card-gradient-header">
+                  <div class="card-title">Login Statistics</div>
+                </div>
+                <div class="card-content p-6">
+                  <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div class="flex items-start gap-3">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-medium">Last Login Location</p>
+                        <p class="text-sm text-muted-foreground">Bengaluru, Karnataka</p>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-3">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                          <line x1="8" x2="16" y1="21" y2="21"></line>
+                          <line x1="12" x2="12" y1="17" y2="21"></line>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-medium">Devices</p>
+                        <p class="text-sm text-muted-foreground">Chrome on Windows, iPhone App</p>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-3">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                          <line x1="16" x2="16" y1="2" y2="6"></line>
+                          <line x1="8" x2="8" y1="2" y2="6"></line>
+                          <line x1="3" x2="21" y1="10" y2="10"></line>
+                          <path d="M8 14h.01"></path>
+                          <path d="M12 14h.01"></path>
+                          <path d="M16 14h.01"></path>
+                          <path d="M8 18h.01"></path>
+                          <path d="M12 18h.01"></path>
+                          <path d="M16 18h.01"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-medium">Last Password Change</p>
+                        <p class="text-sm text-muted-foreground">March 15, 2025</p>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-3">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-medium">Total Login Count</p>
+                        <p class="text-sm text-muted-foreground">124 times</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <button class="toast-close">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      `;
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast container for notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Toggle user dropdown menu
+      const userDropdown = document.getElementById('userDropdown');
+      const userMenu = document.getElementById('userMenu');
       
-      toastContainer.appendChild(toast);
-      
-      const closeButton = toast.querySelector('.toast-close');
-      closeButton.addEventListener('click', function() {
-        toast.remove();
+      userDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+        userMenu.classList.toggle('hidden');
       });
       
-      // Auto remove after duration
-      setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s ease-out forwards';
+      // Close dropdown when clicking outside
+      document.addEventListener('click', () => {
+        if (!userMenu.classList.contains('hidden')) {
+          userMenu.classList.add('hidden');
+        }
+      });
+      
+      // Toast notification system
+      const toastContainer = document.getElementById('toastContainer');
+      
+      function showToast(title, description, type = 'default', duration = 3000) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        
+        if (type === 'error') {
+          toast.style.borderLeftColor = 'hsl(var(--destructive))';
+          toast.style.borderLeftWidth = '4px';
+        } else if (type === 'success') {
+          toast.style.borderLeftColor = 'hsl(var(--success))';
+          toast.style.borderLeftWidth = '4px';
+        }
+        
+        toast.innerHTML = `
+          <div>
+            <div class="toast-title">${title}</div>
+            <div class="toast-description">${description}</div>
+          </div>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
         setTimeout(() => {
-          toast.remove();
-        }, 300);
-      }, duration);
-    }
-
-    // Handle profile save
-    function saveProfile() {
-      showToast('success', 'Profile Updated', 'Your profile information has been updated successfully.');
-    }
-
-    // Handle password change
-    function changePassword() {
-      const newPassword = document.getElementById('new-password').value;
-      const confirmPassword = document.getElementById('confirm-password').value;
-      
-      if (!newPassword || !confirmPassword) {
-        showToast('error', 'Error', 'Please fill in all password fields.');
-        return;
+          toast.style.animation = 'slideOut 0.3s ease-out forwards';
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 300);
+        }, duration);
       }
       
-      if (newPassword !== confirmPassword) {
-        showToast('error', 'Error', 'New passwords do not match.');
-        return;
+      // Profile image hover effect
+      const profileImageContainer = document.getElementById('profile-image-container');
+      const cameraButton = profileImageContainer.querySelector('label');
+      
+      profileImageContainer.addEventListener('mouseenter', () => {
+        cameraButton.style.opacity = '1';
+      });
+      
+      profileImageContainer.addEventListener('mouseleave', () => {
+        cameraButton.style.opacity = '0';
+      });
+      
+      // Profile image upload
+      const profileImage = document.getElementById('profile-image');
+      profileImage.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            // Create or update avatar image
+            let avatarImage = profileImageContainer.querySelector('.avatar-image');
+            if (!avatarImage) {
+              const avatarFallback = profileImageContainer.querySelector('.avatar-fallback');
+              if (avatarFallback) {
+                avatarFallback.style.display = 'none';
+              }
+              
+              avatarImage = document.createElement('img');
+              avatarImage.className = 'avatar-image';
+              profileImageContainer.querySelector('.avatar').appendChild(avatarImage);
+            }
+            
+            avatarImage.src = event.target.result;
+            
+            // Also update header avatar
+            const headerAvatar = document.querySelector('#userDropdown .avatar');
+            let headerAvatarImage = headerAvatar.querySelector('.avatar-image');
+            if (!headerAvatarImage) {
+              const headerAvatarFallback = headerAvatar.querySelector('.avatar-fallback');
+              if (headerAvatarFallback) {
+                headerAvatarFallback.style.display = 'none';
+              }
+              
+              headerAvatarImage = document.createElement('img');
+              headerAvatarImage.className = 'avatar-image';
+              headerAvatar.appendChild(headerAvatarImage);
+            }
+            
+            headerAvatarImage.src = event.target.result;
+            
+            showToast('Profile Image Updated', 'Your profile image has been updated successfully.', 'success');
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      // Tab switching
+      const tabButtons = document.querySelectorAll('.tabs-trigger');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabId = button.getAttribute('data-tab');
+          
+          // Update button states
+          tabButtons.forEach(btn => {
+            if (btn.getAttribute('data-tab') === tabId) {
+              btn.setAttribute('data-state', 'active');
+            } else {
+              btn.setAttribute('data-state', 'inactive');
+            }
+          });
+          
+          // Update tab panels
+          tabPanels.forEach(panel => {
+            if (panel.id === `${tabId}-tab`) {
+              panel.classList.remove('hidden');
+              panel.setAttribute('data-active', 'true');
+            } else {
+              panel.classList.add('hidden');
+              panel.setAttribute('data-active', 'false');
+            }
+          });
+        });
+      });
+      
+      // Toggle password visibility
+      const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+      togglePasswordButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const inputId = button.getAttribute('data-for');
+          const input = document.getElementById(inputId);
+          
+          if (input.type === 'password') {
+            input.type = 'text';
+            button.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            `;
+          } else {
+            input.type = 'password';
+            button.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                <line x1="2" x2="22" y1="2" y2="22"/>
+              </svg>
+            `;
+          }
+        });
+      });
+      
+      // Toggle switches
+      const switches = document.querySelectorAll('.switch');
+      switches.forEach(switchEl => {
+        switchEl.addEventListener('click', () => {
+          if (switchEl.getAttribute('data-state') === 'checked') {
+            switchEl.setAttribute('data-state', 'unchecked');
+          } else {
+            switchEl.setAttribute('data-state', 'checked');
+          }
+        });
+      });
+
+      // Handle form submissions
+      const personalInfoForm = document.getElementById('personalInfoForm');
+      personalInfoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        showToast('Profile Updated', 'Your profile information has been updated successfully.', 'success');
+      });
+      
+      const passwordForm = document.getElementById('passwordForm');
+      if (passwordForm) {
+        passwordForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const newPassword = document.getElementById('newPassword').value;
+          const confirmPassword = document.getElementById('confirmPassword').value;
+          
+          if (newPassword !== confirmPassword) {
+            showToast('Error', 'New passwords do not match.', 'error');
+            return;
+          }
+          
+          showToast('Password Updated', 'Your password has been updated successfully.', 'success');
+          passwordForm.reset();
+        });
       }
       
-      showToast('success', 'Password Updated', 'Your password has been updated successfully.');
+      // Event handlers for various buttons
+      document.getElementById('notificationBtn').addEventListener('click', () => {
+        showToast('Notifications', 'You have 3 unread notifications');
+      });
       
-      // Clear the form fields
-      document.getElementById('current-password').value = '';
-      document.getElementById('new-password').value = '';
-      document.getElementById('confirm-password').value = '';
-    }
-
-    // Handle two-factor setup
-    function setupTwoFactor() {
-      showToast('info', 'Two-Factor Authentication', 'Two-factor authentication setup process initiated.');
-    }
-
-    // Handle notification settings
-    function saveNotificationSettings() {
-      showToast('success', 'Settings Saved', 'Your notification preferences have been updated.');
-    }
-
-    // Handle logout
-    function handleLogout() {
-      showToast('success', 'Logged out successfully', 'You have been logged out of your account');
-      setTimeout(() => {
-        // In a real app, redirect to login page
-        window.location.href = '#';
-      }, 1500);
-    }
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        showToast('Logged out successfully', 'You have been logged out of your account');
+      });
+      
+      document.getElementById('editProfileBtn').addEventListener('click', () => {
+        // Ensure Personal Info tab is active
+        const personalTab = document.querySelector('[data-tab="personal"]');
+        personalTab.click();
+        
+        showToast('Edit Profile', 'You can now edit your profile information below.');
+        
+        // Scroll to the form
+        document.getElementById('personal').scrollIntoView({ behavior: 'smooth' });
+      });
+      
+      document.getElementById('exportPdfBtn').addEventListener('click', () => {
+        showToast('Export PDF', 'Your profile is being exported as PDF');
+      });
+      
+      if (document.getElementById('enable2FABtn')) {
+        document.getElementById('enable2FABtn').addEventListener('click', () => {
+          showToast('Two-Factor Authentication', 'Two-factor authentication setup process initiated.');
+        });
+      }
+      
+      if (document.getElementById('saveSettingsBtn')) {
+        document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+          showToast('Settings Saved', 'Your notification preferences have been updated.');
+        });
+      }
+      
+      if (document.getElementById('resetDefaultsBtn')) {
+        document.getElementById('resetDefaultsBtn').addEventListener('click', () => {
+          const switches = document.querySelectorAll('#notifications-tab .switch');
+          switches.forEach((switchEl, index) => {
+            if (index < 3) {
+              switchEl.setAttribute('data-state', 'checked');
+            } else {
+              switchEl.setAttribute('data-state', 'unchecked');
+            }
+          });
+          
+          showToast('Settings Reset', 'Your notification preferences have been reset to default.');
+        });
+      }
+      
+      if (document.getElementById('saveSocialBtn')) {
+        document.getElementById('saveSocialBtn').addEventListener('click', () => {
+          showToast('Social Links Updated', 'Your social media links have been updated successfully.');
+        });
+      }
+      
+      if (document.getElementById('cancelPersonalBtn')) {
+        document.getElementById('cancelPersonalBtn').addEventListener('click', () => {
+          showToast('Changes Cancelled', 'Your changes have been discarded.');
+        });
+      }
+    });
   </script>
 </body>
 </html>

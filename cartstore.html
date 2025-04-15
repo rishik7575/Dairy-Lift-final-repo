@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DairyVest - Shopping Cart</title>
+  <title>Dairy-Lift - Shopping Cart</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -631,6 +631,38 @@
       font-size: 0.875rem;
     }
 
+    .smart-discount {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background-color: var(--accent);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      transition: transform 0.3s ease;
+      opacity: 0;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
     /* Mobile responsiveness */
     @media (max-width: 991px) {
       .cart-layout {
@@ -721,17 +753,17 @@
 <body>
   <header class="navbar">
     <div class="container navbar-container">
-      <a href="index.html" class="navbar-logo">
-        <i class="fas fa-cow"></i> DairyVest
+      <a href="#" class="navbar-logo">
+        <i class="fas fa-cow"></i> Dairy-Lift
       </a>
       <nav class="navbar-links">
-        <a href="home_page.html" class="navbar-link">Home</a>
-        <a href="dashboard.html" class="navbar-link">Dashboard</a>
+        <a href="#" class="navbar-link">Home</a>
+        <a href="#" class="navbar-link">Dashboard</a>
         <a href="store.html" class="navbar-link">Store</a>
-        <a href="admin.html" class="navbar-link">Admin</a>
+        <a href="#" class="navbar-link">Admin</a>
       </nav>
       <div class="navbar-actions">
-        <a href="watchliststore.html" class="btn btn-icon">
+        <a href="#" class="btn btn-icon">
           <i class="fas fa-heart"></i>
         </a>
         <button class="cart-button" id="cart-toggle">
@@ -763,8 +795,8 @@
           </div>
           <div class="cart-footer">
             <div class="cart-coupon">
-              <input type="text" class="coupon-input" placeholder="Coupon code">
-              <button class="btn btn-outline">Apply Coupon</button>
+              <input type="text" class="coupon-input" placeholder="Coupon code" id="coupon-input">
+              <button class="btn btn-outline" id="apply-coupon">Apply Coupon</button>
             </div>
             <div class="cart-actions">
               <a href="store.html" class="btn btn-outline">Continue Shopping</a>
@@ -775,6 +807,7 @@
 
         <div class="order-summary" id="order-summary">
           <h3 class="summary-title">Order Summary</h3>
+          <div id="discount-container"></div>
           <div class="summary-row">
             <span class="summary-label">Subtotal</span>
             <span id="summary-subtotal">$0.00</span>
@@ -820,15 +853,15 @@
       <div class="footer-container">
         <div class="footer-column">
           <span class="footer-logo">
-            <i class="fas fa-cow"></i> DairyVest
+            <i class="fas fa-cow"></i> Dairy-Lift
           </span>
           <p class="footer-about">
-            DairyVest combines traditional farming with modern technology to create a transparent, profitable, and sustainable investment opportunity.
+            Dairy-Lift combines traditional farming with modern technology to create a transparent, profitable, and sustainable investment opportunity.
           </p>
           <div class="footer-socials">
             <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
             <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.instagram.com/dairy_lift/" class="social-icon"><i class="fab fa-instagram"></i></a>
             <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
           </div>
         </div>
@@ -836,8 +869,8 @@
         <div class="footer-column">
           <h3 class="footer-title">Quick Links</h3>
           <div class="footer-links">
-            <a href="home_page.html" class="footer-link">Home</a>
-            <a href="aboutus.html" class="footer-link">About Us</a>
+            <a href="#" class="footer-link">Home</a>
+            <a href="#" class="footer-link">About Us</a>
             <a href="#" class="footer-link">How It Works</a>
             <a href="#" class="footer-link">Investment Plans</a>
             <a href="#" class="footer-link">FAQ</a>
@@ -870,12 +903,17 @@
       </div>
       
       <div class="copyright">
-        <p>&copy; 2023 DairyVest. All rights reserved.</p>
+        <p>&copy; <span id="current-year"></span> Dairy-Lift. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
+  <div id="notification" class="notification"></div>
+
   <script>
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
     // Product Data
     const productsData = [
       {
@@ -979,25 +1017,30 @@
         this.items = [];
         this.loadFromStorage();
         this.updateCartDisplay();
+        this.updateSmartDiscounts();
         this.initEventListeners();
       }
 
       loadFromStorage() {
-        const savedCart = localStorage.getItem('dairyvestCart');
+        const savedCart = localStorage.getItem('dairyliftCart');
         if (savedCart) {
           this.items = JSON.parse(savedCart);
         }
       }
 
       saveToStorage() {
-        localStorage.setItem('dairyvestCart', JSON.stringify(this.items));
+        localStorage.setItem('dairyliftCart', JSON.stringify(this.items));
       }
 
       addItem(productId, quantity = 1) {
         const product = productsData.find(p => p.id === productId);
-        if (!product || !product.inStock) return;
+        if (!product || !product.inStock) {
+          this.showNotification("This product is currently unavailable", "error");
+          return;
+        }
 
         const existingItem = this.items.find(item => item.id === productId);
+        
         if (existingItem) {
           existingItem.quantity += quantity;
         } else {
@@ -1012,12 +1055,16 @@
 
         this.saveToStorage();
         this.updateCartDisplay();
+        this.updateSmartDiscounts();
+        this.showNotification(`${product.name} added to cart`);
       }
 
       removeItem(productId) {
         this.items = this.items.filter(item => item.id !== productId);
         this.saveToStorage();
         this.updateCartDisplay();
+        this.updateSmartDiscounts();
+        this.showNotification("Item removed from cart", "info");
       }
 
       updateQuantity(productId, newQuantity) {
@@ -1029,6 +1076,7 @@
             item.quantity = newQuantity;
             this.saveToStorage();
             this.updateCartDisplay();
+            this.updateSmartDiscounts();
           }
         }
       }
@@ -1037,14 +1085,126 @@
         this.items = [];
         this.saveToStorage();
         this.updateCartDisplay();
+        this.updateSmartDiscounts();
+        this.showNotification("Cart cleared", "info");
+      }
+
+      getSubtotal() {
+        return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+      }
+
+      getShipping() {
+        const subtotal = this.getSubtotal();
+        // Free shipping on orders over $50
+        if (subtotal >= 50) return 0;
+        // Standard shipping fee of $5.99 for orders
+        return subtotal > 0 ? 5.99 : 0;
+      }
+
+      getTax() {
+        return this.getSubtotal() * 0.08; // 8% tax
       }
 
       getTotal() {
-        return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+        return this.getSubtotal() + this.getShipping() + this.getTax();
       }
 
       getTotalItems() {
         return this.items.reduce((total, item) => total + item.quantity, 0);
+      }
+      
+      getSmartDiscountSuggestion() {
+        const subtotal = this.getSubtotal();
+        const freeShippingThreshold = 50;
+        const amountForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
+        
+        // Free shipping suggestion
+        if (amountForFreeShipping > 0 && subtotal > 0) {
+          return `Add ${formatPrice(amountForFreeShipping)} more to get FREE shipping!`;
+        } else if (subtotal > 0) {
+          return "You've qualified for free shipping!";
+        }
+        
+        return null;
+      }
+      
+      getComboDeals() {
+        // Count butter products in cart
+        const butterProducts = this.items.filter(item => {
+          const product = productsData.find(p => p.id === item.id);
+          return product?.category === 'butter';
+        });
+        
+        if (butterProducts.length === 1) {
+          return "Buy one more butter pack to get 10% off both!";
+        }
+        
+        return null;
+      }
+
+      updateSmartDiscounts() {
+        const discountContainer = document.getElementById('discount-container');
+        if (!discountContainer) return;
+        
+        // Clear previous suggestions
+        discountContainer.innerHTML = '';
+        
+        // Get suggestions
+        const shipSuggestion = this.getSmartDiscountSuggestion();
+        const comboDeal = this.getComboDeals();
+        
+        // If no suggestions, return
+        if (!shipSuggestion && !comboDeal) return;
+        
+        let html = '<div class="smart-discount">';
+        
+        if (shipSuggestion) {
+          html += `<p>${shipSuggestion}</p>`;
+        }
+        
+        if (comboDeal) {
+          html += `<p class="mt-2">${comboDeal}</p>`;
+        }
+        
+        html += '</div>';
+        
+        discountContainer.innerHTML = html;
+      }
+
+      showNotification(message, type = "success") {
+        const notification = document.getElementById('notification');
+        
+        // Set icon based on type
+        let icon = 'check-circle';
+        if (type === 'error') icon = 'times-circle';
+        if (type === 'info') icon = 'info-circle';
+        
+        // Set content
+        notification.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-${icon}"></i>
+            <div>
+              <div style="font-weight: 500;">${message}</div>
+            </div>
+          </div>
+        `;
+        
+        // Set color based on type
+        if (type === 'error') {
+          notification.style.backgroundColor = 'var(--destructive)';
+        } else if (type === 'info') {
+          notification.style.backgroundColor = '#3b82f6';
+        } else {
+          notification.style.backgroundColor = 'var(--primary)';
+        }
+        
+        // Show notification
+        notification.classList.add('show');
+        
+        // Hide notification after 3 seconds
+        setTimeout(() => {
+          notification.classList.remove('show');
+        }, 3000);
       }
 
       updateCartDisplay() {
@@ -1061,11 +1221,14 @@
               <i class="fas fa-shopping-cart cart-empty-icon"></i>
               <h3>Your cart is empty</h3>
               <p>Looks like you haven't added any products to your cart yet.</p>
-              <a href="store.html" class="btn btn-primary" style="margin-top: 1rem;">
+              <a href="#" class="btn btn-primary" style="margin-top: 1rem;">
                 Continue Shopping
               </a>
             </div>
           `;
+          
+          // Disable checkout button
+          document.getElementById('checkout-btn').disabled = true;
         } else {
           let cartItemsHTML = '';
           
@@ -1102,69 +1265,69 @@
           
           cartItemsContainer.innerHTML = cartItemsHTML;
           
+          // Enable checkout button
+          document.getElementById('checkout-btn').disabled = false;
+          
           // Add event listeners for cart items
-          document.querySelectorAll('.decrease-qty').forEach(btn => {
-            btn.addEventListener('click', () => {
-              const id = btn.getAttribute('data-id');
-              const item = this.items.find(item => item.id === id);
-              if (item) this.updateQuantity(id, item.quantity - 1);
-            });
-          });
-          
-          document.querySelectorAll('.increase-qty').forEach(btn => {
-            btn.addEventListener('click', () => {
-              const id = btn.getAttribute('data-id');
-              const item = this.items.find(item => item.id === id);
-              if (item) this.updateQuantity(id, item.quantity + 1);
-            });
-          });
-          
-          document.querySelectorAll('.quantity-input').forEach(input => {
-            input.addEventListener('change', () => {
-              const id = input.getAttribute('data-id');
-              const newQuantity = parseInt(input.value);
-              if (!isNaN(newQuantity) && newQuantity > 0) {
-                this.updateQuantity(id, newQuantity);
-              }
-            });
-          });
-          
-          document.querySelectorAll('.cart-item-remove').forEach(btn => {
-            btn.addEventListener('click', () => {
-              const id = btn.getAttribute('data-id');
-              this.removeItem(id);
-            });
-          });
+          this.addCartItemEventListeners();
         }
 
         // Update order summary
         this.updateOrderSummary();
       }
 
-      updateOrderSummary() {
-        const subtotal = this.getTotal();
-        const shipping = subtotal > 0 ? 5.99 : 0;
-        const tax = subtotal * 0.08; // 8% tax
-        const total = subtotal + shipping + tax;
-
-        const subtotalEl = document.getElementById('summary-subtotal');
-        const shippingEl = document.getElementById('summary-shipping');
-        const taxEl = document.getElementById('summary-tax');
-        const totalEl = document.getElementById('summary-total');
-        const checkoutBtn = document.getElementById('checkout-btn');
-
-        subtotalEl.textContent = formatPrice(subtotal);
-        shippingEl.textContent = formatPrice(shipping);
-        taxEl.textContent = formatPrice(tax);
-        totalEl.textContent = formatPrice(total);
+      addCartItemEventListeners() {
+        // Quantity decrease buttons
+        document.querySelectorAll('.decrease-qty').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            const item = this.items.find(item => item.id === id);
+            if (item) this.updateQuantity(id, item.quantity - 1);
+          });
+        });
         
-        checkoutBtn.disabled = this.items.length === 0;
+        // Quantity increase buttons
+        document.querySelectorAll('.increase-qty').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            const item = this.items.find(item => item.id === id);
+            if (item) this.updateQuantity(id, item.quantity + 1);
+          });
+        });
+        
+        // Quantity input fields
+        document.querySelectorAll('.quantity-input').forEach(input => {
+          input.addEventListener('change', () => {
+            const id = input.getAttribute('data-id');
+            const newQuantity = parseInt(input.value);
+            if (!isNaN(newQuantity)) {
+              this.updateQuantity(id, newQuantity);
+            }
+          });
+        });
+        
+        // Remove item buttons
+        document.querySelectorAll('.cart-item-remove').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            this.removeItem(id);
+          });
+        });
+      }
+
+      updateOrderSummary() {
+        const subtotal = this.getSubtotal();
+        const shipping = this.getShipping();
+        const tax = this.getTax();
+        const total = this.getTotal();
+
+        document.getElementById('summary-subtotal').textContent = formatPrice(subtotal);
+        document.getElementById('summary-shipping').textContent = shipping === 0 && subtotal > 0 ? 'FREE' : formatPrice(shipping);
+        document.getElementById('summary-tax').textContent = formatPrice(tax);
+        document.getElementById('summary-total').textContent = formatPrice(total);
       }
 
       initEventListeners() {
-        // Cart toggle
-        const cartToggle = document.getElementById('cart-toggle');
-        
         // Clear cart button
         const clearCartBtn = document.getElementById('clear-cart-btn');
         if (clearCartBtn) {
@@ -1180,6 +1343,25 @@
         if (checkoutBtn) {
           checkoutBtn.addEventListener('click', () => {
             alert('Proceeding to checkout... This would redirect to the checkout page in a real store.');
+          });
+        }
+        
+        // Apply coupon button
+        const applyCouponBtn = document.getElementById('apply-coupon');
+        if (applyCouponBtn) {
+          applyCouponBtn.addEventListener('click', () => {
+            const couponCode = document.getElementById('coupon-input').value.trim();
+            if (couponCode) {
+              // Simple coupon logic - in a real app this would validate against a backend
+              if (couponCode.toUpperCase() === 'DAIRY10') {
+                this.showNotification('Coupon applied: 10% discount!');
+                document.getElementById('coupon-input').value = '';
+              } else {
+                this.showNotification('Invalid coupon code', 'error');
+              }
+            } else {
+              this.showNotification('Please enter a coupon code', 'info');
+            }
           });
         }
       }
@@ -1216,7 +1398,9 @@
         
         // If still not enough, just get random products (allowing duplicates with cart)
         if (suggestedProducts.length < 4) {
-          const inStockProducts = productsData.filter(product => product.inStock && !suggestedProducts.map(p => p.id).includes(product.id));
+          const inStockProducts = productsData.filter(product => 
+            product.inStock && !suggestedProducts.map(p => p.id).includes(product.id)
+          );
           const additionalProducts = this.getRandomItems(inStockProducts, 4 - suggestedProducts.length);
           suggestedProducts = [...suggestedProducts, ...additionalProducts];
         }
@@ -1249,7 +1433,6 @@
           btn.addEventListener('click', () => {
             const id = btn.getAttribute('data-id');
             this.cart.addItem(id);
-            this.showAddedNotification(id);
           });
         });
       }
@@ -1258,54 +1441,20 @@
         const shuffled = [...array].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, count);
       }
-
-      showAddedNotification(productId) {
-        const product = productsData.find(p => p.id === productId);
-        if (!product) return;
-
-        const notification = document.createElement('div');
-        notification.style.position = 'fixed';
-        notification.style.bottom = '20px';
-        notification.style.right = '20px';
-        notification.style.backgroundColor = 'var(--primary)';
-        notification.style.color = 'white';
-        notification.style.padding = '10px 20px';
-        notification.style.borderRadius = 'var(--radius)';
-        notification.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-        notification.style.zIndex = '1000';
-        notification.style.transition = 'all 0.3s ease';
-        notification.style.transform = 'translateY(100px)';
-        notification.innerHTML = `
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <i class="fas fa-check-circle"></i>
-            <div>
-              <div style="font-weight: 500;">${product.name}</div>
-              <div style="font-size: 0.875rem;">Added to your cart</div>
-            </div>
-          </div>
-        `;
-        
-        document.body.appendChild(notification);
-        
-        // Show notification
-        setTimeout(() => {
-          notification.style.transform = 'translateY(0)';
-        }, 10);
-        
-        // Hide and remove notification
-        setTimeout(() => {
-          notification.style.transform = 'translateY(100px)';
-          setTimeout(() => {
-            document.body.removeChild(notification);
-          }, 300);
-        }, 3000);
-      }
     }
 
     // Initialize cart and suggestions on page load
     document.addEventListener('DOMContentLoaded', function() {
       const cart = new Cart();
       const suggestions = new Suggestions(cart);
+      
+      // Preload some items into cart for testing (comment out for production)
+      /* 
+      if (cart.items.length === 0) {
+        cart.addItem('prod-001', 2);
+        cart.addItem('prod-002', 1);
+      }
+      */
     });
   </script>
 </body>

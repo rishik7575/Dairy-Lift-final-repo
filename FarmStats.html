@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farm Stats</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #8B5CF6;
+      --green: #22C55E;
+      --border: #E5E7EB;
+      --border-light: #F3F4F6;
+      --foreground: #111827;
+      --muted: #6B7280;
+      --muted-foreground: #9CA3AF;
+      --radius: 0.5rem;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: transparent;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    
+    .card {
+      background-color: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      height: 100%;
+    }
+    
+    .card-header {
+      padding: 1rem 1.5rem 0.5rem 1.5rem;
+    }
+    
+    .card-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--foreground);
+      margin: 0;
+    }
+    
+    .card-content {
+      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+    }
+    
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    .border-right {
+      border-right: 1px solid var(--border-light);
+      padding-right: 1rem;
+    }
+    
+    .stats-item {
+      margin-bottom: 1rem;
+    }
+    
+    .stats-label {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 0.25rem;
+    }
+    
+    .stats-value {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .flex-value {
+      display: flex;
+      align-items: center;
+    }
+    
+    .trend-indicator {
+      font-size: 0.75rem;
+      color: var(--green);
+      margin-left: 0.5rem;
+    }
+    
+    .border-top {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .progress-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .progress-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .progress-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    
+    .progress-bar {
+      width: 4rem;
+      height: 0.5rem;
+      background-color: #E5E7EB;
+      border-radius: 9999px;
+      margin-right: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: var(--green);
+      border-radius: 9999px;
+      transition: width 1s ease;
+    }
+    
+    .progress-value {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Farm Stats</h2>
+    </div>
+    <div class="card-content">
+      <div class="grid-container">
+        <div class="border-right">
+          <div class="stats-item animate-fade-in">
+            <p class="stats-label">Total Farm Area</p>
+            <p class="stats-value">42 Acres</p>
+          </div>
+          <div class="stats-item animate-fade-in delay-100">
+            <p class="stats-label">No. of Workers</p>
+            <p class="stats-value">16</p>
+          </div>
+          <div class="stats-item animate-fade-in delay-200">
+            <p class="stats-label">Avg Worker Productivity</p>
+            <p class="stats-value">1.8 L/hr</p>
+          </div>
+        </div>
+        
+        <div>
+          <div class="stats-item animate-fade-in delay-100">
+            <p class="stats-label">Electricity Consumption</p>
+            <div class="flex-value">
+              <p class="stats-value">840 kWh</p>
+              <span class="trend-indicator">-5%</span>
+            </div>
+          </div>
+          <div class="stats-item animate-fade-in delay-200">
+            <p class="stats-label">Water Usage</p>
+            <div class="flex-value">
+              <p class="stats-value">12,500 L</p>
+              <span class="trend-indicator">-3%</span>
+            </div>
+            <p class="text-xs text-gray-500">Compared to last month</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-top animate-fade-in delay-300">
+        <div class="progress-container">
+          <p class="progress-label">Sustainability Score</p>
+          <div class="progress-wrapper">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 0%"></div>
+            </div>
+            <span class="progress-value">75%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Animate the progress bar on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        const progressFill = document.querySelector('.progress-fill');
+        progressFill.style.width = '75%';
+      }, 500);
+      
+      // Send height to parent for iframe adjustment
+      if (window.parent && window.parent.postMessage) {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({ type: 'resize', height: height }, '*');
+      }
+    });
+  </script>
+</body>
+</html>

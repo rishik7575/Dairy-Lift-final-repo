@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cattle</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #8B5CF6;
+      --border: #E5E7EB;
+      --foreground: #111827;
+      --muted: #6B7280;
+      --muted-foreground: #9CA3AF;
+      --radius: 0.5rem;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .cattle-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background-color: white;
+      transition: transform 0.2s, box-shadow 0.2s;
+      height: 100%;
+    }
+    
+    .cattle-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .health-excellent {
+      color: #22C55E;
+    }
+    
+    .health-good {
+      color: #10B981;
+    }
+    
+    .health-fair {
+      color: #F59E0B;
+    }
+    
+    .health-poor {
+      color: #EF4444;
+    }
+    
+    .btn-outline {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      background-color: transparent;
+      color: var(--foreground);
+      cursor: pointer;
+      transition: background-color 0.2s, border-color 0.2s;
+      display: inline-block;
+      text-align: center;
+      width: 100%;
+    }
+    
+    .btn-outline:hover {
+      background-color: #F9FAFB;
+      border-color: #D1D5DB;
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 80%;
+      max-width: 800px;
+      animation: modalOpen 0.3s ease-out;
+    }
+    
+    @keyframes modalOpen {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+    
+    .close {
+      color: var(--muted);
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .close:hover,
+    .close:focus {
+      color: var(--foreground);
+      text-decoration: none;
+    }
+    
+    .tab-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .tab {
+      padding: 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    
+    .tab.active {
+      border-bottom: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .info-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.5rem;
+    }
+    
+    .info-label {
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+    
+    .info-value {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .chart-container {
+      height: 200px;
+      margin-bottom: 1rem;
+    }
+    
+    .progress-bar {
+      height: 0.5rem;
+      background-color: #F3F4F6;
+      border-radius: 9999px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: var(--primary);
+      border-radius: 9999px;
+      width: 0;
+      transition: width 1s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Cattle cards will be dynamically loaded here -->
+  </div>
+  
+  <!-- Cattle Details Modal -->
+  <div id="cattleModal" class="modal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center mb-4">
+        <h2 id="modalCattleName" class="text-xl font-semibold"></h2>
+        <span class="close" id="closeModal">&times;</span>
+      </div>
+      
+      <div id="modalCattleImage" class="aspect-video w-full overflow-hidden rounded-md mb-4">
+        <!-- Cattle image will be displayed here -->
+      </div>
+      
+      <div class="tab-list">
+        <div class="tab active" data-tab="overview">Overview</div>
+        <div class="tab" data-tab="production">Milk Production</div>
+        <div class="tab" data-tab="health">Health Records</div>
+        <div class="tab" data-tab="fertility">Fertility</div>
+      </div>
+      
+      <div class="tab-content active" id="overview">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div class="info-card">
+            <h3 class="font-semibold mb-2">Current Status</h3>
+            <div class="info-grid">
+              <p class="info-label">Health:</p>
+              <p id="modalHealth" class="info-value"></p>
+              
+              <p class="info-label">Lactation:</p>
+              <p id="modalLactation" class="info-value"></p>
+              
+              <p class="info-label">Daily Production:</p>
+              <p id="modalProduction" class="info-value"></p>
+              
+              <p class="info-label">Age:</p>
+              <p id="modalAge" class="info-value"></p>
+              
+              <p class="info-label">Breed:</p>
+              <p id="modalBreed" class="info-value"></p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <h3 class="font-semibold mb-2">Daily Feed Consumption</h3>
+            <div class="chart-container">
+              <canvas id="feedChart"></canvas>
+            </div>
+          </div>
+        </div>
+        
+        <div class="info-card">
+          <h3 class="font-semibold mb-2">Health Metrics</h3>
+          <div class="mb-3">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium">Temperature</span>
+              <span class="text-sm text-muted-foreground">38.5°C (Normal: 39°C)</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 98.7%"></div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium">Heart Rate</span>
+              <span class="text-sm text-muted-foreground">72 BPM (Normal: 75 BPM)</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 96%"></div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium">Respiration</span>
+              <span class="text-sm text-muted-foreground">26 BPM (Normal: 30 BPM)</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 86.7%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="production">
+        <div class="info-card">
+          <h3 class="font-semibold mb-2">Milk Production History</h3>
+          <div class="chart-container">
+            <canvas id="milkProductionChart"></canvas>
+          </div>
+          
+          <div class="grid grid-cols-3 gap-4 mt-4">
+            <div class="text-center p-3 bg-gray-100 rounded-md">
+              <p class="text-sm text-gray-500">Daily Average</p>
+              <p class="text-lg font-bold">29.8 L</p>
+            </div>
+            <div class="text-center p-3 bg-gray-100 rounded-md">
+              <p class="text-sm text-gray-500">Weekly Total</p>
+              <p class="text-lg font-bold">209 L</p>
+            </div>
+            <div class="text-center p-3 bg-gray-100 rounded-md">
+              <p class="text-sm text-gray-500">Peak Production</p>
+              <p class="text-lg font-bold">32 L</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="health">
+        <div class="info-card">
+          <h3 class="font-semibold mb-2">Health Records</h3>
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b">
+                <th class="text-left py-2 px-4">Date</th>
+                <th class="text-left py-2 px-4">Procedure</th>
+                <th class="text-left py-2 px-4">Performed By</th>
+                <th class="text-left py-2 px-4">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b">
+                <td class="py-2 px-4">2023-04-15</td>
+                <td class="py-2 px-4">Health Check</td>
+                <td class="py-2 px-4">Dr. Smith</td>
+                <td class="py-2 px-4">All vitals normal</td>
+              </tr>
+              <tr class="border-b">
+                <td class="py-2 px-4">2023-03-12</td>
+                <td class="py-2 px-4">Vaccination</td>
+                <td class="py-2 px-4">Dr. Patel</td>
+                <td class="py-2 px-4">FMD vaccine administered</td>
+              </tr>
+              <tr class="border-b">
+                <td class="py-2 px-4">2023-02-23</td>
+                <td class="py-2 px-4">Deworming</td>
+                <td class="py-2 px-4">Farm Staff</td>
+                <td class="py-2 px-4">Scheduled treatment</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-4">2023-01-10</td>
+                <td class="py-2 px-4">Health Check</td>
+                <td class="py-2 px-4">Dr. Smith</td>
+                <td class="py-2 px-4">Slight fever treated</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="fertility">
+        <div class="info-card">
+          <h3 class="font-semibold mb-2">Fertility & Reproduction</h3>
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b">
+                <th class="text-left py-2 px-4">Date</th>
+                <th class="text-left py-2 px-4">Event</th>
+                <th class="text-left py-2 px-4">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b">
+                <td class="py-2 px-4">2022-06-15</td>
+                <td class="py-2 px-4">Heat Detection</td>
+                <td class="py-2 px-4">Normal cycle observed</td>
+              </tr>
+              <tr class="border-b">
+                <td class="py-2 px-4">2022-07-10</td>
+                <td class="py-2 px-4">Insemination</td>
+                <td class="py-2 px-4">Artificial insemination performed</td>
+              </tr>
+              <tr class="border-b">
+                <td class="py-2 px-4">2022-07-31</td>
+                <td class="py-2 px-4">Pregnancy Check</td>
+                <td class="py-2 px-4">Confirmed pregnant</td>
+              </tr>
+              <tr class="border-b">
+                <td class="py-2 px-4">2023-04-15</td>
+                <td class="py-2 px-4">Calving</td>
+                <td class="py-2 px-4">Healthy female calf delivered</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-4">2023-05-20</td>
+                <td class="py-2 px-4">First Heat Post-Calving</td>
+                <td class="py-2 px-4">Normal cycle returned</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="flex justify-end space-x-2 mt-6">
+        <button id="nextSectionBtn" class="btn-outline">Next Section</button>
+        <button id="closeBtn" class="btn-outline">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sample cattle data
+      const cattleData = [
+        {
+          id: '1',
+          name: 'Bella',
+          breed: 'Holstein',
+          age: '4 years old',
+          image: 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=600&q=80',
+          health: 'Excellent',
+          lactationStatus: 'Active',
+          dailyProduction: '32 liters',
+          purchaseDate: 'Jun 15, 2022'
+        },
+        {
+          id: '2',
+          name: 'Daisy',
+          breed: 'Jersey',
+          age: '3 years old',
+          image: 'https://images.unsplash.com/photo-1452378174528-3090a4bba7b2?auto=format&fit=crop&w=600&q=80',
+          health: 'Good',
+          lactationStatus: 'Active',
+          dailyProduction: '28 liters',
+          purchaseDate: 'Aug 22, 2022'
+        },
+        {
+          id: '3',
+          name: 'Rosie',
+          breed: 'Brown Swiss',
+          age: '5 years old',
+          image: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=600&q=80',
+          health: 'Good',
+          lactationStatus: 'Active',
+          dailyProduction: '30 liters',
+          purchaseDate: 'Mar 10, 2022'
+        },
+        {
+          id: '4',
+          name: 'Mabel',
+          breed: 'Holstein',
+          age: '2 years old',
+          image: 'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?auto=format&fit=crop&w=600&q=80',
+          health: 'Excellent',
+          lactationStatus: 'Active',
+          dailyProduction: '25 liters',
+          purchaseDate: 'Sep 05, 2022'
+        }
+      ];
+      
+      // Get filter and sort values from parent window if available
+      let cattleFilter = 'all';
+      let sortOrder = 'newest';
+      
+      try {
+        // Try to get filter values from parent frame
+        if (window.parent && window.parent.document) {
+          const parentFilterSelect = window.parent.document.getElementById('cattleFilter');
+          const parentSortSelect = window.parent.document.getElementById('sortOrder');
+          
+          if (parentFilterSelect) {
+            cattleFilter = parentFilterSelect.value;
+          }
+          
+          if (parentSortSelect) {
+            sortOrder = parentSortSelect.value;
+          }
+          
+          // Add event listeners to parent selects
+          if (parentFilterSelect) {
+            parentFilterSelect.addEventListener('change', function() {
+              cattleFilter = this.value;
+              renderCattleCards();
+            });
+          }
+          
+          if (parentSortSelect) {
+            parentSortSelect.addEventListener('change', function() {
+              sortOrder = this.value;
+              renderCattleCards();
+            });
+          }
+        }
+      } catch (e) {
+        console.error('Error accessing parent frame:', e);
+      }
+      
+      // Function to get health color class
+      function getHealthColor(health) {
+        switch (health) {
+          case 'Excellent': return 'health-excellent';
+          case 'Good': return 'health-good';
+          case 'Fair': return 'health-fair';
+          case 'Poor': return 'health-poor';
+          default: return '';
+        }
+      }
+      
+      // Function to filter and sort cattle
+      function filterAndSortCattle() {
+        return cattleData
+          .filter(cattle => {
+            if (cattleFilter === 'all') return true;
+            if (cattleFilter === 'active') return cattle.lactationStatus === 'Active';
+            if (cattleFilter === 'dry') return cattle.lactationStatus === 'Dry';
+            return true;
+          })
+          .sort((a, b) => {
+            if (sortOrder === 'newest') {
+              return new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime();
+            }
+            if (sortOrder === 'oldest') {
+              return new Date(a.purchaseDate).getTime() - new Date(b.purchaseDate).getTime();
+            }
+            if (sortOrder === 'production') {
+              return parseInt(b.dailyProduction) - parseInt(a.dailyProduction);
+            }
+            return 0;
+          });
+      }
+      
+      // Function to render cattle cards
+      function renderCattleCards() {
+        const container = document.querySelector('.grid');
+        container.innerHTML = '';
+        
+        const filteredCattle = filterAndSortCattle();
+        
+        filteredCattle.forEach((cattle, index) => {
+          const card = document.createElement('div');
+          card.className = `cattle-card animate-fade-in`;
+          card.style.animationDelay = `${index * 0.1}s`;
+          
+          const healthColorClass = getHealthColor(cattle.health);
+          
+          card.innerHTML = `
+            <div class="aspect-video w-full overflow-hidden">
+              <img 
+                src="${cattle.image}" 
+                alt="Cattle ${cattle.name}" 
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-4 pb-2">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-semibold">${cattle.name}</h3>
+                  <p class="text-sm text-muted-foreground">${cattle.breed} · ${cattle.age}</p>
+                </div>
+                <div class="dropdown relative">
+                  <button class="p-1 rounded-md hover:bg-gray-100">
+                    <i class="fas fa-ellipsis-h text-muted-foreground"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="px-4 pb-2">
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="flex items-center">
+                  <i class="fas fa-thermometer-half mr-2 text-muted-foreground"></i>
+                  <div>
+                    <p class="text-sm text-muted-foreground">Health</p>
+                    <p class="text-sm font-medium ${healthColorClass}">${cattle.health}</p>
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-heart mr-2 text-muted-foreground"></i>
+                  <div>
+                    <p class="text-sm text-muted-foreground">Lactation</p>
+                    <p class="text-sm font-medium">${cattle.lactationStatus}</p>
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-chart-bar mr-2 text-muted-foreground"></i>
+                  <div>
+                    <p class="text-sm text-muted-foreground">Daily Production</p>
+                    <p class="text-sm font-medium">${cattle.dailyProduction}</p>
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-calendar mr-2 text-muted-foreground"></i>
+                  <div>
+                    <p class="text-sm text-muted-foreground">Purchased</p>
+                    <p class="text-sm font-medium">${cattle.purchaseDate}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="px-4 pb-4">
+              <button class="btn-outline view-details" data-id="${cattle.id}">
+                View Details
+              </button>
+            </div>
+          `;
+          
+          container.appendChild(card);
+        });
+        
+        // Add event listeners to the view details buttons
+        document.querySelectorAll('.view-details').forEach(button => {
+          button.addEventListener('click', function() {
+            const cattleId = this.getAttribute('data-id');
+            const cattle = cattleData.find(c => c.id === cattleId);
+            openCattleModal(cattle);
+          });
+        });
+      }
+      
+      // Initial render
+      renderCattleCards();
+      
+      // Modal functionality
+      const modal = document.getElementById('cattleModal');
+      const closeModal = document.getElementById('closeModal');
+      const closeBtn = document.getElementById('closeBtn');
+      const nextSectionBtn = document.getElementById('nextSectionBtn');
+      
+      function openCattleModal(cattle) {
+        // Populate modal with cattle details
+        document.getElementById('modalCattleName').textContent = cattle.name;
+        document.getElementById('modalCattleName').className = `text-xl font-semibold ${getHealthColor(cattle.health)}`;
+        document.getElementById('modalCattleImage').innerHTML = `
+          <img 
+            src="${cattle.image}" 
+            alt="Cattle ${cattle.name}" 
+            class="w-full h-full object-cover rounded-md"
+          />
+        `;
+        document.getElementById('modalHealth').textContent = cattle.health;
+        document.getElementById('modalHealth').className = `info-value ${getHealthColor(cattle.health)}`;
+        document.getElementById('modalLactation').textContent = cattle.lactationStatus;
+        document.getElementById('modalProduction').textContent = cattle.dailyProduction;
+        document.getElementById('modalAge').textContent = cattle.age;
+        document.getElementById('modalBreed').textContent = cattle.breed;
+        
+        // Show the modal
+        modal.style.display = 'block';
+        
+        // Initialize charts
+        initFeedChart();
+        initMilkProductionChart();
+        
+        // Set active tab
+        setActiveTab('overview');
+      }
+      
+      function closeModalFn() {
+        modal.style.display = 'none';
+      }
+      
+      closeModal.addEventListener('click', closeModalFn);
+      closeBtn.addEventListener('click', closeModalFn);
+      
+      // Tab functionality
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabName = this.getAttribute('data-tab');
+          setActiveTab(tabName);
+        });
+      });
+      
+      function setActiveTab(tabName) {
+        // Remove active class from all tabs and contents
+        document.querySelectorAll('.tab').forEach(tab => {
+          tab.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Add active class to the selected tab and content
+        document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+        document.getElementById(tabName).classList.add('active');
+      }
+      
+      // Next section button
+      nextSectionBtn.addEventListener('click', function() {
+        const tabs = ['overview', 'production', 'health', 'fertility'];
+        const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
+        const currentIndex = tabs.indexOf(activeTab);
+        const nextIndex = (currentIndex + 1) % tabs.length;
+        setActiveTab(tabs[nextIndex]);
+      });
+      
+      // Charts initialization
+      function initFeedChart() {
+        const feedData = {
+          labels: ['Grass', 'Hay', 'Silage', 'Supplements'],
+          datasets: [{
+            data: [40, 30, 20, 10],
+            backgroundColor: [
+              'rgba(139, 92, 246, 0.7)',
+              'rgba(139, 92, 246, 0.5)',
+              'rgba(139, 92, 246, 0.3)',
+              'rgba(139, 92, 246, 0.2)'
+            ],
+            borderWidth: 0,
+            borderRadius: 4
+          }]
+        };
+        
+        const feedCtx = document.getElementById('feedChart').getContext('2d');
+        if (window.feedChart) {
+          window.feedChart.destroy();
+        }
+        
+        window.feedChart = new Chart(feedCtx, {
+          type: 'bar',
+          data: feedData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  font: {
+                    size: 10
+                  }
+                }
+              },
+              x: {
+                ticks: {
+                  font: {
+                    size: 10
+                  }
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            animation: {
+              duration: 1500,
+              easing: 'easeOutQuart'
+            }
+          }
+        });
+      }
+      
+      function initMilkProductionChart() {
+        const milkData = {
+          labels: ['Apr 1', 'Apr 2', 'Apr 3', 'Apr 4', 'Apr 5', 'Apr 6', 'Apr 7'],
+          datasets: [{
+            label: 'Milk Production (Liters)',
+            data: [28, 29, 30, 31, 32, 30, 29],
+            fill: false,
+            borderColor: 'rgb(139, 92, 246)',
+            tension: 0.4,
+            pointBackgroundColor: 'rgb(139, 92, 246)',
+            pointRadius: 4
+          }]
+        };
+        
+        const milkCtx = document.getElementById('milkProductionChart').getContext('2d');
+        if (window.milkChart) {
+          window.milkChart.destroy();
+        }
+        
+        window.milkChart = new Chart(milkCtx, {
+          type: 'line',
+          data: milkData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: false,
+                min: 25
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            animation: {
+              duration: 1500,
+              easing: 'easeOutQuart'
+            }
+          }
+        });
+      }
+      
+      // Initialize progress bars with animation
+      setTimeout(() => {
+        document.querySelectorAll('.progress-fill').forEach(fill => {
+          const width = fill.style.width;
+          fill.style.width = '0';
+          setTimeout(() => {
+            fill.style.width = width;
+          }, 100);
+        });
+      }, 500);
+      
+      // Close the modal when clicking outside of it
+      window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+          closeModalFn();
+        }
+      });
+
+      // Listen for messages from parent window to update filters
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'updateCattleFilter') {
+          cattleFilter = event.data.filter;
+          sortOrder = event.data.sort;
+          renderCattleCards();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

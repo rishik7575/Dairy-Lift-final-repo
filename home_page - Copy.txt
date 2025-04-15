@@ -112,28 +112,10 @@
       padding: 0.5rem;
     }
 
-    /* .mobile-menu {
-      display: none;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-    } */
-
     .mobile-menu {
       display: none;
       padding: 0.5rem 0;
       border-bottom: 1px solid var(--border);
-      max-width: 20%;
-      /* Adjust as needed */
-      overflow-x: auto;
-      position: absolute;
-      /* Changed to absolute */
-      top: 100%;
-      /* Positioned at the bottom edge of the navbar */
-      left: 0;
-      z-index: 99;
-      /* Ensure it's above other content */
-      background-color: var(--background);
-      width: 100%;
     }
 
     .mobile-menu.active {
@@ -2228,12 +2210,6 @@
         link.addEventListener('click', function () {
           mobileMenu.classList.remove('active');
         });
-      });
-      // Close mobile menu when clicking outside
-      document.addEventListener('click', function (event) {
-        if (!mobileMenu.contains(event.target) && !mobileMenuToggle.contains(event.target) && mobileMenu.classList.contains('active')) {
-          mobileMenu.classList.remove('active');
-        }
       });
 
       // Accordion functionality
