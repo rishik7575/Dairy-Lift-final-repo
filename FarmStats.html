@@ -24,6 +24,7 @@
       margin: 0;
       padding: 0;
       height: 100%;
+      overflow: hidden;
     }
     
     .card {
@@ -36,6 +37,9 @@
     
     .card-header {
       padding: 1rem 1.5rem 0.5rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     
     .card-title {
@@ -143,12 +147,49 @@
     .delay-100 { animation-delay: 0.1s; }
     .delay-200 { animation-delay: 0.2s; }
     .delay-300 { animation-delay: 0.3s; }
+    
+    .refresh-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 0.25rem;
+      transition: all 0.2s ease;
+    }
+    
+    .refresh-btn:hover {
+      background-color: var(--border-light);
+      color: var(--foreground);
+    }
+    
+    .spin {
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Remove scrollbars */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    * {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="card-header">
       <h2 class="card-title">Farm Stats</h2>
+      <button class="refresh-btn" id="refreshBtn">
+        <i class="fas fa-sync-alt"></i>
+      </button>
     </div>
     <div class="card-content">
       <div class="grid-container">
@@ -213,6 +254,77 @@
         const height = document.body.scrollHeight;
         window.parent.postMessage({ type: 'resize', height: height }, '*');
       }
+      
+      // Implement refresh functionality
+      const refreshBtn = document.getElementById('refreshBtn');
+      refreshBtn.addEventListener('click', function() {
+        // Add spinning animation
+        this.querySelector('i').classList.add('spin');
+        
+        // Simulate data refresh
+        setTimeout(() => {
+          // Reset animations
+          const statsItems = document.querySelectorAll('.stats-item');
+          statsItems.forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(10px)';
+          });
+          
+          // Reset progress bar
+          const progressFill = document.querySelector('.progress-fill');
+          progressFill.style.width = '0%';
+          
+          // Get random variations for stats
+          const variations = [
+            { value: Math.floor(Math.random() * 5) + 40 + ' Acres' },
+            { value: Math.floor(Math.random() * 4) + 15 },
+            { value: (Math.random() * 0.4 + 1.6).toFixed(1) + ' L/hr' },
+            { 
+              value: Math.floor(Math.random() * 100) + 800 + ' kWh',
+              trend: Math.floor(Math.random() * 7) + 2
+            },
+            { 
+              value: Math.floor(Math.random() * 1000) + 12000 + ' L',
+              trend: Math.floor(Math.random() * 5) + 1
+            }
+          ];
+          
+          // Update values with new data
+          const statValues = document.querySelectorAll('.stats-value');
+          statValues.forEach((item, index) => {
+            if (variations[index]) {
+              item.textContent = variations[index].value;
+            }
+          });
+          
+          const trendIndicators = document.querySelectorAll('.trend-indicator');
+          trendIndicators.forEach((item, index) => {
+            const trendIndex = index + 3; // Offset to match the correct variation indices
+            if (variations[trendIndex] && variations[trendIndex].trend) {
+              item.textContent = `-${variations[trendIndex].trend}%`;
+            }
+          });
+          
+          // Random sustainability score between 70-85
+          const newScore = Math.floor(Math.random() * 16) + 70;
+          document.querySelector('.progress-value').textContent = `${newScore}%`;
+          
+          // Animate items back in
+          setTimeout(() => {
+            statsItems.forEach(item => {
+              item.style.opacity = '1';
+              item.style.transform = 'translateY(0)';
+              item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            // Animate progress bar
+            progressFill.style.width = `${newScore}%`;
+            
+            // Stop spinning
+            refreshBtn.querySelector('i').classList.remove('spin');
+          }, 300);
+        }, 800);
+      });
     });
   </script>
 </body>

@@ -3,20 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Breakdown</title>
+  <title>Farm Expense Breakdown</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --primary: #8B5CF6;
-      --green: #22C55E;
-      --blue: #3B82F6;
-      --yellow: #F59E0B;
+      --primary-light: rgba(139, 92, 246, 0.1);
       --border: #E5E7EB;
       --foreground: #111827;
       --muted: #6B7280;
-      --muted-foreground: #9CA3AF;
       --radius: 0.5rem;
     }
     
@@ -26,312 +22,164 @@
       margin: 0;
       padding: 0;
       height: 100%;
+      overflow: hidden;
     }
-    
+
     .card {
-      background-color: white;
+      background: white;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-      height: 100%;
-      overflow: hidden;
+      padding: 1.5rem;
     }
-    
-    .card-header {
-      padding: 1rem 1.5rem 0.5rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .card-title {
-      font-weight: 600;
-      font-size: 1.25rem;
-      color: var(--foreground);
-      margin: 0;
-    }
-    
-    .export-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background-color: white;
-      color: var(--muted);
-      padding: 0;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .export-button:hover {
-      background-color: #F9FAFB;
-      color: var(--foreground);
-      border-color: #D1D5DB;
-    }
-    
-    .card-content {
-      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
-    }
-    
-    .chart-container {
-      height: 16rem;
-      position: relative;
-    }
-    
-    .legend-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 1rem;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
     }
-    
-    .legend-item {
-      display: flex;
-      align-items: center;
-    }
-    
-    .legend-color {
-      width: 0.75rem;
-      height: 0.75rem;
-      border-radius: 2px;
-      margin-right: 0.5rem;
-    }
-    
-    .legend-label {
-      font-size: 0.875rem;
-      color: var(--foreground);
-    }
-    
-    .tooltip {
-      position: absolute;
-      display: none;
-      padding: 0.75rem;
-      background-color: white;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      pointer-events: none;
-      z-index: 10;
-      min-width: 10rem;
-    }
-    
-    .tooltip-title {
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-    
-    .tooltip-value {
-      display: flex;
-      justify-content: space-between;
-    }
-    
-    .tooltip-label {
-      color: var(--muted);
-    }
-    
-    .toast {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
+
+    .stat-item {
+      background-color: var(--primary-light);
       padding: 1rem;
-      background-color: white;
-      border: 1px solid var(--border);
       border-radius: var(--radius);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      display: flex;
-      align-items: center;
-      transform: translateY(-1rem);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 100;
+      text-align: center;
     }
-    
-    .toast-icon {
-      color: var(--green);
-      margin-right: 0.75rem;
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin: 1rem 0;
     }
-    
-    .toast-message {
-      font-size: 0.875rem;
+
+    /* Remove scrollbars */
+    ::-webkit-scrollbar {
+      display: none;
     }
-    
-    .toast-visible {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    
-    /* Animation */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .animate-fade-in {
-      animation: fadeIn 0.5s ease-out forwards;
+
+    * {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="card-header">
-      <h2 class="card-title">Farm Expense Breakdown</h2>
-      <button id="exportButton" class="export-button">
-        <i class="fas fa-download"></i>
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h2 class="text-xl font-bold text-gray-900">Farm Expense Breakdown</h2>
+        <p class="text-sm text-gray-500 mt-1">Financial overview for current month</p>
+      </div>
+      <button class="bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-opacity-90 transition-colors" onclick="exportData()">
+        Export Data
       </button>
     </div>
-    <div class="card-content">
-      <div class="chart-container animate-fade-in">
-        <canvas id="expenseChart"></canvas>
-        <div id="chartTooltip" class="tooltip"></div>
+
+    <div class="chart-container">
+      <canvas id="expenseChart"></canvas>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-item">
+        <p class="text-sm text-gray-600">Total Expenses</p>
+        <p class="text-2xl font-bold text-primary mt-1">$24,500</p>
+        <p class="text-xs text-gray-500 mt-1">+5% from last month</p>
       </div>
-      
-      <div class="legend-container">
-        <!-- Legend will be dynamically generated -->
+      <div class="stat-item">
+        <p class="text-sm text-gray-600">Largest Category</p>
+        <p class="text-2xl font-bold text-primary mt-1">Cattle Feed</p>
+        <p class="text-xs text-gray-500 mt-1">40% of total</p>
+      </div>
+      <div class="stat-item">
+        <p class="text-sm text-gray-600">Budget Status</p>
+        <p class="text-2xl font-bold text-green-500 mt-1">On Track</p>
+        <p class="text-xs text-gray-500 mt-1">2% under budget</p>
       </div>
     </div>
-  </div>
-  
-  <!-- Toast Notification -->
-  <div id="toast" class="toast">
-    <i class="fas fa-check-circle toast-icon"></i>
-    <span class="toast-message">Chart exported successfully!</span>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Expense data
-      const expenseData = [
-        { name: 'Cattle Purchase', value: 40, color: '#8B5CF6' }, // Primary (purple)
-        { name: 'Fodder & Feed', value: 25, color: '#22C55E' }, // Green
-        { name: 'Staff Salary', value: 20, color: '#3B82F6' }, // Blue
-        { name: 'Maintenance', value: 15, color: '#F59E0B' }, // Yellow/Amber
-      ];
-      
-      // Create pie chart
       const ctx = document.getElementById('expenseChart').getContext('2d');
       
-      const config = {
-        type: 'pie',
-        data: {
-          labels: expenseData.map(item => item.name),
-          datasets: [{
-            data: expenseData.map(item => item.value),
-            backgroundColor: expenseData.map(item => item.color),
-            borderWidth: 0,
-            borderRadius: 4
-          }]
-        },
+      const expenseData = {
+        labels: ['Cattle Feed', 'Labor', 'Equipment', 'Veterinary', 'Utilities', 'Others'],
+        datasets: [{
+          data: [40, 20, 15, 12, 8, 5],
+          backgroundColor: [
+            '#8B5CF6', // Primary purple
+            '#3B82F6', // Blue
+            '#10B981', // Green
+            '#F59E0B', // Yellow
+            '#EF4444', // Red
+            '#6B7280'  // Gray
+          ],
+          borderWidth: 0,
+          borderRadius: 4
+        }]
+      };
+
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: expenseData,
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          animation: {
-            animateRotate: true,
-            animateScale: true,
-            duration: 1500,
-            easing: 'easeOutQuart'
-          },
           plugins: {
             legend: {
-              display: false
+              position: 'right',
+              labels: {
+                padding: 20,
+                font: {
+                  size: 12
+                }
+              }
             },
             tooltip: {
-              enabled: false
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${context.raw}%`;
+                }
+              }
             }
-          }
-        }
-      };
-      
-      const expenseChart = new Chart(ctx, config);
-      
-      // Create custom tooltip
-      const chartTooltip = document.getElementById('chartTooltip');
-      const chartContainer = document.querySelector('.chart-container');
-      
-      chartContainer.addEventListener('mousemove', function(event) {
-        const activePoints = expenseChart.getElementsAtEventForMode(
-          event,
-          'nearest',
-          { intersect: true },
-          false
-        );
-        
-        if (activePoints.length > 0) {
-          const firstPoint = activePoints[0];
-          const label = expenseChart.data.labels[firstPoint.index];
-          const value = expenseChart.data.datasets[0].data[firstPoint.index];
-          const color = expenseChart.data.datasets[0].backgroundColor[firstPoint.index];
-          
-          chartTooltip.innerHTML = `
-            <div class="tooltip-title">${label}</div>
-            <div class="tooltip-value">
-              <span class="tooltip-label">Percentage:</span>
-              <span>${value}%</span>
-            </div>
-          `;
-          
-          chartTooltip.style.display = 'block';
-          chartTooltip.style.left = event.offsetX + 'px';
-          chartTooltip.style.top = event.offsetY + 'px';
-          
-          // Adjust tooltip position to stay within the container
-          const tooltipRect = chartTooltip.getBoundingClientRect();
-          const containerRect = chartContainer.getBoundingClientRect();
-          
-          if (tooltipRect.right > containerRect.right) {
-            chartTooltip.style.left = (event.offsetX - tooltipRect.width) + 'px';
-          }
-          
-          if (tooltipRect.bottom > containerRect.bottom) {
-            chartTooltip.style.top = (event.offsetY - tooltipRect.height) + 'px';
-          }
-        } else {
-          chartTooltip.style.display = 'none';
+          },
+          animation: {
+            animateRotate: true,
+            animateScale: true
+          },
+          cutout: '60%'
         }
       });
-      
-      chartContainer.addEventListener('mouseleave', function() {
-        chartTooltip.style.display = 'none';
-      });
-      
-      // Generate legend
-      const legendContainer = document.querySelector('.legend-container');
-      
-      expenseData.forEach((item) => {
-        const legendItem = document.createElement('div');
-        legendItem.className = 'legend-item';
-        
-        legendItem.innerHTML = `
-          <div class="legend-color" style="background-color: ${item.color}"></div>
-          <div class="legend-label">${item.name} (${item.value}%)</div>
-        `;
-        
-        legendContainer.appendChild(legendItem);
-      });
-      
-      // Export functionality
-      const exportButton = document.getElementById('exportButton');
-      const toast = document.getElementById('toast');
-      
-      exportButton.addEventListener('click', function() {
-        // Simulate export
-        setTimeout(() => {
-          showToast('Chart exported successfully!');
-        }, 500);
-      });
-      
-      function showToast(message) {
-        toast.querySelector('.toast-message').textContent = message;
-        toast.classList.add('toast-visible');
-        
-        setTimeout(() => {
-          toast.classList.remove('toast-visible');
-        }, 3000);
+
+      // Send height to parent
+      if (window.parent && window.parent.postMessage) {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({ type: 'resize', height: height }, '*');
       }
     });
+
+    function exportData() {
+      // Simulate export functionality
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        background: #10B981;
+        color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        animation: slideIn 0.3s ease-out;
+      `;
+      toast.textContent = 'Data exported successfully!';
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
   </script>
 </body>
 </html>

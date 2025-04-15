@@ -183,7 +183,7 @@
     
     /* Custom iframe styling */
     .no-scroll-iframe {
-      overflow: hidden !important;
+      overflow: hidden;
       width: 100%;
       border: none;
     }
@@ -195,11 +195,52 @@
     
     /* Hide scrollbars but allow scrolling */
     .custom-scrollbar {
+      overflow-y: auto;
       scrollbar-width: none; /* Firefox */
       -ms-overflow-style: none;  /* IE and Edge */
     }
     .custom-scrollbar::-webkit-scrollbar {
       display: none; /* Chrome, Safari and Opera */
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 50;
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .toast.info {
+      background-color: #EFF6FF;
+      border-left: 4px solid #3B82F6;
+      color: #1E3A8A;
+    }
+    
+    .toast.success {
+      background-color: #ECFDF5;
+      border-left: 4px solid #10B981;
+      color: #065F46;
+    }
+    
+    .toast.error {
+      background-color: #FEF2F2;
+      border-left: 4px solid #EF4444;
+      color: #991B1B;
     }
   </style>
 </head>
@@ -209,10 +250,10 @@
     <div class="flex items-center">
       <h1 class="text-xl font-bold text-purple-600">DairyVest</h1>
       <div class="hidden md:flex space-x-4 ml-10">
-        <a href="#" class="text-gray-700 hover:text-purple-600">Dashboard</a>
-        <a href="#" class="text-gray-500 hover:text-purple-600">Cattle</a>
-        <a href="#" class="text-gray-500 hover:text-purple-600">Reports</a>
-        <a href="#" class="text-gray-500 hover:text-purple-600">Analytics</a>
+        <a href="home_page.html" class="text-gray-700 hover:text-purple-600">Home</a>
+        <a href="dashboard.html" class="text-gray-500 hover:text-purple-600">Dashboard</a>
+        <a href="store.html" class="text-gray-500 hover:text-purple-600">Store</a>
+        <a href="admin-dashboard.html" class="text-gray-500 hover:text-purple-600">Admin</a>
       </div>
     </div>
     <div class="flex items-center space-x-4">
@@ -360,43 +401,43 @@
       <!-- Row 1 - ProfitForecast and MilkingEfficiency -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div class="lg:col-span-2">
-          <iframe src="ProfitForecast.html" frameborder="0" class="content-iframe" height="400"></iframe>
+          <iframe src="ProfitForecast.html" frameborder="0" class="content-iframe" id="profit-forecast-frame"></iframe>
         </div>
         <div>
-          <iframe src="MilkingEfficiencyCard.html" frameborder="0" class="content-iframe" height="400"></iframe>
+          <iframe src="MilkingEfficiencyCard.html" frameborder="0" class="content-iframe" id="milking-efficiency-frame"></iframe>
         </div>
       </div>
 
       <!-- Row 2 - Farm Stats and Expense Breakdown -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div>
-          <iframe src="FarmStats.html" frameborder="0" class="content-iframe" height="400"></iframe>
+          <iframe src="FarmStats.html" frameborder="0" class="content-iframe" id="farm-stats-frame"></iframe>
         </div>
         <div>
-          <iframe src="ExpenseBreakdownChart.html" frameborder="0" class="content-iframe" height="400"></iframe>
+          <iframe src="ExpenseBreakdownChart.html" frameborder="0" class="content-iframe" id="expense-breakdown-frame"></iframe>
         </div>
       </div>
 
       <!-- Row 3 - Milk Wastage and Cattle Lifecycle -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div>
-          <iframe src="MilkWastageTracker.html" frameborder="0" class="content-iframe" height="400"></iframe>
+          <iframe src="MilkWastageTracker.html" frameborder="0" class="content-iframe" id="milk-wastage-frame"></iframe>
         </div>
         <div>
-          <iframe src="CattleLifecycleTracker.html" frameborder="0" class="content-iframe" height="400"></iframe>
+          <iframe src="CattleLifecycleTracker.html" frameborder="0" class="content-iframe" id="cattle-lifecycle-frame"></iframe>
         </div>
       </div>
 
       <!-- Row 4 - Weather, Waste to Profit, Investor Trust -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <div>
-          <iframe src="WeatherImpactAnalytics.html" frameborder="0" class="content-iframe" height="400"></iframe>
+          <iframe src="WeatherImpactAnalytics.html" frameborder="0" class="content-iframe" id="weather-impact-frame"></iframe>
         </div>
         <div>
-          <iframe src="WastetoProfitTracker.html" frameborder="0" class="content-iframe" height="400"></iframe>
+          <iframe src="WastetoProfitTracker.html" frameborder="0" class="content-iframe" id="waste-to-profit-frame"></iframe>
         </div>
         <div>
-          <iframe src="InvestorTrust.html" frameborder="0" class="content-iframe" height="400"></iframe>
+          <iframe src="InvestorTrust.html" frameborder="0" class="content-iframe" id="investor-trust-frame"></iframe>
         </div>
       </div>
 
@@ -536,16 +577,16 @@
           <h4 class="font-semibold text-lg">Quick Links</h4>
           <ul class="space-y-2">
             <li>
-              <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">Home</a>
+              <a href="home_page.html" class="text-gray-500 hover:text-purple-600 transition-colors">Home</a>
             </li>
             <li>
-              <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">Dashboard</a>
+              <a href="dashboard.html" class="text-gray-500 hover:text-purple-600 transition-colors">Dashboard</a>
             </li>
             <li>
-              <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">Store</a>
+              <a href="store.html" class="text-gray-500 hover:text-purple-600 transition-colors">Store</a>
             </li>
             <li>
-              <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">Login</a>
+              <a href="login.html" class="text-gray-500 hover:text-purple-600 transition-colors">Login</a>
             </li>
           </ul>
         </div>
@@ -651,26 +692,49 @@
     // Initialize Charts
     window.onload = function() {
       // Set iframe heights to match content without scrollbars
-      function adjustIframeHeights() {
-        const iframes = document.querySelectorAll('.content-iframe');
-        iframes.forEach(iframe => {
-          // Apply class for no scrollbars
+      const frameIds = [
+        'profit-forecast-frame', 
+        'milking-efficiency-frame', 
+        'farm-stats-frame', 
+        'expense-breakdown-frame',
+        'milk-wastage-frame', 
+        'cattle-lifecycle-frame', 
+        'weather-impact-frame', 
+        'waste-to-profit-frame',
+        'investor-trust-frame', 
+        'cattleIframe'
+      ];
+      
+      frameIds.forEach(id => {
+        const iframe = document.getElementById(id);
+        if (iframe) {
           iframe.classList.add('no-scroll-iframe');
           
-          // Listen for iframe load to adjust height
-          iframe.onload = function() {
-            try {
-              // Try to get the document height of the iframe
-              const height = iframe.contentWindow.document.body.scrollHeight;
-              iframe.style.height = (height + 20) + 'px'; // Add some padding
-            } catch (e) {
-              console.error('Error adjusting iframe height', e);
-            }
-          };
-        });
-      }
+          // Initialize default height
+          iframe.style.height = '400px';
+        }
+      });
       
-      adjustIframeHeights();
+      // Listen for resize messages from iframes
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'resize') {
+          const height = event.data.height;
+          const iframes = document.querySelectorAll('iframe.content-iframe');
+          
+          // Find the frame that sent the message by matching its content window
+          for (let i = 0; i < iframes.length; i++) {
+            try {
+              if (iframes[i].contentWindow === event.source) {
+                // Add a small buffer to avoid scrolling
+                iframes[i].style.height = (height + 20) + 'px';
+                break;
+              }
+            } catch (e) {
+              console.error('Error matching iframe:', e);
+            }
+          }
+        }
+      });
       
       // Cattle filter and sort functionality
       const cattleFilter = document.getElementById('cattleFilter');
@@ -685,8 +749,10 @@
               filter: cattleFilter.value,
               sort: sortOrder.value
             }, '*');
+            showToast('Cattle filter applied: ' + cattleFilter.options[cattleFilter.selectedIndex].text);
           } catch (e) {
             console.error('Error sending message to iframe:', e);
+            showToast('Failed to update cattle filter', 'error');
           }
         }
       }
@@ -698,13 +764,6 @@
       
       if (sortOrder) {
         sortOrder.addEventListener('change', updateCattleFilters);
-      }
-      
-      // Update filters when iframe loads
-      if (cattleIframe) {
-        cattleIframe.onload = function() {
-          updateCattleFilters();
-        };
       }
       
       // Milk Production Chart
@@ -926,10 +985,19 @@
         const eventTypes = ['milk', 'health', 'feed', 'system'];
         const type = eventTypes[Math.floor(Math.random() * eventTypes.length)];
         
+        const messages = {
+          milk: ['Milk production updated', 'New milk collection recorded', 'Milk quality check completed'],
+          health: ['Health status updated', 'Medication administered', 'Animal wellness check completed'],
+          feed: ['Feed consumption measured', 'New feed batch prepared', 'Feed inventory updated'],
+          system: ['System check complete', 'Sensors calibrated', 'Maintenance task completed']
+        };
+        
+        const message = messages[type][Math.floor(Math.random() * messages[type].length)];
+        
         const newEvent = {
           id: `event-${Date.now()}`,
           type,
-          message: 'New data point recorded',
+          message: message,
           timestamp: new Date()
         };
         
@@ -948,36 +1016,49 @@
       }
       
       function showToast(message, type = 'info') {
+        // Remove existing toasts
+        const existingToasts = document.querySelectorAll('.toast');
+        existingToasts.forEach(toast => {
+          document.body.removeChild(toast);
+        });
+        
         const toast = document.createElement('div');
-        toast.className = `fixed top-4 right-4 z-50 p-4 rounded-md shadow-lg flex items-center animate-fade-in ${
-          type === 'success' ? 'bg-green-50 border-l-4 border-green-500 text-green-700' :
-          type === 'error' ? 'bg-red-50 border-l-4 border-red-500 text-red-700' :
-          'bg-blue-50 border-l-4 border-blue-500 text-blue-700'
-        }`;
+        toast.className = `toast ${type}`;
+        
+        const iconClass = type === 'success' ? 'fa-check-circle' : 
+                         type === 'error' ? 'fa-exclamation-circle' : 
+                         'fa-info-circle';
         
         toast.innerHTML = `
-          <div class="mr-3">
-            <i class="fas ${
-              type === 'success' ? 'fa-check-circle' :
-              type === 'error' ? 'fa-exclamation-circle' :
-              'fa-info-circle'
-            }"></i>
-          </div>
-          <div>${message}</div>
+          <i class="fas ${iconClass} mr-2"></i>
+          <span>${message}</span>
         `;
         
         document.body.appendChild(toast);
         
+        // Show the toast with animation
         setTimeout(() => {
-          toast.style.opacity = '0';
-          toast.style.transform = 'translateY(-10px)';
-          toast.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-          
+          toast.classList.add('show');
+        }, 10);
+        
+        // Hide and remove after delay
+        setTimeout(() => {
+          toast.classList.remove('show');
           setTimeout(() => {
-            document.body.removeChild(toast);
-          }, 500);
+            if (document.body.contains(toast)) {
+              document.body.removeChild(toast);
+            }
+          }, 300);
         }, 3000);
       }
+      
+      // Close modal when clicking outside
+      window.onclick = function(event) {
+        if (event.target == liveFeedModal) {
+          liveFeedModal.style.display = "none";
+          clearInterval(autoRefreshInterval);
+        }
+      };
     };
   </script>
 </body>

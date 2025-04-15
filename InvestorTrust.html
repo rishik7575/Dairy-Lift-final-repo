@@ -27,6 +27,7 @@
       margin: 0;
       padding: 0;
       height: 100%;
+      overflow: hidden;
     }
     
     .card {
@@ -105,6 +106,16 @@
     
     .delay-100 { animation-delay: 0.1s; }
     .delay-200 { animation-delay: 0.2s; }
+
+    /* Remove scrollbars */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    * {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
   </style>
 </head>
 <body>

@@ -21,6 +21,7 @@
       background-color: transparent;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
     
     .cattle-card {
@@ -197,10 +198,83 @@
       width: 0;
       transition: width 1s ease;
     }
+
+    /* Hide scrollbars but allow scrolling */
+    /* Remove scrollbars for WebKit browsers */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Remove scrollbars for Firefox */
+    * {
+      scrollbar-width: none;
+    }
+
+    /* Remove scrollbars for IE and Edge */
+    * {
+      -ms-overflow-style: none; 
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    @media (min-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .cattle-card .aspect-video {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    }
+
+    .cattle-card .aspect-video img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .cattle-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    
+    .cattle-stat {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .cattle-stat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
+    }
+    
+    .cattle-stat-content p {
+      margin: 0;
+      line-height: 1.2;
+    }
   </style>
 </head>
 <body>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div class="grid">
     <!-- Cattle cards will be dynamically loaded here -->
   </div>
   
@@ -552,39 +626,42 @@
                   <h3 class="text-xl font-semibold">${cattle.name}</h3>
                   <p class="text-sm text-muted-foreground">${cattle.breed} · ${cattle.age}</p>
                 </div>
-                <div class="dropdown relative">
-                  <button class="p-1 rounded-md hover:bg-gray-100">
-                    <i class="fas fa-ellipsis-h text-muted-foreground"></i>
-                  </button>
-                </div>
               </div>
             </div>
             <div class="px-4 pb-2">
-              <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="flex items-center">
-                  <i class="fas fa-thermometer-half mr-2 text-muted-foreground"></i>
-                  <div>
+              <div class="cattle-stats-grid mb-4">
+                <div class="cattle-stat">
+                  <div class="cattle-stat-icon">
+                    <i class="fas fa-thermometer-half"></i>
+                  </div>
+                  <div class="cattle-stat-content">
                     <p class="text-sm text-muted-foreground">Health</p>
                     <p class="text-sm font-medium ${healthColorClass}">${cattle.health}</p>
                   </div>
                 </div>
-                <div class="flex items-center">
-                  <i class="fas fa-heart mr-2 text-muted-foreground"></i>
-                  <div>
+                <div class="cattle-stat">
+                  <div class="cattle-stat-icon">
+                    <i class="fas fa-heart"></i>
+                  </div>
+                  <div class="cattle-stat-content">
                     <p class="text-sm text-muted-foreground">Lactation</p>
                     <p class="text-sm font-medium">${cattle.lactationStatus}</p>
                   </div>
                 </div>
-                <div class="flex items-center">
-                  <i class="fas fa-chart-bar mr-2 text-muted-foreground"></i>
-                  <div>
+                <div class="cattle-stat">
+                  <div class="cattle-stat-icon">
+                    <i class="fas fa-chart-bar"></i>
+                  </div>
+                  <div class="cattle-stat-content">
                     <p class="text-sm text-muted-foreground">Daily Production</p>
                     <p class="text-sm font-medium">${cattle.dailyProduction}</p>
                   </div>
                 </div>
-                <div class="flex items-center">
-                  <i class="fas fa-calendar mr-2 text-muted-foreground"></i>
-                  <div>
+                <div class="cattle-stat">
+                  <div class="cattle-stat-icon">
+                    <i class="fas fa-calendar"></i>
+                  </div>
+                  <div class="cattle-stat-content">
                     <p class="text-sm text-muted-foreground">Purchased</p>
                     <p class="text-sm font-medium">${cattle.purchaseDate}</p>
                   </div>
@@ -609,6 +686,9 @@
             openCattleModal(cattle);
           });
         });
+        
+        // Send height to parent for iframe adjustment
+        sendHeightToParent();
       }
       
       // Initial render
@@ -816,6 +896,22 @@
           renderCattleCards();
         }
       });
+      
+      // Function to send height to parent
+      function sendHeightToParent() {
+        if (window.parent && window.parent.postMessage) {
+          setTimeout(() => {
+            const height = document.body.scrollHeight;
+            window.parent.postMessage({ type: 'resize', height: height }, '*');
+          }, 100);
+        }
+      }
+      
+      // Send initial height
+      sendHeightToParent();
+      
+      // Send height on window resize
+      window.addEventListener('resize', sendHeightToParent);
     });
   </script>
 </body>
