@@ -24,12 +24,24 @@
       --muted-foreground: #64748b;
       --border: #e2e8f0;
       --radius: 0.5rem;
+      /* Store specific variables */
+      --card: #ffffff;
+      --card-foreground: #020617;
+      --secondary: #c9b458;
+      --secondary-foreground: #ffffff;
+      --accent: #f2efd1;
+      --accent-foreground: #020617;
+      --destructive: #ef4444;
+      --destructive-foreground: #ffffff;
+      --input: #e2e8f0;
+      --ring: #ad6ef5;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
 
     html {
@@ -38,7 +50,6 @@
     }
 
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--foreground);
       background-color: var(--background);
       line-height: 1.5;
@@ -1313,6 +1324,82 @@
     .fade-in {
       animation: fadeIn 0.5s ease-out forwards;
     }
+
+    /* Add to your existing CSS */
+    .parallax-section {
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .parallax-element {
+      transform: translateZ(-100px) scale(1.5);
+      transition: transform 0.5s;
+    }
+
+    /* Add this JavaScript */
+    window.addEventListener('scroll', () => {
+      const parallaxElements = document.querySelectorAll('.parallax-element');
+      parallaxElements.forEach(element => {
+        const speed = element.dataset.speed || 0.5;
+        const yPos = -(window.pageYOffset * speed);
+        element.style.transform = `translateY(${yPos}px)`;
+      });
+    });
+
+    .reveal-text {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Add different delays for multiple elements */
+    .reveal-text:nth-child(2) { transition-delay: 0.2s; }
+    .reveal-text:nth-child(3) { transition-delay: 0.4s; }
+
+    .btn-animated {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 50%, var(--primary) 100%);
+      background-size: 200% 100%;
+      transition: background-position 0.5s, transform 0.2s;
+    }
+
+    .btn-animated:hover {
+      background-position: 100% 0;
+      transform: translateY(-2px);
+    }
+
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      z-index: 1000;
+      transition: width 0.1s;
+    }
+
+    .stagger-item {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stagger-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Add different delays for list items */
+    .stagger-item:nth-child(1) { transition-delay: 0.1s; }
+    .stagger-item:nth-child(2) { transition-delay: 0.2s; }
+    .stagger-item:nth-child(3) { transition-delay: 0.3s; }
   </style>
 </head>
 
@@ -2344,6 +2431,103 @@
       animateElements.forEach(el => {
         observer.observe(el);
       });
+    });
+
+    // Add this JavaScript
+    window.addEventListener('scroll', () => {
+      const parallaxElements = document.querySelectorAll('.parallax-element');
+      parallaxElements.forEach(element => {
+        const speed = element.dataset.speed || 0.5;
+        const yPos = -(window.pageYOffset * speed);
+        element.style.transform = `translateY(${yPos}px)`;
+      });
+    });
+
+    // Add to your existing JavaScript
+    function addTiltEffect() {
+      const cards = document.querySelectorAll('.plan-card');
+      
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateX = (y - centerY) / 20;
+          const rotateY = (centerX - x) / 20;
+          
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+        });
+      });
+    }
+
+    function animateNumbers() {
+      const numbers = document.querySelectorAll('.stat-value');
+      
+      numbers.forEach(number => {
+        const target = parseInt(number.textContent);
+        let current = 0;
+        const increment = target / 50; // Adjust for speed
+        
+        const updateNumber = () => {
+          if (current < target) {
+            current += increment;
+            number.textContent = Math.round(current);
+            requestAnimationFrame(updateNumber);
+          } else {
+            number.textContent = target;
+          }
+        };
+        
+        updateNumber();
+      });
+    }
+
+    // Add scroll progress indicator
+    window.addEventListener('scroll', () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollProgress = (window.scrollY / docHeight) * 100;
+      document.querySelector('.scroll-progress').style.width = `${scrollProgress}%`;
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Add scroll progress bar to body
+      const progressBar = document.createElement('div');
+      progressBar.className = 'scroll-progress';
+      document.body.appendChild(progressBar);
+
+      // Initialize animations
+      addTiltEffect();
+      
+      // Intersection Observer for reveal animations
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      // Observe elements with animation classes
+      document.querySelectorAll('.reveal-text, .stagger-item').forEach(el => {
+        observer.observe(el);
+      });
+
+      // Initialize number counter when statistics section is visible
+      const statsObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          animateNumbers();
+          statsObserver.unobserve(entries[0].target);
+        }
+      });
+      statsObserver.observe(document.querySelector('.statistics'));
     });
   </script>
 </body>
