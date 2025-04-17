@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dairy Farm Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -103,10 +106,17 @@
       font-weight: bold;
       font-size: 1.5rem;
       color: var(--primary);
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
     }
 
     .desktop-nav {
       display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .navbar-actions {
@@ -121,16 +131,26 @@
       padding: 0.5rem;
     }
 
+    /* .mobile-menu {
+      display: none;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    } */
+
     .mobile-menu {
       display: none;
       padding: 0.5rem 0;
       border-bottom: 1px solid var(--border);
       max-width: 20%;
+      /* Adjust as needed */
       overflow-x: auto;
       position: absolute;
+      /* Changed to absolute */
       top: 100%;
+      /* Positioned at the bottom edge of the navbar */
       left: 0;
       z-index: 99;
+      /* Ensure it's above other content */
       background-color: var(--background);
       width: 100%;
     }
@@ -163,7 +183,12 @@
       .desktop-nav {
         display: flex;
         align-items: center;
-        gap: 1.5rem;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
       }
 
       .navbar-actions {
@@ -250,12 +275,59 @@
       justify-content: center;
       border-radius: var(--radius);
       font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
       padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
       border: none;
-      position: relative;
-      overflow: hidden;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline-primary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .btn svg {
+      margin-left: 0.5rem;
     }
     
     .btn-icon {
@@ -422,6 +494,7 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
+  <!-- Navbar -->
   <header class="navbar" style="padding:10px">
     <div class="container" style="margin:0px">
       <div class="navbar-content">
@@ -433,25 +506,34 @@
             <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
         </button>
-        <a href="#" class="logo">Diary-Lift</a>
+        <a href="#" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
         <nav class="desktop-nav">
           <a href="home_page.html" class="nav-link">Home</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
           <a href="store.html" class="nav-link">Store</a>
           <a href="admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
-        <a href="login.html" class="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-purple-100 transition duration-200">
-          <div class="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center">
-            <span class="text-sm font-medium text-purple-700">JD</span>
-          </div>
-          <span class="hidden md:inline text-sm font-medium text-purple-700">Josh</span>
-        </a>
-        <div class="mobile-menu" id="mobile-menu">
-      <a href="navhome.html" class="mobile-nav-link">Insurance</a>
-      <a href="#" class="mobile-nav-link">Farm-visit</a>
-      <a href="aboutus.html" class="mobile-nav-link">About-us</a>
+        <a href="login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="home_page.html" class="mobile-nav-link">Home</a>
+      <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">Register Cattle</a>
+      <a href="store.html" class="mobile-nav-link">Store</a>
+      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">Login / Register</a>
+      <a href="navhome.html" class="mobile-nav-link">Insurance </a>
       <a href="help/home.html" class="mobile-nav-link">Support</a>
-      <a href="#" class="mobile-nav-link">Contact</a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">Admin</a>
+    </div>
     </div>
   </header>
 
