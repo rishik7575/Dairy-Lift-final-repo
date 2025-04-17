@@ -683,7 +683,23 @@
           button.addEventListener('click', function() {
             const cattleId = this.getAttribute('data-id');
             const cattle = cattleData.find(c => c.id === cattleId);
-            openCattleModal(cattle);
+            
+            // Store cattle data in localStorage to pass to viewdetailsofcattle.html
+            localStorage.setItem('selectedCattle', JSON.stringify(cattle));
+            
+            // Open viewdetailsofcattle.html in a new window/tab
+            window.open('viewdetailsofcattle.html', '_blank');
+            
+            // Also keep the existing functionality as fallback
+            if (window.parent && window.parent.postMessage) {
+              window.parent.postMessage({
+                type: 'openCattleDetails',
+                cattle: cattle
+              }, '*');
+            } else {
+              // Fallback to opening modal in this page if parent communication fails
+              openCattleModal(cattle);
+            }
           });
         });
         
