@@ -1,2535 +1,1783 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diary-Lift - Invest in Dairy Cattle</title>
-  <meta name="description"
-    content="Invest in cattle, earn from milk production, and make a positive impact with Diary-Lift." />
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --primary: #ad6ef5;
-      --primary-foreground: #f8fafc;
-      --primary-light: rgba(173, 110, 245, 0.2);
-      --background: #ffffff;
-      --foreground: #020617;
-      --muted: #f1f5f9;
-      --muted-foreground: #64748b;
-      --border: #e2e8f0;
-      --radius: 0.5rem;
-      /* Store specific variables */
-      --card: #ffffff;
-      --card-foreground: #020617;
-      --secondary: #c9b458;
-      --secondary-foreground: #ffffff;
-      --accent: #f2efd1;
-      --accent-foreground: #020617;
-      --destructive: #ef4444;
-      --destructive-foreground: #ffffff;
-      --input: #e2e8f0;
-      --ring: #ad6ef5;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 80px;
-    }
-
-    body {
-      color: var(--foreground);
-      background-color: var(--background);
-      line-height: 1.5;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
-    @media (min-width: 640px) {
-      .container {
-        padding: 0 1.5rem;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dairy-Lift - Premium Dairy Cattle Investment Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#ad6ef5",
+              secondary: "#8A2BE2",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      body {
+      font-family: 'Inter', sans-serif;
       }
-    }
-
-    @media (min-width: 1024px) {
-      .container {
-        padding: 0 2rem;
-      }
-    }
-
-    /* Navbar Styles */
-    .navbar {
-      background-color: var(--background);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .navbar-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 4rem;
-    }
-
-    .logo {
-      font-weight: bold;
-      font-size: 1.5rem;
-      color: var(--primary);
-    }
-
-    .desktop-nav {
-      display: none;
-    }
-
-    .navbar-actions {
-      display: none;
-    }
-
-    .mobile-menu-toggle {
-      background: none;
-      border: none;
-      color: var(--foreground);
-      cursor: pointer;
-      padding: 0.5rem;
-    }
-
-    /* .mobile-menu {
-      display: none;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-    } */
-
-    .mobile-menu {
-      display: none;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-      max-width: 20%;
-      /* Adjust as needed */
-      overflow-x: auto;
-      position: absolute;
-      /* Changed to absolute */
-      top: 100%;
-      /* Positioned at the bottom edge of the navbar */
-      left: 0;
-      z-index: 99;
-      /* Ensure it's above other content */
-      background-color: var(--background);
-      width: 100%;
-    }
-
-    .mobile-menu.active {
-      display: block;
-    }
-
-    .mobile-nav-link {
-      display: block;
-      padding: 0.75rem 1rem;
-      color: var(--foreground);
-      border-radius: 0.375rem;
-    }
-
-    .mobile-nav-link:hover {
-      background-color: var(--muted);
-    }
-
-    .mobile-nav-link-primary {
-      color: var(--primary);
-      font-weight: 500;
-    }
-
-    .mobile-nav-link-primary:hover {
-      background-color: var(--primary-light);
-    }
-
-    @media (min-width: 768px) {
-      .desktop-nav {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-      }
-
-      .navbar-actions {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .mobile-menu-toggle {
-        display: block;
-      }
-
-      .nav-link {
-        position: relative;
-        padding: 0.5rem 0;
-        color: var(--foreground);
-        transition: color 0.3s;
-      }
-
-      .nav-link:hover {
-        color: var(--primary);
-      }
-
-      .nav-link::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background-color: var(--primary);
-        transition: width 0.3s;
-      }
-
-      .nav-link:hover::after {
-        width: 100%;
-      }
-
-      .icon-link {
-        padding: 0.5rem;
-        color: var(--foreground);
-        transition: color 0.3s;
-      }
-
-      .icon-link:hover {
-        color: var(--primary);
-      }
-    }
-
-    /* Button Styles */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--radius);
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border: none;
-    }
-
-    .btn-primary {
-      background-color: var(--primary);
-      color: var(--primary-foreground);
-    }
-
-    .btn-primary:hover {
-      background-color: #9b55e0;
-      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
-    }
-
-    .btn-secondary {
-      background-color: white;
-      color: var(--foreground);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      background-color: var(--muted);
-    }
-
-    .btn-outline {
-      background-color: transparent;
-      color: var(--foreground);
-      border: 1px solid var(--border);
-    }
-
-    .btn-outline:hover {
-      background-color: var(--muted);
-    }
-
-    .btn-outline-primary {
-      background-color: transparent;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-    }
-
-    .btn-outline-primary:hover {
-      background-color: var(--primary-light);
-    }
-
-    .btn-lg {
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-    }
-
-    .btn svg {
-      margin-left: 0.5rem;
-    }
-
-    /* Hero Section Styles */
-    .hero {
-      position: relative;
-      padding: 4rem 0;
-      overflow: hidden;
-      background-color: #f8fafc;
-    }
-
-    .bg-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6)),
-        url('https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?auto=format&fit=crop&w=1920&q=80');
-      background-size: cover;
-      background-position: center;
-      z-index: 0;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
-    }
-
-    .hero-text {
-      max-width: 600px;
-    }
-
-    .badge {
-      display: inline-block;
-      background-color: var(--primary-light);
-      color: var(--primary);
-      font-size: 0.875rem;
-      font-weight: 500;
-      padding: 0.25rem 0.75rem;
-      border-radius: 99px;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero h1 {
-      font-size: 2.5rem;
-      line-height: 1.2;
-      margin-bottom: 1.5rem;
-      font-weight: 700;
-    }
-
-    .hero p {
-      font-size: 1.125rem;
-      color: var(--muted-foreground);
-      margin-bottom: 2rem;
-    }
-
-    .highlight {
-      color: var(--primary);
-    }
-
-    .button-group {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .features-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .feature {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-    }
-
-    .feature-icon {
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-    }
-
-    .hero-image {
-      position: relative;
-      display: none;
-    }
-
-    .hero-image img {
-      border-radius: var(--radius);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    .stats-card {
-      position: absolute;
-      top: 10%;
-      right: -10%;
-      background-color: white;
-      border-radius: var(--radius);
-      padding: 1rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      animation: floating 3s ease-in-out infinite;
-    }
-
-    .stats-card-content {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .stats-icon {
-      background-color: var(--primary-light);
-      color: var(--primary);
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      font-weight: bold;
-    }
-
-    .stats-label {
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-    }
-
-    .stats-value {
-      font-size: 1.125rem;
-      font-weight: 600;
-    }
-
-    .live-card {
-      position: absolute;
-      bottom: 10%;
-      left: -10%;
-      background-color: white;
-      border-radius: var(--radius);
-      padding: 0.75rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      font-size: 0.875rem;
-      animation: floating 3s ease-in-out infinite alternate;
-    }
-
-    .live-indicator {
-      width: 0.75rem;
-      height: 0.75rem;
-      background-color: #10b981;
-      border-radius: 50%;
-      position: relative;
-    }
-
-    .live-indicator::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-radius: 50%;
-      background-color: #10b981;
-      opacity: 0.4;
-      animation: pulse 1.5s infinite;
-    }
-
-    .wave-separator {
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      width: 100%;
-      height: 3rem;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='1' d='M0,128L48,144C96,160,192,192,288,197.3C384,203,480,181,576,165.3C672,149,768,139,864,154.7C960,171,1056,213,1152,218.7C1248,224,1344,192,1392,176L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-
-    @media (min-width: 768px) {
-      .hero {
-        padding: 6rem 0;
-      }
-
-      .hero h1 {
-        font-size: 3.5rem;
-      }
-
-      .hero-content {
-        flex-direction: row;
-        align-items: center;
-      }
-
-      .hero-text {
-        flex: 1;
-      }
-
-      .hero-image {
-        display: block;
-        flex: 1;
-      }
-    }
-
-    /* Statistics Section Styles */
-    .statistics {
-      padding: 4rem 0;
-      background-color: white;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .section-header {
-      text-align: center;
-      max-width: 48rem;
-      margin: 0 auto 3rem;
-    }
-
-    .section-header h2 {
-      font-size: 1.875rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .section-header p {
-      color: var(--muted-foreground);
-      font-size: 1.125rem;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .stat-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1.5rem;
-      background-color: white;
-      border-radius: var(--radius);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    .stat-icon {
-      background-color: var(--primary-light);
-      color: var(--primary);
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1rem;
-    }
-
-    .stat-value {
-      font-size: 1.875rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-label {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      text-align: center;
-    }
-
-    .stat-description {
-      font-size: 0.875rem;
-      color: var(--muted-foreground);
-      text-align: center;
-    }
-
-    @media (min-width: 640px) {
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    /* Features Section Styles */
-    .features {
-      padding: 5rem 0;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .feature-card {
-      padding: 2rem;
-      background-color: white;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    .feature-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 3rem;
-      height: 3rem;
-      background-color: var(--primary-light);
-      color: var(--primary);
-      border-radius: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .feature-card h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-    }
-
-    .feature-card p {
-      color: var(--muted-foreground);
-    }
-
-    @media (min-width: 640px) {
-      .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .features-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    /* Investment Options Styles */
-    .investment {
-      padding: 5rem 0;
-      position: relative;
-      background-color: #f8fafc;
-      overflow: hidden;
-    }
-
-    .background-shapes {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .shape {
-      position: absolute;
-      border-radius: 50%;
-    }
-
-    .shape-1 {
-      width: 20rem;
-      height: 20rem;
-      background: linear-gradient(to right, rgba(173, 110, 245, 0.1), rgba(173, 110, 245, 0.05));
-      top: -5rem;
-      left: -5rem;
-    }
-
-    .shape-2 {
-      width: 15rem;
-      height: 15rem;
-      background: linear-gradient(to right, rgba(173, 110, 245, 0.05), rgba(173, 110, 245, 0.02));
-      bottom: -2rem;
-      right: -5rem;
-    }
-
-    .shape-3 {
-      width: 12rem;
-      height: 12rem;
-      background: linear-gradient(to right, rgba(173, 110, 245, 0.03), rgba(173, 110, 245, 0.01));
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .plans {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .plan-card {
-      background-color: white;
-      border-radius: var(--radius);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      overflow: hidden;
-      position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .plan-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    .plan-card.popular {
-      border: 2px solid var(--primary);
-      transform: scale(1.05);
-    }
-
-    .plan-card.popular:hover {
-      transform: scale(1.05) translateY(-10px);
-    }
-
-    .popular-tag {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background-color: var(--primary);
-      color: white;
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 0.25rem 0.75rem;
-      border-radius: 99px;
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .card-header {
-      padding: 1.5rem;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .icon-box {
-      width: 4rem;
-      height: 4rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1rem;
-    }
-
-    .icon-box.blue {
-      background-color: #93c5fd;
-      color: #1e40af;
-    }
-
-    .icon-box.primary {
-      background-color: var(--primary-light);
-      color: var(--primary);
-    }
-
-    .icon-box.green {
-      background-color: #86efac;
-      color: #15803d;
-    }
-
-    .card-header h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .card-header p {
-      color: var(--muted-foreground);
-      font-size: 0.875rem;
-    }
-
-    .card-content {
-      padding: 1.5rem;
-    }
-
-    .price {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .amount {
-      font-size: 2.25rem;
-      font-weight: 700;
-      display: block;
-      margin-bottom: 0.25rem;
-    }
-
-    .period {
-      font-size: 0.875rem;
-      color: var(--muted-foreground);
-    }
-
-    .returns {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      color: #15803d;
-      background-color: #dcfce7;
-      padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      margin-bottom: 1.5rem;
-    }
-
-    .features-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .features-list li {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-    }
-
-    .features-list li svg {
-      color: var(--primary);
-      flex-shrink: 0;
-    }
-
-    .card-footer {
-      padding: 1.5rem;
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-
-    @media (min-width: 768px) {
-      .plans {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    /* Milk Production Chart Styles */
-    .milk-chart {
-      padding: 5rem 0;
-    }
-
-    .chart-container {
-      background-color: white;
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .chart-placeholder {
-      width: 100%;
-      height: 300px;
-      background-color: #f1f5f9;
-      border-radius: 0.375rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted-foreground);
-    }
-
-    /* How It Works Section */
-    .how-it-works {
-      padding: 5rem 0;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .step {
-      text-align: center;
-    }
-
-    .step-number {
-      width: 4rem;
-      height: 4rem;
-      background-color: var(--primary);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin: 0 auto 1rem;
-      position: relative;
-    }
-
-    .step-line {
-      display: none;
-    }
-
-    .step h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .step p {
-      color: var(--muted-foreground);
-    }
-
-    @media (min-width: 768px) {
-      .steps {
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .step-number {
-        margin-bottom: 2rem;
-      }
-
-      .step-line {
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 100%;
-        width: 100%;
-        height: 2px;
-        background-color: rgba(173, 110, 245, 0.3);
-      }
-
-      .step:last-child .step-line {
-        display: none;
-      }
-    }
-
-    /* Testimonials Section */
-    .testimonials {
-      padding: 5rem 0;
-      background-color: var(--background);
-    }
-
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .testimonial-card {
-      background-color: var(--muted);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      border: 1px solid var(--border);
-      position: relative;
-    }
-
-    .quote-mark {
-      position: absolute;
-      top: -1rem;
-      left: 2rem;
-      font-size: 5rem;
-      color: var(--primary);
-      opacity: 0.2;
-    }
-
-    .testimonial-content {
-      color: var(--muted-foreground);
-      margin-bottom: 1.5rem;
-      position: relative;
-      z-index: 10;
-    }
-
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-    }
-
-    .author-avatar {
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 50%;
-      background-color: var(--primary-light);
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      margin-right: 1rem;
-    }
-
-    .author-info h4 {
-      font-weight: 600;
-    }
-
-    .author-info p {
-      font-size: 0.875rem;
-      color: var(--muted-foreground);
-    }
-
-    @media (min-width: 768px) {
-      .testimonials-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    /* FAQ Section */
-    .faq {
-      padding: 5rem 0;
-    }
-
-    .accordion {
-      max-width: 48rem;
-      margin: 0 auto;
-    }
-
-    .accordion-item {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .accordion-header {
-      padding: 1rem 0;
-      font-size: 1.125rem;
-      font-weight: 500;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .accordion-icon {
-      transition: transform 0.2s;
-    }
-
-    .accordion-icon.open {
-      transform: rotate(180deg);
-    }
-
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-
-    .accordion-content.open {
-      max-height: 500px;
-    }
-
-    .accordion-body {
-      padding-bottom: 1.5rem;
-      color: var(--muted-foreground);
-      line-height: 1.65;
-    }
-
-    /* CTA Section */
-    .cta {
-      padding: 5rem 0;
-      background-color: var(--primary);
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta-overlay {
-      position: absolute;
-      inset: 0;
-      opacity: 0.95;
-      z-index: 0;
-    }
-
-    .cta-pattern {
-      position: absolute;
-      inset: 0;
-      opacity: 0.1;
-      z-index: 0;
-    }
-
-    .cta-content {
-      position: relative;
-      z-index: 1;
-      max-width: 48rem;
-      margin: 0 auto;
-      text-align: center;
-      background-color: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(4px);
-      padding: 2rem;
-      border-radius: var(--radius);
-    }
-
-    .cta h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-    }
-
-    .cta p {
-      margin-bottom: 2rem;
-      font-size: 1.125rem;
-      opacity: 0.9;
-    }
-
-    .cta-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .cta-stats {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 2rem;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .cta-stat {
-      text-align: center;
-    }
-
-    .cta-stat p:first-child {
-      font-weight: 500;
-      opacity: 0.8;
-      margin-bottom: 0.25rem;
-    }
-
-    .cta-stat p:last-child {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    @media (min-width: 640px) {
-      .cta-buttons {
-        flex-direction: row;
-        justify-content: center;
-      }
-
-      .cta-stats {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .cta-content {
-        padding: 3rem;
-      }
-    }
-
-    /* Footer Styles */
-    .footer {
-      padding: 3rem 0;
-      background-color: #f8fafc;
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-content {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .footer-brand {
-      max-width: 20rem;
-    }
-
-    .footer-logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    .footer-description {
-      color: var(--muted-foreground);
-      margin-bottom: 1.5rem;
-    }
-
-    .social-links {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .social-link {
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 50%;
-      background-color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--foreground);
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .social-link:hover {
-      background-color: var(--primary);
-      color: white;
-    }
-
-    .footer-links h3 {
-      font-size: 1.125rem;
-      font-weight: 600;
-      margin-bottom: 1.25rem;
-    }
-
-    .footer-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .footer-nav a {
-      color: var(--muted-foreground);
-      transition: color 0.3s;
-    }
-
-    .footer-nav a:hover {
-      color: var(--primary);
-    }
-
-    .footer-bottom {
-      border-top: 1px solid var(--border);
-      padding-top: 1.5rem;
-      margin-top: 2.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      color: var(--muted-foreground);
-      font-size: 0.875rem;
-    }
-
-    .footer-legal {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-
-    @media (min-width: 768px) {
-      .footer-content {
-        grid-template-columns: 2fr 1fr 1fr 1fr;
-      }
-
-      .footer-bottom {
-        flex-direction: row;
-        justify-content: space-between;
-      }
-    }
-
-    /* Animations */
-    .shine {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .shine::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -60%;
-      width: 20%;
-      height: 200%;
-      opacity: 0;
-      transform: rotate(30deg);
-      background: linear-gradient(to right,
-          rgba(255, 255, 255, 0.13) 0%,
-          rgba(255, 255, 255, 0.13) 77%,
-          rgba(255, 255, 255, 0.5) 92%,
-          rgba(255, 255, 255, 0.0) 100%);
-    }
-
-    .shine:hover::after {
-      opacity: 1;
-      left: 130%;
-      transition-property: left, opacity;
-      transition-duration: 0.7s, 0.15s;
-      transition-timing-function: ease;
-    }
-
-    @keyframes floating {
-
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    @keyframes pulse {
+      .hero-section {
+  position: relative;
+  width: 100%;
+  height: 650px; /* just enough to cover the top area */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0.; /* adjust to make lighter or darker */
+}
+.hero-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-left: 5%;
+  color: #fff;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.6); /* Makes text pop more */
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  animation: fadeUp 1s ease-out forwards;
+}
+
+.content-wrapper h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.content-wrapper p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.9s;
+  opacity: 0;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn.purple {
+  background-color: #a259ff;
+  color: white;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 2px solid #a259ff;
+  color: #a259ff;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.overlay {
+  position: relative;
+  z-index: 2;
+  color: #000; /* or white if needed */
+  padding: 2rem;
+}
+
+      @keyframes gradientPulse {
       0% {
-        transform: scale(1);
-        opacity: 0.4;
+      opacity: 0.9;
       }
-
       50% {
-        transform: scale(1.5);
-        opacity: 0;
+      opacity: 0.95;
       }
-
       100% {
-        transform: scale(1);
-        opacity: 0;
+      opacity: 0.9;
       }
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
       }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      
+      
+      @keyframes milkSplash {
+      0% {
+      transform: scale(1);
+      filter: brightness(1);
       }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.5s ease-out forwards;
-    }
-
-    /* Add to your existing CSS */
-    .parallax-section {
-      position: relative;
-      overflow: hidden;
-      transform-style: preserve-3d;
-      perspective: 1000px;
-    }
-
-    .parallax-element {
-      transform: translateZ(-100px) scale(1.5);
-      transition: transform 0.5s;
-    }
-
-    /* Add this JavaScript */
-    window.addEventListener('scroll', () => {
-      const parallaxElements = document.querySelectorAll('.parallax-element');
-      parallaxElements.forEach(element => {
-        const speed = element.dataset.speed || 0.5;
-        const yPos = -(window.pageYOffset * speed);
-        element.style.transform = `translateY(${yPos}px)`;
-      });
-    });
-
-    .reveal-text {
+      25% {
+      transform: scale(1.02);
+      filter: brightness(1.1);
+      }
+      50% {
+      transform: scale(1);
+      filter: brightness(1);
+      }
+      75% {
+      transform: scale(1.02);
+      filter: brightness(1.1);
+      }
+      100% {
+      transform: scale(1);
+      filter: brightness(1);
+      }
+      }
+      .milk-splash {
+      position: absolute;
+      right: 10%;
+      top: 20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.9), rgba(255,255,255,0));
+      animation: splash 3s infinite;
+      pointer-events: none;
+      }
+      @keyframes splash {
+      0% {
+      transform: scale(0.8) translateY(0);
+      opacity: 0;
+      }
+      50% {
+      transform: scale(1.2) translateY(-20px);
+      opacity: 0.8;
+      }
+      100% {
+      transform: scale(0.8) translateY(0);
+      opacity: 0;
+      }
+      }
+      .text-reveal {
       opacity: 0;
       transform: translateY(20px);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .reveal-text.visible {
+      animation: revealText 0.8s ease forwards;
+      }
+      .text-reveal-delay-1 {
+      animation-delay: 0.2s;
+      }
+      .text-reveal-delay-2 {
+      animation-delay: 0.4s;
+      }
+      @keyframes revealText {
+      0% {
+      opacity: 0;
+      transform: translateY(20px);
+      }
+      100% {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    /* Add different delays for multiple elements */
-    .reveal-text:nth-child(2) { transition-delay: 0.2s; }
-    .reveal-text:nth-child(3) { transition-delay: 0.4s; }
-
-    .btn-animated {
-      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 50%, var(--primary) 100%);
-      background-size: 200% 100%;
-      transition: background-position 0.5s, transform 0.2s;
-    }
-
-    .btn-animated:hover {
-      background-position: 100% 0;
-      transform: translateY(-2px);
-    }
-
-    .scroll-progress {
-      position: fixed;
+      }
+      }
+      .stat-card {
+      transition: transform 0.3s ease;
+      }
+      .stat-card:hover {
+      transform: translateY(-5px);
+      }
+      .investment-card {
+      transition: all 0.3s ease;
+      }
+      .investment-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      .feature-card {
+      transition: all 0.3s ease;
+      }
+      .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .testimonial-card {
+      transition: all 0.3s ease;
+      }
+      .testimonial-card:hover {
+      transform: scale(1.02);
+      }
+      .faq-item {
+      transition: all 0.3s ease;
+      }
+      input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: #e2e8f0;
+      outline: none;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ad6ef5;
+      cursor: pointer;
+      }
+      input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ad6ef5;
+      cursor: pointer;
+      border: none;
+      }
+      .custom-checkbox {
+      display: inline-block;
+      position: relative;
+      padding-left: 30px;
+      cursor: pointer;
+      user-select: none;
+      }
+      .custom-checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+      }
+      .checkmark {
+      position: absolute;
       top: 0;
       left: 0;
-      width: 0;
-      height: 3px;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      z-index: 1000;
-      transition: width 0.1s;
-    }
-
-    .stagger-item {
+      height: 20px;
+      width: 20px;
+      background-color: #fff;
+      border: 2px solid #e2e8f0;
+      border-radius: 4px;
+      }
+      .custom-checkbox:hover input ~ .checkmark {
+      border-color: #ad6ef5;
+      }
+      .custom-checkbox input:checked ~ .checkmark {
+      background-color: #ad6ef5;
+      border-color: #ad6ef5;
+      }
+      .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+      }
+      .custom-checkbox input:checked ~ .checkmark:after {
+      display: block;
+      }
+      .custom-checkbox .checkmark:after {
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      }
+      .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+      }
+      .switch input {
       opacity: 0;
-      transform: translateX(-20px);
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .stagger-item.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    /* Add different delays for list items */
-    .stagger-item:nth-child(1) { transition-delay: 0.1s; }
-    .stagger-item:nth-child(2) { transition-delay: 0.2s; }
-    .stagger-item:nth-child(3) { transition-delay: 0.3s; }
-  </style>
-</head>
-
-<body>
-  <!-- Navbar -->
-  <header class="navbar" style="padding:10px">
-    <div class="container" style="margin:0px">
-      <div class="navbar-content">
-        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-        <a href="#" class="logo">Diary-Lift</a>
-        <nav class="desktop-nav">
-          <a href="home_page.html" class="nav-link">Home</a>
-          <a href="dashboard.html" class="nav-link">Dashboard</a>
-          <a href="admin-dashboard.html" class="mobile-nav-link">Register Cattle</a>
-          <a href="store.html" class="nav-link">Store</a>
-          <a href="navhome.html" class="nav-link">Insurance </a>
-          <a href="help/home.html" class="mobile-nav-link">Support</a>
-          <a href="admin-dashboard.html" class="nav-link">Admin</a>
-        </nav>
-        <a href="login.html" class="btn btn-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          Login
-        </a>
-      </div>
-
-    </div>
-    <div class="mobile-menu" id="mobile-menu">
-      <a href="home_page.html" class="mobile-nav-link">Home</a>
-      <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
-      <a href="admin-dashboard.html" class="mobile-nav-link">Register Cattle</a>
-      <a href="store.html" class="mobile-nav-link">Store</a>
-      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">Login / Register</a>
-      <a href="navhome.html" class="mobile-nav-link">Insurance </a>
-      <a href="help/home.html" class="mobile-nav-link">Support</a>
-      <a href="admin-dashboard.html" class="mobile-nav-link">Admin</a>
-    </div>
-    </div>
-  </header>
-
-  <main>
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="bg-overlay"></div>
-      <div class="container">
-        <div class="hero-content">
-          <div class="hero-text">
-            <span class="badge">Investment Opportunity</span>
-            <h1>Invest in <span class="highlight">Dairy Cattle</span>, <br> Harvest Sustainable Returns</h1>
-            <p>Own cattle, earn from milk production, and make a positive impact. We take care of the daily management,
-              you enjoy the profits.</p>
-            <div class="button-group">
-              <a href="#login" class="btn btn-primary shine">Start Investing</a>
-              <a href="#how-it-works" class="btn btn-outline">Learn More</a>
-            </div>
-            <div class="features-list">
-              <div class="feature">
-                <span class="feature-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                </span>
-                <span>100% Transparent</span>
-              </div>
-              <div class="feature">
-                <span class="feature-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                </span>
-                <span>Fully Managed</span>
-              </div>
-              <div class="feature">
-                <span class="feature-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                </span>
-                <span>Monthly Returns</span>
-              </div>
+      width: 0;
+      height: 0;
+      }
+      .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e2e8f0;
+      transition: .4s;
+      border-radius: 34px;
+      }
+      .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+      }
+      input:checked + .slider {
+      background-color: #ad6ef5;
+      }
+      input:checked + .slider:before {
+      transform: translateX(26px);
+      }
+      .custom-radio {
+      display: inline-block;
+      position: relative;
+      padding-left: 30px;
+      cursor: pointer;
+      user-select: none;
+      }
+      .custom-radio input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+      }
+      .radio-mark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: #fff;
+      border: 2px solid #e2e8f0;
+      border-radius: 50%;
+      }
+      .custom-radio:hover input ~ .radio-mark {
+      border-color: #ad6ef5;
+      }
+      .custom-radio input:checked ~ .radio-mark {
+      border-color: #ad6ef5;
+      }
+      .radio-mark:after {
+      content: "";
+      position: absolute;
+      display: none;
+      }
+      .custom-radio input:checked ~ .radio-mark:after {
+      display: block;
+      }
+      .custom-radio .radio-mark:after {
+      top: 4px;
+      left: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ad6ef5;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed top-0 w-full z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <a href="#" class="flex-shrink-0 flex items-center">
+              <span class="text-primary font-['Pacifico'] text-2xl"
+                >Dairy-Lift</span
+              >
+            </a>
+            <div class="hidden md:ml-10 md:flex md:space-x-8">
+              <a
+                href="#"
+                class="text-primary border-b-2 border-primary px-1 pt-1 font-medium"
+                >Home</a
+              >
+              <a
+                href="#"
+                class="text-gray-700 hover:text-primary px-1 pt-1 font-medium"
+                >About</a
+              >
+              <a
+                href="#"
+                class="text-gray-700 hover:text-primary px-1 pt-1 font-medium"
+                >Investment</a
+              >
+              <a
+                href="#"
+                class="text-gray-700 hover:text-primary px-1 pt-1 font-medium"
+                >Performance</a
+              >
+              <a
+                href="#"
+                class="text-gray-700 hover:text-primary px-1 pt-1 font-medium"
+                >Contact</a
+              >
             </div>
           </div>
-          <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=1080&q=80"
-              alt="Dairy cattle on green pasture">
-            <div class="stats-card">
-              <div class="stats-card-content">
-                <div class="stats-icon">₹</div>
-                <div class="stats-info">
-                  <p class="stats-label">Average Annual Return</p>
-                  <p class="stats-value">12-18%</p>
+          <div class="flex items-center">
+            <button
+              class="hidden md:block bg-primary hover:bg-primary/90 text-white px-4 py-2 !rounded-button whitespace-nowrap"
+            >
+              Start Investing
+            </button>
+            <div class="md:hidden flex items-center">
+              <button
+                type="button"
+                class="text-gray-700 hover:text-primary w-10 h-10 flex items-center justify-center"
+              >
+                <i class="ri-menu-line ri-lg"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Mobile menu, show/hide based on menu state -->
+      <div class="hidden md:hidden bg-white shadow-lg">
+        <div class="pt-2 pb-3 space-y-1">
+          <a
+            href="#"
+            class="block pl-3 pr-4 py-2 border-l-4 border-primary text-primary font-medium"
+            >Home</a
+          >
+          <a
+            href="#"
+            class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-700 hover:text-primary hover:border-primary font-medium"
+            >About</a
+          >
+          <a
+            href="#"
+            class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-700 hover:text-primary hover:border-primary font-medium"
+            >Investment</a
+          >
+          <a
+            href="#"
+            class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-700 hover:text-primary hover:border-primary font-medium"
+            >Performance</a
+          >
+          <a
+            href="#"
+            class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-700 hover:text-primary hover:border-primary font-medium"
+            >Contact</a
+          >
+        </div>
+        <div class="pt-4 pb-3 border-t border-gray-200">
+          <div class="flex items-center px-4">
+            <button
+              class="w-full bg-primary hover:bg-primary/90 text-white px-4 py-2 !rounded-button whitespace-nowrap"
+            >
+              Start Investing
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Hero Section -->
+    <video autoplay muted loop playsinline class="background-video">
+      <source src="clipfly-ai-20250417093900.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    
+    <section class="hero-section pt-24 pb-16 md:pt-32 md:pb-24">
+      <div class="animated-bg">
+        <div class="milk-droplet"></div>
+        <div class="milk-droplet"></div>
+        <div class="milk-droplet"></div>
+        <div class="milk-droplet"></div>
+        <div class="cow cow-1"></div>
+        <div class="cow cow-2"></div>
+        <div class="cow cow-3"></div>
+      </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+        <div class="floating-cow"></div>
+        <div class="milk-drops">
+          <div class="milk-drop"></div>
+          <div class="milk-drop"></div>
+          <div class="milk-drop"></div>
+          <div class="milk-drop"></div>
+        </div>
+        <section class="hero-section">
+          <video autoplay muted loop playsinline class="background-video">
+            <source src="your-video.mp4" type="video/mp4" />
+          </video>
+        
+          <div class="content-wrapper">
+            <h1>Invest in Premium Dairy Cattle</h1>
+            <p>
+              Secure your financial future with stable returns from agricultural investments.
+              Earn up to 15% annual ROI with our professionally managed dairy operations.
+            </p>
+            <div class="buttons">
+              <button class="btn purple">Explore Opportunities</button>
+              <button class="btn outline">🎥 Watch Demo</button>
+            </div>
+          </div>
+        </section>
+        
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4 hero-buttons">
+            <button
+              class="bg-primary hover:bg-primary/90 text-white px-6 py-3 font-medium !rounded-button whitespace-nowrap"
+            >
+              Explore Opportunities
+            </button>
+            <button
+              class="bg-white border-2 border-primary text-primary hover:bg-gray-50 px-6 py-3 font-medium !rounded-button flex items-center whitespace-nowrap"
+            >
+              <span class="w-5 h-5 flex items-center justify-center mr-2">
+                <i class="ri-play-circle-line"></i>
+              </span>
+              Watch Demo
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Stats Section -->
+    <section class="py-12 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div
+            class="stat-card bg-white p-6 rounded-lg shadow-md border border-gray-100"
+          >
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-user-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-900">5,200+</h3>
+            <p class="text-gray-600 mt-1">Active Investors</p>
+          </div>
+          <div
+            class="stat-card bg-white p-6 rounded-lg shadow-md border border-gray-100"
+          >
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-line-chart-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-900">12-15%</h3>
+            <p class="text-gray-600 mt-1">Annual ROI</p>
+          </div>
+          <div
+            class="stat-card bg-white p-6 rounded-lg shadow-md border border-gray-100"
+          >
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-cow-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-900">3,750</h3>
+            <p class="text-gray-600 mt-1">Cattle Managed</p>
+          </div>
+          <div
+            class="stat-card bg-white p-6 rounded-lg shadow-md border border-gray-100"
+          >
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-drop-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-900">42M</h3>
+            <p class="text-gray-600 mt-1">Liters Produced Annually</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Investment Options -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">Investment Options</h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Choose the investment plan that suits your financial goals and risk
+            appetite
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Single Calf Investment -->
+          <div
+            class="investment-card bg-white rounded-xl shadow-md overflow-hidden"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=young%20healthy%20dairy%20calf%2C%20premium%20quality%2C%20clean%20environment%2C%20professional%20agricultural%20setting%2C%20bright%20natural%20lighting%2C%20standing%20in%20a%20modern%20dairy%20farm%2C%20clean%20background%2C%20high%20resolution&width=600&height=400&seq=2&orientation=landscape"
+                alt="Single Calf Investment"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900">
+                Single Calf Investment
+              </h3>
+              <div class="mt-4 flex items-baseline">
+                <span class="text-3xl font-bold text-gray-900">$1,500</span>
+                <span class="ml-2 text-gray-600">initial investment</span>
+              </div>
+              <p class="mt-2 text-gray-600">Projected annual return: 12%</p>
+              <div class="mt-6 space-y-3">
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">
+                    Ownership of a single dairy calf
+                  </p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Monthly performance reports</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Quarterly dividend payments</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">2-year investment term</p>
+                </div>
+              </div>
+              <button
+                class="mt-8 w-full bg-primary hover:bg-primary/90 text-white py-3 font-medium !rounded-button whitespace-nowrap"
+              >
+                Invest Now
+              </button>
+            </div>
+          </div>
+          <!-- Milking Cow Investment -->
+          <div
+            class="investment-card bg-white rounded-xl shadow-lg overflow-hidden transform scale-105 border-2 border-primary"
+          >
+            <div class="bg-primary text-white py-2 text-center">
+              <span class="font-medium">Most Popular</span>
+            </div>
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=healthy%20mature%20dairy%20cow%2C%20premium%20quality%2C%20clean%20environment%2C%20professional%20agricultural%20setting%2C%20bright%20natural%20lighting%2C%20standing%20in%20a%20modern%20dairy%20farm%2C%20clean%20background%2C%20high%20resolution&width=600&height=400&seq=3&orientation=landscape"
+                alt="Milking Cow Investment"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900">
+                Milking Cow Investment
+              </h3>
+              <div class="mt-4 flex items-baseline">
+                <span class="text-3xl font-bold text-gray-900">$5,000</span>
+                <span class="ml-2 text-gray-600">initial investment</span>
+              </div>
+              <p class="mt-2 text-gray-600">Projected annual return: 14%</p>
+              <div class="mt-6 space-y-3">
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">
+                    Ownership of a producing dairy cow
+                  </p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Weekly performance updates</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Monthly dividend payments</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">3-year investment term</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">
+                    Premium dairy products access
+                  </p>
+                </div>
+              </div>
+              <button
+                class="mt-8 w-full bg-primary hover:bg-primary/90 text-white py-3 font-medium !rounded-button whitespace-nowrap"
+              >
+                Invest Now
+              </button>
+            </div>
+          </div>
+          <!-- Dairy Herd Investment -->
+          <div
+            class="investment-card bg-white rounded-xl shadow-md overflow-hidden"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=multiple%20dairy%20cows%20in%20a%20herd%2C%20premium%20quality%2C%20clean%20environment%2C%20professional%20agricultural%20setting%2C%20bright%20natural%20lighting%2C%20grazing%20in%20a%20modern%20dairy%20farm%2C%20clean%20background%2C%20high%20resolution&width=600&height=400&seq=4&orientation=landscape"
+                alt="Dairy Herd Investment"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900">
+                Dairy Herd Investment
+              </h3>
+              <div class="mt-4 flex items-baseline">
+                <span class="text-3xl font-bold text-gray-900">$25,000</span>
+                <span class="ml-2 text-gray-600">initial investment</span>
+              </div>
+              <p class="mt-2 text-gray-600">Projected annual return: 15%</p>
+              <div class="mt-6 space-y-3">
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">
+                    Ownership share in a dairy herd
+                  </p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Daily performance dashboard</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Bi-weekly dividend payments</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">5-year investment term</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Farm visits and VIP events</p>
+                </div>
+              </div>
+              <button
+                class="mt-8 w-full bg-primary hover:bg-primary/90 text-white py-3 font-medium !rounded-button whitespace-nowrap"
+              >
+                Invest Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Performance Chart Section -->
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">
+            Milk Production Performance
+          </h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Track our consistent milk production growth and investment returns
+          </p>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex flex-wrap justify-center gap-4 mb-6">
+            <div class="inline-flex rounded-full bg-gray-100 p-1">
+              <button
+                class="px-4 py-2 rounded-full bg-primary text-white text-sm font-medium"
+              >
+                Monthly
+              </button>
+              <button
+                class="px-4 py-2 rounded-full text-gray-700 hover:text-primary text-sm font-medium"
+              >
+                Quarterly
+              </button>
+              <button
+                class="px-4 py-2 rounded-full text-gray-700 hover:text-primary text-sm font-medium"
+              >
+                Yearly
+              </button>
+            </div>
+          </div>
+          <div id="performance-chart" class="w-full h-80"></div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center">
+                <div
+                  class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full"
+                >
+                  <i class="ri-drop-line text-primary ri-lg"></i>
+                </div>
+                <div class="ml-3">
+                  <p class="text-gray-600 text-sm">Average Daily Production</p>
+                  <p class="text-xl font-bold text-gray-900">28.5 L per cow</p>
                 </div>
               </div>
             </div>
-            <div class="live-card">
-              <div class="live-indicator"></div>
-              <p>Live Tracking Available</p>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center">
+                <div
+                  class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full"
+                >
+                  <i class="ri-line-chart-line text-primary ri-lg"></i>
+                </div>
+                <div class="ml-3">
+                  <p class="text-gray-600 text-sm">Year-over-Year Growth</p>
+                  <p class="text-xl font-bold text-gray-900">+12.8%</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center">
+                <div
+                  class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full"
+                >
+                  <i class="ri-money-dollar-circle-line text-primary ri-lg"></i>
+                </div>
+                <div class="ml-3">
+                  <p class="text-gray-600 text-sm">Dividend Yield</p>
+                  <p class="text-xl font-bold text-gray-900">14.2% annually</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="wave-separator"></div>
     </section>
-
-    <!-- Statistics Section -->
-    <section class="statistics">
-      <div class="container">
-        <div class="section-header">
-          <h2>Our Impact in Numbers</h2>
-          <p>We're proud of our accomplishments and the value we create for our investors.</p>
+    <!-- How It Works -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">How It Works</h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Four simple steps to start your dairy investment journey
+          </p>
         </div>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-                <polyline points="16 7 22 7 22 13"></polyline>
-              </svg>
-            </div>
-            <h3 class="stat-value">16%</h3>
-            <p class="stat-label">Average Annual Returns</p>
-            <p class="stat-description">Our investors consistently earn above-market returns</p>
+        <div class="relative">
+          <!-- Desktop Process Line -->
+          <div
+            class="hidden md:block absolute top-24 left-0 right-0 h-1 bg-gray-200"
+          >
+            <div
+              class="absolute top-0 left-0 h-full bg-primary"
+              style="width: 75%;"
+            ></div>
           </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Step 1 -->
+            <div class="relative">
+              <div class="flex justify-center mb-6">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full text-xl font-bold z-10"
+                >
+                  1
+                </div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 mx-auto flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-user-add-line text-primary ri-2x"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Create Account</h3>
+                <p class="mt-2 text-gray-600">
+                  Sign up and complete your investor profile with verification
+                </p>
+              </div>
             </div>
-            <h3 class="stat-value">5,000+</h3>
-            <p class="stat-label">Happy Investors</p>
-            <p class="stat-description">Growing community of dairy investors across the country</p>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="7"></circle>
-                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-              </svg>
+            <!-- Step 2 -->
+            <div class="relative">
+              <div class="flex justify-center mb-6">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full text-xl font-bold z-10"
+                >
+                  2
+                </div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 mx-auto flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-search-line text-primary ri-2x"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">
+                  Choose Investment
+                </h3>
+                <p class="mt-2 text-gray-600">
+                  Select your preferred investment option based on your budget
+                </p>
+              </div>
             </div>
-            <h3 class="stat-value">8+</h3>
-            <p class="stat-label">Years of Experience</p>
-            <p class="stat-description">Proven track record of successful dairy management</p>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="1" y="3" width="15" height="13"></rect>
-                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                <circle cx="18.5" cy="18.5" r="2.5"></circle>
-              </svg>
+            <!-- Step 3 -->
+            <div class="relative">
+              <div class="flex justify-center mb-6">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full text-xl font-bold z-10"
+                >
+                  3
+                </div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 mx-auto flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-secure-payment-line text-primary ri-2x"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Make Payment</h3>
+                <p class="mt-2 text-gray-600">
+                  Complete your investment with our secure payment system
+                </p>
+              </div>
             </div>
-            <h3 class="stat-value">12,500+</h3>
-            <p class="stat-label">Cattle Managed</p>
-            <p class="stat-description">State-of-the-art facilities and expert care</p>
+            <!-- Step 4 -->
+            <div class="relative">
+              <div class="flex justify-center mb-6">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full text-xl font-bold z-10"
+                >
+                  4
+                </div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 mx-auto flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-funds-line text-primary ri-2x"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Track & Earn</h3>
+                <p class="mt-2 text-gray-600">
+                  Monitor your investment and receive regular dividend payments
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
-
     <!-- Features Section -->
-    <section class="features" id="features">
-      <div class="container">
-        <div class="section-header">
-          <h2>Why Invest With Us?</h2>
-          <p>Diary-Lift combines traditional farming with modern technology to create a transparent, profitable, and
-            sustainable investment opportunity.</p>
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">Platform Features</h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Our platform provides everything you need to manage your dairy
+            investments
+          </p>
         </div>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                <path d="M3 9h18"></path>
-                <path d="M9 21V9"></path>
-              </svg>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Feature 1 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-eye-line text-primary ri-xl"></i>
             </div>
-            <h3>Real-Time Monitoring</h3>
-            <p>Track your investment performance, milk production, and earnings through an easy-to-use dashboard.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              </svg>
-            </div>
-            <h3>Secured Investment</h3>
-            <p>Your investment is backed by real, physical assets - the cattle you own.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2.5 18.5l3.5 2v-13l-3.5-2"></path>
-                <path d="M9.5 15.5l3.5 2v-13l-3.5-2"></path>
-                <path d="M16.5 15.5l3.5 2v-13l-3.5-2"></path>
-                <path d="M2.5 5.5v13"></path>
-                <path d="M9.5 2.5v13"></path>
-                <path d="M16.5 2.5v13"></path>
-              </svg>
-            </div>
-            <h3>Expert Cattle Management</h3>
-            <p>Our team of experienced farmers handles the daily care, feeding, and health management of your cattle.
+            <h3 class="text-xl font-bold text-gray-900">
+              Real-time Monitoring
+            </h3>
+            <p class="mt-2 text-gray-600">
+              Track your investment performance in real-time with our intuitive
+              dashboard
             </p>
           </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path
-                  d="M8.5 2a6.5 6.5 0 0 1 6.5 6.5c0 1.5-.5 2.5-1.5 3.5L17.5 16h-7l-2-4c-1-.5-1.5-1.5-1.5-3.5A6.5 6.5 0 0 1 8.5 2Z">
-                </path>
-                <path d="M12 16v3a2 2 0 0 0 2 2h3"></path>
-                <path d="M8 22H5a2 2 0 0 1-2-2v-3"></path>
-              </svg>
+          <!-- Feature 2 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-shield-check-line text-primary ri-xl"></i>
             </div>
-            <h3>Premium Dairy Products</h3>
-            <p>Get privileged access to high-quality dairy products made from your cattle's milk.</p>
+            <h3 class="text-xl font-bold text-gray-900">
+              Transparent Operations
+            </h3>
+            <p class="mt-2 text-gray-600">
+              Full transparency with regular updates, reports and farm visit
+              opportunities
+            </p>
           </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-              </svg>
+          <!-- Feature 3 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-user-star-line text-primary ri-xl"></i>
             </div>
-            <h3>Transparent Operations</h3>
-            <p>Access live video feeds and regular updates about your cattle's well-being and performance.</p>
+            <h3 class="text-xl font-bold text-gray-900">Expert Management</h3>
+            <p class="mt-2 text-gray-600">
+              Our team of experienced dairy professionals ensures optimal cattle
+              care
+            </p>
           </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-                <line x1="10" y1="9" x2="8" y2="9"></line>
-              </svg>
+          <!-- Feature 4 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-gift-line text-primary ri-xl"></i>
             </div>
-            <h3>Detailed Reports</h3>
-            <p>Receive comprehensive reports on production, health checks, and financial performance.</p>
+            <h3 class="text-xl font-bold text-gray-900">
+              Premium Products Access
+            </h3>
+            <p class="mt-2 text-gray-600">
+              Exclusive access to our premium dairy products at preferential
+              rates
+            </p>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Investment Options -->
-    <section class="investment" id="investment-options">
-      <div class="background-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-      </div>
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Investment Options</span>
-          <h2>Choose Your Investment</h2>
-          <p>Select the investment option that best fits your goals and budget. All options include full ownership and
-            professional management.</p>
-        </div>
-        <div class="plans">
-          <div class="plan-card">
-            <div class="card-header">
-              <div class="icon-box blue">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M2.5 18.5l3.5 2v-13l-3.5-2"></path>
-                  <path d="M9.5 15.5l3.5 2v-13l-3.5-2"></path>
-                  <path d="M16.5 15.5l3.5 2v-13l-3.5-2"></path>
-                  <path d="M2.5 5.5v13"></path>
-                  <path d="M9.5 2.5v13"></path>
-                  <path d="M16.5 2.5v13"></path>
-                </svg>
-              </div>
-              <h3>Single Calf</h3>
-              <p>Invest in a single dairy calf</p>
+          <!-- Feature 5 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-file-chart-line text-primary ri-xl"></i>
             </div>
-            <div class="card-content">
-              <div class="price">
-                <span class="amount">₹1,200</span>
-                <span class="period">one-time investment</span>
-              </div>
-              <div class="returns">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-                  <polyline points="16 7 22 7 22 13"></polyline>
-                </svg>
-                <span>12-15% annual returns</span>
-              </div>
-              <ul class="features-list">
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Full ownership of one calf</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Monthly milk production earnings</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>12-15% estimated annual return</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Live monitoring and updates</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Quarterly health reports</span>
-                </li>
-              </ul>
-            </div>
-            <div class="card-footer">
-              <a href="#login" class="btn btn-outline-primary btn-lg">
-                Invest Now
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 5l7 7-7 7"></path>
-                  <path d="M3 12h18"></path>
-                </svg>
-              </a>
-            </div>
+            <h3 class="text-xl font-bold text-gray-900">Detailed Reporting</h3>
+            <p class="mt-2 text-gray-600">
+              Comprehensive reports on milk production, health metrics and
+              financial returns
+            </p>
           </div>
-
-          <div class="plan-card popular">
-            <div class="popular-tag">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="7"></circle>
-                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-              </svg>
-              Most Popular
+          <!-- Feature 6 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-map-pin-time-line text-primary ri-xl"></i>
             </div>
-            <div class="card-header">
-              <div class="icon-box primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path
-                    d="M8.5 2a6.5 6.5 0 0 1 6.5 6.5c0 1.5-.5 2.5-1.5 3.5L17.5 16h-7l-2-4c-1-.5-1.5-1.5-1.5-3.5A6.5 6.5 0 0 1 8.5 2Z">
-                  </path>
-                  <path d="M12 16v3a2 2 0 0 0 2 2h3"></path>
-                  <path d="M8 22H5a2 2 0 0 1-2-2v-3"></path>
-                </svg>
-              </div>
-              <h3>Milking Cow</h3>
-              <p>Invest in a mature milking cow</p>
-            </div>
-            <div class="card-content">
-              <div class="price">
-                <span class="amount">₹2,500</span>
-                <span class="period">one-time investment</span>
-              </div>
-              <div class="returns">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-                  <polyline points="16 7 22 7 22 13"></polyline>
-                </svg>
-                <span>15-18% annual returns</span>
-              </div>
-              <ul class="features-list">
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Full ownership of one milking cow</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Immediate milk production returns</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>15-18% estimated annual return</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Live monitoring and updates</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Monthly health reports</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Priority access to dairy products</span>
-                </li>
-              </ul>
-            </div>
-            <div class="card-footer">
-              <a href="#login" class="btn btn-primary btn-lg shine">
-                Invest Now
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 5l7 7-7 7"></path>
-                  <path d="M3 12h18"></path>
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <div class="plan-card">
-            <div class="card-header">
-              <div class="icon-box green">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-              <h3>Dairy Herd</h3>
-              <p>Invest in a small herd (5 cattle)</p>
-            </div>
-            <div class="card-content">
-              <div class="price">
-                <span class="amount">₹12,000</span>
-                <span class="period">one-time investment</span>
-              </div>
-              <div class="returns">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-                  <polyline points="16 7 22 7 22 13"></polyline>
-                </svg>
-                <span>16-20% annual returns</span>
-              </div>
-              <ul class="features-list">
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Full ownership of five cattle</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Mix of calves and milking cows</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>16-20% estimated annual return</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Live monitoring and updates</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Weekly health reports</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>VIP access to dairy products</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Quarterly farm visits</span>
-                </li>
-              </ul>
-            </div>
-            <div class="card-footer">
-              <a href="#login" class="btn btn-outline-primary btn-lg">
-                Invest Now
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 5l7 7-7 7"></path>
-                  <path d="M3 12h18"></path>
-                </svg>
-              </a>
-            </div>
+            <h3 class="text-xl font-bold text-gray-900">Live Tracking</h3>
+            <p class="mt-2 text-gray-600">
+              Track your cattle's location, health status and production metrics
+              in real-time
+            </p>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Milk Production Chart -->
-    <section class="milk-chart" id="milk-chart">
-      <div class="container">
-        <div class="section-header">
-          <h2>Milk Production Performance</h2>
-          <p>Track the consistent growth in milk production and returns over time.</p>
-        </div>
-        <div class="chart-container">
-          <div class="chart-placeholder" id="milk-chart-graph">
-            Chart loading...
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section class="how-it-works" id="how-it-works">
-      <div class="container">
-        <div class="section-header">
-          <h2>How It Works</h2>
-          <p>Investing in dairy cattle with Diary-Lift is simple, transparent, and rewarding.</p>
-        </div>
-        <div class="steps">
-          <div class="step">
-            <div class="step-number">
-              1
-              <div class="step-line"></div>
-            </div>
-            <h3>Choose Your Cattle</h3>
-            <p>Select from available cattle options based on your investment budget.</p>
-          </div>
-          <div class="step">
-            <div class="step-number">
-              2
-              <div class="step-line"></div>
-            </div>
-            <h3>Complete Purchase</h3>
-            <p>Make a secure one-time payment to purchase your cattle.</p>
-          </div>
-          <div class="step">
-            <div class="step-number">
-              3
-              <div class="step-line"></div>
-            </div>
-            <h3>We Manage Your Cattle</h3>
-            <p>Our expert team takes care of daily management, health, and milk production.</p>
-          </div>
-          <div class="step">
-            <div class="step-number">
-              4
-            </div>
-            <h3>Receive Returns</h3>
-            <p>Earn monthly returns from milk production and track performance in your dashboard.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
-      <div class="container">
-        <div class="section-header">
-          <h2>What Our Investors Say</h2>
-          <p>Join thousands of satisfied investors who are already earning returns with Diary-Lift.</p>
-        </div>
-        <div class="testimonials-grid">
-          <div class="testimonial-card">
-            <div class="quote-mark">"</div>
-            <p class="testimonial-content">I've been investing with Diary-Lift for 8 months now and the returns have
-              been consistent. The dashboard makes it easy to track my investment performance.</p>
-            <div class="testimonial-author">
-              <div class="author-avatar">P</div>
-              <div class="author-info">
-                <h4>Priya Singh</h4>
-                <p>Software Engineer</p>
-              </div>
-            </div>
-          </div>
-          <div class="testimonial-card">
-            <div class="quote-mark">"</div>
-            <p class="testimonial-content">As someone who always wanted to be connected to farming but lives in the
-              city, this platform has been perfect. The transparency and regular updates are impressive.</p>
-            <div class="testimonial-author">
-              <div class="author-avatar">R</div>
-              <div class="author-info">
-                <h4>Rahul Verma</h4>
-                <p>Marketing Director</p>
-              </div>
-            </div>
-          </div>
-          <div class="testimonial-card">
-            <div class="quote-mark">"</div>
-            <p class="testimonial-content">I started with one cow and have now expanded to a small herd. The returns
-              have exceeded my expectations, and I love getting premium dairy products.</p>
-            <div class="testimonial-author">
-              <div class="author-avatar">A</div>
-              <div class="author-info">
-                <h4>Anjali Sharma</h4>
-                <p>Financial Analyst</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="faq" id="faq">
-      <div class="container">
-        <div class="section-header">
-          <h2>Frequently Asked Questions</h2>
-          <p>Get answers to commonly asked questions about investing with Diary-Lift.</p>
-        </div>
-        <div class="accordion" id="faq-accordion">
-          <div class="accordion-item">
-            <div class="accordion-header" data-accordion="item-1">
-              <div>How does the dairy investment process work?</div>
-              <span class="accordion-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </div>
-            <div class="accordion-content" id="accordion-item-1">
-              <div class="accordion-body">
-                You purchase ownership of cattle through our platform. Our team takes care of the day-to-day management,
-                feeding, and healthcare of your cattle. You earn returns based on milk production, which are credited to
-                your account monthly. You can track your investment performance through our dashboard.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <div class="accordion-header" data-accordion="item-2">
-              <div>What kind of returns can I expect from my investment?</div>
-              <span class="accordion-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </div>
-            <div class="accordion-content" id="accordion-item-2">
-              <div class="accordion-body">
-                Based on historical data, our investors typically see annual returns ranging from 12% to 20%, depending
-                on the investment package selected. Returns come from milk production, offspring value, and potential
-                appreciation of the cattle's value.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <div class="accordion-header" data-accordion="item-3">
-              <div>Is my investment secure?</div>
-              <span class="accordion-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </div>
-            <div class="accordion-content" id="accordion-item-3">
-              <div class="accordion-body">
-                Yes. Your investment is backed by real, physical assets – the cattle you own. We also maintain
-                comprehensive insurance coverage to protect against unforeseen events like illness or natural disasters.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <div class="accordion-header" data-accordion="item-4">
-              <div>How can I monitor my investment?</div>
-              <span class="accordion-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </div>
-            <div class="accordion-content" id="accordion-item-4">
-              <div class="accordion-body">
-                Through our investor dashboard, you can track milk production, health updates, and financial performance
-                in real-time. We also provide regular reports and the option to schedule farm visits to see your cattle
-                in person.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <div class="accordion-header" data-accordion="item-5">
-              <div>What happens if one of my cattle gets sick or dies?</div>
-              <span class="accordion-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </div>
-            <div class="accordion-content" id="accordion-item-5">
-              <div class="accordion-body">
-                All our cattle are insured. In the unlikely event of illness or death, our insurance policy ensures your
-                investment is protected, and replacement arrangements will be made without additional cost to you.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <div class="accordion-header" data-accordion="item-6">
-              <div>How do I withdraw my investment?</div>
-              <span class="accordion-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </div>
-            <div class="accordion-content" id="accordion-item-6">
-              <div class="accordion-body">
-                You can sell your cattle ownership back to Diary-Lift or to other investors on our marketplace at any
-                time after a minimum holding period of 12 months. The sale value will be based on current market rates
-                for dairy cattle.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta" id="cta">
-      <div class="cta-overlay"></div>
-      <div class="cta-pattern"></div>
-      <div class="container">
-        <div class="cta-content">
-          <h2>Ready to Start Your Dairy Investment Journey?</h2>
-          <p>Join thousands of investors who are already earning sustainable returns with Diary-Lift.</p>
-          <div class="cta-buttons">
-            <a href="#login" class="btn btn-secondary btn-lg shine">
-              Start Investing Today
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 5l7 7-7 7"></path>
-                <path d="M3 12h18"></path>
-              </svg>
-            </a>
-            <a href="#contact" class="btn btn-outline btn-lg">Schedule a Call</a>
-          </div>
-          <div class="cta-stats">
-            <div class="cta-stat">
-              <p>Start with as little as</p>
-              <p>₹1,200</p>
-            </div>
-            <div class="cta-stat">
-              <p>No hidden fees</p>
-              <p>100% Transparent</p>
-            </div>
-            <div class="cta-stat">
-              <p>Regular updates</p>
-              <p>Track Performance</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <a href="#" class="footer-logo">Diary-Lift</a>
-          <p class="footer-description">
-            Diary-Lift is revolutionizing dairy farming investments by connecting urban investors with rural
-            opportunities. Invest in cattle, earn returns, and contribute to sustainable agriculture.
+    <!-- Testimonials -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">
+            What Our Investors Say
+          </h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Hear from our community of satisfied investors
           </p>
-          <div class="social-links">
-            <a href="#" class="social-link">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-              </svg>
-            </a>
-            <a href="#" class="social-link">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path
-                  d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
-                </path>
-              </svg>
-            </a>
-            <a href="#" class="social-link">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-              </svg>
-            </a>
-            <a href="https://www.instagram.com/dairy_lift/?next=%2F" class="social-link">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                <rect x="2" y="9" width="4" height="12"></rect>
-                <circle cx="4" cy="4" r="2"></circle>
-              </svg>
-            </a>
-          </div>
         </div>
-        <div class="footer-links">
-          <h3>Company</h3>
-          <nav class="footer-nav">
-            <a href="aboutus.html">About Us</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#testimonials">Testimonials</a>
-            <a href="#careers">Careers</a>
-            <a href="#press">Press</a>
-          </nav>
-        </div>
-        <div class="footer-links">
-          <h3>Resources</h3>
-          <nav class="footer-nav">
-            <a href="#faq">FAQ</a>
-            <a href="#blog">Blog</a>
-            <a href="#support">Support</a>
-            <a href="#partners">Partners</a>
-            <a href="#api">API</a>
-          </nav>
-        </div>
-        <div class="footer-links">
-          <h3>Legal</h3>
-          <nav class="footer-nav">
-            <a href="#terms">Terms of Service</a>
-            <a href="#privacy">Privacy Policy</a>
-            <a href="#cookies">Cookie Policy</a>
-            <a href="#compliance">Compliance</a>
-            <a href="#security">Security</a>
-          </nav>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2023 Diary-Lift. All rights reserved.</p>
-        <div class="footer-legal">
-          <a href="#terms">Terms</a>
-          <a href="#privacy">Privacy</a>
-          <a href="#cookies">Cookies</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Mobile Menu Toggle
-    document.addEventListener('DOMContentLoaded', function () {
-      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-      const mobileMenu = document.getElementById('mobile-menu');
-
-      mobileMenuToggle.addEventListener('click', function () {
-        mobileMenu.classList.toggle('active');
-      });
-
-      // Close mobile menu when clicking on a link
-      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', function () {
-          mobileMenu.classList.remove('active');
-        });
-      });
-      // Close mobile menu when clicking outside
-      document.addEventListener('click', function (event) {
-        if (!mobileMenu.contains(event.target) && !mobileMenuToggle.contains(event.target) && mobileMenu.classList.contains('active')) {
-          mobileMenu.classList.remove('active');
-        }
-      });
-
-      // Accordion functionality
-      const accordionHeaders = document.querySelectorAll('.accordion-header');
-
-      accordionHeaders.forEach(header => {
-        header.addEventListener('click', function () {
-          const itemId = this.getAttribute('data-accordion');
-          const content = document.getElementById(itemId);
-          const icon = this.querySelector('.accordion-icon');
-
-          // Close all other accordion items
-          document.querySelectorAll('.accordion-content').forEach(item => {
-            if (item.id !== itemId) {
-              item.classList.remove('open');
-              item.style.maxHeight = null;
-            }
-          });
-
-          document.querySelectorAll('.accordion-icon').forEach(i => {
-            if (i !== icon) {
-              i.classList.remove('open');
-            }
-          });
-
-          // Toggle current accordion item
-          content.classList.toggle('open');
-          icon.classList.toggle('open');
-
-          if (content.classList.contains('open')) {
-            content.style.maxHeight = content.scrollHeight + 'px';
-          } else {
-            content.style.maxHeight = null;
-          }
-        });
-      });
-
-      // Simple Chart
-      const chartContainer = document.getElementById('milk-chart-graph');
-      if (chartContainer) {
-        // Create a basic chart using HTML/CSS
-        let chartHTML = `
-          <div style="height: 300px; display: flex; align-items: flex-end; justify-content: space-between; padding: 20px;">
-            <div style="display: flex; flex-direction: column; height: 100%; justify-content: space-between;">
-              <span>20L</span>
-              <span>15L</span>
-              <span>10L</span>
-              <span>5L</span>
-              <span>0L</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Testimonial 1 -->
+          <div class="testimonial-card bg-white p-6 rounded-xl shadow-md">
+            <div class="flex items-center mb-4">
+              <div class="text-primary">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+              </div>
             </div>
-            <div style="display: flex; flex-grow: 1; height: 100%; align-items: flex-end; gap: 24px; padding-left: 30px;">
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div style="width: 30px; height: 120px; background-color: var(--primary); border-radius: 4px 4px 0 0;"></div>
-                <span>Jan</span>
+            <p class="text-gray-700 mb-6">
+              "I've been investing with Dairy-Lift for over 2 years now. The
+              returns have been consistent and above market average. Their
+              transparency and regular updates give me peace of mind about my
+              investment."
+            </p>
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
+                <img
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20middle-aged%20businessman%20with%20glasses%2C%20neutral%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=5&orientation=squarish"
+                  alt="Michael Thompson"
+                  class="w-full h-full object-cover"
+                />
               </div>
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div style="width: 30px; height: 140px; background-color: var(--primary); border-radius: 4px 4px 0 0;"></div>
-                <span>Feb</span>
-              </div>
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div style="width: 30px; height: 160px; background-color: var(--primary); border-radius: 4px 4px 0 0;"></div>
-                <span>Mar</span>
-              </div>
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div style="width: 30px; height: 180px; background-color: var(--primary); border-radius: 4px 4px 0 0;"></div>
-                <span>Apr</span>
-              </div>
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div style="width: 30px; height: 200px; background-color: var(--primary); border-radius: 4px 4px 0 0;"></div>
-                <span>May</span>
-              </div>
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div style="width: 30px; height: 170px; background-color: var(--primary); border-radius: 4px 4px 0 0;"></div>
-                <span>Jun</span>
-              </div>
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div style="width: 30px; height: 190px; background-color: var(--primary); border-radius: 4px 4px 0 0;"></div>
-                <span>Jul</span>
-              </div>
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div style="width: 30px; height: 210px; background-color: var(--primary); border-radius: 4px 4px 0 0;"></div>
-                <span>Aug</span>
+              <div class="ml-4">
+                <h4 class="font-bold text-gray-900">Michael Thompson</h4>
+                <p class="text-gray-600 text-sm">Investor since 2023</p>
               </div>
             </div>
           </div>
-        `;
-        chartContainer.innerHTML = chartHTML;
-      }
-
-      // Intersection Observer for animation
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      };
-
-      const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, observerOptions);
-
-      // Observe elements to animate
-      const animateElements = document.querySelectorAll('.stat-card, .feature-card, .step, .testimonial-card, .plan-card');
-      animateElements.forEach(el => {
-        observer.observe(el);
-      });
-    });
-
-    // Add this JavaScript
-    window.addEventListener('scroll', () => {
-      const parallaxElements = document.querySelectorAll('.parallax-element');
-      parallaxElements.forEach(element => {
-        const speed = element.dataset.speed || 0.5;
-        const yPos = -(window.pageYOffset * speed);
-        element.style.transform = `translateY(${yPos}px)`;
-      });
-    });
-
-    // Add to your existing JavaScript
-    function addTiltEffect() {
-      const cards = document.querySelectorAll('.plan-card');
-      
-      cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-          
-          const rotateX = (y - centerY) / 20;
-          const rotateY = (centerX - x) / 20;
-          
-          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-        
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
-        });
-      });
-    }
-
-    function animateNumbers() {
-      const numbers = document.querySelectorAll('.stat-value');
-      
-      numbers.forEach(number => {
-        const target = parseInt(number.textContent);
-        let current = 0;
-        const increment = target / 50; // Adjust for speed
-        
-        const updateNumber = () => {
-          if (current < target) {
-            current += increment;
-            number.textContent = Math.round(current);
-            requestAnimationFrame(updateNumber);
-          } else {
-            number.textContent = target;
-          }
+          <!-- Testimonial 2 -->
+          <div class="testimonial-card bg-white p-6 rounded-xl shadow-md">
+            <div class="flex items-center mb-4">
+              <div class="text-primary">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+              </div>
+            </div>
+            <p class="text-gray-700 mb-6">
+              "As someone looking for alternative investments, Dairy-Lift has
+              exceeded my expectations. The platform is intuitive, the team is
+              responsive, and the returns are impressive. I've already
+              recommended it to several friends."
+            </p>
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
+                <img
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20young%20Asian%20businesswoman%20smiling%2C%20neutral%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=6&orientation=squarish"
+                  alt="Jennifer Chen"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="ml-4">
+                <h4 class="font-bold text-gray-900">Jennifer Chen</h4>
+                <p class="text-gray-600 text-sm">Investor since 2024</p>
+              </div>
+            </div>
+          </div>
+          <!-- Testimonial 3 -->
+          <div class="testimonial-card bg-white p-6 rounded-xl shadow-md">
+            <div class="flex items-center mb-4">
+              <div class="text-primary">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-half-fill"></i>
+              </div>
+            </div>
+            <p class="text-gray-700 mb-6">
+              "I started with a single calf investment and have since expanded
+              to a herd share. The regular dividend payments have been a
+              reliable source of passive income. The farm visit was an
+              eye-opener to how professionally they operate."
+            </p>
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
+                <img
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20an%20African%20American%20man%20in%20his%2040s%2C%20neutral%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=7&orientation=squarish"
+                  alt="Robert Johnson"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="ml-4">
+                <h4 class="font-bold text-gray-900">Robert Johnson</h4>
+                <p class="text-gray-600 text-sm">Investor since 2022</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- FAQ Section -->
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">
+            Frequently Asked Questions
+          </h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Find answers to common questions about dairy investments
+          </p>
+        </div>
+        <div class="max-w-3xl mx-auto">
+          <div class="space-y-4">
+            <!-- FAQ Item 1 -->
+            <div
+              class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50"
+              >
+                <span class="text-lg font-medium text-gray-900"
+                  >How does dairy cattle investment work?</span
+                >
+                <span
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </span>
+              </button>
+              <div class="faq-content hidden p-4 pt-0 bg-white">
+                <p class="text-gray-700">
+                  Dairy cattle investment works by allowing investors to
+                  purchase ownership in dairy cattle. Your investment funds the
+                  acquisition, care, and management of the cattle. As the cattle
+                  produce milk, the revenue generated is shared with investors
+                  as dividends. Our team of professionals handles all aspects of
+                  cattle management, allowing you to enjoy passive income
+                  without the complexities of farm operations.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 2 -->
+            <div
+              class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50"
+              >
+                <span class="text-lg font-medium text-gray-900"
+                  >What returns can I expect from my investment?</span
+                >
+                <span
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </span>
+              </button>
+              <div class="faq-content hidden p-4 pt-0 bg-white">
+                <p class="text-gray-700">
+                  Our dairy investments typically yield between 12-15% annual
+                  returns, depending on the investment tier chosen. Single calf
+                  investments average 12%, milking cow investments 14%, and
+                  dairy herd investments 15%. Returns are paid as regular
+                  dividends based on milk production, and the exact amount can
+                  vary based on market conditions and production efficiency.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 3 -->
+            <div
+              class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50"
+              >
+                <span class="text-lg font-medium text-gray-900"
+                  >How is my investment secured?</span
+                >
+                <span
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </span>
+              </button>
+              <div class="faq-content hidden p-4 pt-0 bg-white">
+                <p class="text-gray-700">
+                  Your investment is secured by the physical asset (the cattle)
+                  and comprehensive insurance policies that protect against
+                  livestock loss. Additionally, we maintain a reserve fund to
+                  ensure consistent dividend payments even during temporary
+                  production fluctuations. All investments are documented with
+                  legal contracts specifying your ownership rights and
+                  entitlements.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 4 -->
+            <div
+              class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50"
+              >
+                <span class="text-lg font-medium text-gray-900"
+                  >Can I visit the farm and see my investment?</span
+                >
+                <span
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </span>
+              </button>
+              <div class="faq-content hidden p-4 pt-0 bg-white">
+                <p class="text-gray-700">
+                  Yes! We organize quarterly farm visits for our investors.
+                  During these visits, you can see the facilities, meet the
+                  management team, and even see your specific cattle (for single
+                  cow investors). Herd investors can tour the entire operation.
+                  We also host annual VIP events for larger investors, providing
+                  a more in-depth experience of the dairy operations.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 5 -->
+            <div
+              class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50"
+              >
+                <span class="text-lg font-medium text-gray-900"
+                  >What happens at the end of the investment term?</span
+                >
+                <span
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </span>
+              </button>
+              <div class="faq-content hidden p-4 pt-0 bg-white">
+                <p class="text-gray-700">
+                  At the end of your investment term, you have several options:
+                  1) Renew your investment for another term, 2) Upgrade to a
+                  higher investment tier, 3) Liquidate your investment and
+                  receive the principal plus any appreciation in the cattle's
+                  value. We provide a 30-day notice before term completion to
+                  discuss your preferences and process your chosen option.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- CTA Section -->
+    <section class="py-16 bg-primary">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-white">
+          Ready to Start Your Dairy Investment Journey?
+        </h2>
+        <p class="mt-4 text-xl text-white/90 max-w-2xl mx-auto">
+          Join thousands of investors who are already benefiting from stable
+          returns with Dairy-Lift
+        </p>
+        <div class="mt-8">
+          <button
+            class="bg-white text-primary hover:bg-gray-100 px-8 py-3 font-medium !rounded-button text-lg whitespace-nowrap"
+          >
+            Start Investing Today
+          </button>
+        </div>
+        <div class="mt-8 flex flex-wrap justify-center gap-6">
+          <div class="flex items-center text-white/90">
+            <div class="w-6 h-6 flex items-center justify-center mr-2">
+              <i class="ri-shield-check-line"></i>
+            </div>
+            <span>Fully Insured</span>
+          </div>
+          <div class="flex items-center text-white/90">
+            <div class="w-6 h-6 flex items-center justify-center mr-2">
+              <i class="ri-lock-line"></i>
+            </div>
+            <span>Secure Investment</span>
+          </div>
+          <div class="flex items-center text-white/90">
+            <div class="w-6 h-6 flex items-center justify-center mr-2">
+              <i class="ri-customer-service-2-line"></i>
+            </div>
+            <span>24/7 Support</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div>
+            <a href="#" class="text-primary font-['Pacifico'] text-2xl"
+              >Dairy-Lift</a
+            >
+            <p class="mt-4 text-gray-400">
+              Transforming dairy farming into a premium investment opportunity
+              with transparent operations and consistent returns.
+            </p>
+            <div class="mt-6 flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+              >
+                <i class="ri-facebook-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+              >
+                <i class="ri-twitter-x-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+              >
+                <i class="ri-instagram-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+              >
+                <i class="ri-linkedin-fill"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Investment Options</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Performance Reports</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Farm Tours</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Testimonials</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >FAQs</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+                >
+                  <i class="ri-map-pin-line"></i>
+                </div>
+                <span class="ml-3 text-gray-400"
+                  >123 Dairy Farm Road, Green Valley, CA 94535</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+                >
+                  <i class="ri-phone-line"></i>
+                </div>
+                <span class="ml-3 text-gray-400">+1 (555) 123-4567</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+                >
+                  <i class="ri-mail-line"></i>
+                </div>
+                <span class="ml-3 text-gray-400">invest@dairy-lift.com</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+                >
+                  <i class="ri-time-line"></i>
+                </div>
+                <span class="ml-3 text-gray-400">Mon-Fri: 9AM-5PM (PST)</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+            <p class="text-gray-400 mb-4">
+              Subscribe to receive updates on dairy market trends and investment
+              opportunities.
+            </p>
+            <form class="space-y-4">
+              <div>
+                <input
+                  type="email"
+                  placeholder="Your email address"
+                  class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary text-white"
+                />
+              </div>
+              <button
+                type="submit"
+                class="w-full bg-primary hover:bg-primary/90 text-white py-2 font-medium !rounded-button whitespace-nowrap"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+        <div
+          class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p class="text-gray-400 text-sm">
+            © 2025 Dairy-Lift. All rights reserved.
+          </p>
+          <div class="mt-4 md:mt-0 flex space-x-6">
+            <a href="#" class="text-gray-400 hover:text-white text-sm"
+              >Privacy Policy</a
+            >
+            <a href="#" class="text-gray-400 hover:text-white text-sm"
+              >Terms of Service</a
+            >
+            <a href="#" class="text-gray-400 hover:text-white text-sm"
+              >Cookie Policy</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Performance Chart
+        const chartDom = document.getElementById("performance-chart");
+        const myChart = echarts.init(chartDom);
+        const option = {
+          animation: false,
+          tooltip: {
+            trigger: "axis",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            borderColor: "#f0f0f0",
+            textStyle: {
+              color: "#1f2937",
+            },
+          },
+          grid: {
+            left: "3%",
+            right: "4%",
+            bottom: "3%",
+            top: "3%",
+            containLabel: true,
+          },
+          xAxis: {
+            type: "category",
+            boundaryGap: false,
+            data: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            axisLine: {
+              lineStyle: {
+                color: "#e2e8f0",
+              },
+            },
+            axisLabel: {
+              color: "#1f2937",
+            },
+          },
+          yAxis: {
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                color: "#e2e8f0",
+              },
+            },
+            axisLabel: {
+              color: "#1f2937",
+              formatter: "{value} L",
+            },
+            splitLine: {
+              lineStyle: {
+                color: "#f0f0f0",
+              },
+            },
+          },
+          series: [
+            {
+              name: "Average Milk Production",
+              type: "line",
+              smooth: true,
+              lineStyle: {
+                width: 3,
+                color: "rgba(87, 181, 231, 1)",
+              },
+              symbol: "none",
+              areaStyle: {
+                color: {
+                  type: "linear",
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "rgba(87, 181, 231, 0.2)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(87, 181, 231, 0.01)",
+                    },
+                  ],
+                },
+              },
+              data: [
+                820, 840, 910, 934, 990, 1030, 1100, 1170, 1250, 1330, 1400, 1480,
+              ],
+            },
+            {
+              name: "Industry Average",
+              type: "line",
+              smooth: true,
+              lineStyle: {
+                width: 3,
+                color: "rgba(141, 211, 199, 1)",
+                type: "dashed",
+              },
+              symbol: "none",
+              data: [720, 732, 751, 784, 790, 830, 850, 880, 910, 930, 950, 980],
+            },
+          ],
+          color: ["rgba(87, 181, 231, 1)", "rgba(141, 211, 199, 1)"],
         };
-        
-        updateNumber();
-      });
-    }
-
-    // Add scroll progress indicator
-    window.addEventListener('scroll', () => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollProgress = (window.scrollY / docHeight) * 100;
-      document.querySelector('.scroll-progress').style.width = `${scrollProgress}%`;
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // Add scroll progress bar to body
-      const progressBar = document.createElement('div');
-      progressBar.className = 'scroll-progress';
-      document.body.appendChild(progressBar);
-
-      // Initialize animations
-      addTiltEffect();
-      
-      // Intersection Observer for reveal animations
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+          myChart.resize();
         });
-      }, { threshold: 0.1 });
-
-      // Observe elements with animation classes
-      document.querySelectorAll('.reveal-text, .stagger-item').forEach(el => {
-        observer.observe(el);
+        // FAQ Accordion
+        const faqToggles = document.querySelectorAll(".faq-toggle");
+        faqToggles.forEach((toggle) => {
+          toggle.addEventListener("click", () => {
+            const content = toggle.nextElementSibling;
+            const iconPlus = toggle.querySelector(".faq-icon-plus");
+            const iconMinus = toggle.querySelector(".faq-icon-minus");
+            // Toggle the current item
+            content.classList.toggle("hidden");
+            iconPlus.classList.toggle("hidden");
+            iconMinus.classList.toggle("hidden");
+            // Close other items
+            faqToggles.forEach((otherToggle) => {
+              if (otherToggle !== toggle) {
+                const otherContent = otherToggle.nextElementSibling;
+                const otherIconPlus = otherToggle.querySelector(".faq-icon-plus");
+                const otherIconMinus = otherToggle.querySelector(".faq-icon-minus");
+                otherContent.classList.add("hidden");
+                otherIconPlus.classList.remove("hidden");
+                otherIconMinus.classList.add("hidden");
+              }
+            });
+          });
+        });
       });
-
-      // Initialize number counter when statistics section is visible
-      const statsObserver = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          animateNumbers();
-          statsObserver.unobserve(entries[0].target);
-        }
-      });
-      statsObserver.observe(document.querySelector('.statistics'));
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
