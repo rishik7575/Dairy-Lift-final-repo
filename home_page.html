@@ -435,15 +435,35 @@
     </style>
   </head>
   <body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md fixed top-0 w-full z-50">
+    <!-- Navigation -->    
+     <nav class="bg-white shadow-md fixed top-0 w-full z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
+          <!-- Hamburger Menu Button -->
+          <button
+            class="text-gray-700 hover:text-primary w-10 h-10 flex items-center justify-center"
+            id="mobile-menu-toggle"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
           <div class="flex items-center">
             <a href="#" class="flex-shrink-0 flex items-center">
-              <span class="text-primary font-['Pacifico'] text-2xl"
-                >Dairy-Lift</span
-              >
+              <span class="text-primary font-['Pacifico'] text-2xl">Dairy-Lift</span>
             </a>
             <div class="hidden md:ml-10 md:flex md:space-x-8">
               <a
@@ -471,48 +491,6 @@
           <div class="flex items-center">
             <button
               class="hidden md:block bg-primary hover:bg-primary/90 text-white px-4 py-2 !rounded-button whitespace-nowrap"
-            >
-              Start Investing
-            </button>
-            <div class="md:hidden flex items-center">
-              <button
-                type="button"
-                class="text-gray-700 hover:text-primary w-10 h-10 flex items-center justify-center"
-              >
-                <i class="ri-menu-line ri-lg"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Mobile menu, show/hide based on menu state -->
-      <div class="hidden md:hidden bg-white shadow-lg">
-        <div class="pt-2 pb-3 space-y-1">
-          <a
-            href="home_page.html"
-            class="block pl-3 pr-4 py-2 border-l-4 border-primary text-primary font-medium"
-            >Home</a
-          >
-          <a
-            href="dashboard.html"
-            class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-700 hover:text-primary hover:border-primary font-medium"
-            >Dashboard</a
-          >
-          <a
-            href="store.html"
-            class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-700 hover:text-primary hover:border-primary font-medium"
-            >Store</a
-          >
-          <a
-            href="admin-dashboard.html"
-            class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-700 hover:text-primary hover:border-primary font-medium"
-            >Admin</a
-          >
-         </div>
-        <div class="pt-4 pb-3 border-t border-gray-200">
-          <div class="flex items-center px-4">
-            <button
-              class="w-full bg-primary hover:bg-primary/90 text-white px-4 py-2 !rounded-button whitespace-nowrap"
             >
               Start Investing
             </button>

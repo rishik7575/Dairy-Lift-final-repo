@@ -19,7 +19,10 @@
       background-color: transparent;
       margin: 0;
       padding: 0;
-      height: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
     
     .card {
@@ -28,6 +31,9 @@
       border-radius: var(--radius);
       box-shadow: 0 1px 3px rgba(0,0,0,0.12);
       height: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
     
     .card-header {
@@ -43,6 +49,9 @@
     
     .card-content {
       padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
     
     .lifecycle-track {
@@ -196,10 +205,20 @@
       });
       
       // Send height to parent
-      if (window.parent && window.parent.postMessage) {
+      function updateParentHeight() {
         const height = document.body.scrollHeight;
-        window.parent.postMessage({ type: 'resize', height: height }, '*');
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: 'iframe-height', height: height }, '*');
+        }
       }
+      
+      // Update height after content loads
+      updateParentHeight();
+      // Also update after a short delay to account for dynamic content
+      setTimeout(updateParentHeight, 500);
+      
+      // Update height when window resizes
+      window.addEventListener('resize', updateParentHeight);
     });
   </script>
 </body>

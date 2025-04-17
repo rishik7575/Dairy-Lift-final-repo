@@ -82,10 +82,184 @@
       color: rgb(185, 28, 28);
     }
     
+    /* Navbar Styles from store.html */
     .navbar {
-      background-color: white;
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
       border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .desktop-nav {
+      display: none;
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--foreground);
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .mobile-menu {
+      display: none;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      max-width: 20%;
+      overflow-x: auto;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 99;
+      background-color: var(--background);
+      width: 100%;
+    }
+
+    .mobile-menu.active {
+      display: block;
+    }
+
+    .mobile-nav-link {
+      display: block;
       padding: 0.75rem 1rem;
+      color: var(--foreground);
+      border-radius: 0.375rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+
+    .cart-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--foreground);
+    }
+
+    .cart-button:hover {
+      color: var(--primary);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      font-size: 0.75rem;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-icon {
+      padding: 0.5rem;
     }
     
     .footer {
@@ -191,6 +365,9 @@
     .content-iframe {
       width: 100%;
       border: none;
+      height: auto;
+      min-height: 400px;
+      max-height: 14000px;
     }
     
     /* Hide scrollbars but allow scrolling */
@@ -245,29 +422,38 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
-  <!-- Navbar -->
-  <nav class="navbar flex justify-between items-center">
-    <div class="flex items-center">
-      <h1 class="text-xl font-bold text-purple-600">DairyVest</h1>
-      <div class="hidden md:flex space-x-4 ml-10">
-        <a href="home_page.html" class="text-gray-700 hover:text-purple-600">Home</a>
-        <a href="dashboard.html" class="text-gray-500 hover:text-purple-600">Dashboard</a>
-        <a href="store.html" class="text-gray-500 hover:text-purple-600">Store</a>
-        <a href="admin-dashboard.html" class="text-gray-500 hover:text-purple-600">Admin</a>
-      </div>
+  <header class="navbar" style="padding:10px">
+    <div class="container" style="margin:0px">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <a href="#" class="logo">Diary-Lift</a>
+        <nav class="desktop-nav">
+          <a href="home_page.html" class="nav-link">Home</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="store.html" class="nav-link">Store</a>
+          <a href="admin-dashboard.html" class="nav-link">Admin</a>
+        </nav>
+        <a href="login.html" class="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-purple-100 transition duration-200">
+          <div class="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center">
+            <span class="text-sm font-medium text-purple-700">JD</span>
+          </div>
+          <span class="hidden md:inline text-sm font-medium text-purple-700">Josh</span>
+        </a>
+        <div class="mobile-menu" id="mobile-menu">
+      <a href="navhome.html" class="mobile-nav-link">Insurance</a>
+      <a href="#" class="mobile-nav-link">Farm-visit</a>
+      <a href="aboutus.html" class="mobile-nav-link">About-us</a>
+      <a href="help/home.html" class="mobile-nav-link">Support</a>
+      <a href="#" class="mobile-nav-link">Contact</a>
     </div>
-    <div class="flex items-center space-x-4">
-      <button class="p-2 rounded-full hover:bg-gray-100">
-        <i class="fas fa-bell text-gray-500"></i>
-      </button>
-      <div class="flex items-center space-x-2">
-        <div class="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center">
-          <span class="text-sm font-medium text-purple-700">JD</span>
-        </div>
-        <span class="hidden md:inline text-sm font-medium">John Doe</span>
-      </div>
-    </div>
-  </nav>
+  </header>
 
   <div class="flex-grow bg-gray-50 py-6">
     <div class="container mx-auto px-4">
@@ -399,9 +585,9 @@
       </div>
 
       <!-- Row 1 - ProfitForecast and MilkingEfficiency -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div class="lg:col-span-2">
-          <iframe src="ProfitForecast.html" frameborder="0" class="content-iframe" id="profit-forecast-frame"></iframe>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8" style="min-height: 600px;">
+        <div class="lg:col-span-2" style="height: 100%; min-height: 600px;">
+          <iframe src="ProfitForecast.html" frameborder="0" class="content-iframe" id="profit-forecast-frame" style="height: 100%; min-height: 600px;"></iframe>
         </div>
         <div>
           <iframe src="MilkingEfficiencyCard.html" frameborder="0" class="content-iframe" id="milking-efficiency-frame"></iframe>
@@ -419,47 +605,56 @@
       </div>
 
       <!-- Row 3 - Milk Wastage and Cattle Lifecycle -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" style="min-height: 600px;">
         <div>
           <iframe src="MilkWastageTracker.html" frameborder="0" class="content-iframe" id="milk-wastage-frame"></iframe>
         </div>
-        <div>
-          <iframe src="CattleLifecycleTracker.html" frameborder="0" class="content-iframe" id="cattle-lifecycle-frame"></iframe>
+        <div style="height: 100%; min-height: 600px;">
+          <iframe src="CattleLifecycleTracker.html" frameborder="0" class="content-iframe" id="cattle-lifecycle-frame" style="height: 100%; min-height: 600px;"></iframe>
         </div>
       </div>
 
       <!-- Row 4 - Weather, Waste to Profit, Investor Trust -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div>
-          <iframe src="WeatherImpactAnalytics.html" frameborder="0" class="content-iframe" id="weather-impact-frame"></iframe>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" style="min-height: 600px;">
+        <div style="height: 100%; min-height: 600px;">
+          <iframe src="WeatherImpactAnalytics.html" frameborder="0" class="content-iframe" id="weather-impact-frame" style="height: 100%; min-height: 600px;"></iframe>
         </div>
         <div>
-          <iframe src="WastetoProfitTracker.html" frameborder="0" class="content-iframe" id="waste-to-profit-frame"></iframe>
+          <iframe src="WastetoProfitTracker.html" frameborder="0" class="content-iframe" id="waste-to-profit-frame" style="height: 500px; max-height: 500px;"></iframe>
         </div>
         <div>
-          <iframe src="InvestorTrust.html" frameborder="0" class="content-iframe" id="investor-trust-frame"></iframe>
+          <iframe src="InvestorTrust.html" frameborder="0" class="content-iframe" id="investor-trust-frame" style="height: 500px; max-height: 500px;"></iframe>
         </div>
       </div>
 
       <!-- Cattle Section -->
-      <div class="mb-8">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-          <h2 class="text-2xl font-bold">Your Cattle</h2>
-          <div class="flex space-x-2 w-full md:w-auto">
-            <select id="cattleFilter" class="border border-gray-300 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-[180px]">
-              <option value="all">All Cattle</option>
-              <option value="active">Active Lactation</option>
-              <option value="dry">Dry Period</option>
-            </select>
-            <select id="sortOrder" class="border border-gray-300 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-[180px]">
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
-              <option value="production">Highest Production</option>
-            </select>
-          </div>
+      <!-- Cattle Section - Fully Integrated into Dashboard -->
+<div class="mb-10 px-4 md:px-0" style="max-height: 14000px; overflow: auto;">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+    <h2 class="text-2xl font-bold text-gray-800">Your Cattle</h2>
+    <div class="flex space-x-2 w-full md:w-auto">
+      <select id="cattleFilter"
+        class="border border-gray-300 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-green-600 w-full md:w-[180px]">
+        <option value="all">All Cattle</option>
+        <option value="active">Active Lactation</option>
+        <option value="dry">Dry Period</option>
+      </select>
+      <select id="sortOrder"
+        class="border border-gray-300 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-green-600 w-full md:w-[180px]">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="production">Highest Production</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Fully Blended Iframe (No Card Look) -->
+  <iframe id="cattleIframe"
+          src="YourCattle.html"
+          frameborder="0"
+          class="w-full"
+          style="height: auto; max-height: 14000px; border-radius: 0; background-color: transparent;"></iframe>
         </div>
-        <iframe id="cattleIframe" src="YourCattle.html" frameborder="0" class="content-iframe" height="600"></iframe>
-      </div>
 
       <!-- Recent Updates & Upcoming Events -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -925,6 +1120,24 @@
               if (iframes[i].contentWindow === event.source) {
                 // Add a small buffer to avoid scrolling
                 iframes[i].style.height = (height + 20) + 'px';
+                break;
+              }
+            } catch (e) {
+              console.error('Error matching iframe:', e);
+            }
+          }
+        } else if (event.data && event.data.type === 'iframe-height') {
+          // Handle iframe height messages
+          const height = event.data.height;
+          const iframes = document.querySelectorAll('iframe');
+          
+          // Find the frame that sent the message by matching its content window
+          for (let i = 0; i < iframes.length; i++) {
+            try {
+              if (iframes[i].contentWindow === event.source) {
+                // Add a small buffer to avoid scrolling
+                iframes[i].style.height = (height + 20) + 'px';
+                console.log('Updated iframe height to: ' + (height + 20) + 'px');
                 break;
               }
             } catch (e) {
@@ -1459,7 +1672,57 @@
           clearInterval(autoRefreshInterval);
         }
       };
+      
+      // Mobile Menu Toggle
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener('click', function() {
+          mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+          });
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!mobileMenu.contains(event.target) && !mobileMenuToggle.contains(event.target) && mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+          }
+        });
+      }
     };
+
+    // Adjust iframe height for YourCattle.html
+    window.addEventListener('load', function() {
+      const cattleIframe = document.getElementById('cattleIframe');
+      if (cattleIframe) {
+        // Set initial height
+        cattleIframe.style.height = '1000px'; // Default height
+        
+        // Adjust height based on content
+        cattleIframe.onload = function() {
+          try {
+            // Try to get the height of the content
+            const iframeContent = cattleIframe.contentWindow.document.body;
+            if (iframeContent) {
+              const contentHeight = iframeContent.scrollHeight;
+              cattleIframe.style.height = contentHeight + 'px';
+            }
+          } catch (e) {
+            console.log('Could not adjust iframe height automatically');
+          }
+        };
+        
+        // Height messages are now handled by the main message event listener
+      }
+    });
   </script>
 </body>
 </html>

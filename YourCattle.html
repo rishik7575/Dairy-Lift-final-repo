@@ -3,324 +3,594 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Cattle</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Herd Health Tracker</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     :root {
-      --primary: #8B5CF6;
-      --border: #E5E7EB;
+      --background: #FFFFFF;
       --foreground: #111827;
-      --muted: #6B7280;
-      --muted-foreground: #9CA3AF;
+      --card: #FFFFFF;
+      --card-foreground: #111827;
+      --popover: #FFFFFF;
+      --popover-foreground: #111827;
+      --primary: #9b87f5;
+      --primary-foreground: #f8fafc;
+      --secondary: #f1f5f9;
+      --secondary-foreground: #1e293b;
+      --muted: #f1f5f9;
+      --muted-foreground: #6b7280;
+      --accent: #f1f5f9;
+      --accent-foreground: #1e293b;
+      --destructive: #ef4444;
+      --destructive-foreground: #f8fafc;
+      --border: #e2e8f0;
+      --input: #e2e8f0;
+      --ring: #9b87f5;
       --radius: 0.5rem;
     }
-    
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      background-color: transparent;
+
+    * {
       margin: 0;
       padding: 0;
-      overflow-x: hidden;
-    }
-    
-    .cattle-card {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      background-color: white;
-      transition: transform 0.2s, box-shadow 0.2s;
-      height: 100%;
-    }
-    
-    .cattle-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-    
-    .health-excellent {
-      color: #22C55E;
-    }
-    
-    .health-good {
-      color: #10B981;
-    }
-    
-    .health-fair {
-      color: #F59E0B;
-    }
-    
-    .health-poor {
-      color: #EF4444;
-    }
-    
-    .btn-outline {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 0.5rem 1rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      background-color: transparent;
-      color: var(--foreground);
-      cursor: pointer;
-      transition: background-color 0.2s, border-color 0.2s;
-      display: inline-block;
-      text-align: center;
-      width: 100%;
-    }
-    
-    .btn-outline:hover {
-      background-color: #F9FAFB;
-      border-color: #D1D5DB;
-    }
-    
-    /* Animation */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .animate-fade-in {
-      animation: fadeIn 0.5s ease-out forwards;
+      box-sizing: border-box;
     }
 
-    /* Modal styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 100;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.4);
-    }
-    
-    .modal-content {
-      background-color: white;
-      margin: 5% auto;
-      padding: 20px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      width: 80%;
-      max-width: 800px;
-      animation: modalOpen 0.3s ease-out;
-    }
-    
-    @keyframes modalOpen {
-      from {opacity: 0; transform: scale(0.95);}
-      to {opacity: 1; transform: scale(1);}
-    }
-    
-    .close {
-      color: var(--muted);
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    
-    .close:hover,
-    .close:focus {
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background-color: var(--background);
       color: var(--foreground);
-      text-decoration: none;
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+      height: auto;
+      overflow: visible;
     }
-    
-    .tab-list {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-    
-    .tab {
-      padding: 0.75rem;
-      text-align: center;
-      cursor: pointer;
-      font-weight: 500;
-    }
-    
-    .tab.active {
-      border-bottom: 2px solid var(--primary);
-      color: var(--primary);
-    }
-    
-    .tab-content {
-      display: none;
-    }
-    
-    .tab-content.active {
-      display: block;
-    }
-    
-    .info-card {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 1rem;
-      margin-bottom: 1rem;
+      height: auto;
+      overflow: visible;
     }
-    
-    .info-grid {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 0.5rem;
+
+    .header {
+      margin-bottom: 2rem;
     }
-    
-    .info-label {
-      font-size: 0.875rem;
-      color: var(--muted);
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
     }
-    
-    .info-value {
-      font-size: 0.875rem;
+
+    p {
+      color: var(--muted-foreground);
+    }
+
+    .filters {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .filters {
+        flex-direction: row;
+      }
+    }
+
+    .filter-group {
+      flex: 1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
       font-weight: 500;
     }
-    
-    .chart-container {
-      height: 200px;
-      margin-bottom: 1rem;
-    }
-    
-    .progress-bar {
-      height: 0.5rem;
-      background-color: #F3F4F6;
-      border-radius: 9999px;
-      margin-top: 0.5rem;
-      overflow: hidden;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background-color: var(--primary);
-      border-radius: 9999px;
-      width: 0;
-      transition: width 1s ease;
+
+    select {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: var(--background);
+      font-size: 0.875rem;
+      outline: none;
     }
 
-    /* Hide scrollbars but allow scrolling */
-    /* Remove scrollbars for WebKit browsers */
-    ::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* Remove scrollbars for Firefox */
-    * {
-      scrollbar-width: none;
-    }
-
-    /* Remove scrollbars for IE and Edge */
-    * {
-      -ms-overflow-style: none; 
+    select:focus {
+      border-color: var(--ring);
+      box-shadow: 0 0 0 2px rgba(155, 135, 245, 0.2);
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(1, 1fr);
       gap: 1.5rem;
     }
-    
-    @media (min-width: 768px) {
+
+    @media (min-width: 640px) {
       .grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
-    
+
     @media (min-width: 1024px) {
       .grid {
         grid-template-columns: repeat(4, 1fr);
       }
     }
 
-    .cattle-card .aspect-video {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    .cattle-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      height: 100%;
     }
 
-    .cattle-card .aspect-video img {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .cattle-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .image-container {
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+
+    .image-container img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    
-    .cattle-stats-grid {
+
+    .card-content {
+      padding: 1rem;
+    }
+
+    .card-header {
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-subtitle {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .stats-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 0.75rem;
+      margin-bottom: 1rem;
     }
-    
-    .cattle-stat {
+
+    .stat {
       display: flex;
-      align-items: center;
       gap: 0.5rem;
     }
-    
-    .cattle-stat-icon {
+
+    .stat-icon {
+      color: var(--muted-foreground);
+      width: 1rem;
+      text-align: center;
+    }
+
+    .stat-content p {
+      font-size: 0.875rem;
+      margin: 0;
+    }
+
+    .stat-label {
+      color: var(--muted-foreground);
+    }
+
+    .stat-value {
+      font-weight: 500;
+    }
+
+    .card-footer {
+      padding: 0 1rem 1rem 1rem;
+    }
+
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 0.5rem 1rem;
+      background-color: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--secondary);
+      border-color: var(--muted);
+    }
+
+    /* Health status colors */
+    .health-excellent {
+      color: #10b981;
+    }
+
+    .health-good {
+      color: #22c55e;
+    }
+
+    .health-fair {
+      color: #f59e0b;
+    }
+
+    .health-poor {
+      color: #ef4444;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background-color: var(--background);
+      border-radius: var(--radius);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+      position: relative;
+      animation: modal-in 0.3s ease-out forwards;
+    }
+
+    @keyframes modal-in {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--muted-foreground);
+    }
+
+    .modal-image {
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab {
+      padding: 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.2s ease;
+      font-weight: 500;
+    }
+
+    .tab.active {
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Info cards */
+    .info-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .info-card h3 {
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 1rem;
+      row-gap: 0.5rem;
+    }
+
+    .info-label {
       color: var(--muted-foreground);
       font-size: 0.875rem;
     }
-    
-    .cattle-stat-content p {
-      margin: 0;
-      line-height: 1.2;
+
+    .info-value {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    /* Progress bars */
+    .progress-container {
+      margin-bottom: 1rem;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .progress-value {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .progress-bar {
+      height: 0.5rem;
+      background-color: var(--secondary);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--primary);
+      transition: width 1s ease-out;
+      border-radius: 9999px;
+    }
+
+    /* Chart container */
+    .chart-container {
+      height: 220px;
+      margin-bottom: 1rem;
+    }
+
+    /* Stats cards */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .stats-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .stat-card {
+      background-color: var(--secondary);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    .stat-card-label {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-card-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      font-weight: 500;
+    }
+
+    /* Modal footer */
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Grid layouts for modal sections */
+    .two-columns {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .two-columns {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Animations */
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fade-in 0.5s ease-out forwards;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 0;
+    }
+
+    .empty-state p {
+      font-size: 1.25rem;
+      color: var(--muted-foreground);
     }
   </style>
 </head>
 <body>
-  <div class="grid">
-    <!-- Cattle cards will be dynamically loaded here -->
+  <div class="container">
+    <div class="filters">
+      <div class="filter-group">
+        <label for="cattleFilter">Filter Cattle</label>
+        <select id="cattleFilter">
+          <option value="all">All Cattle</option>
+          <option value="active">Active (Lactating)</option>
+          <option value="dry">Dry (Non-lactating)</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="sortOrder">Sort By</label>
+        <select id="sortOrder">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="production">Highest Production</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="cattleGrid" class="grid">
+      <!-- Cattle cards will be inserted here -->
+    </div>
+
+    <div id="emptyCattle" class="empty-state" style="display: none;">
+      <p>No cattle match your current filters.</p>
+    </div>
   </div>
-  
+
   <!-- Cattle Details Modal -->
   <div id="cattleModal" class="modal">
     <div class="modal-content">
-      <div class="flex justify-between items-center mb-4">
-        <h2 id="modalCattleName" class="text-xl font-semibold"></h2>
-        <span class="close" id="closeModal">&times;</span>
+      <div class="modal-header">
+        <h2 id="modalTitle" class="modal-title"></h2>
+        <button id="closeModal" class="close-button">&times;</button>
       </div>
-      
-      <div id="modalCattleImage" class="aspect-video w-full overflow-hidden rounded-md mb-4">
-        <!-- Cattle image will be displayed here -->
+
+      <div class="modal-image">
+        <img id="modalImage" src="" alt="Cattle">
       </div>
-      
-      <div class="tab-list">
+
+      <div class="tabs">
         <div class="tab active" data-tab="overview">Overview</div>
-        <div class="tab" data-tab="production">Milk Production</div>
-        <div class="tab" data-tab="health">Health Records</div>
+        <div class="tab" data-tab="production">Production</div>
+        <div class="tab" data-tab="health">Health</div>
         <div class="tab" data-tab="fertility">Fertility</div>
       </div>
-      
-      <div class="tab-content active" id="overview">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+
+      <div id="overviewTab" class="tab-content active">
+        <div class="two-columns">
           <div class="info-card">
-            <h3 class="font-semibold mb-2">Current Status</h3>
+            <h3>Current Status</h3>
             <div class="info-grid">
-              <p class="info-label">Health:</p>
-              <p id="modalHealth" class="info-value"></p>
+              <span class="info-label">Health:</span>
+              <span id="modalHealth" class="info-value"></span>
               
-              <p class="info-label">Lactation:</p>
-              <p id="modalLactation" class="info-value"></p>
+              <span class="info-label">Lactation:</span>
+              <span id="modalLactation" class="info-value"></span>
               
-              <p class="info-label">Daily Production:</p>
-              <p id="modalProduction" class="info-value"></p>
+              <span class="info-label">Daily Production:</span>
+              <span id="modalProduction" class="info-value"></span>
               
-              <p class="info-label">Age:</p>
-              <p id="modalAge" class="info-value"></p>
+              <span class="info-label">Age:</span>
+              <span id="modalAge" class="info-value"></span>
               
-              <p class="info-label">Breed:</p>
-              <p id="modalBreed" class="info-value"></p>
+              <span class="info-label">Breed:</span>
+              <span id="modalBreed" class="info-value"></span>
             </div>
           </div>
           
           <div class="info-card">
-            <h3 class="font-semibold mb-2">Daily Feed Consumption</h3>
+            <h3>Daily Feed Consumption</h3>
             <div class="chart-container">
               <canvas id="feedChart"></canvas>
             </div>
@@ -328,155 +598,110 @@
         </div>
         
         <div class="info-card">
-          <h3 class="font-semibold mb-2">Health Metrics</h3>
-          <div class="mb-3">
-            <div class="flex justify-between items-center">
-              <span class="text-sm font-medium">Temperature</span>
-              <span class="text-sm text-muted-foreground">38.5°C (Normal: 39°C)</span>
+          <h3>Health Metrics</h3>
+          <div class="progress-container">
+            <div class="progress-header">
+              <span class="progress-label">Temperature</span>
+              <span class="progress-value">38.5°C (Normal: 39°C)</span>
             </div>
             <div class="progress-bar">
-              <div class="progress-fill" style="width: 98.7%"></div>
+              <div class="progress-fill" style="width: 0%" data-width="98.7%"></div>
             </div>
           </div>
           
-          <div class="mb-3">
-            <div class="flex justify-between items-center">
-              <span class="text-sm font-medium">Heart Rate</span>
-              <span class="text-sm text-muted-foreground">72 BPM (Normal: 75 BPM)</span>
+          <div class="progress-container">
+            <div class="progress-header">
+              <span class="progress-label">Heart Rate</span>
+              <span class="progress-value">72 BPM (Normal: 75 BPM)</span>
             </div>
             <div class="progress-bar">
-              <div class="progress-fill" style="width: 96%"></div>
+              <div class="progress-fill" style="width: 0%" data-width="96%"></div>
             </div>
           </div>
           
-          <div>
-            <div class="flex justify-between items-center">
-              <span class="text-sm font-medium">Respiration</span>
-              <span class="text-sm text-muted-foreground">26 BPM (Normal: 30 BPM)</span>
+          <div class="progress-container">
+            <div class="progress-header">
+              <span class="progress-label">Respiration</span>
+              <span class="progress-value">26 BPM (Normal: 30 BPM)</span>
             </div>
             <div class="progress-bar">
-              <div class="progress-fill" style="width: 86.7%"></div>
+              <div class="progress-fill" style="width: 0%" data-width="86.7%"></div>
             </div>
           </div>
         </div>
       </div>
-      
-      <div class="tab-content" id="production">
+
+      <div id="productionTab" class="tab-content">
         <div class="info-card">
-          <h3 class="font-semibold mb-2">Milk Production History</h3>
+          <h3>Milk Production History</h3>
           <div class="chart-container">
             <canvas id="milkProductionChart"></canvas>
           </div>
           
-          <div class="grid grid-cols-3 gap-4 mt-4">
-            <div class="text-center p-3 bg-gray-100 rounded-md">
-              <p class="text-sm text-gray-500">Daily Average</p>
-              <p class="text-lg font-bold">29.8 L</p>
+          <div class="stats-container">
+            <div class="stat-card">
+              <p class="stat-card-label">Daily Average</p>
+              <p class="stat-card-value">29.8 L</p>
             </div>
-            <div class="text-center p-3 bg-gray-100 rounded-md">
-              <p class="text-sm text-gray-500">Weekly Total</p>
-              <p class="text-lg font-bold">209 L</p>
+            <div class="stat-card">
+              <p class="stat-card-label">Weekly Total</p>
+              <p class="stat-card-value">209 L</p>
             </div>
-            <div class="text-center p-3 bg-gray-100 rounded-md">
-              <p class="text-sm text-gray-500">Peak Production</p>
-              <p class="text-lg font-bold">32 L</p>
+            <div class="stat-card">
+              <p class="stat-card-label">Peak Production</p>
+              <p class="stat-card-value">32 L</p>
             </div>
           </div>
         </div>
       </div>
-      
-      <div class="tab-content" id="health">
+
+      <div id="healthTab" class="tab-content">
         <div class="info-card">
-          <h3 class="font-semibold mb-2">Health Records</h3>
-          <table class="w-full border-collapse">
+          <h3>Health Records</h3>
+          <table>
             <thead>
-              <tr class="border-b">
-                <th class="text-left py-2 px-4">Date</th>
-                <th class="text-left py-2 px-4">Procedure</th>
-                <th class="text-left py-2 px-4">Performed By</th>
-                <th class="text-left py-2 px-4">Notes</th>
+              <tr>
+                <th>Date</th>
+                <th>Procedure</th>
+                <th>Performed By</th>
+                <th>Notes</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="border-b">
-                <td class="py-2 px-4">2023-04-15</td>
-                <td class="py-2 px-4">Health Check</td>
-                <td class="py-2 px-4">Dr. Smith</td>
-                <td class="py-2 px-4">All vitals normal</td>
-              </tr>
-              <tr class="border-b">
-                <td class="py-2 px-4">2023-03-12</td>
-                <td class="py-2 px-4">Vaccination</td>
-                <td class="py-2 px-4">Dr. Patel</td>
-                <td class="py-2 px-4">FMD vaccine administered</td>
-              </tr>
-              <tr class="border-b">
-                <td class="py-2 px-4">2023-02-23</td>
-                <td class="py-2 px-4">Deworming</td>
-                <td class="py-2 px-4">Farm Staff</td>
-                <td class="py-2 px-4">Scheduled treatment</td>
-              </tr>
-              <tr>
-                <td class="py-2 px-4">2023-01-10</td>
-                <td class="py-2 px-4">Health Check</td>
-                <td class="py-2 px-4">Dr. Smith</td>
-                <td class="py-2 px-4">Slight fever treated</td>
-              </tr>
+            <tbody id="healthRecordsBody">
+              <!-- Health records will be dynamically added here -->
             </tbody>
           </table>
         </div>
       </div>
-      
-      <div class="tab-content" id="fertility">
+
+      <div id="fertilityTab" class="tab-content">
         <div class="info-card">
-          <h3 class="font-semibold mb-2">Fertility & Reproduction</h3>
-          <table class="w-full border-collapse">
+          <h3>Fertility & Reproduction</h3>
+          <table>
             <thead>
-              <tr class="border-b">
-                <th class="text-left py-2 px-4">Date</th>
-                <th class="text-left py-2 px-4">Event</th>
-                <th class="text-left py-2 px-4">Notes</th>
+              <tr>
+                <th>Date</th>
+                <th>Event</th>
+                <th>Notes</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="border-b">
-                <td class="py-2 px-4">2022-06-15</td>
-                <td class="py-2 px-4">Heat Detection</td>
-                <td class="py-2 px-4">Normal cycle observed</td>
-              </tr>
-              <tr class="border-b">
-                <td class="py-2 px-4">2022-07-10</td>
-                <td class="py-2 px-4">Insemination</td>
-                <td class="py-2 px-4">Artificial insemination performed</td>
-              </tr>
-              <tr class="border-b">
-                <td class="py-2 px-4">2022-07-31</td>
-                <td class="py-2 px-4">Pregnancy Check</td>
-                <td class="py-2 px-4">Confirmed pregnant</td>
-              </tr>
-              <tr class="border-b">
-                <td class="py-2 px-4">2023-04-15</td>
-                <td class="py-2 px-4">Calving</td>
-                <td class="py-2 px-4">Healthy female calf delivered</td>
-              </tr>
-              <tr>
-                <td class="py-2 px-4">2023-05-20</td>
-                <td class="py-2 px-4">First Heat Post-Calving</td>
-                <td class="py-2 px-4">Normal cycle returned</td>
-              </tr>
+            <tbody id="fertilityRecordsBody">
+              <!-- Fertility records will be dynamically added here -->
             </tbody>
           </table>
         </div>
       </div>
-      
-      <div class="flex justify-end space-x-2 mt-6">
-        <button id="nextSectionBtn" class="btn-outline">Next Section</button>
-        <button id="closeBtn" class="btn-outline">Close</button>
+
+      <div class="modal-footer">
+        <button id="nextSectionBtn" class="btn">Next Section</button>
+        <button id="closeBtn" class="btn">Close</button>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Required scripts -->
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Sample cattle data
@@ -509,9 +734,9 @@
           breed: 'Brown Swiss',
           age: '5 years old',
           image: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=600&q=80',
-          health: 'Good',
-          lactationStatus: 'Active',
-          dailyProduction: '30 liters',
+          health: 'Fair',
+          lactationStatus: 'Dry',
+          dailyProduction: '0 liters',
           purchaseDate: 'Mar 10, 2022'
         },
         {
@@ -524,48 +749,126 @@
           lactationStatus: 'Active',
           dailyProduction: '25 liters',
           purchaseDate: 'Sep 05, 2022'
+        },
+        {
+          id: '5',
+          name: 'Clover',
+          breed: 'Guernsey',
+          age: '4 years old',
+          image: 'https://images.unsplash.com/photo-1604437676724-870fb77a80c7?auto=format&fit=crop&w=600&q=80',
+          health: 'Good',
+          lactationStatus: 'Active',
+          dailyProduction: '30 liters',
+          purchaseDate: 'Feb 18, 2022'
+        },
+        {
+          id: '6',
+          name: 'Buttercup',
+          breed: 'Jersey',
+          age: '6 years old',
+          image: 'https://images.unsplash.com/photo-1497005367839-6e852de72767?auto=format&fit=crop&w=600&q=80',
+          health: 'Fair',
+          lactationStatus: 'Dry',
+          dailyProduction: '0 liters',
+          purchaseDate: 'Jan 05, 2022'
+        },
+        {
+          id: '7',
+          name: 'Elsie',
+          breed: 'Holstein',
+          age: '3 years old',
+          image: 'https://images.unsplash.com/photo-1535022535846-27063fcce3e7?auto=format&fit=crop&w=600&q=80',
+          health: 'Excellent',
+          lactationStatus: 'Active',
+          dailyProduction: '29 liters',
+          purchaseDate: 'Apr 30, 2022'
+        },
+        {
+          id: '8',
+          name: 'Maggie',
+          breed: 'Brown Swiss',
+          age: '5 years old',
+          image: 'https://images.unsplash.com/photo-1596733430284-f7437764b1a9?auto=format&fit=crop&w=600&q=80',
+          health: 'Poor',
+          lactationStatus: 'Dry',
+          dailyProduction: '0 liters',
+          purchaseDate: 'Dec 10, 2021'
         }
       ];
-      
-      // Get filter and sort values from parent window if available
-      let cattleFilter = 'all';
-      let sortOrder = 'newest';
-      
-      try {
-        // Try to get filter values from parent frame
-        if (window.parent && window.parent.document) {
-          const parentFilterSelect = window.parent.document.getElementById('cattleFilter');
-          const parentSortSelect = window.parent.document.getElementById('sortOrder');
-          
-          if (parentFilterSelect) {
-            cattleFilter = parentFilterSelect.value;
-          }
-          
-          if (parentSortSelect) {
-            sortOrder = parentSortSelect.value;
-          }
-          
-          // Add event listeners to parent selects
-          if (parentFilterSelect) {
-            parentFilterSelect.addEventListener('change', function() {
-              cattleFilter = this.value;
-              renderCattleCards();
-            });
-          }
-          
-          if (parentSortSelect) {
-            parentSortSelect.addEventListener('change', function() {
-              sortOrder = this.value;
-              renderCattleCards();
-            });
-          }
-        }
-      } catch (e) {
-        console.error('Error accessing parent frame:', e);
+
+      // Health records data
+      const healthRecords = [
+        { id: 1, date: '2023-04-15', procedure: 'Health Check', performer: 'Dr. Smith', notes: 'All vitals normal' },
+        { id: 2, date: '2023-03-12', procedure: 'Vaccination', performer: 'Dr. Patel', notes: 'FMD vaccine administered' },
+        { id: 3, date: '2023-02-23', procedure: 'Deworming', performer: 'Farm Staff', notes: 'Scheduled treatment' },
+        { id: 4, date: '2023-01-10', procedure: 'Health Check', performer: 'Dr. Smith', notes: 'Slight fever treated' }
+      ];
+
+      // Fertility records data
+      const fertilityRecords = [
+        { id: 1, date: '2022-06-15', event: 'Heat Detection', notes: 'Normal cycle observed' },
+        { id: 2, date: '2022-07-10', event: 'Insemination', notes: 'Artificial insemination performed' },
+        { id: 3, date: '2022-07-31', event: 'Pregnancy Check', notes: 'Confirmed pregnant' },
+        { id: 4, date: '2023-04-15', event: 'Calving', notes: 'Healthy female calf delivered' },
+        { id: 5, date: '2023-05-20', event: 'First Heat Post-Calving', notes: 'Normal cycle returned' }
+      ];
+
+      // DOM elements
+      const cattleGrid = document.getElementById('cattleGrid');
+      const emptyCattle = document.getElementById('emptyCattle');
+      const cattleFilter = document.getElementById('cattleFilter');
+      const sortOrder = document.getElementById('sortOrder');
+      const modal = document.getElementById('cattleModal');
+      const closeModal = document.getElementById('closeModal');
+      const closeBtn = document.getElementById('closeBtn');
+      const nextSectionBtn = document.getElementById('nextSectionBtn');
+      const tabs = document.querySelectorAll('.tab');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalImage = document.getElementById('modalImage');
+      const modalHealth = document.getElementById('modalHealth');
+      const modalLactation = document.getElementById('modalLactation');
+      const modalProduction = document.getElementById('modalProduction');
+      const modalAge = document.getElementById('modalAge');
+      const modalBreed = document.getElementById('modalBreed');
+      const healthRecordsBody = document.getElementById('healthRecordsBody');
+      const fertilityRecordsBody = document.getElementById('fertilityRecordsBody');
+
+      // Chart references
+      let feedChart = null;
+      let milkProductionChart = null;
+
+      // Initialize health and fertility records
+      function populateHealthRecords() {
+        healthRecordsBody.innerHTML = '';
+        
+        healthRecords.forEach(record => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${record.date}</td>
+            <td>${record.procedure}</td>
+            <td>${record.performer}</td>
+            <td>${record.notes}</td>
+          `;
+          healthRecordsBody.appendChild(row);
+        });
       }
-      
-      // Function to get health color class
-      function getHealthColor(health) {
+
+      function populateFertilityRecords() {
+        fertilityRecordsBody.innerHTML = '';
+        
+        fertilityRecords.forEach(record => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${record.date}</td>
+            <td>${record.event}</td>
+            <td>${record.notes}</td>
+          `;
+          fertilityRecordsBody.appendChild(row);
+        });
+      }
+
+      // Helper function to get health class
+      function getHealthClass(health) {
         switch (health) {
           case 'Excellent': return 'health-excellent';
           case 'Good': return 'health-good';
@@ -574,259 +877,152 @@
           default: return '';
         }
       }
-      
-      // Function to filter and sort cattle
+
+      // Filter and sort cattle
       function filterAndSortCattle() {
+        const filter = cattleFilter.value;
+        const sort = sortOrder.value;
+        
         return cattleData
           .filter(cattle => {
-            if (cattleFilter === 'all') return true;
-            if (cattleFilter === 'active') return cattle.lactationStatus === 'Active';
-            if (cattleFilter === 'dry') return cattle.lactationStatus === 'Dry';
+            if (filter === 'all') return true;
+            if (filter === 'active') return cattle.lactationStatus === 'Active';
+            if (filter === 'dry') return cattle.lactationStatus === 'Dry';
             return true;
           })
           .sort((a, b) => {
-            if (sortOrder === 'newest') {
+            if (sort === 'newest') {
               return new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime();
             }
-            if (sortOrder === 'oldest') {
+            if (sort === 'oldest') {
               return new Date(a.purchaseDate).getTime() - new Date(b.purchaseDate).getTime();
             }
-            if (sortOrder === 'production') {
-              return parseInt(b.dailyProduction) - parseInt(a.dailyProduction);
+            if (sort === 'production') {
+              const aProduction = parseInt(a.dailyProduction) || 0;
+              const bProduction = parseInt(b.dailyProduction) || 0;
+              return bProduction - aProduction;
             }
             return 0;
           });
       }
-      
-      // Function to render cattle cards
+
+      // Render cattle cards
       function renderCattleCards() {
-        const container = document.querySelector('.grid');
-        container.innerHTML = '';
-        
         const filteredCattle = filterAndSortCattle();
+        cattleGrid.innerHTML = '';
+        
+        if (filteredCattle.length === 0) {
+          emptyCattle.style.display = 'block';
+          return;
+        }
+        
+        emptyCattle.style.display = 'none';
         
         filteredCattle.forEach((cattle, index) => {
           const card = document.createElement('div');
-          card.className = `cattle-card animate-fade-in`;
+          card.className = 'cattle-card animate-fade-in';
           card.style.animationDelay = `${index * 0.1}s`;
           
-          const healthColorClass = getHealthColor(cattle.health);
+          const healthClass = getHealthClass(cattle.health);
           
           card.innerHTML = `
-            <div class="aspect-video w-full overflow-hidden">
-              <img 
-                src="${cattle.image}" 
-                alt="Cattle ${cattle.name}" 
-                class="w-full h-full object-cover"
-              />
+            <div class="image-container">
+              <img src="${cattle.image}" alt="${cattle.name}">
             </div>
-            <div class="p-4 pb-2">
-              <div class="flex justify-between items-start">
-                <div>
-                  <h3 class="text-xl font-semibold">${cattle.name}</h3>
-                  <p class="text-sm text-muted-foreground">${cattle.breed} · ${cattle.age}</p>
-                </div>
+            <div class="card-content">
+              <div class="card-header">
+                <h3 class="card-title">${cattle.name}</h3>
+                <p class="card-subtitle">${cattle.breed} · ${cattle.age}</p>
               </div>
-            </div>
-            <div class="px-4 pb-2">
-              <div class="cattle-stats-grid mb-4">
-                <div class="cattle-stat">
-                  <div class="cattle-stat-icon">
+              <div class="stats-grid">
+                <div class="stat">
+                  <div class="stat-icon">
                     <i class="fas fa-thermometer-half"></i>
                   </div>
-                  <div class="cattle-stat-content">
-                    <p class="text-sm text-muted-foreground">Health</p>
-                    <p class="text-sm font-medium ${healthColorClass}">${cattle.health}</p>
+                  <div class="stat-content">
+                    <p class="stat-label">Health</p>
+                    <p class="stat-value ${healthClass}">${cattle.health}</p>
                   </div>
                 </div>
-                <div class="cattle-stat">
-                  <div class="cattle-stat-icon">
+                <div class="stat">
+                  <div class="stat-icon">
                     <i class="fas fa-heart"></i>
                   </div>
-                  <div class="cattle-stat-content">
-                    <p class="text-sm text-muted-foreground">Lactation</p>
-                    <p class="text-sm font-medium">${cattle.lactationStatus}</p>
+                  <div class="stat-content">
+                    <p class="stat-label">Lactation</p>
+                    <p class="stat-value">${cattle.lactationStatus}</p>
                   </div>
                 </div>
-                <div class="cattle-stat">
-                  <div class="cattle-stat-icon">
+                <div class="stat">
+                  <div class="stat-icon">
                     <i class="fas fa-chart-bar"></i>
                   </div>
-                  <div class="cattle-stat-content">
-                    <p class="text-sm text-muted-foreground">Daily Production</p>
-                    <p class="text-sm font-medium">${cattle.dailyProduction}</p>
+                  <div class="stat-content">
+                    <p class="stat-label">Daily Production</p>
+                    <p class="stat-value">${cattle.dailyProduction}</p>
                   </div>
                 </div>
-                <div class="cattle-stat">
-                  <div class="cattle-stat-icon">
+                <div class="stat">
+                  <div class="stat-icon">
                     <i class="fas fa-calendar"></i>
                   </div>
-                  <div class="cattle-stat-content">
-                    <p class="text-sm text-muted-foreground">Purchased</p>
-                    <p class="text-sm font-medium">${cattle.purchaseDate}</p>
+                  <div class="stat-content">
+                    <p class="stat-label">Purchased</p>
+                    <p class="stat-value">${cattle.purchaseDate}</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="px-4 pb-4">
-              <button class="btn-outline view-details" data-id="${cattle.id}">
-                View Details
-              </button>
+            <div class="card-footer">
+              <button class="btn view-details" data-id="${cattle.id}">View Details</button>
             </div>
           `;
           
-          container.appendChild(card);
+          cattleGrid.appendChild(card);
         });
         
-        // Add event listeners to the view details buttons
+        // Add click events to view details buttons
         document.querySelectorAll('.view-details').forEach(button => {
           button.addEventListener('click', function() {
             const cattleId = this.getAttribute('data-id');
-            const cattle = cattleData.find(c => c.id === cattleId);
-            
-            // Store cattle data in localStorage to pass to viewdetailsofcattle.html
-            localStorage.setItem('selectedCattle', JSON.stringify(cattle));
-            
-            // Open viewdetailsofcattle.html in a new window/tab
-            window.open('viewdetailsofcattle.html', '_blank');
-            
-            // Also keep the existing functionality as fallback
-            if (window.parent && window.parent.postMessage) {
-              window.parent.postMessage({
-                type: 'openCattleDetails',
-                cattle: cattle
-              }, '*');
-            } else {
-              // Fallback to opening modal in this page if parent communication fails
-              openCattleModal(cattle);
+            const selectedCattle = cattleData.find(c => c.id === cattleId);
+            if (selectedCattle) {
+              openCattleModal(selectedCattle);
             }
           });
         });
-        
-        // Send height to parent for iframe adjustment
-        sendHeightToParent();
       }
-      
-      // Initial render
-      renderCattleCards();
-      
-      // Modal functionality
-      const modal = document.getElementById('cattleModal');
-      const closeModal = document.getElementById('closeModal');
-      const closeBtn = document.getElementById('closeBtn');
-      const nextSectionBtn = document.getElementById('nextSectionBtn');
-      
-      function openCattleModal(cattle) {
-        // Populate modal with cattle details
-        document.getElementById('modalCattleName').textContent = cattle.name;
-        document.getElementById('modalCattleName').className = `text-xl font-semibold ${getHealthColor(cattle.health)}`;
-        document.getElementById('modalCattleImage').innerHTML = `
-          <img 
-            src="${cattle.image}" 
-            alt="Cattle ${cattle.name}" 
-            class="w-full h-full object-cover rounded-md"
-          />
-        `;
-        document.getElementById('modalHealth').textContent = cattle.health;
-        document.getElementById('modalHealth').className = `info-value ${getHealthColor(cattle.health)}`;
-        document.getElementById('modalLactation').textContent = cattle.lactationStatus;
-        document.getElementById('modalProduction').textContent = cattle.dailyProduction;
-        document.getElementById('modalAge').textContent = cattle.age;
-        document.getElementById('modalBreed').textContent = cattle.breed;
-        
-        // Show the modal
-        modal.style.display = 'block';
-        
-        // Initialize charts
-        initFeedChart();
-        initMilkProductionChart();
-        
-        // Set active tab
-        setActiveTab('overview');
-      }
-      
-      function closeModalFn() {
-        modal.style.display = 'none';
-      }
-      
-      closeModal.addEventListener('click', closeModalFn);
-      closeBtn.addEventListener('click', closeModalFn);
-      
-      // Tab functionality
-      const tabs = document.querySelectorAll('.tab');
-      tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-          const tabName = this.getAttribute('data-tab');
-          setActiveTab(tabName);
-        });
-      });
-      
-      function setActiveTab(tabName) {
-        // Remove active class from all tabs and contents
-        document.querySelectorAll('.tab').forEach(tab => {
-          tab.classList.remove('active');
-        });
-        document.querySelectorAll('.tab-content').forEach(content => {
-          content.classList.remove('active');
-        });
-        
-        // Add active class to the selected tab and content
-        document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
-        document.getElementById(tabName).classList.add('active');
-      }
-      
-      // Next section button
-      nextSectionBtn.addEventListener('click', function() {
-        const tabs = ['overview', 'production', 'health', 'fertility'];
-        const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
-        const currentIndex = tabs.indexOf(activeTab);
-        const nextIndex = (currentIndex + 1) % tabs.length;
-        setActiveTab(tabs[nextIndex]);
-      });
-      
-      // Charts initialization
+
+      // Chart initialization
       function initFeedChart() {
-        const feedData = {
-          labels: ['Grass', 'Hay', 'Silage', 'Supplements'],
-          datasets: [{
-            data: [40, 30, 20, 10],
-            backgroundColor: [
-              'rgba(139, 92, 246, 0.7)',
-              'rgba(139, 92, 246, 0.5)',
-              'rgba(139, 92, 246, 0.3)',
-              'rgba(139, 92, 246, 0.2)'
-            ],
-            borderWidth: 0,
-            borderRadius: 4
-          }]
-        };
+        const ctx = document.getElementById('feedChart').getContext('2d');
         
-        const feedCtx = document.getElementById('feedChart').getContext('2d');
-        if (window.feedChart) {
-          window.feedChart.destroy();
+        if (feedChart) {
+          feedChart.destroy();
         }
         
-        window.feedChart = new Chart(feedCtx, {
+        feedChart = new Chart(ctx, {
           type: 'bar',
-          data: feedData,
+          data: {
+            labels: ['Grass', 'Hay', 'Silage', 'Supplements'],
+            datasets: [{
+              data: [40, 30, 20, 10],
+              backgroundColor: [
+                'rgba(155, 135, 245, 0.8)',
+                'rgba(155, 135, 245, 0.6)',
+                'rgba(155, 135, 245, 0.4)',
+                'rgba(155, 135, 245, 0.2)'
+              ],
+              borderWidth: 0,
+              borderRadius: 4
+            }]
+          },
           options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
               y: {
-                beginAtZero: true,
-                ticks: {
-                  font: {
-                    size: 10
-                  }
-                }
-              },
-              x: {
-                ticks: {
-                  font: {
-                    size: 10
-                  }
-                }
+                beginAtZero: true
               }
             },
             plugins: {
@@ -841,29 +1037,28 @@
           }
         });
       }
-      
+
       function initMilkProductionChart() {
-        const milkData = {
-          labels: ['Apr 1', 'Apr 2', 'Apr 3', 'Apr 4', 'Apr 5', 'Apr 6', 'Apr 7'],
-          datasets: [{
-            label: 'Milk Production (Liters)',
-            data: [28, 29, 30, 31, 32, 30, 29],
-            fill: false,
-            borderColor: 'rgb(139, 92, 246)',
-            tension: 0.4,
-            pointBackgroundColor: 'rgb(139, 92, 246)',
-            pointRadius: 4
-          }]
-        };
+        const ctx = document.getElementById('milkProductionChart').getContext('2d');
         
-        const milkCtx = document.getElementById('milkProductionChart').getContext('2d');
-        if (window.milkChart) {
-          window.milkChart.destroy();
+        if (milkProductionChart) {
+          milkProductionChart.destroy();
         }
         
-        window.milkChart = new Chart(milkCtx, {
+        milkProductionChart = new Chart(ctx, {
           type: 'line',
-          data: milkData,
+          data: {
+            labels: ['Apr 1', 'Apr 2', 'Apr 3', 'Apr 4', 'Apr 5', 'Apr 6', 'Apr 7'],
+            datasets: [{
+              label: 'Milk Production (Liters)',
+              data: [28, 29, 30, 31, 32, 30, 29],
+              fill: false,
+              borderColor: '#9b87f5',
+              tension: 0.4,
+              pointBackgroundColor: '#9b87f5',
+              pointRadius: 4
+            }]
+          },
           options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -885,49 +1080,118 @@
           }
         });
       }
-      
-      // Initialize progress bars with animation
-      setTimeout(() => {
-        document.querySelectorAll('.progress-fill').forEach(fill => {
-          const width = fill.style.width;
-          fill.style.width = '0';
+
+      // Initialize progress bars
+      function animateProgressBars() {
+        const progressFills = document.querySelectorAll('.progress-fill');
+        progressFills.forEach(fill => {
+          const width = fill.getAttribute('data-width');
+          fill.style.width = '0%';
+          
           setTimeout(() => {
             fill.style.width = width;
           }, 100);
         });
-      }, 500);
+      }
+
+      // Tab functionality
+      function setActiveTab(tabName) {
+        const allTabs = document.querySelectorAll('.tab');
+        const allContents = document.querySelectorAll('.tab-content');
+        
+        allTabs.forEach(tab => tab.classList.remove('active'));
+        allContents.forEach(content => content.classList.remove('active'));
+        
+        document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+        document.getElementById(`${tabName}Tab`).classList.add('active');
+        
+        // Initialize charts for specific tabs
+        if (tabName === 'overview') {
+          initFeedChart();
+          animateProgressBars();
+        } else if (tabName === 'production') {
+          initMilkProductionChart();
+        }
+      }
+
+      // Modal functionality
+      function openCattleModal(cattle) {
+        modalTitle.textContent = cattle.name;
+        modalTitle.className = `modal-title ${getHealthClass(cattle.health)}`;
+        modalImage.src = cattle.image;
+        modalImage.alt = `Cattle ${cattle.name}`;
+        modalHealth.textContent = cattle.health;
+        modalHealth.className = `info-value ${getHealthClass(cattle.health)}`;
+        modalLactation.textContent = cattle.lactationStatus;
+        modalProduction.textContent = cattle.dailyProduction;
+        modalAge.textContent = cattle.age;
+        modalBreed.textContent = cattle.breed;
+        
+        // Populate health and fertility records
+        populateHealthRecords();
+        populateFertilityRecords();
+        
+        // Reset to overview tab
+        setActiveTab('overview');
+        
+        // Show modal
+        modal.classList.add('open');
+      }
+
+      function closeModalFn() {
+        modal.classList.remove('open');
+      }
+
+      // Event listeners
+      cattleFilter.addEventListener('change', renderCattleCards);
+      sortOrder.addEventListener('change', renderCattleCards);
       
-      // Close the modal when clicking outside of it
-      window.addEventListener('click', function(event) {
-        if (event.target === modal) {
+      closeModal.addEventListener('click', closeModalFn);
+      closeBtn.addEventListener('click', closeModalFn);
+      
+      // Tab click event
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabName = this.getAttribute('data-tab');
+          setActiveTab(tabName);
+        });
+      });
+      
+      nextSectionBtn.addEventListener('click', function() {
+        const tabs = ['overview', 'production', 'health', 'fertility'];
+        const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
+        const currentIndex = tabs.indexOf(activeTab);
+        const nextIndex = (currentIndex + 1) % tabs.length;
+        setActiveTab(tabs[nextIndex]);
+      });
+      
+      // Close modal when clicking outside
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
           closeModalFn();
         }
       });
 
-      // Listen for messages from parent window to update filters
-      window.addEventListener('message', function(event) {
-        if (event.data && event.data.type === 'updateCattleFilter') {
-          cattleFilter = event.data.filter;
-          sortOrder = event.data.sort;
-          renderCattleCards();
-        }
-      });
+      // Initial render
+      renderCattleCards();
       
-      // Function to send height to parent
-      function sendHeightToParent() {
-        if (window.parent && window.parent.postMessage) {
-          setTimeout(() => {
-            const height = document.body.scrollHeight;
-            window.parent.postMessage({ type: 'resize', height: height }, '*');
-          }, 100);
+      // Communicate height to parent frame
+      function updateParentHeight() {
+        const height = document.body.scrollHeight;
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: 'iframe-height', height: height }, '*');
         }
       }
       
-      // Send initial height
-      sendHeightToParent();
+      // Update height after content loads
+      window.addEventListener('load', function() {
+        updateParentHeight();
+        // Also update after a short delay to account for dynamic content
+        setTimeout(updateParentHeight, 500);
+      });
       
-      // Send height on window resize
-      window.addEventListener('resize', sendHeightToParent);
+      // Update height when window resizes
+      window.addEventListener('resize', updateParentHeight);
     });
   </script>
 </body>
