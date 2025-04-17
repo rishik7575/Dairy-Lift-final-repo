@@ -705,7 +705,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Sample cattle data
-      const cattleData = [
+      let cattleData = [
         {
           id: '1',
           name: 'Bella',
@@ -795,6 +795,25 @@
           purchaseDate: 'Dec 10, 2021'
         }
       ];
+
+      // Load any new cattle data from localStorage
+      try {
+        const storedCattle = JSON.parse(localStorage.getItem('newCattle')) || [];
+        if (Array.isArray(storedCattle) && storedCattle.length > 0) {
+          // Generate new IDs for the stored cattle
+          storedCattle.forEach(cattle => {
+            // Find the highest existing ID and increment by 1
+            const highestId = Math.max(...cattleData.map(c => parseInt(c.id)));
+            const newId = (highestId + 1).toString();
+            cattle.id = newId;
+            cattleData.push(cattle);
+          });
+          // Clear the localStorage after adding to prevent duplicates
+          localStorage.removeItem('newCattle');
+        }
+      } catch (error) {
+        console.error('Error loading cattle data from localStorage:', error);
+      }
 
       // Health records data
       const healthRecords = [

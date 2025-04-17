@@ -11,6 +11,7 @@
   
   <!-- Required scripts -->
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  <script src="js/add_cattle.js"></script>
 
   <script>
     tailwind.config = {
@@ -777,6 +778,39 @@
         
         // Save to localStorage
         localStorage.setItem('cattle', JSON.stringify(existingCattle));
+        
+        // Also save in a format compatible with YourCattle.html
+        const yourCattleFormat = {
+          name: formData.tagId,
+          breed: formData.breed,
+          age: formData.age + ' years old',
+          image: formData.imageUrl || 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=600&q=80',
+          health: formData.healthStatus,
+          lactationStatus: formData.gender === 'female' ? 'Active' : 'N/A',
+          dailyProduction: formData.gender === 'female' ? (formData.expectedMilkProduction || '0') + ' liters' : '0 liters',
+          purchaseDate: new Date(formData.purchaseDate).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          })
+        };
+        
+        // Get existing YourCattle data from localStorage
+        let yourCattleData = [];
+        try {
+          const existingData = localStorage.getItem('newCattle');
+          if (existingData) {
+            yourCattleData = JSON.parse(existingData);
+          }
+        } catch (error) {
+          console.error('Error parsing YourCattle data:', error);
+        }
+        
+        // Add the new cattle to the array
+        yourCattleData.push(yourCattleFormat);
+        
+        // Save the updated array back to localStorage
+        localStorage.setItem('newCattle', JSON.stringify(yourCattleData));
         
         // Show success message
         showToast(
