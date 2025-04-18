@@ -35,7 +35,7 @@
 
     /* Layout */
     .min-h-screen {
-      min-height: 100vh;
+      min-height: calc(100vh - 10px);
     }
 
     .flex {
@@ -515,21 +515,21 @@
     .footer {
       background-color: white;
       border-top: 1px solid #e2e8f0;
-      padding: 2rem;
+      padding: 0.5rem 0.25rem;
       text-align: center;
     }
 
     .footer-links {
       display: flex;
       justify-content: center;
-      gap: 1.5rem;
-      margin-bottom: 1rem;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
     }
 
     .footer-link {
       color: #64748b;
       text-decoration: none;
-      font-size: 0.875rem;
+      font-size: 0.65rem;
     }
 
     .footer-link:hover {
@@ -537,7 +537,7 @@
     }
 
     .footer-copyright {
-      font-size: 0.875rem;
+      font-size: 0.65rem;
       color: #94a3b8;
     }
 
@@ -658,7 +658,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow py-12 px-4">
+    <main class="flex-grow py-8 px-4">
       <div class="max-w-md mx-auto">
         <div class="tabs">
           <div class="tabs-list">
@@ -901,12 +901,15 @@
     
     <!-- Footer -->
     <footer class="footer">
-      <div class="footer-links">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
         <a href="#" class="footer-link">Terms</a>
+        <span style="color: #d1d5db; font-size: 0.5rem;">•</span>
         <a href="#" class="footer-link">Privacy</a>
+        <span style="color: #d1d5db; font-size: 0.5rem;">•</span>
         <a href="#" class="footer-link">Help</a>
+        <span style="color: #d1d5db; font-size: 0.5rem;">•</span>
+        <span class="footer-copyright">© 2023</span>
       </div>
-      <div class="footer-copyright">© 2023 DairyVest. All rights reserved.</div>
     </footer>
   </div>
 
