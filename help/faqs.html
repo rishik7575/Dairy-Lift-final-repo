@@ -3,10 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FAQs - Supportia</title>
+  <title>Dairy-Lift Support - FAQs</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
     /* Base styles */
+    :root {
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --radius: 0.5rem;
+    }
+    
     * {
       box-sizing: border-box;
       margin: 0;
@@ -14,12 +32,13 @@
     }
     
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      color: #333;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--foreground);
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      background-color: var(--background);
     }
     
     .container-custom {
@@ -29,34 +48,382 @@
       padding: 0 1rem;
     }
     
-    /* Header styles */
-    header {
-      border-bottom: 1px solid #e2e8f0;
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
-      background-color: white;
-      z-index: 30;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+      text-decoration: none;
+      font-family: 'Pacifico', cursive;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
     }
     
-    .header-container {
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+    
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
       display: flex;
-      height: 4rem;
-      align-items: center;
+      flex-direction: column;
       justify-content: space-between;
     }
     
-    .logo {
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+    
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+    
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+    
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+    
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-weight: 700;
-      font-size: 1.25rem;
-      color: #2563eb;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+    
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
+    }
+    
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
       text-decoration: none;
     }
     
-    .nav-desktop {
-      display: none;
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+    
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline-primary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .btn svg {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
     }
     
     @media (min-width: 768px) {
@@ -485,64 +852,105 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="container-custom header-container">
-      <div class="flex items-center gap-2">
-        <a href="home.html" class="logo">
-          <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
-          <span>Supportia</span>
-        </a>
-      </div>
-      <nav class="nav-desktop">
-        <a href="home.html" class="nav-link">Home</a>
-        <a href="livechat.html" class="nav-link">Live Chat</a>
-        <a href="faqs.html" class="nav-link active">FAQs</a>
-        <a href="helparticles.html" class="nav-link">Help Articles</a>
-        <a href="submitticket.html" class="nav-link">Submit Ticket</a>
-        <a href="supportstatus.html" class="nav-link">Support Status</a>
-      </nav>
-      <div class="right-nav">
-        <button class="btn btn-outline btn-icon btn-desktop" aria-label="Search">
-          <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+  <!-- Navbar -->
+  <header class="navbar" style="padding:10px">
+    <div class="container-custom" style="margin:0px">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+          <div class="hamburger-lines">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </div>
         </button>
-        <a href="contact.html" class="btn btn-primary btn-desktop">Contact Support</a>
-        <button class="btn btn-outline btn-icon mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
-          <svg class="icon-small" id="menuIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-          <svg class="icon-small" id="closeIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <a href="../home_page.html" class="logo">Dairy-Lift</a>
+        <nav class="desktop-nav">
+          <a href="home.html" class="nav-link">Home</a>
+          <a href="livechat.html" class="nav-link">Live Chat</a>
+          <a href="faqs.html" class="nav-link active">FAQs</a>
+          <a href="helparticles.html" class="nav-link">Help Articles</a>
+          <a href="submitticket.html" class="nav-link">Submit Ticket</a>
+          <a href="supportstatus.html" class="nav-link">Support Status</a>
+        </nav>
+        <div class="navbar-actions">
+          <a href="../login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Login
+          </a>
+        </div>
       </div>
     </div>
-  </header>
-
-  <div class="mobile-menu" id="mobileMenu">
-    <nav class="container-custom mobile-nav">
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <a href="../home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
       <a href="home.html" class="mobile-nav-link">
-        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-        Home
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span style="margin-left: 10px;">Home</span>
       </a>
       <a href="livechat.html" class="mobile-nav-link">
-        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-        Live Chat
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span style="margin-left: 10px;">Live Chat</span>
       </a>
       <a href="faqs.html" class="mobile-nav-link active">
-        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-        FAQs
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span style="margin-left: 10px;">FAQs</span>
       </a>
       <a href="helparticles.html" class="mobile-nav-link">
-        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
-        Help Articles
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+        </svg>
+        <span style="margin-left: 10px;">Help Articles</span>
       </a>
       <a href="submitticket.html" class="mobile-nav-link">
-        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6"></path><path d="M18 8v4H6V8"></path><path d="M22 4H2"></path><path d="M12 2v2"></path><path d="M12 12v6"></path><path d="M10 18h4"></path></svg>
-        Submit Ticket
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6"></path>
+          <path d="M18 8v4H6V8"></path>
+          <path d="M22 4H2"></path>
+          <path d="M12 2v2"></path>
+          <path d="M12 12v6"></path>
+          <path d="M10 18h4"></path>
+        </svg>
+        <span style="margin-left: 10px;">Submit Ticket</span>
       </a>
       <a href="supportstatus.html" class="mobile-nav-link">
-        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
-        Support Status
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="20" x2="12" y2="10"></line>
+          <line x1="18" y1="20" x2="18" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="16"></line>
+        </svg>
+        <span style="margin-left: 10px;">Support Status</span>
       </a>
-      <a href="contact.html" class="btn btn-primary">Contact Support</a>
-    </nav>
-  </div>
+      <a href="../login.html" class="mobile-nav-link mobile-nav-link-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Login / Register</span>
+      </a>
+    </div>
+  </header>
 
   <main>
     <div class="container-custom py-12">
@@ -621,27 +1029,87 @@
     // Set current year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-    // Mobile menu toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const menuIcon = document.getElementById('menuIcon');
-    const closeIcon = document.getElementById('closeIcon');
-    let isMenuOpen = false;
+    // Mobile Menu Toggle
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const body = document.body;
 
-    mobileMenuBtn.addEventListener('click', () => {
-      isMenuOpen = !isMenuOpen;
-      mobileMenu.classList.toggle('open', isMenuOpen);
-      menuIcon.style.display = isMenuOpen ? 'none' : 'block';
-      closeIcon.style.display = isMenuOpen ? 'block' : 'none';
+    // Function to open mobile menu
+    function openMobileMenu() {
+      mobileMenu.classList.add('active');
+      mobileMenuOverlay.classList.add('active');
+      mobileMenuToggle.classList.add('active');
+      body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+      
+      // Add a subtle ripple effect on click
+      const ripple = document.createElement('span');
+      ripple.classList.add('menu-toggle-ripple');
+      mobileMenuToggle.appendChild(ripple);
+      
+      // Position the ripple where the click happened
+      const rect = mobileMenuToggle.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height) * 2;
+      
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${-size/4}px`;
+      ripple.style.top = `${-size/4}px`;
+      
+      // Remove the ripple after animation completes
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+      
+      // Add entrance animation to each nav link
+      const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+      navLinks.forEach((link, index) => {
+        link.style.opacity = '0';
+        link.style.transform = 'translateX(-10px)';
+        link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+        
+        setTimeout(() => {
+          link.style.opacity = '1';
+          link.style.transform = 'translateX(0)';
+        }, 10);
+      });
+    }
+
+    // Function to close mobile menu
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('active');
+      mobileMenuOverlay.classList.remove('active');
+      mobileMenuToggle.classList.remove('active');
+      body.style.overflow = ''; // Restore scrolling
+    }
+
+    // Toggle menu when clicking the hamburger button
+    mobileMenuToggle.addEventListener('click', function(event) {
+      event.stopPropagation();
+      if (mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
     });
 
-    // Close mobile menu when window is resized to desktop size
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768 && isMenuOpen) {
-        isMenuOpen = false;
-        mobileMenu.classList.remove('open');
-        menuIcon.style.display = 'block';
-        closeIcon.style.display = 'none';
+    // Close menu when clicking the close button
+    mobileMenuClose.addEventListener('click', closeMobileMenu);
+    
+    // Close menu when clicking the overlay
+    mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+    // Close mobile menu when clicking on a link
+    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+    
+    // Close mobile menu when pressing Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
       }
     });
 

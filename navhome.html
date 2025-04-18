@@ -103,41 +103,86 @@
     </style>
 </head>
 <body class="font-sans">
-    <!-- Mobile Menu Overlay (Hidden by default) -->
-    <div id="mobile-menu" class="mobile-menu fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden">
-        <div class="bg-white h-full w-64 shadow-lg p-5">
-            <div class="flex justify-between items-center mb-8">
-                <div class="flex items-center gap-2">
-                    <div class="bg-cattle-green rounded-full p-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M8 3v4l3 3 1-1 1 1 3-3V3" />
-                            <path d="M19 7h1a2 2 0 0 1 2 2v1a3 3 0 0 1-3 3h-5c-1.15 0-2.24-.34-3.15-.93" />
-                            <path d="M4 7H3a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3h5c1.15 0 2.24-.34 3.15-.93" />
-                            <path d="M12 22v-5" />
-                            <path d="M9 14.59A7.5 7.5 0 0 0 5 19.93" />
-                            <path d="M15 14.59A7.5 7.5 0 0 1 19 19.93" />
-                        </svg>
-                    </div>
-                    <span class="text-lg font-bold text-cattle-green">Agri-Lift</span>
-                </div>
-                <button id="close-menu" class="text-gray-500 hover:text-gray-800">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden transition-opacity duration-300 backdrop-blur-sm"></div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed top-0 left-0 w-72 h-full bg-white shadow-xl z-[1000] transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="flex justify-between items-center p-5 border-b border-gray-200">
+            <div class="flex items-center gap-2">
+                <div class="bg-cattle-green rounded-full p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3v4l3 3 1-1 1 1 3-3V3" />
+                        <path d="M19 7h1a2 2 0 0 1 2 2v1a3 3 0 0 1-3 3h-5c-1.15 0-2.24-.34-3.15-.93" />
+                        <path d="M4 7H3a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3h5c1.15 0 2.24-.34 3.15-.93" />
+                        <path d="M12 22v-5" />
+                        <path d="M9 14.59A7.5 7.5 0 0 0 5 19.93" />
+                        <path d="M15 14.59A7.5 7.5 0 0 1 19 19.93" />
                     </svg>
-                </button>
+                </div>
+                <span class="text-lg font-bold text-cattle-green">Dairy-Lift</span>
             </div>
-            <nav class="flex flex-col space-y-4">
-                <a href="navhome.html" class="text-gray-700 hover:text-cattle-green font-medium py-2">Home</a>
-                <a href="navplans.html" class="text-gray-700 hover:text-cattle-green font-medium py-2">Plans</a>
-                <a href="navregister-cattle.html" class="text-gray-700 hover:text-cattle-green font-medium py-2">Register Cattle</a>
-                <a href="navclaims.html" class="text-gray-700 hover:text-cattle-green font-medium py-2">Claims</a>
-                <a href="#" class="text-gray-700 hover:text-cattle-green font-medium py-2">Support</a>
-                <a href="home_page.html" class="bg-cattle-green text-white px-4 py-2 rounded mt-4 text-center">
-                    Dashboard
-                </a>
-            </nav>
+            <button id="mobile-menu-close" class="text-gray-500 hover:text-gray-800 transition-colors duration-200 rounded-full p-2 hover:bg-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
         </div>
+        <nav class="p-5">
+            <div class="space-y-4">
+                <a href="navhome.html" class="mobile-nav-link flex items-center text-gray-700 hover:text-cattle-green hover:bg-gray-50 font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:translate-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Home
+                </a>
+                <a href="navplans.html" class="mobile-nav-link flex items-center text-gray-700 hover:text-cattle-green hover:bg-gray-50 font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:translate-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg>
+                    Plans
+                </a>
+                <a href="navregister-cattle.html" class="mobile-nav-link flex items-center text-gray-700 hover:text-cattle-green hover:bg-gray-50 font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:translate-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
+                        <path d="M8 3v4l3 3 1-1 1 1 3-3V3"></path>
+                        <path d="M19 7h1a2 2 0 0 1 2 2v1a3 3 0 0 1-3 3h-5c-1.15 0-2.24-.34-3.15-.93"></path>
+                        <path d="M4 7H3a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3h5c1.15 0 2.24-.34 3.15-.93"></path>
+                    </svg>
+                    Register Cattle
+                </a>
+                <a href="navclaims.html" class="mobile-nav-link flex items-center text-gray-700 hover:text-cattle-green hover:bg-gray-50 font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:translate-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    Claims
+                </a>
+                <a href="help/home.html" class="mobile-nav-link flex items-center text-gray-700 hover:text-cattle-green hover:bg-gray-50 font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:translate-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    Support
+                </a>
+                <div class="pt-4 mt-4 border-t border-gray-200">
+                    <a href="home_page.html" class="mobile-nav-link flex items-center justify-center bg-cattle-green hover:bg-cattle-lightGreen text-white font-medium py-3 px-4 rounded-lg transition-all duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                        Dashboard
+                    </a>
+                </div>
+            </div>
+        </nav>
     </div>
 
     <!-- Main Navigation -->
@@ -154,16 +199,16 @@
                         <path d="M15 14.59A7.5 7.5 0 0 1 19 19.93" />
                     </svg>
                 </div>
-                <span class="text-xl font-bold text-cattle-green">Agri-Lift</span>
+                <span class="text-xl font-bold text-cattle-green">Dairy-Lift</span>
             </div>
 
             <!-- Mobile menu button -->
-            <button id="open-menu" class="md:hidden text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
+            <button id="mobile-menu-toggle" class="md:hidden text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 focus:outline-none">
+                <div class="w-6 h-5 flex flex-col justify-between">
+                    <span class="w-full h-0.5 bg-cattle-green rounded-full transition-all duration-300"></span>
+                    <span class="w-full h-0.5 bg-cattle-green rounded-full transition-all duration-300"></span>
+                    <span class="w-full h-0.5 bg-cattle-green rounded-full transition-all duration-300"></span>
+                </div>
             </button>
 
             <!-- Desktop Navigation -->
@@ -172,8 +217,8 @@
                 <a href="navplans.html" class="text-gray-700 hover:text-cattle-green font-medium">Plans</a>
                 <a href="navregister-cattle.html" class="text-gray-700 hover:text-cattle-green font-medium">Register Cattle</a>
                 <a href="navclaims.html" class="text-gray-700 hover:text-cattle-green font-medium">Claims</a>
-                <a href="#" class="text-gray-700 hover:text-cattle-green font-medium">Support</a>
-                <a href="home_page.html" class="bg-cattle-green hover:bg-cattle-lightGreen text-white px-4 py-2 rounded">Dashboard</a>
+                <a href="help/home.html" class="text-gray-700 hover:text-cattle-green font-medium">Support</a>
+                <a href="home_page.html" class="bg-cattle-green hover:bg-cattle-lightGreen text-white px-4 py-2 rounded transition-colors duration-200">Dashboard</a>
             </div>
         </div>
     </nav>
@@ -681,22 +726,74 @@
     <!-- JavaScript for interactive elements -->
     <script>
         // Mobile menu functionality
-        const openMenuButton = document.getElementById('open-menu');
-        const closeMenuButton = document.getElementById('close-menu');
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
         const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const body = document.body;
         
-        openMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.remove('hidden');
+        // Function to open mobile menu
+        function openMobileMenu() {
+            mobileMenu.classList.add('translate-x-0');
+            mobileMenu.classList.remove('-translate-x-full');
+            mobileMenuOverlay.classList.remove('hidden');
             setTimeout(() => {
-                mobileMenu.querySelector('div').classList.add('open');
+                mobileMenuOverlay.classList.add('opacity-100');
             }, 10);
+            body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+            
+            // Add entrance animation to each nav link
+            const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+            navLinks.forEach((link, index) => {
+                link.style.opacity = '0';
+                link.style.transform = 'translateX(-10px)';
+                link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+                
+                setTimeout(() => {
+                    link.style.opacity = '1';
+                    link.style.transform = 'translateX(0)';
+                }, 10);
+            });
+        }
+        
+        // Function to close mobile menu
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('translate-x-0');
+            mobileMenu.classList.add('-translate-x-full');
+            mobileMenuOverlay.classList.remove('opacity-100');
+            setTimeout(() => {
+                mobileMenuOverlay.classList.add('hidden');
+            }, 300);
+            body.style.overflow = ''; // Restore scrolling
+        }
+        
+        // Toggle menu when clicking the hamburger button
+        mobileMenuToggle.addEventListener('click', function() {
+            if (mobileMenu.classList.contains('-translate-x-full')) {
+                openMobileMenu();
+            } else {
+                closeMobileMenu();
+            }
         });
         
-        closeMenuButton.addEventListener('click', () => {
-            mobileMenu.querySelector('div').classList.remove('open');
-            setTimeout(() => {
-                mobileMenu.classList.add('hidden');
-            }, 300);
+        // Close menu when clicking the close button
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+        
+        // Close menu when clicking the overlay
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        
+        // Close mobile menu when clicking on a link
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+        
+        // Close mobile menu when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && !mobileMenu.classList.contains('-translate-x-full')) {
+                closeMobileMenu();
+            }
         });
         
         // Animation on scroll

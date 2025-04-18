@@ -3,10 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Help Articles - Supportia</title>
+  <title>Dairy-Lift Support - Help Articles</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
     /* Base styles */
+    :root {
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --radius: 0.5rem;
+    }
+    
     * {
       box-sizing: border-box;
       margin: 0;
@@ -14,12 +32,13 @@
     }
     
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      color: #333;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--foreground);
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      background-color: var(--background);
     }
     
     .container-custom {
@@ -29,34 +48,382 @@
       padding: 0 1rem;
     }
     
-    /* Header styles */
-    header {
-      border-bottom: 1px solid #e2e8f0;
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
-      background-color: white;
-      z-index: 30;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+      text-decoration: none;
+      font-family: 'Pacifico', cursive;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
     }
     
-    .header-container {
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+    
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
       display: flex;
-      height: 4rem;
-      align-items: center;
+      flex-direction: column;
       justify-content: space-between;
     }
     
-    .logo {
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+    
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+    
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+    
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+    
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-weight: 700;
-      font-size: 1.25rem;
-      color: #2563eb;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+    
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
+    }
+    
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
       text-decoration: none;
     }
     
-    .nav-desktop {
-      display: none;
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+    
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline-primary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .btn svg {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
     }
     
     @media (min-width: 768px) {
