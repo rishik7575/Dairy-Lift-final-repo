@@ -189,46 +189,125 @@
       border-bottom: 1px solid var(--border);
     } */
 
-    .mobile-menu {
-      display: none;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-      max-width: 20%;
-      /* Adjust as needed */
-      overflow-x: auto;
-      position: absolute;
-      /* Changed to absolute */
-      top: 100%;
-      /* Positioned at the bottom edge of the navbar */
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
       left: 0;
-      z-index: 99;
-      /* Ensure it's above other content */
-      background-color: var(--background);
       width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+    
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
     }
 
     .mobile-menu.active {
-      display: block;
+      transform: translateX(280px);
+    }
+    
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
     }
 
     .mobile-nav-link {
-      display: block;
-      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
       color: var(--foreground);
-      border-radius: 0.375rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
     }
 
     .mobile-nav-link:hover {
       background-color: var(--muted);
+      transform: translateX(5px);
+    }
+    
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .mobile-nav-link:hover::after {
+      width: 30%;
     }
 
     .mobile-nav-link-primary {
       color: var(--primary);
-      font-weight: 500;
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
     }
-
+    
     .mobile-nav-link-primary:hover {
       background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(139, 92, 246, 0.15);
     }
 
     @media (min-width: 768px) {
@@ -948,6 +1027,27 @@
         flex-direction: column;
         gap: 1rem;
       }
+      
+      /* Notification styles */
+      .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--primary);
+        color: white;
+        padding: 10px 20px;
+        border-radius: var(--radius);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      
+      .notification.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
 
       .cart-coupon {
         width: 100%;
@@ -1003,16 +1103,79 @@
         </div>
       </div>
     </div>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
     <div class="mobile-menu" id="mobile-menu">
-      <a href="home_page.html" class="mobile-nav-link">Home</a>
-      <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
-      <a href="admin-dashboard.html" class="mobile-nav-link">Register Cattle</a>
-      <a href="store.html" class="mobile-nav-link">Store</a>
-      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">Login / Register</a>
-      <a href="navhome.html" class="mobile-nav-link">Insurance </a>
-      <a href="help/home.html" class="mobile-nav-link">Support</a>
-      <a href="admin-dashboard.html" class="mobile-nav-link">Admin</a>
-    </div>
+      <div class="mobile-menu-header">
+        <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <a href="home_page.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span style="margin-left: 10px;">Home</span>
+      </a>
+      <a href="dashboard.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Dashboard</span>
+      </a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+          <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+        </svg>
+        <span style="margin-left: 10px;">Register Cattle</span>
+      </a>
+      <a href="store.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span style="margin-left: 10px;">Store</span>
+      </a>
+      <a href="navhome.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Insurance</span>
+      </a>
+      <a href="help/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span style="margin-left: 10px;">Support</span>
+      </a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Admin</span>
+      </a>
+      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span style="margin-left: 10px;">Login / Register</span>
+      </a>
+      
     </div>
   </header>
 
@@ -1089,6 +1252,9 @@
       </div>
     </div>
   </main>
+  
+  <!-- Notification -->
+  <div id="notification" class="notification"></div>
 
   <footer class="footer">
     <div class="container">
@@ -1264,14 +1430,27 @@
       }
 
       loadFromStorage() {
-        const savedCart = localStorage.getItem('dairyliftCart');
+        // Try both possible localStorage keys to ensure compatibility
+        let savedCart = localStorage.getItem('Diary-LiftCart');
+        
+        if (!savedCart) {
+          // Try alternative key if first one doesn't exist
+          savedCart = localStorage.getItem('dairyliftCart');
+          
+          // If found with alternative key, migrate to the new key format
+          if (savedCart) {
+            localStorage.setItem('Diary-LiftCart', savedCart);
+            localStorage.removeItem('dairyliftCart');
+          }
+        }
+        
         if (savedCart) {
           this.items = JSON.parse(savedCart);
         }
       }
 
       saveToStorage() {
-        localStorage.setItem('dairyliftCart', JSON.stringify(this.items));
+        localStorage.setItem('Diary-LiftCart', JSON.stringify(this.items));
       }
 
       addItem(productId, quantity = 1) {
@@ -1452,10 +1631,15 @@
       updateCartDisplay() {
         // Update cart count
         const cartCount = document.getElementById('cart-count');
-        cartCount.textContent = this.getTotalItems();
+        if (cartCount) {
+          cartCount.textContent = this.getTotalItems();
+        }
 
         // Update cart items display
         const cartItemsContainer = document.getElementById('cart-items-container');
+        if (!cartItemsContainer) return;
+        
+        console.log("Cart items:", this.items); // Debug log
         
         if (this.items.length === 0) {
           cartItemsContainer.innerHTML = `
@@ -1463,30 +1647,40 @@
               <i class="fas fa-shopping-cart cart-empty-icon"></i>
               <h3>Your cart is empty</h3>
               <p>Looks like you haven't added any products to your cart yet.</p>
-              <a href="#" class="btn btn-primary" style="margin-top: 1rem;">
+              <a href="store.html" class="btn btn-primary" style="margin-top: 1rem;">
                 Continue Shopping
               </a>
             </div>
           `;
           
           // Disable checkout button
-          document.getElementById('checkout-btn').disabled = true;
+          const checkoutBtn = document.getElementById('checkout-btn');
+          if (checkoutBtn) {
+            checkoutBtn.disabled = true;
+          }
         } else {
           let cartItemsHTML = '';
           
           this.items.forEach(item => {
+            // Find product in productsData
             const product = productsData.find(p => p.id === item.id);
-            if (!product) return;
+            
+            // Use item data directly if product not found in productsData
+            const productName = product ? product.name : item.name;
+            const productDescription = product ? product.description : '';
+            const productImage = item.imageUrl || (product ? product.imageUrl : '');
             
             cartItemsHTML += `
               <div class="cart-item" data-id="${item.id}">
                 <div class="cart-item-product">
                   <div class="cart-item-image">
-                    <img src="${item.imageUrl}" alt="${item.name}">
+                    <img src="${productImage}" alt="${productName}" onerror="this.src='https://via.placeholder.com/80?text=Product'">
                   </div>
                   <div class="cart-item-details">
-                    <h3>${item.name}</h3>
-                    <p>${product.description.substring(0, 70)}${product.description.length > 70 ? '...' : ''}</p>
+                    <h3>${productName}</h3>
+                    ${productDescription ? 
+                      `<p>${productDescription.substring(0, 70)}${productDescription.length > 70 ? '...' : ''}</p>` : 
+                      ''}
                   </div>
                 </div>
                 <div class="cart-item-price">${formatPrice(item.price)}</div>
@@ -1508,7 +1702,10 @@
           cartItemsContainer.innerHTML = cartItemsHTML;
           
           // Enable checkout button
-          document.getElementById('checkout-btn').disabled = false;
+          const checkoutBtn = document.getElementById('checkout-btn');
+          if (checkoutBtn) {
+            checkoutBtn.disabled = false;
+          }
           
           // Add event listeners for cart items
           this.addCartItemEventListeners();
@@ -1685,10 +1882,21 @@
       }
     }
 
+    // Debug function to check localStorage
+    function debugLocalStorage() {
+      console.log("Diary-LiftCart:", localStorage.getItem('Diary-LiftCart'));
+      console.log("dairyliftCart:", localStorage.getItem('dairyliftCart'));
+    }
+    
     // Initialize cart and suggestions on page load
     document.addEventListener('DOMContentLoaded', function() {
+      // Debug localStorage before cart initialization
+      debugLocalStorage();
+      
       const cart = new Cart();
       const suggestions = new Suggestions(cart);
+      
+      console.log("Cart items after initialization:", cart.items);
       
       // Preload some items into cart for testing (comment out for production)
       /* 
@@ -1698,86 +1906,93 @@
       }
       */
       
-      // Mobile Menu Toggle
-      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const body = document.body;
-
-      // Function to open mobile menu
-      function openMobileMenu() {
-        mobileMenu.classList.add('active');
-        mobileMenuToggle.classList.add('active');
-        body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+      // Initialize cart functionality
+    });
+  </script>
+  
+  <script>
+    // Mobile Menu Toggle - Exact implementation from home_page.html
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const body = document.body;
+    
+    // Function to open mobile menu
+    function openMobileMenu() {
+      mobileMenu.classList.add('active');
+      mobileMenuOverlay.classList.add('active');
+      mobileMenuToggle.classList.add('active');
+      body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+      
+      // Add a subtle ripple effect on click
+      const ripple = document.createElement('span');
+      ripple.classList.add('menu-toggle-ripple');
+      mobileMenuToggle.appendChild(ripple);
+      
+      // Position the ripple where the click happened
+      const rect = mobileMenuToggle.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height) * 2;
+      
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${-size/4}px`;
+      ripple.style.top = `${-size/4}px`;
+      
+      // Remove the ripple after animation completes
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+      
+      // Add entrance animation to each nav link
+      const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+      navLinks.forEach((link, index) => {
+        link.style.opacity = '0';
+        link.style.transform = 'translateX(-10px)';
+        link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        link.style.transitionDelay = `${0.05 * (index + 1)}s`;
         
-        // Add a subtle ripple effect on click
-        const ripple = document.createElement('span');
-        ripple.classList.add('menu-toggle-ripple');
-        mobileMenuToggle.appendChild(ripple);
-        
-        // Position the ripple where the click happened
-        const rect = mobileMenuToggle.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height) * 2;
-        
-        ripple.style.width = ripple.style.height = `${size}px`;
-        ripple.style.left = `${-size/4}px`;
-        ripple.style.top = `${-size/4}px`;
-        
-        // Remove the ripple after animation completes
         setTimeout(() => {
-          ripple.remove();
-        }, 600);
-        
-        // Add entrance animation to each nav link
-        const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
-        navLinks.forEach((link, index) => {
-          link.style.opacity = '0';
-          link.style.transform = 'translateX(-10px)';
-          link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-          link.style.transitionDelay = `${0.05 * (index + 1)}s`;
-          
-          setTimeout(() => {
-            link.style.opacity = '1';
-            link.style.transform = 'translateX(0)';
-          }, 10);
-        });
-      }
+          link.style.opacity = '1';
+          link.style.transform = 'translateX(0)';
+        }, 10);
+      });
+    }
 
-      // Function to close mobile menu
-      function closeMobileMenu() {
-        mobileMenu.classList.remove('active');
-        mobileMenuToggle.classList.remove('active');
-        body.style.overflow = ''; // Restore scrolling
-      }
+    // Function to close mobile menu
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('active');
+      mobileMenuOverlay.classList.remove('active');
+      mobileMenuToggle.classList.remove('active');
+      body.style.overflow = ''; // Restore scrolling
+    }
 
-      // Toggle menu when clicking the hamburger button
-      mobileMenuToggle.addEventListener('click', function(event) {
-        event.stopPropagation();
-        if (mobileMenu.classList.contains('active')) {
-          closeMobileMenu();
-        } else {
-          openMobileMenu();
-        }
-      });
-      
-      // Close mobile menu when clicking on a link
-      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', closeMobileMenu);
-      });
-      
-      // Close mobile menu when clicking outside
-      document.addEventListener('click', function(event) {
-        if (!mobileMenu.contains(event.target) && !mobileMenuToggle.contains(event.target) && mobileMenu.classList.contains('active')) {
-          closeMobileMenu();
-        }
-      });
-      
-      // Close mobile menu when pressing Escape key
-      document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
-          closeMobileMenu();
-        }
-      });
+    // Toggle menu when clicking the hamburger button
+    mobileMenuToggle.addEventListener('click', function(event) {
+      event.stopPropagation();
+      if (mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+    
+    // Close menu when clicking the close button
+    mobileMenuClose.addEventListener('click', closeMobileMenu);
+    
+    // Close menu when clicking the overlay
+    mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+    
+    // Close mobile menu when clicking on a link
+    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+    
+    // Close mobile menu when pressing Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+      }
     });
   </script>
 </body>

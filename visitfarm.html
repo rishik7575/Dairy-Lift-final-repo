@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greenfield Farms - Schedule Your Visit</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'farm-green': 'hsl(142, 35%, 33%)',
+                        'farm-yellow': 'hsl(44, 56%, 68%)',
+                        'farm-tan': 'hsl(32, 30%, 36%)',
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Date-fns -->
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/index.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- IMPORTANT: GPT Engineer Script - Required for Select functionality -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+
+    <style>
+        /* Base Styles */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                url('https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-menu-transition {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .blur-backdrop {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        /* Calendar Styles */
+        .rdp {
+            margin: 0;
+        }
+
+        /* Toast Styles */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="module">
+        // Import necessary dependencies
+        import { format, addDays, isBefore, startOfDay } from 'https://cdn.skypack.dev/date-fns';
+        
+        // React Components
+        const { useState, useEffect } = React;
+
+        // Navbar Component
+        const Navbar = () => {
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 20);
+                };
+
+                window.addEventListener("scroll", handleScroll);
+                return () => window.removeEventListener("scroll", handleScroll);
+            }, []);
+
+            return (
+                <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+                    scrolled ? "bg-white/90 dark:bg-farm-green/90 shadow-md blur-backdrop py-3" : "bg-transparent py-5"
+                }`}>
+                    <div className="container mx-auto px-4 flex justify-between items-center">
+                        <button
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            className="relative z-50 p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            aria-label="Toggle menu"
+                        >
+                            <svg 
+                                className={`w-6 h-6 ${isMenuOpen ? "text-white" : scrolled ? "text-farm-green" : "text-white"}`}
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                            >
+                                <path 
+                                    strokeLinecap="round" 
+                                    strokeLinejoin="round" 
+                                    d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+                                />
+                            </svg>
+                        </button>
+
+                        <h1 className={`text-2xl md:text-3xl font-display font-bold ${
+                            scrolled ? "text-farm-green" : "text-white"
+                        }`}>
+                            Greenfield Farms
+                        </h1>
+
+                        <div className="w-10"></div>
+                    </div>
+
+                    {/* Mobile Navigation Menu */}
+                    <div className={`fixed inset-0 bg-farm-green z-40 nav-menu-transition ${
+                        isMenuOpen
+                            ? "opacity-100 transform translate-x-0"
+                            : "opacity-0 transform -translate-x-full pointer-events-none"
+                    }`}>
+                        <div className="container mx-auto px-4 pt-24 pb-8">
+                            <nav className="flex flex-col space-y-6">
+                                {["Home", "About Us", "Schedule Visit", "Farm Features", "Contact"].map((item, index) => (
+                                    <a
+                                        key={index}
+                                        href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="text-white text-3xl font-display hover:text-farm-yellow transition-colors"
+                                    >
+                                        {item}
+                                    </a>
+                                ))}
+                            </nav>
+                        </div>
+                    </div>
+                </header>
+            );
+        };
+
+        // Hero Component
+        const Hero = () => {
+            const scrollToSchedule = () => {
+                document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            return (
+                <section id="home" className="hero-gradient min-h-screen flex flex-col justify-center items-center text-center text-white relative">
+                    <div className="container px-4 py-20 pt-32 z-10 animate-fade-in">
+                        <h1 className="text-4xl md:text-6xl font-bold mb-6 font-display">
+                            Experience Life on the Farm
+                        </h1>
+                        <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+                            Connect with nature, meet our animals, and learn about sustainable
+                            farming practices. Schedule your visit to Greenfield Farms today.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button
+                                onClick={scrollToSchedule}
+                                className="bg-farm-green hover:bg-farm-green/90 text-white font-medium px-6 py-3 rounded-lg flex items-center justify-center"
+                            >
+                                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                Schedule a Visit
+                            </button>
+                            <button className="bg-white/10 hover:bg-white/20 text-white border border-white backdrop-blur-sm px-6 py-3 rounded-lg">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // Farm Features Component
+        const FarmFeatures = () => {
+            const features = [
+                {
+                    title: "Organic Crops",
+                    description: "Explore our fields of sustainably grown organic vegetables and fruits. Learn about our no-pesticide cultivation methods.",
+                    imageSrc: "https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                },
+                {
+                    title: "Friendly Animals",
+                    description: "Meet our friendly farm animals including cows, sheep, goats, and chickens. Petting and feeding opportunities available.",
+                    imageSrc: "https://images.unsplash.com/photo-1485833077593-4278bba3f11f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                },
+                {
+                    title: "Farm-to-Table",
+                    description: "Experience our farm-to-table philosophy with freshly prepared meals using ingredients harvested the same day.",
+                    imageSrc: "https://images.unsplash.com/photo-1493962853295-0fd70327578a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                },
+                {
+                    title: "Educational Tours",
+                    description: "Join our guided educational tours to learn about sustainable farming practices and the importance of local agriculture.",
+                    imageSrc: "https://images.unsplash.com/photo-1466721591366-2d5fba72006d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                },
+            ];
+
+            return (
+                <section id="features" className="py-20 bg-white">
+                    <div className="container px-4 mx-auto">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-farm-green font-display">
+                                Farm Attractions
+                            </h2>
+                            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                                Discover all the amazing experiences awaiting you at Greenfield Farms.
+                                From organic crops to friendly animals, we have something for everyone.
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {features.map((feature, index) => (
+                                <div key={index} className="feature-card overflow-hidden rounded-lg border border-gray-200">
+                                    <div className="h-48 overflow-hidden">
+                                        <img
+                                            src={feature.imageSrc}
+                                            alt={feature.title}
+                                            className="w-full h-full object-cover transition-transform hover:scale-105 duration-700"
+                                        />
+                                    </div>
+                                    <div className="p-6">
+                                        <h3 className="text-xl text-farm-green font-semibold mb-2">{feature.title}</h3>
+                                        <p className="text-gray-600">{feature.description}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // Visit Scheduler Component
+        const FarmVisitScheduler = () => {
+            const [selectedDate, setSelectedDate] = useState(null);
+            const [selectedTime, setSelectedTime] = useState("");
+            const [name, setName] = useState("");
+            const [email, setEmail] = useState("");
+            const [phone, setPhone] = useState("");
+            const [visitors, setVisitors] = useState("1");
+
+            const timeSlots = [
+                "9:00 AM", "10:00 AM", "11:00 AM",
+                "1:00 PM", "2:00 PM", "3:00 PM"
+            ];
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (!selectedDate || !selectedTime || !name || !email || !phone) {
+                    showToast("Please fill in all required fields", "error");
+                    return;
+                }
+
+                showToast("Your visit has been scheduled successfully!", "success");
+                // Reset form
+                setSelectedDate(null);
+                setSelectedTime("");
+                setName("");
+                setEmail("");
+                setPhone("");
+                setVisitors("1");
+            };
+
+            return (
+                <section id="schedule" className="py-20 bg-gray-50">
+                    <div className="container px-4 mx-auto">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-farm-green font-display">
+                                Schedule Your Farm Visit
+                            </h2>
+                            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                                Choose a date and time that works for you. We offer guided tours
+                                throughout the week to help you experience all that our farm has to offer.
+                            </p>
+                        </div>
+
+                        <div className="max-w-3xl mx-auto">
+                            <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-8">
+                                <div className="grid gap-6 md:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <label className="block text-sm font-medium text-gray-700">Select Date</label>
+                                        <input
+                                            type="date"
+                                            className="w-full px-4 py-2 border rounded-md"
+                                            value={selectedDate || ''}
+                                            onChange={(e) => setSelectedDate(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="block text-sm font-medium text-gray-700">Select Time</label>
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {timeSlots.map((time) => (
+                                                <button
+                                                    key={time}
+                                                    type="button"
+                                                    onClick={() => setSelectedTime(time)}
+                                                    className={`px-4 py-2 text-sm rounded-md ${
+                                                        selectedTime === time
+                                                            ? "bg-farm-green text-white"
+                                                            : "border border-gray-300 hover:bg-gray-50"
+                                                    }`}
+                                                >
+                                                    {time}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Personal Information Fields */}
+                                    <div className="space-y-2">
+                                        <label className="block text-sm font-medium text-gray-700">Full Name</label>
+                                        <input
+                                            type="text"
+                                            className="w-full px-4 py-2 border rounded-md"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="block text-sm font-medium text-gray-700">Email</label>
+                                        <input
+                                            type="email"
+                                            className="w-full px-4 py-2 border rounded-md"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="block text-sm font-medium text-gray-700">Phone</label>
+                                        <input
+                                            type="tel"
+                                            className="w-full px-4 py-2 border rounded-md"
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="block text-sm font-medium text-gray-700">Number of Visitors</label>
+                                        <select
+                                            className="w-full px-4 py-2 border rounded-md"
+                                            value={visitors}
+                                            onChange={(e) => setVisitors(e.target.value)}
+                                        >
+                                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                                                <option key={num} value={num}>
+                                                    {num} {num === 1 ? "person" : "people"}
+                                                </option>
+                                            ))}
+                                            <option value="group">Large group (10+)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="mt-6">
+                                    <button
+                                        type="submit"
+                                        className="w-full bg-farm-green text-white py-3 px-6 rounded-md hover:bg-farm-green/90 transition-colors"
+                                    >
+                                        Schedule Visit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // Footer Component
+        const Footer = () => {
+            return (
+                <footer className="bg-farm-green text-white">
+                    <div className="container px-4 py-16 mx-auto">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div className="space-y-4">
+                                <h3 className="text-xl font-bold">Greenfield Farms</h3>
+                                <p className="text-white/80">
+                                    Experience the beauty of nature and learn about sustainable farming
+                                    practices at our family-owned farm.
+                                </p>
+                            </div>
+                            
+                            <div className="space-y-4">
+                                <h3 className="text-xl font-bold">Contact Us</h3>
+                                <address className="not-italic text-white/80 space-y-2">
+                                    <p>123 Farm Road</p>
+                                    <p>Greenfield, GF 12345</p>
+                                    <p>Phone: (555) 123-4567</p>
+                                    <p>Email: info@greenfieldfarms.com</p>
+                                </address>
+                            </div>
+                            
+                            <div className="space-y-4">
+                                <h3 className="text-xl font-bold">Opening Hours</h3>
+                                <ul className="text-white/80 space-y-2">
+                                    <li>Monday - Friday: 9:00 AM - 5:00 PM</li>
+                                    <li>Saturday: 9:00 AM - 4:00 PM</li>
+                                    <li>Sunday: 10:00 AM - 3:00 PM</li>
+                                    <li className="text-farm-yellow font-medium">
+                                        * Closed on major holidays
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div className="space-y-4">
+                                <h3 className="text-xl font-bold">Newsletter</h3>
+                                <p className="text-white/80">
+                                    Subscribe to receive updates about farm events, seasonal produce, and
+                                    special offers.
+                                </p>
+                                <div className="flex space-x-2">
+                                    <input
+                                        type="email"
+                                        placeholder="Your email"
+                                        className="px-4 py-2 rounded-md flex-1 text-black"
+                                    />
+                                    <button className="bg-farm-yellow text-farm-green px-4 py-2 rounded-md hover:bg-farm-yellow/90">
+                                        Subscribe
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="border-t border-white/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                            <p className="text-white/60">
+                                © {new Date().getFullYear()} Greenfield Farms. All rights reserved.
+                            </p>
+                            <div className="flex space-x-4 mt-4 md:mt-0">
+                                <a href="#" className="text-white hover:text-farm-yellow transition-colors">
+                                    Privacy Policy
+                                </a>
+                                <a href="#" className="text-white hover:text-farm-yellow transition-colors">
+                                    Terms of Service
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        };
+
+        // Toast System
+        const showToast = (message, type = 'success') => {
+            const toastContainer = document.getElementById('toast-container');
+            if (!toastContainer) {
+                const container = document.createElement('div');
+                container.id = 'toast-container';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = message;
+
+            document.getElementById('toast-container').appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        };
+
+        // Main App Component
+        const App = () => {
+            return React.createElement(
+                React.Fragment,
+                null,
+                React.createElement(Navbar),
+                React.createElement(Hero),
+                React.createElement(FarmFeatures),
+                React.createElement(FarmVisitScheduler),
+                React.createElement(Footer)
+            );
+        };
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+
+    <div id="toast-container" class="toast-container"></div>
+</body>
+</html>

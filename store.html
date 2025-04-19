@@ -833,10 +833,16 @@
     .product-footer {
       padding: 1rem;
       border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
     }
 
     .add-to-cart-btn {
-      width: 100%;
+      flex: 1;
+    }
+    
+    .view-cart-btn {
+      white-space: nowrap;
     }
 
     .footer {
@@ -2407,6 +2413,15 @@
         this.saveToStorage();
         this.updateCartDisplay();
         this.showAddToCartNotification(product.name);
+        
+        // Show the View Cart button on the product card
+        const productCard = document.querySelector(`.product-card[data-id="${productId}"]`);
+        if (productCard) {
+          const viewCartBtn = productCard.querySelector('.view-cart-btn');
+          if (viewCartBtn) {
+            viewCartBtn.style.display = 'inline-flex';
+          }
+        }
       }
 
       removeItem(productId) {
@@ -2575,7 +2590,7 @@
         });
 
         checkoutBtn.addEventListener('click', () => {
-          alert('Proceeding to checkout... This would redirect to the checkout page in a real store.');
+          window.location.href = 'cartstore.html';
         });
 
         // Close cart when clicking outside
@@ -2853,6 +2868,9 @@
                 <button class="btn btn-primary add-to-cart-btn" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
                   <i class="fas fa-shopping-cart"></i> Add to Cart
                 </button>
+                <a href="cartstore.html" class="btn btn-outline view-cart-btn" style="margin-left: 8px; display: none;">
+                  <i class="fas fa-eye"></i> View Cart
+                </a>
               </div>
             </div>
           `;
