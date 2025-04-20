@@ -1,10 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diary-Lift - Store</title>
+  <title>Dairy-Lift - Store</title>
+  <meta name="description"
+    content="Shop premium dairy products from Dairy-Lift - fresh milk, cheese, and more." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
   <style>
     :root {
       --primary: #ad6ef5;
@@ -34,18 +73,16 @@
       box-sizing: border-box;
     }
     
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 80px;
-    }
-    
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--foreground);
-      background-color: var(--background);
+      background-color: #f9fafb;
       line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-
+    
     a {
       text-decoration: none;
       color: inherit;
@@ -54,12 +91,6 @@
     img {
       max-width: 100%;
       height: auto;
-    }
-    
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
 
     .container {
@@ -98,6 +129,9 @@
 
     .desktop-nav {
       display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .navbar-actions {
@@ -196,6 +230,21 @@
         transform: scale(2);
         opacity: 0;
       }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-in {
+      animation: fadeInUp 0.8s ease-out both;
     }
 
     .mobile-menu {
@@ -323,7 +372,12 @@
       .desktop-nav {
         display: flex;
         align-items: center;
-        gap: 1.5rem;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
       }
 
       .navbar-actions {
@@ -420,39 +474,28 @@
       align-items: center;
     }
 
-    .btn {
+    .button, .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       border-radius: var(--radius);
       font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
       padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
       border: none;
-      position: relative;
-      overflow: hidden;
     }
     
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background-color: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.5s, height 0.5s;
-      z-index: 0;
+    .button:hover, .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     
-    .btn:hover::before {
-      width: 300%;
-      height: 300%;
+    .button:active, .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-
+    
     .btn-primary {
       background-color: var(--primary);
       color: var(--primary-foreground);
@@ -465,21 +508,22 @@
 
     .btn-outline {
       background-color: transparent;
-      border: 1px solid var(--primary);
-      color: var(--primary);
+      color: var(--foreground);
+      border: 1px solid var(--border);
     }
 
     .btn-outline:hover {
-      background-color: var(--primary-light);
+      background-color: var(--muted);
     }
 
     .btn-sm {
-      padding: 0.25rem 0.5rem;
+      padding: 8px 16px;
       font-size: 0.875rem;
     }
 
     .btn-icon {
-      padding: 0.5rem;
+      padding: 10px;
+      border-radius: 50%;
     }
 
     .cart-button {
@@ -547,20 +591,20 @@
     }
 
     .card {
-      background-color: var(--card);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
+      background-color: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      padding: 1.5rem;
+      margin: 1rem 0;
+      transition: transform 0.3s ease;
       overflow: hidden;
-      transition: all 0.3s ease;
     }
 
     .card:hover {
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
       transform: translateY(-10px);
     }
 
     .filter-card {
-      padding: 1.5rem;
       position: sticky;
       top: 90px;
     }
@@ -569,6 +613,14 @@
       font-size: 1.25rem;
       font-weight: 600;
       margin-bottom: 1rem;
+    }
+    
+    .glass {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     }
 
     .filter-section {
@@ -686,12 +738,16 @@
     .product-card {
       display: flex;
       flex-direction: column;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      padding: 1.5rem;
+      margin: 1rem 0;
+      transition: transform 0.3s ease;
     }
     
     .product-card:hover {
       transform: translateY(-10px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
 
     .product-image-container {
@@ -845,10 +901,12 @@
       white-space: nowrap;
     }
 
-    .footer {
-      background-color: var(--card);
-      border-top: 1px solid var(--border);
-      padding: 3rem 0;
+    footer, .footer {
+      background-color: #4F9C67;
+      color: #ffffff;
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 4px solid #F3D749;
       margin-top: auto;
     }
 
@@ -907,14 +965,16 @@
       gap: 0.75rem;
     }
 
-    .footer-link {
-      color: var(--muted-foreground);
+    footer a, .footer-link {
+      color: #F3D749;
+      margin: 0 0.5rem;
       text-decoration: none;
       transition: color 0.2s;
     }
 
-    .footer-link:hover {
-      color: var(--primary);
+    footer a:hover, .footer-link:hover {
+      color: #ffffff;
+      text-decoration: underline;
     }
 
     .footer-newsletter p {
@@ -1352,6 +1412,21 @@
     }
 
     @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      nav a {
+        display: block;
+        margin: 0.5rem 0;
+      }
+      
+      .button, .btn {
+        width: 100%;
+        margin-top: 1rem;
+      }
+      
       .toolbar {
         flex-direction: column;
         align-items: stretch;
@@ -1398,9 +1473,12 @@
         display: block;
       }
     }
+    
+    /* Remix Icons Fix */
+    :where([class^="ri-"])::before { content: "\f3c2"; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body>
   <!-- Navbar -->
   <header class="navbar" style="padding:10px">
     <div class="container" style="margin:0px">
@@ -1412,7 +1490,7 @@
             <span class="hamburger-line"></span>
           </div>
         </button>
-        <a href="#" class="logo">Diary-Lift</a>
+        <a href="#" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
         <nav class="desktop-nav">
           <a href="home_page.html" class="nav-link">Home</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
@@ -1427,8 +1505,19 @@
             <i class="fas fa-shopping-cart"></i>
             <span class="cart-count" id="cart-count">0</span>
           </button>
-      <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
-      <div class="mobile-menu" id="mobile-menu">
+          <a href="login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
         <div class="mobile-menu-header">
           <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
           <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
@@ -1481,14 +1570,6 @@
       <a href="help/home.html" class="mobile-nav-link">Support</a>
       <a href="#" class="mobile-nav-link">Contact</a>
     </div>
-    <a href="login.html" class="btn btn-primary">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-        <circle cx="12" cy="7" r="4"></circle>
-      </svg>
-      Login
-    </a>
   </div>
 </div>
 </div>
@@ -1633,10 +1714,10 @@
       <div class="footer-container">
         <div class="footer-column">
           <span class="footer-logo">
-            <i class="fas fa-cow"></i> Diary-Lift
+            <i class="fas fa-cow"></i> Dairy-Lift
           </span>
           <p class="footer-about">
-            Diary-Lift combines traditional farming with modern technology to create a transparent, profitable, and sustainable investment opportunity.
+            Dairy-Lift combines traditional farming with modern technology to create a transparent, profitable, and sustainable investment opportunity.
           </p>
           <div class="footer-socials">
             <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
@@ -1683,7 +1764,7 @@
       </div>
       
       <div class="copyright">
-        <p>&copy; 2023 Diary-Lift. All rights reserved.</p>
+        <p>&copy; 2023 Dairy-Lift. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -2383,14 +2464,14 @@
       }
 
       loadFromStorage() {
-        const savedCart = localStorage.getItem('Diary-LiftCart');
+        const savedCart = localStorage.getItem('Dairy-LiftCart');
         if (savedCart) {
           this.items = JSON.parse(savedCart);
         }
       }
 
       saveToStorage() {
-        localStorage.setItem('Diary-LiftCart', JSON.stringify(this.items));
+        localStorage.setItem('Dairy-LiftCart', JSON.stringify(this.items));
       }
 
       addItem(productId, quantity = 1) {
@@ -2612,14 +2693,14 @@
       }
 
       loadFromStorage() {
-        const savedWishlist = localStorage.getItem('Diary-LiftWishlist');
+        const savedWishlist = localStorage.getItem('Dairy-LiftWishlist');
         if (savedWishlist) {
           this.items = JSON.parse(savedWishlist);
         }
       }
 
       saveToStorage() {
-        localStorage.setItem('Diary-LiftWishlist', JSON.stringify(this.items));
+        localStorage.setItem('Dairy-LiftWishlist', JSON.stringify(this.items));
       }
 
       addItem(productId) {

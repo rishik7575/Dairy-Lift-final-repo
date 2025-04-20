@@ -1,29 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dairy-Lift - Wishlist</title>
+  <meta name="description"
+    content="View and manage your wishlist at Dairy-Lift - premium dairy products." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
   <style>
     :root {
-      --background: #f8fbf8;
-      --foreground: #253625;
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
       --card: #ffffff;
-      --card-foreground: #253625;
-      --primary: #3d9645;
-      --primary-foreground: #ffffff;
+      --card-foreground: #020617;
       --secondary: #c9b458;
       --secondary-foreground: #ffffff;
-      --muted: #f0f9f0;
-      --muted-foreground: #5d745d;
       --accent: #f2efd1;
-      --accent-foreground: #253625;
+      --accent-foreground: #020617;
       --destructive: #ef4444;
       --destructive-foreground: #ffffff;
-      --border: #e1ede1;
-      --input: #e1ede1;
-      --ring: #3d9645;
+      --input: #e2e8f0;
+      --ring: #ad6ef5;
       --radius: 0.5rem;
     }
 
@@ -31,12 +71,13 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
-
+    
     body {
-      background-color: var(--background);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--foreground);
+      background-color: #f9fafb;
+      line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -49,32 +90,38 @@
       padding: 0 2rem;
     }
 
+    /* Navbar Styles */
     .navbar {
-      background-color: var(--card);
-      border-bottom: 1px solid var(--border);
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
       z-index: 40;
+      border-bottom: 1px solid var(--border);
     }
 
-    .navbar-container {
+    .navbar-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 70px;
+      height: 4rem;
     }
 
-    .navbar-logo {
+    .logo {
+      font-weight: bold;
       font-size: 1.5rem;
-      font-weight: 700;
       color: var(--primary);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
     }
 
-    .navbar-logo i {
-      margin-right: 0.5rem;
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .navbar-links {
@@ -98,9 +145,222 @@
     }
 
     .navbar-actions {
+      display: none;
+    }
+    
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
       display: flex;
-      gap: 1rem;
       align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
+    }
+    
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+    
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+    
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+    
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+    
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+    
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+    
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+    
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
     }
 
     .btn {
@@ -122,7 +382,8 @@
     }
 
     .btn-primary:hover {
-      background-color: #2d7a34;
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
     }
 
     .btn-outline {
@@ -157,6 +418,8 @@
 
     .cart-button:hover {
       color: var(--primary);
+      transform: scale(1.1);
+      transition: transform 0.3s ease;
     }
 
     .cart-count {
@@ -773,11 +1036,66 @@
       }
     }
 
-    @media (max-width: 768px) {
-      .navbar-links {
-        display: none;
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
       }
 
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+
+    @media (max-width: 768px) {
       .footer-container {
         grid-template-columns: 1fr;
       }
@@ -790,29 +1108,62 @@
         flex-direction: column;
       }
     }
+    
+    /* Remix Icons Fix */
+    :where([class^="ri-"])::before { content: "\f3c2"; }
   </style>
 </head>
 <body>
-  <header class="navbar">
-    <div class="container navbar-container">
-      <a href="index.html" class="navbar-logo">
-        <i class="fas fa-cow"></i> DairyVest
-      </a>
-      <nav class="navbar-links">
-        <a href="home_page.html" class="navbar-link">Home</a>
-        <a href="dashboard.html" class="navbar-link">Dashboard</a>
-        <a href="store.html" class="navbar-link">Store</a>
-        <a href="admin-dashboard.html" class="navbar-link">Admin</a>
-      </nav>
-      <div class="navbar-actions">
-        <a href="watchliststore.html" class="btn btn-icon">
-          <i class="fas fa-heart"></i>
-        </a>
-        <button class="cart-button" id="cart-toggle">
-          <i class="fas fa-shopping-cart"></i>
-          <span class="cart-count" id="cart-count">0</span>
+  <!-- Navbar -->
+  <header class="navbar" style="padding:10px">
+    <div class="container" style="margin:0px">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+          <div class="hamburger-lines">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </div>
         </button>
-       </div>
+        <a href="home_page.html" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
+        <nav class="desktop-nav">
+          <a href="home_page.html" class="nav-link">Home</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="store.html" class="nav-link">Store</a>
+          <a href="admin-dashboard.html" class="nav-link">Admin</a>
+        </nav>
+        <div class="navbar-actions">
+          <a href="watchliststore.html" class="btn btn-icon">
+            <i class="fas fa-heart"></i>
+          </a>
+          <button class="cart-button" id="cart-toggle">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="cart-count">0</span>
+          </button>
+          <a href="login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <a href="home_page.html" class="mobile-nav-link">Home</a>
+      <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+      <a href="store.html" class="mobile-nav-link">Store</a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">Admin</a>
+      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">Login</a>
     </div>
   </header>
 
@@ -1640,6 +1991,106 @@
     document.addEventListener('DOMContentLoaded', function() {
       const cart = new Cart();
       const wishlist = new Wishlist(cart);
+      
+      // Mobile Menu Toggle
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (mobileMenuToggle && mobileMenu) {
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const body = document.body;
+
+        // Function to open mobile menu
+        function openMobileMenu() {
+          mobileMenu.classList.add('active');
+          mobileMenuOverlay.classList.add('active');
+          mobileMenuToggle.classList.add('active');
+          body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+          
+          // Add a subtle ripple effect on click
+          const ripple = document.createElement('span');
+          ripple.classList.add('menu-toggle-ripple');
+          mobileMenuToggle.appendChild(ripple);
+          
+          // Position the ripple where the click happened
+          const rect = mobileMenuToggle.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height) * 2;
+          
+          ripple.style.width = ripple.style.height = `${size}px`;
+          ripple.style.left = `${-size/4}px`;
+          ripple.style.top = `${-size/4}px`;
+          
+          // Remove the ripple after animation completes
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+          
+          // Add entrance animation to each nav link
+          const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+          navLinks.forEach((link, index) => {
+            link.style.opacity = '0';
+            link.style.transform = 'translateX(-10px)';
+            link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+            
+            setTimeout(() => {
+              link.style.opacity = '1';
+              link.style.transform = 'translateX(0)';
+            }, 10);
+          });
+        }
+
+        // Function to close mobile menu
+        function closeMobileMenu() {
+          mobileMenu.classList.remove('active');
+          mobileMenuOverlay.classList.remove('active');
+          mobileMenuToggle.classList.remove('active');
+          body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Toggle menu when clicking the hamburger button
+        mobileMenuToggle.addEventListener('click', function(event) {
+          event.stopPropagation();
+          if (mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+          } else {
+            openMobileMenu();
+          }
+        });
+
+        // Close menu when clicking the close button
+        if (mobileMenuClose) {
+          mobileMenuClose.addEventListener('click', closeMobileMenu);
+        }
+
+        // Close menu when clicking outside
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+          }
+        });
+
+        // Populate mobile menu with links from desktop nav
+        const desktopNav = document.querySelector('.desktop-nav');
+        if (desktopNav) {
+          const desktopLinks = desktopNav.querySelectorAll('a');
+          const mobileMenuContent = document.querySelector('.mobile-menu');
+          
+          if (mobileMenuContent && desktopLinks.length > 0 && mobileMenuContent.children.length <= 1) {
+            desktopLinks.forEach(link => {
+              const mobileLink = document.createElement('a');
+              mobileLink.href = link.href;
+              mobileLink.textContent = link.textContent;
+              mobileLink.className = 'mobile-nav-link';
+              mobileMenuContent.appendChild(mobileLink);
+            });
+          }
+        }
+      }
     });
   </script>
 </body>
