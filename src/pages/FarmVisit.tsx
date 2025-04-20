@@ -9,13 +9,21 @@ import { Toaster } from "@/components/ui/toaster";
 
 const FarmVisit = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Navigation />
-      <HeroSection />
-      <FarmFeatures />
-      <Testimonials />
-      <ScheduleVisit />
-      <Footer />
+      <div className="space-y-1">
+        <HeroSection />
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-farm-earth-light/5 to-transparent pointer-events-none" />
+          <FarmFeatures />
+        </div>
+        <Testimonials />
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-t from-farm-earth-light/5 to-transparent pointer-events-none" />
+          <ScheduleVisit />
+        </div>
+        <Footer />
+      </div>
       <Toaster />
     </div>
   );
