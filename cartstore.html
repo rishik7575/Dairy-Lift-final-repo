@@ -1479,7 +1479,7 @@
 
       loadFromStorage() {
         // Try both possible localStorage keys to ensure compatibility
-        let savedCart = localStorage.getItem('Diary-LiftCart');
+        let savedCart = localStorage.getItem('Dairy-LiftCart');
         
         if (!savedCart) {
           // Try alternative key if first one doesn't exist
@@ -1487,7 +1487,7 @@
           
           // If found with alternative key, migrate to the new key format
           if (savedCart) {
-            localStorage.setItem('Diary-LiftCart', savedCart);
+            localStorage.setItem('Dairy-LiftCart', savedCart);
             localStorage.removeItem('dairyliftCart');
           }
         }
@@ -1498,7 +1498,7 @@
       }
 
       saveToStorage() {
-        localStorage.setItem('Diary-LiftCart', JSON.stringify(this.items));
+        localStorage.setItem('Dairy-LiftCart', JSON.stringify(this.items));
       }
 
       addItem(productId, quantity = 1) {
@@ -1932,7 +1932,7 @@
 
     // Debug function to check localStorage
     function debugLocalStorage() {
-      console.log("Diary-LiftCart:", localStorage.getItem('Diary-LiftCart'));
+      console.log("Dairy-LiftCart:", localStorage.getItem('Dairy-LiftCart'));
       console.log("dairyliftCart:", localStorage.getItem('dairyliftCart'));
     }
     
