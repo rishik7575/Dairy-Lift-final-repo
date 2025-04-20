@@ -1,7 +1,7 @@
 // JavaScript for add_new_cattle.html
 document.addEventListener('DOMContentLoaded', function() {
   // Get the form element
-  const cattleForm = document.getElementById('addCattleForm');
+  const cattleForm = document.getElementById('cattle-form');
   
   // If the form exists, add a submit event listener
   if (cattleForm) {
@@ -13,15 +13,25 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Create a cattle object from form data
       const newCattle = {
-        name: formData.get('cattleName') || 'Unnamed',
-        breed: formData.get('breed') || 'Unknown',
+        name: formData.get('tagId') || 'Unnamed',
+        breed: document.getElementById('breed') ? 
+          document.getElementById('breed').options[document.getElementById('breed').selectedIndex].text : 
+          formData.get('breed') || 'Unknown',
         age: formData.get('age') ? formData.get('age') + ' years old' : 'Unknown age',
-        image: formData.get('imageUrl') || 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=600&q=80',
-        health: formData.get('healthStatus') || 'Good',
-        lactationStatus: formData.get('lactationStatus') || 'Active',
-        dailyProduction: formData.get('milkProduction') ? formData.get('milkProduction') + ' liters' : '0 liters',
+        image: document.getElementById('image-preview') && !document.getElementById('image-preview').classList.contains('hidden') ? 
+          document.getElementById('image-preview').src : 
+          'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=600&q=80',
+        health: document.getElementById('healthStatus') ? 
+          document.getElementById('healthStatus').options[document.getElementById('healthStatus').selectedIndex].text : 
+          formData.get('healthStatus') || 'Good',
+        lactationStatus: formData.get('gender') === 'female' ? 'Active' : 'N/A',
+        dailyProduction: formData.get('gender') === 'female' ? 
+          (formData.get('expectedMilkProduction') || '0') + ' liters' : '0 liters',
         purchaseDate: formatDate(formData.get('purchaseDate'))
       };
+      
+      // Log the data for debugging
+      console.log('Saving cattle data from add_cattle.js:', newCattle);
       
       // Get existing cattle from localStorage or create a new array
       let storedCattle = [];
@@ -43,9 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
       // Show success message
       showToast('Success', 'Cattle added successfully!', 'success');
       
-      // Redirect to YourCattle.html after a short delay
+      // Redirect to add_new_cattle.html after a short delay
       setTimeout(() => {
-        window.location.href = 'YourCattle.html';
+        window.location.href = 'add_new_cattle.html';
       }, 1500);
     });
   }

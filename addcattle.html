@@ -117,7 +117,7 @@
   </header>
 
   <main class="container max-w-4xl mx-auto px-4 py-8">
-    <form id="cattle-form" class="w-full">
+    <form id="cattle-form" class="w-full" onsubmit="handleFormSubmit(event); return false;">
       <div class="bg-white border border-slate-200 rounded-lg shadow">
         <div class="bg-gradient-to-r from-blue-50 to-blue-100 border-b border-slate-200 p-6">
           <div class="flex items-center gap-3">
@@ -588,6 +588,12 @@
       
       // Form Submission
       cattleForm.addEventListener('submit', handleFormSubmit);
+      
+      // Also add click handler to submit button
+      document.getElementById('submit-button').addEventListener('click', function(e) {
+        e.preventDefault();
+        handleFormSubmit(e);
+      });
     }
     
     // Update breed price info
@@ -779,13 +785,13 @@
         // Save to localStorage
         localStorage.setItem('cattle', JSON.stringify(existingCattle));
         
-        // Also save in a format compatible with YourCattle.html
+        // Also save in a format compatible with yourcattle.html
         const yourCattleFormat = {
           name: formData.tagId,
-          breed: formData.breed,
+          breed: document.getElementById('breed').options[document.getElementById('breed').selectedIndex].text,
           age: formData.age + ' years old',
-          image: formData.imageUrl || 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=600&q=80',
-          health: formData.healthStatus,
+          image: imageUrl || 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=600&q=80',
+          health: document.getElementById('healthStatus').options[document.getElementById('healthStatus').selectedIndex].text,
           lactationStatus: formData.gender === 'female' ? 'Active' : 'N/A',
           dailyProduction: formData.gender === 'female' ? (formData.expectedMilkProduction || '0') + ' liters' : '0 liters',
           purchaseDate: new Date(formData.purchaseDate).toLocaleDateString('en-US', {
@@ -795,7 +801,10 @@
           })
         };
         
-        // Get existing YourCattle data from localStorage
+        // Log the data for debugging
+        console.log('Saving cattle data:', yourCattleFormat);
+        
+        // Get existing yourcattle data from localStorage
         let yourCattleData = [];
         try {
           const existingData = localStorage.getItem('newCattle');
@@ -803,7 +812,7 @@
             yourCattleData = JSON.parse(existingData);
           }
         } catch (error) {
-          console.error('Error parsing YourCattle data:', error);
+          console.error('Error parsing yourcattle data:', error);
         }
         
         // Add the new cattle to the array
@@ -812,6 +821,9 @@
         // Save the updated array back to localStorage
         localStorage.setItem('newCattle', JSON.stringify(yourCattleData));
         
+        // Log the data being saved
+        console.log('Saved cattle data for yourcattle.html:', yourCattleFormat);
+        
         // Show success message
         showToast(
           'Cattle Added Successfully', 
@@ -819,7 +831,7 @@
         );
       }
       
-      // Redirect to main app after a brief delay
+      // Redirect to add_new_cattle.html after a brief delay
       setTimeout(() => {
         window.location.href = 'add_new_cattle.html';
       }, 1000);

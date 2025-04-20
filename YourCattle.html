@@ -799,6 +799,8 @@
       // Load any new cattle data from localStorage
       try {
         const storedCattle = JSON.parse(localStorage.getItem('newCattle')) || [];
+        console.log('Found stored cattle data:', storedCattle);
+        
         if (Array.isArray(storedCattle) && storedCattle.length > 0) {
           // Generate new IDs for the stored cattle
           storedCattle.forEach(cattle => {
@@ -806,10 +808,17 @@
             const highestId = Math.max(...cattleData.map(c => parseInt(c.id)));
             const newId = (highestId + 1).toString();
             cattle.id = newId;
+            
+            // Log each cattle being added
+            console.log('Adding cattle to display:', cattle);
+            
             cattleData.push(cattle);
           });
           // Clear the localStorage after adding to prevent duplicates
           localStorage.removeItem('newCattle');
+          
+          // Log the updated cattle data
+          console.log('Updated cattle data:', cattleData);
         }
       } catch (error) {
         console.error('Error loading cattle data from localStorage:', error);
@@ -942,16 +951,29 @@
           card.className = 'cattle-card animate-fade-in';
           card.style.animationDelay = `${index * 0.1}s`;
           
-          const healthClass = getHealthClass(cattle.health);
+          const healthClass = getHealthClass(cattle.health || 'Good');
+          
+          // Ensure all required properties exist
+          const cattleData = {
+            image: cattle.image || 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=600&q=80',
+            name: cattle.name || 'Unnamed',
+            breed: cattle.breed || 'Unknown',
+            age: cattle.age || 'Unknown age',
+            health: cattle.health || 'Good',
+            lactationStatus: cattle.lactationStatus || 'Active',
+            dailyProduction: cattle.dailyProduction || '0 liters',
+            purchaseDate: cattle.purchaseDate || 'Unknown',
+            id: cattle.id
+          };
           
           card.innerHTML = `
             <div class="image-container">
-              <img src="${cattle.image}" alt="${cattle.name}">
+              <img src="${cattleData.image}" alt="${cattleData.name}">
             </div>
             <div class="card-content">
               <div class="card-header">
-                <h3 class="card-title">${cattle.name}</h3>
-                <p class="card-subtitle">${cattle.breed} · ${cattle.age}</p>
+                <h3 class="card-title">${cattleData.name}</h3>
+                <p class="card-subtitle">${cattleData.breed} · ${cattleData.age}</p>
               </div>
               <div class="stats-grid">
                 <div class="stat">
@@ -960,7 +982,7 @@
                   </div>
                   <div class="stat-content">
                     <p class="stat-label">Health</p>
-                    <p class="stat-value ${healthClass}">${cattle.health}</p>
+                    <p class="stat-value ${healthClass}">${cattleData.health}</p>
                   </div>
                 </div>
                 <div class="stat">
@@ -969,7 +991,7 @@
                   </div>
                   <div class="stat-content">
                     <p class="stat-label">Lactation</p>
-                    <p class="stat-value">${cattle.lactationStatus}</p>
+                    <p class="stat-value">${cattleData.lactationStatus}</p>
                   </div>
                 </div>
                 <div class="stat">
@@ -978,7 +1000,7 @@
                   </div>
                   <div class="stat-content">
                     <p class="stat-label">Daily Production</p>
-                    <p class="stat-value">${cattle.dailyProduction}</p>
+                    <p class="stat-value">${cattleData.dailyProduction}</p>
                   </div>
                 </div>
                 <div class="stat">
@@ -987,13 +1009,13 @@
                   </div>
                   <div class="stat-content">
                     <p class="stat-label">Purchased</p>
-                    <p class="stat-value">${cattle.purchaseDate}</p>
+                    <p class="stat-value">${cattleData.purchaseDate}</p>
                   </div>
                 </div>
               </div>
             </div>
             <div class="card-footer">
-              <button class="btn view-details" data-id="${cattle.id}">View Details</button>
+              <button class="btn view-details" data-id="${cattleData.id}">View Details</button>
             </div>
           `;
           
@@ -1135,16 +1157,27 @@
 
       // Modal functionality
       function openCattleModal(cattle) {
-        modalTitle.textContent = cattle.name;
-        modalTitle.className = `modal-title ${getHealthClass(cattle.health)}`;
-        modalImage.src = cattle.image;
-        modalImage.alt = `Cattle ${cattle.name}`;
-        modalHealth.textContent = cattle.health;
-        modalHealth.className = `info-value ${getHealthClass(cattle.health)}`;
-        modalLactation.textContent = cattle.lactationStatus;
-        modalProduction.textContent = cattle.dailyProduction;
-        modalAge.textContent = cattle.age;
-        modalBreed.textContent = cattle.breed;
+        // Ensure all required properties exist
+        const cattleData = {
+          name: cattle.name || 'Unnamed',
+          health: cattle.health || 'Good',
+          image: cattle.image || 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=600&q=80',
+          lactationStatus: cattle.lactationStatus || 'Active',
+          dailyProduction: cattle.dailyProduction || '0 liters',
+          age: cattle.age || 'Unknown age',
+          breed: cattle.breed || 'Unknown'
+        };
+        
+        modalTitle.textContent = cattleData.name;
+        modalTitle.className = `modal-title ${getHealthClass(cattleData.health)}`;
+        modalImage.src = cattleData.image;
+        modalImage.alt = `Cattle ${cattleData.name}`;
+        modalHealth.textContent = cattleData.health;
+        modalHealth.className = `info-value ${getHealthClass(cattleData.health)}`;
+        modalLactation.textContent = cattleData.lactationStatus;
+        modalProduction.textContent = cattleData.dailyProduction;
+        modalAge.textContent = cattleData.age;
+        modalBreed.textContent = cattleData.breed;
         
         // Populate health and fertility records
         populateHealthRecords();
