@@ -1270,66 +1270,6 @@
     </div>
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-container">
-        <div class="footer-column">
-          <span class="footer-logo">
-            <i class="fas fa-cow"></i> DairyVest
-          </span>
-          <p class="footer-about">
-            DairyVest combines traditional farming with modern technology to create a transparent, profitable, and sustainable investment opportunity.
-          </p>
-          <div class="footer-socials">
-            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-        
-        <div class="footer-column">
-          <h3 class="footer-title">Quick Links</h3>
-          <div class="footer-links">
-            <a href="home_page.html" class="footer-link">Home</a>
-            <a href="aboutus.html" class="footer-link">About Us</a>
-            <a href="#" class="footer-link">How It Works</a>
-            <a href="#" class="footer-link">Investment Plans</a>
-            <a href="#" class="footer-link">FAQ</a>
-            <a href="#" class="footer-link">Contact</a>
-          </div>
-        </div>
-        
-        <div class="footer-column">
-          <h3 class="footer-title">Useful Links</h3>
-          <div class="footer-links">
-            <a href="#" class="footer-link">Terms of Service</a>
-            <a href="#" class="footer-link">Privacy Policy</a>
-            <a href="#" class="footer-link">Cookie Policy</a>
-            <a href="#" class="footer-link">Investor Relations</a>
-            <a href="#" class="footer-link">Careers</a>
-            <a href="#" class="footer-link">Blog</a>
-          </div>
-        </div>
-        
-        <div class="footer-column">
-          <h3 class="footer-title">Newsletter</h3>
-          <p>Subscribe to our newsletter for the latest updates on our dairy farm investments and exclusive offers.</p>
-          <form class="newsletter-form">
-            <input type="email" class="newsletter-input" placeholder="Your email address">
-            <button type="submit" class="newsletter-btn">
-              <i class="fas fa-paper-plane"></i>
-            </button>
-          </form>
-        </div>
-      </div>
-      
-      <div class="copyright">
-        <p>&copy; 2023 DairyVest. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-
   <!-- Quick View Modal -->
   <div class="modal-overlay" id="quick-view-modal">
     <div class="modal-container">
@@ -2123,34 +2063,193 @@
           mobileMenuClose.addEventListener('click', closeMobileMenu);
         }
 
-        // Close menu when clicking outside
-        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        // Close menu when clicking the overlay
+        if (mobileMenuOverlay) {
+          mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        }
 
+        // Close mobile menu when clicking on a link
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', closeMobileMenu);
+        });
+        
         // Close menu when pressing Escape key
         document.addEventListener('keydown', function(event) {
           if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
             closeMobileMenu();
           }
         });
-
-        // Populate mobile menu with links from desktop nav
-        const desktopNav = document.querySelector('.desktop-nav');
-        if (desktopNav) {
-          const desktopLinks = desktopNav.querySelectorAll('a');
-          const mobileMenuContent = document.querySelector('.mobile-menu');
-          
-          if (mobileMenuContent && desktopLinks.length > 0 && mobileMenuContent.children.length <= 1) {
-            desktopLinks.forEach(link => {
-              const mobileLink = document.createElement('a');
-              mobileLink.href = link.href;
-              mobileLink.textContent = link.textContent;
-              mobileLink.className = 'mobile-nav-link';
-              mobileMenuContent.appendChild(mobileLink);
-            });
-          }
         }
       }
     });
   </script>
+  
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div>
+          <a href="#" class="text-primary font-['Pacifico'] text-2xl">Dairy-Lift</a>
+          <p class="mt-4 text-gray-400">
+            Transforming dairy farming into a premium investment opportunity
+            with transparent operations and consistent returns.
+          </p>
+          <div class="mt-6 flex space-x-4">
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-facebook-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-twitter-x-fill"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/dairy_lift/"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-instagram-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-linkedin-fill"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Investment Options</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Performance Reports</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Farm Tours</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Testimonials</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >FAQs</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-map-pin-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400"
+                >123 Dairy Farm Road, Green Valley, CA 94535</span
+              >
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-phone-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">+1 (555) 123-4567</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-mail-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">dairylift@gmail.com</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-time-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">Mon-Fri: 9AM-5PM (PST)</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+          <p class="text-gray-400 mb-4">
+            Subscribe to receive updates on dairy market trends and investment
+            opportunities.
+          </p>
+          <form class="space-y-4">
+            <div>
+              <input
+                type="email"
+                placeholder="Your email address"
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary text-white"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary hover:bg-primary/90 text-white py-2 font-medium !rounded-button whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
+      >
+        <p class="text-gray-400 text-sm">
+          © 2025 Dairy-Lift. All rights reserved.
+        </p>
+        <div class="mt-4 md:mt-0 flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Privacy Policy</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Terms of Service</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Cookie Policy</a
+          >
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

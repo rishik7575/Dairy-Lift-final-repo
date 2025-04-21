@@ -1,92 +1,787 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dairy-Lift Admin Profile</title>
+  <title>Dairy-Lift Profile</title>
+  <meta name="description"
+    content="Invest in cattle, earn from milk production, and make a positive impact with Dairy-Lift." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Embedding all styles -->
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
   <style>
-    /* Base styles */
     :root {
-      --background: 0 0% 100%;
-      --foreground: 222.2 84% 4.9%;
-      --card: 0 0% 100%;
-      --card-foreground: 222.2 84% 4.9%;
-      --popover: 0 0% 100%;
-      --popover-foreground: 222.2 84% 4.9%;
-      --primary: 210 100% 50%;
-      --primary-foreground: 210 40% 98%;
-      --secondary: 210 40% 96.1%;
-      --secondary-foreground: 222.2 47.4% 11.2%;
-      --muted: 210 40% 96.1%;
-      --muted-foreground: 215.4 16.3% 46.9%;
-      --accent: 210 40% 96.1%;
-      --accent-foreground: 222.2 47.4% 11.2%;
-      --destructive: 0 84.2% 60.2%;
-      --destructive-foreground: 210 40% 98%;
-      --border: 214.3 31.8% 91.4%;
-      --input: 214.3 31.8% 91.4%;
-      --ring: 222.2 84% 4.9%;
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --primary-hover: #9b55e0;
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --border-hover: #cbd5e1;
       --radius: 0.5rem;
-      --success: 142.1 76.2% 36.3%;
-      --success-foreground: 355.7 100% 97.3%;
-      --warning: 38 92% 50%;
-      --warning-foreground: 355.7 100% 97.3%;
-      --info: 221.2 83.2% 53.3%;
-      --info-foreground: 355.7 100% 97.3%;
+      --card: #ffffff;
+      --card-foreground: #020617;
+      --card-hover: #f8fafc;
+      --destructive: #ef4444;
+      --destructive-foreground: #f8fafc;
+      --success: #10b981;
+      --success-foreground: #f8fafc;
+      --warning: #f59e0b;
+      --warning-foreground: #f8fafc;
+      --info: #3b82f6;
+      --info-foreground: #f8fafc;
+      --ring: rgba(173, 110, 245, 0.3);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      border-color: hsl(var(--border));
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+      font-size: 16px;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: hsl(var(--background));
-      color: hsl(var(--foreground));
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--foreground);
+      background-color: var(--background);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--primary);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: 100%;
+      line-height: 1.15;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        padding: 0 2rem;
+      }
+    }
+    
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--muted);
+      border-radius: 5px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-light);
+      border-radius: 5px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+      padding: 0.5rem 0;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+      position: relative;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.75rem;
+      color: var(--primary);
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-shadow: 0 1px 2px rgba(173, 110, 245, 0.2);
+      font-family: 'Pacifico', cursive;
+      letter-spacing: 0.5px;
+    }
+    
+    .logo:hover {
+      transform: scale(1.05);
+      text-shadow: 0 2px 4px rgba(173, 110, 245, 0.3);
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      gap: 2.5rem;
+    }
+
+    .navbar-actions {
+      display: none;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      z-index: 50;
+      margin-right: 0.5rem;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+    
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    .hamburger-lines {
+      width: 24px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: center;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 24px;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 24px;
+    }
+    
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+    
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(2.5);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 300px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: var(--shadow-xl);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(300px);
+    }
+    
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      margin: 0.35rem 0.75rem;
+      border-radius: 0.75rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(8px);
+      color: var(--primary);
+    }
+    
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .mobile-nav-link:hover::after {
+      width: 40%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 1.25rem;
+      border: 1px solid rgba(173, 110, 245, 0.3);
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(8px) scale(1.03);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.25rem;
+    }
+    
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.75rem;
+      color: var(--primary);
+      text-decoration: none;
+      text-shadow: 0 1px 2px rgba(173, 110, 245, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.5px;
+    }
+    
+    .mobile-menu-logo:hover {
+      transform: scale(1.05);
+    }
+    
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+      transform: rotate(90deg);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-weight: 500;
+        font-size: 1.05rem;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+        transform: translateY(-2px);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background-color: var(--primary);
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 3px;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+        background-color: var(--primary-light);
+        transform: translateY(-2px) scale(1.1);
+      }
+      
+      .btn-primary {
+        padding: 0.6rem 1.25rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-md);
+      }
+      
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        background-color: var(--primary-hover);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .desktop-nav {
+        gap: 4rem;
+      }
+      
+      .navbar-content {
+        padding: 0 1rem;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .mobile-menu-toggle {
+        margin-right: 0;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+        min-width: 150px;
+      }
+    }
+    
+    /* Remix Icons Fix */
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      font-size: 0.95rem;
       line-height: 1.5;
+      letter-spacing: 0.01em;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    .btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      transform: scale(10, 10);
+      opacity: 0;
+      transition: transform 0.5s, opacity 0.8s;
+    }
+    
+    .btn:active::after {
+      transform: scale(0, 0);
+      opacity: 0.3;
+      transition: 0s;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--muted);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    
+    .btn-secondary:active {
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline:active {
+      transform: translateY(1px);
+    }
+
+    .btn-outline-primary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(173, 110, 245, 0.15);
+    }
+    
+    .btn-outline-primary:active {
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+    
+    .btn-sm {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .btn svg, .btn i {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
+    
+    .btn-icon {
+      padding: 0.5rem;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+    }
+    
+    .btn-icon svg, .btn-icon i {
+      margin-right: 0;
     }
 
     button {
       cursor: pointer;
+      font-family: inherit;
     }
 
     /* Typography */
-    .text-xs { font-size: 0.75rem; }
-    .text-sm { font-size: 0.875rem; }
-    .text-base { font-size: 1rem; }
-    .text-lg { font-size: 1.125rem; }
-    .text-xl { font-size: 1.25rem; }
-    .text-2xl { font-size: 1.5rem; }
+    .text-xs { font-size: 0.75rem; line-height: 1.5; }
+    .text-sm { font-size: 0.875rem; line-height: 1.5; }
+    .text-base { font-size: 1rem; line-height: 1.6; }
+    .text-lg { font-size: 1.125rem; line-height: 1.6; }
+    .text-xl { font-size: 1.25rem; line-height: 1.5; }
+    .text-2xl { font-size: 1.5rem; line-height: 1.4; }
+    .text-3xl { font-size: 1.875rem; line-height: 1.3; }
+    .text-4xl { font-size: 2.25rem; line-height: 1.2; }
     
+    .font-light { font-weight: 300; }
+    .font-normal { font-weight: 400; }
     .font-medium { font-weight: 500; }
     .font-semibold { font-weight: 600; }
     .font-bold { font-weight: 700; }
     
-    /* Colors */
-    .bg-background { background-color: hsl(var(--background)); }
-    .bg-card { background-color: hsl(var(--card)); }
-    .bg-primary { background-color: hsl(var(--primary)); }
-    .bg-primary\/10 { background-color: hsla(var(--primary), 0.1); }
-    .bg-secondary { background-color: hsl(var(--secondary)); }
-    .bg-muted { background-color: hsl(var(--muted)); }
-    .bg-destructive { background-color: hsl(var(--destructive)); }
-    .bg-success\/10 { background-color: hsla(var(--success), 0.1); }
-    .bg-warning\/10 { background-color: hsla(var(--warning), 0.1); }
-    .bg-info\/10 { background-color: hsla(var(--info), 0.1); }
+    .tracking-tight { letter-spacing: -0.025em; }
+    .tracking-normal { letter-spacing: 0; }
+    .tracking-wide { letter-spacing: 0.025em; }
     
-    .text-foreground { color: hsl(var(--foreground)); }
-    .text-primary { color: hsl(var(--primary)); }
-    .text-primary-foreground { color: hsl(var(--primary-foreground)); }
-    .text-secondary-foreground { color: hsl(var(--secondary-foreground)); }
-    .text-muted-foreground { color: hsl(var(--muted-foreground)); }
-    .text-destructive { color: hsl(var(--destructive)); }
-    .text-success { color: hsl(var(--success)); }
-    .text-warning { color: hsl(var(--warning)); }
+    .leading-none { line-height: 1; }
+    .leading-tight { line-height: 1.25; }
+    .leading-snug { line-height: 1.375; }
+    .leading-normal { line-height: 1.5; }
+    .leading-relaxed { line-height: 1.625; }
+    .leading-loose { line-height: 2; }
+    
+    /* Card Styles */
+    .card {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--foreground);
+      margin-bottom: 0.25rem;
+    }
+    
+    .card-description {
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
+    }
+    
+    .card-content {
+      padding: 1.5rem;
+    }
+    
+    .card-footer {
+      padding: 1.25rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+    
+    /* Colors */
+    .bg-background { background-color: var(--background); }
+    .bg-card { background-color: var(--card); }
+    .bg-primary { background-color: var(--primary); }
+    .bg-primary-light { background-color: var(--primary-light); }
+    .bg-muted { background-color: var(--muted); }
+    .bg-destructive { background-color: var(--destructive); }
+    .bg-success { background-color: var(--success); }
+    .bg-warning { background-color: var(--warning); }
+    .bg-info { background-color: var(--info); }
+    
+    .text-foreground { color: var(--foreground); }
+    .text-primary { color: var(--primary); }
+    .text-primary-foreground { color: var(--primary-foreground); }
+    .text-muted-foreground { color: var(--muted-foreground); }
+    .text-destructive { color: var(--destructive); }
+    .text-success { color: var(--success); }
+    .text-warning { color: var(--warning); }
+    .text-info { color: var(--info); }
     .text-info { color: hsl(var(--info)); }
     .text-white { color: white; }
 
@@ -659,104 +1354,181 @@
   </script>
 </head>
 <body>
-  <div class="relative min-h-screen bg-background">
-    <!-- Header -->
-    <header class="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-6">
-      <div class="flex items-center">
-        <div class="h-5 w-5 mr-3 cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" y1="12" x2="20" y2="12"></line>
-            <line x1="4" y1="6" x2="20" y2="6"></line>
-            <line x1="4" y1="18" x2="20" y2="18"></line>
-          </svg>
-        </div>
-        <a href="/" class="flex items-center">
-          <span class="text-xl font-bold text-primary">Dairy-Lift</span>
-          <span class="ml-2 rounded bg-primary px-1 py-0.5 text-xs text-white">Admin</span>
-        </a>
-      </div>
-
-      <div class="flex items-center ml-8 gap-2">
-        <a href="/" class="btn btn-ghost btn-sm flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-          <span class="hidden md:inline">Home</span>
-        </a>
-        <a href="/dashboard" class="btn btn-ghost btn-sm flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="7" height="9" x="3" y="3" rx="1"></rect>
-            <rect width="7" height="5" x="14" y="3" rx="1"></rect>
-            <rect width="7" height="9" x="14" y="12" rx="1"></rect>
-            <rect width="7" height="5" x="3" y="16" rx="1"></rect>
-          </svg>
-          <span class="hidden md:inline">Dashboard</span>
-        </a>
-        <a href="/store" class="btn btn-ghost btn-sm flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path>
-            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-            <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path>
-            <path d="M2 7h20"></path>
-            <path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"></path>
-          </svg>
-          <span class="hidden md:inline">Store</span>
-        </a>
-      </div>
-
-      <div class="ml-auto flex items-center gap-4">
-        <button class="relative" id="notificationBtn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-          </svg>
-          <span class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-white">
-            3
-          </span>
-        </button>
-        
-        <div class="dropdown">
-          <button class="relative h-8 w-8 rounded-full" id="userDropdown">
-            <div class="avatar h-8 w-8">
-              <div class="avatar-fallback bg-primary text-primary-foreground">A</div>
-            </div>
-          </button>
-          <div class="dropdown-menu hidden" id="userMenu">
-            <div class="dropdown-menu-content">
-              <div class="dropdown-menu-label">My Account</div>
-              <div class="dropdown-menu-separator"></div>
-              <div class="dropdown-menu-group">
-                <a href="/" class="dropdown-menu-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                  <span>Profile</span>
-                </a>
-                <a href="/settings" class="dropdown-menu-item">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                  </svg>
-                  <span>Settings</span>
-                </a>
-              </div>
-              <div class="dropdown-menu-separator"></div>
-              <button class="dropdown-menu-item" id="logoutBtn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                  <polyline points="16 17 21 12 16 7"></polyline>
-                  <line x1="21" y1="12" x2="9" y2="12"></line>
-                </svg>
-                <span>Logout</span>
-              </button>
-            </div>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" type="button">
+          <div class="hamburger-lines">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
           </div>
+        </button>
+        <script>
+          // Immediate fix for hamburger button
+          document.getElementById('mobile-menu-toggle').onclick = function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const body = document.body;
+            
+            if (this.classList.contains('active')) {
+              this.classList.remove('active');
+              mobileMenu.classList.remove('active');
+              mobileMenuOverlay.classList.remove('active');
+              body.style.overflow = '';
+            } else {
+              this.classList.add('active');
+              mobileMenu.classList.add('active');
+              mobileMenuOverlay.classList.add('active');
+              body.style.overflow = 'hidden';
+            }
+            return false;
+          };
+        </script>
+        <a href="home_page.html" class="logo">Dairy-Lift</a>
+        <nav class="desktop-nav">
+          <a href="home_page.html" class="nav-link">Home</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="store.html" class="nav-link">Store</a>
+          <a href="admin-dashboard.html" class="nav-link">Admin</a>
+        </nav>
+        <a href="login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            <span>Login</span>
+          </a>
         </div>
       </div>
-    </header>
+    </div>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <script>
+      // Fix for overlay click
+      document.getElementById('mobile-menu-overlay').onclick = function() {
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const body = document.body;
+        
+        mobileMenuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        this.classList.remove('active');
+        body.style.overflow = '';
+        return false;
+      };
+    </script>
+    
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <script>
+          // Fix for close button
+          document.getElementById('mobile-menu-close').onclick = function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const body = document.body;
+            
+            mobileMenuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileMenuOverlay.classList.remove('active');
+            body.style.overflow = '';
+            return false;
+          };
+        </script>
+      </div>
+      <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span style="margin-left: 10px;">Buy Cattle</span>
+      </a>
+      <a href="#" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span style="margin-left: 10px;">Bio-Gas</span>
+      </a>
+      
+      <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Visit Farm</span>
+      </a>
+      <a href="navhome.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Insurance</span>
+      </a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+          <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+        </svg>
+        <span style="margin-left: 10px;">Register Cattle</span>
+      </a>
+      <a href="#" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Contact-Us</span>
+      </a>
+      <a href="help/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span style="margin-left: 10px;">Support</span>
+      </a>
+      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Login / Register</span>
+      </a>
+      <script>
+        // Fix for mobile menu links
+        document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+          link.addEventListener('click', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const body = document.body;
+            
+            mobileMenuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileMenuOverlay.classList.remove('active');
+            body.style.overflow = '';
+          });
+        });
+      </script>
+    </div>
+  </header>
 
+  <div class="relative min-h-screen bg-background">
     <div class="flex">
       <main class="flex-1 px-4 pt-6 md:px-6">
         <div class="container mx-auto max-w-6xl">
@@ -793,53 +1565,6 @@
                   <div class="mt-3 flex gap-2 justify-center md:justify-start">
                     <button class="btn btn-outline btn-sm" id="editProfileBtn">Edit Profile</button>
                     <button class="btn btn-outline btn-sm" id="exportPdfBtn">Export PDF</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Profile Stats -->
-            <div class="md:col-span-3">
-              <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="card">
-                  <div class="card-content flex flex-col items-center p-6">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" x2="18" y1="20" y2="10"></line>
-                        <line x1="12" x2="12" y1="20" y2="4"></line>
-                        <line x1="6" x2="6" y1="20" y2="14"></line>
-                      </svg>
-                    </div>
-                    <h3 class="mt-3 text-2xl font-bold">148</h3>
-                    <p class="text-sm text-muted-foreground">Cattle Managed</p>
-                  </div>
-                </div>
-                
-                <div class="card">
-                  <div class="card-content flex flex-col items-center p-6">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                      </svg>
-                    </div>
-                    <h3 class="mt-3 text-2xl font-bold">24</h3>
-                    <p class="text-sm text-muted-foreground">Investors</p>
-                  </div>
-                </div>
-                
-                <div class="card">
-                  <div class="card-content flex flex-col items-center p-6">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" x2="12" y1="2" y2="22"></line>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                      </svg>
-                    </div>
-                    <h3 class="mt-3 text-2xl font-bold">₹45,231</h3>
-                    <p class="text-sm text-muted-foreground">Revenue (Monthly)</p>
                   </div>
                 </div>
               </div>
@@ -1736,6 +2461,66 @@
           showToast('Changes Cancelled', 'Your changes have been discarded.');
         });
       }
+      
+      // Close all the open divs for the content section
+      document.addEventListener('DOMContentLoaded', function() {
+        // Make sure all divs are properly closed
+        const contentDiv = document.querySelector('.relative.min-h-screen.bg-background');
+        if (contentDiv) {
+          // Check if the content structure is correct
+          console.log('Content structure loaded correctly');
+        }
+      });
+      
+      // Add animation for mobile menu links
+      document.addEventListener('DOMContentLoaded', function() {
+        // Animate menu items when menu opens
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuToggle && mobileMenu) {
+          const originalOnClick = mobileMenuToggle.onclick;
+          
+          mobileMenuToggle.onclick = function() {
+            const result = originalOnClick.apply(this, arguments);
+            
+            // If menu is now open, animate the links
+            if (mobileMenu.classList.contains('active')) {
+              const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+              navLinks.forEach((link, index) => {
+                link.style.opacity = '0';
+                link.style.transform = 'translateX(-15px)';
+                link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+                
+                setTimeout(() => {
+                  link.style.opacity = '1';
+                  link.style.transform = 'translateX(0)';
+                }, 10);
+              });
+            }
+            
+            return result;
+          };
+        }
+        
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape') {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const body = document.body;
+            
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+              mobileMenuToggle.classList.remove('active');
+              mobileMenu.classList.remove('active');
+              mobileMenuOverlay.classList.remove('active');
+              body.style.overflow = '';
+            }
+          }
+        });
+      });
     });
   </script>
 </body>
