@@ -116,19 +116,41 @@
 
     .navbar-content {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       height: 4rem;
+      position: relative;
+      padding: 0.5rem 0;
     }
 
+    .header-photo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 25px 0 15px;
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+    }
+    
+    .header-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      background-color: white;
+      padding: 2px;
+    }
+    
     .logo {
       font-weight: bold;
       font-size: 1.5rem;
       color: var(--primary);
-      min-width: 180px;
+      min-width: 220px;
       text-align: left;
       margin-right: auto;
       display: inline-block;
+      padding: 0 15px;
     }
 
     .desktop-nav {
@@ -148,8 +170,8 @@
       color: var(--primary);
       cursor: pointer;
       padding: 0.5rem;
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -158,6 +180,8 @@
       transition: all 0.3s ease;
       overflow: hidden;
       z-index: 50;
+      margin-left: 5px;
+      flex-shrink: 0;
     }
     
     .mobile-menu-toggle:hover {
@@ -377,6 +401,17 @@
 
       .mobile-menu-toggle {
         display: block;
+      }
+      
+      .header-photo-container {
+        width: 80px;
+        height: 80px;
+        margin: 0 30px 0 20px;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+        min-width: 250px;
       }
 
       .nav-link {
@@ -877,6 +912,9 @@
             <span class="hamburger-line"></span>
           </div>
         </button>
+        <div class="header-photo-container">
+          <img src="image/no background.png" alt="Header Photo" class="header-photo">
+        </div>
         <a href="#" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
         <nav class="desktop-nav">
           <a href="home_page.html" class="nav-link">Home</a>

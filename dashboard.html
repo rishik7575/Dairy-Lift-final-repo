@@ -1214,6 +1214,73 @@
       border-left: 4px solid #EF4444;
       color: #991B1B;
     }
+    
+    /* Additional header styles from home_page.html */
+    /* Override navbar-content styles */
+    .navbar-content {
+      display: flex !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      height: 4rem !important;
+      position: relative !important;
+      padding: 0.5rem 0 !important;
+    }
+    
+    .header-photo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 25px 0 15px;
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+    }
+    
+    .header-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      background-color: white;
+      padding: 2px;
+    }
+    
+    /* Override navbar-actions styles */
+    .navbar-actions {
+      display: flex !important;
+      align-items: center !important;
+      gap: 1rem !important;
+    }
+    
+    /* Override logo styles */
+    .logo {
+      font-weight: bold !important;
+      font-size: 1.5rem !important;
+      color: var(--primary) !important;
+      min-width: 220px !important;
+      text-align: left !important;
+      margin-right: auto !important;
+      display: inline-block !important;
+      padding: 0 15px !important;
+    }
+    
+    /* Override mobile-menu-toggle styles */
+    .mobile-menu-toggle {
+      display: block !important;
+    }
+    
+    @media (min-width: 768px) {
+      .header-photo-container {
+        width: 80px;
+        height: 80px;
+        margin: 0 30px 0 20px;
+      }
+      
+      .logo {
+        font-size: 1.5rem !important;
+        min-width: 250px !important;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -1228,6 +1295,9 @@
             <span class="hamburger-line"></span>
           </div>
         </button>
+        <div class="header-photo-container">
+          <img src="image/no background.png" alt="Header Photo" class="header-photo">
+        </div>
         <a href="#" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
         <nav class="desktop-nav">
           <a href="home_page.html" class="nav-link">Home</a>
@@ -1235,7 +1305,11 @@
           <a href="store.html" class="nav-link">Store</a>
           <a href="admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
-        <a href="login.html" class="btn btn-primary">
+        <div class="navbar-actions">
+          <a href="watchliststore.html" class="btn btn-icon">
+            <i class="fas fa-heart"></i>
+          </a>
+          <a href="login.html" class="btn btn-primary">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
