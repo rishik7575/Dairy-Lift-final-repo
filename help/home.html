@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dairy-Lift Support - Customer Support Portal</title>
+  <meta name="description" content="Get help and support for your Dairy-Lift account and investments." />
   <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
   
   <!-- Google Fonts -->
@@ -11,6 +12,36 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
   <style>
     /* Base styles */
     :root {
@@ -26,26 +57,394 @@
     }
     
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
     }
     
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--foreground);
+      background-color: var(--background);
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background-color: var(--background);
     }
     
-    .container-custom {
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .container {
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 1rem;
+    }
+    
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .container {
+        padding: 0 2rem;
+      }
+    }
+    
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 4rem;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .header-photo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 25px 0 15px;
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+    }
+    
+    .header-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      background-color: white;
+      padding: 2px;
+    }
+    
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 220px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+      padding: 0 15px;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
+      margin-left: 5px;
+      flex-shrink: 0;
+    }
+    
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+    
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+    
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+    
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+    
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+    
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+    
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
+    }
+    
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+      
+      .header-photo-container {
+        width: 80px;
+        height: 80px;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
     }
     
     /* Navbar Styles */
@@ -521,49 +920,16 @@
       display: none;
     }
     
-    /* Mobile menu */
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      inset-x: 0;
-      top: 4rem;
-      z-index: 20;
-      background-color: white;
-      border-bottom: 1px solid #e2e8f0;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
+    /* Additional styles for active links */
     
-    .mobile-menu.open {
-      display: block;
-    }
-    
-    .mobile-nav {
-      padding: 1rem 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    
-    .mobile-nav-link {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      padding: 0.5rem;
-      border-radius: 0.375rem;
-      color: #64748b;
-      text-decoration: none;
-    }
-    
-    .mobile-nav-link:hover {
-      background-color: #f0f7ff;
-      color: #2563eb;
+    .nav-link.active {
+      color: var(--primary);
+      font-weight: 600;
     }
     
     .mobile-nav-link.active {
-      color: #2563eb;
-      background-color: #f0f7ff;
+      color: var(--primary);
+      background-color: var(--primary-light);
     }
     
     /* Hero section */
@@ -821,7 +1187,7 @@
 <body>
   <!-- Navbar -->
   <header class="navbar" style="padding:10px">
-    <div class="container-custom" style="margin:0px">
+    <div class="container" style="margin:0px">
       <div class="navbar-content">
         <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
           <div class="hamburger-lines">
@@ -830,7 +1196,10 @@
             <span class="hamburger-line"></span>
           </div>
         </button>
-        <a href="../home_page.html" class="logo">Dairy-Lift</a>
+        <div class="header-photo-container">
+          <img src="../image/no background.png" alt="Header Photo" class="header-photo">
+        </div>
+        <a href="../home_page.html" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
         <nav class="desktop-nav">
           <a href="home.html" class="nav-link active">Home</a>
           <a href="livechat.html" class="nav-link">Live Chat</a>
@@ -912,7 +1281,7 @@
   <main>
     <!-- Hero section -->
     <section class="hero">
-      <div class="container-custom hero-container">
+      <div class="container hero-container">
         <div class="hero-content">
           <h1 class="hero-title">How can we help you today?</h1>
           <p class="hero-desc">
@@ -934,7 +1303,7 @@
 
     <!-- Support options section -->
     <section class="options-section">
-      <div class="container-custom">
+      <div class="container">
         <h2 class="section-title">Choose How You'd Like Support</h2>
         <div class="options-grid">
           <!-- Live Chat -->
@@ -1044,7 +1413,7 @@
 
     <!-- CTA section -->
     <section class="cta-section">
-      <div class="container-custom">
+      <div class="container">
         <div class="cta-container">
           <div class="cta-content">
             <h3 class="cta-title">Still need help?</h3>
@@ -1060,13 +1429,13 @@
   </main>
 
   <footer>
-    <div class="container-custom footer-container">
+    <div class="container footer-container">
       <div class="footer-logo">
         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
-        <span>Supportia</span>
+        <span>Dairy-Lift</span>
       </div>
       <div class="copyright">
-        &copy; <span id="currentYear"></span> Supportia. All rights reserved.
+        &copy; <span id="currentYear"></span> Dairy-Lift. All rights reserved.
       </div>
     </div>
   </footer>
@@ -1133,6 +1502,11 @@
     // Toggle menu when clicking the hamburger button
     mobileMenuToggle.addEventListener('click', function(event) {
       event.stopPropagation();
+      console.log('Mobile menu toggle clicked');
+      console.log('mobileMenu:', mobileMenu);
+      console.log('mobileMenuToggle:', mobileMenuToggle);
+      console.log('Is active:', mobileMenu.classList.contains('active'));
+      
       if (mobileMenu.classList.contains('active')) {
         closeMobileMenu();
       } else {

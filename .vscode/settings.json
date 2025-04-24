@@ -1,4 +1,8 @@
 {
-    "liveServer.settings.port": 5507,
+    "liveServer.settings.port": 5510,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "liveServer.settings.donotVerifyTags": true,
+    "liveServer.settings.useLocalIp": false,
+    "liveServer.settings.ChromeDebuggingAttachment": false,
     "zencoder.enableRepoIndexing": true
 }
