@@ -35,7 +35,7 @@ const Header = () => {
         
         <div className="flex items-center gap-4">
           <nav className="hidden md:flex items-center gap-6">
-            <Link to="/" className="text-dairy-dark hover:text-dairy-green font-medium">Home</Link>
+            <Link to="DAIRY-LIFT-FINAL-REPO/home_page.html" className="text-dairy-dark hover:text-dairy-green font-medium">Home</Link>
             <Link to="/store" className="text-dairy-dark hover:text-dairy-green font-medium">Store</Link>
             <Link to="/investments" className="text-dairy-dark hover:text-dairy-green font-medium">Investments</Link>
             <Link to="/about" className="text-dairy-dark hover:text-dairy-green font-medium">About</Link>
