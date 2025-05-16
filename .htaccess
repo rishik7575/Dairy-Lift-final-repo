@@ -1,0 +1,3 @@
+DirectoryIndex index.html
+RewriteEngine On
+# Ensure no redirection to home_page.html

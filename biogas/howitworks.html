@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartDairy - How It Works</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-farm-green">
+                        <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                    </svg>
+                    <span class="ml-2 text-xl font-bold text-farm-green">SmartDairy</span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="home.html" class="text-gray-600 hover:text-farm-green">Home</a>
+                    <a href="dashboard.html" class="text-gray-600 hover:text-farm-green">Dashboard</a>
+                    <a href="marketplace.html" class="text-gray-600 hover:text-farm-green">Marketplace</a>
+                    <a href="my%20cattle.html" class="text-gray-600 hover:text-farm-green">My Cattle</a>
+                    <a href="energy%20and%20waste.html" class="text-gray-600 hover:text-farm-green">Energy</a>
+                    <a href="howitworks.html" class="text-farm-green font-medium hover:text-farm-light-green">How It Works</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="cart.html" class="text-gray-600 hover:text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <circle cx="8" cy="21" r="1"/>
+                            <circle cx="19" cy="21" r="1"/>
+                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                        </svg>
+                    </a>
+                    <a href="settings.html" class="text-gray-600 hover:text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </a>
+                    <div class="relative">
+                        <button class="flex items-center focus:outline-none">
+                            <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                <span>JS</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1">
+        <!-- Hero Section -->
+        <section class="bg-farm-green text-white py-16">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-4">How SmartDairy Works</h1>
+                    <p class="text-xl text-farm-light-green mb-8">A revolutionary platform combining dairy farming investment with waste-to-energy solutions</p>
+                    <a href="register.html" class="inline-block bg-white text-farm-green hover:bg-gray-100 px-6 py-3 rounded-lg font-medium">Start Investing Today</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Overview Section -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-2xl md:text-3xl font-bold text-farm-green mb-8 text-center">The SmartDairy Concept</h2>
+                    <p class="text-lg text-gray-700 mb-6">
+                        SmartDairy is a platform that revolutionizes the dairy farming industry by combining traditional dairy
+                        production with modern technology, sustainable practices, and innovative investment opportunities.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-6">
+                        Our platform allows investors to own dairy cattle remotely, track their production and health in real-time,
+                        and receive returns from multiple revenue streams: milk production, biogas generation from waste,
+                        and fertilizer production.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-6">
+                        Through our integrated waste-to-energy systems, we're closing the loop on dairy farm operations,
+                        creating a more sustainable and profitable model for both investors and the environment.
+                    </p>
+                    
+                    <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="bg-farm-green/10 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-farm-green">
+                                    <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-farm-green mb-2">Dairy Production</h3>
+                            <p class="text-gray-600">High-quality milk from well-cared for cattle</p>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="bg-farm-green/10 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-farm-green">
+                                    <path d="M5 22h14"/>
+                                    <path d="M5 2h14"/>
+                                    <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
+                                    <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-farm-green mb-2">Biogas Energy</h3>
+                            <p class="text-gray-600">Converting waste to valuable energy</p>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="bg-farm-green/10 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-farm-green">
+                                    <rect width="3" height="15" x="6" y="5" rx="1"/>
+                                    <rect width="3" height="10" x="15" y="10" rx="1"/>
+                                    <rect width="3" height="5" x="10" y="15" rx="1"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-farm-green mb-2">Analytics & Tracking</h3>
+                            <p class="text-gray-600">Real-time monitoring of your investment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- How to Invest Section -->
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl md:text-3xl font-bold text-farm-green mb-8 text-center">How to Invest with SmartDairy</h2>
+                
+                <div class="max-w-4xl mx-auto">
+                    <div class="relative">
+                        <div class="absolute left-4 md:left-8 top-0 h-full w-0.5 bg-farm-green"></div>
+                        
+                        <div class="relative z-10 mb-12">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-farm-green text-white rounded-full h-10 w-10 flex items-center justify-center font-bold">1</div>
+                                <div class="ml-6">
+                                    <h3 class="text-xl font-semibold text-farm-green mb-2">Create Your Account</h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Register on our platform and complete your investor profile with your personal details and investment preferences.
+                                    </p>
+                                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                        <ul class="space-y-2">
+                                            <li class="flex items-start">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green mr-2 mt-0.5">
+                                                    <path d="M20 6 9 17l-5-5"/>
+                                                </svg>
+                                                <span>Simple registration process takes less than 5 minutes</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green mr-2 mt-0.5">
+                                                    <path d="M20 6 9 17l-5-5"/>
+                                                </svg>
+                                                <span>Secure identity verification</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green mr-2 mt-0.5">
+                                                    <path d="M20 6 9 17l-5-5"/>
+                                                </svg>
+                                                <span>Set up your payment methods and investment goals</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="relative z-10 mb-12">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-farm-green text-white rounded-full h-10 w-10 flex items-center justify-center font-bold">2</div>
+                                <div class="ml-6">
+                                    <h3 class="text-xl font-semibold text-farm-green mb-2">Select Your Investment Package</h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Browse our marketplace to find the right dairy cattle investment package that matches your investment goals.
+                                    </p>
+                                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-4">
+                                        <h4 class="font-medium mb-2">Investment Options:</h4>
+                                        <ul class="space-y-3">
+                                            <li class="flex">
+                                                <div class="bg-farm-green/10 rounded-full p-2 mr-3">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                                                        <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <span class="font-medium">Single Cattle Ownership</span>
+                                                    <p class="text-sm text-gray-500">Purchase a single cow with complete tracking and returns.</p>
+                                                </div>
+                                            </li>
+                                            <li class="flex">
+                                                <div class="bg-farm-green/10 rounded-full p-2 mr-3">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                                                        <path d="M16.8 11.2c1 .7 1.9 1.6 2.3 2.9m-1.9-7.4c1.3 1.5 2 3.8 2 7.3 0 10-8 12-8 12s-2.4-.6-4.7-2.5M7.2 11.2c-1 .7-1.9 1.6-2.3 2.9m1.9-7.4c-1.3 1.5-2 3.8-2 7.3 0 3.1.7 5.3 1.8 7m5.5-5.5c.4-.6.7-1.4.9-2.5.3-1.2.2-2.4-.2-3.6S11.3 7.1 10 7.1"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <span class="font-medium">Herd Investment</span>
+                                                    <p class="text-sm text-gray-500">Invest in a group of cattle with diversified returns.</p>
+                                                </div>
+                                            </li>
+                                            <li class="flex">
+                                                <div class="bg-farm-green/10 rounded-full p-2 mr-3">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                                                        <path d="M5 22h14"/>
+                                                        <path d="M5 2h14"/>
+                                                        <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
+                                                        <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <span class="font-medium">Biogas System Stakeholder</span>
+                                                    <p class="text-sm text-gray-500">Invest in waste-to-energy infrastructure with monthly energy dividends.</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <p class="text-sm text-gray-500">
+                                        Each investment option comes with detailed information about expected returns, risk factors, and sustainability impact.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="relative z-10 mb-12">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-farm-green text-white rounded-full h-10 w-10 flex items-center justify-center font-bold">3</div>
+                                <div class="ml-6">
+                                    <h3 class="text-xl font-semibold text-farm-green mb-2">Complete Your Investment</h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Finalize your investment by securely transferring funds and signing the digital ownership agreement.
+                                    </p>
+                                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                        <h4 class="font-medium mb-2">Secure Payment Options:</h4>
+                                        <div class="flex flex-wrap gap-3 mb-4">
+                                            <div class="bg-gray-100 px-3 py-1 rounded-md text-sm">Bank Transfer</div>
+                                            <div class="bg-gray-100 px-3 py-1 rounded-md text-sm">Credit Card</div>
+                                            <div class="bg-gray-100 px-3 py-1 rounded-md text-sm">Debit Card</div>
+                                            <div class="bg-gray-100 px-3 py-1 rounded-md text-sm">Digital Wallet</div>
+                                        </div>
+                                        <p class="text-sm text-gray-500">
+                                            All transactions are secured with bank-level encryption and multi-factor authentication.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-farm-green text-white rounded-full h-10 w-10 flex items-center justify-center font-bold">4</div>
+                                <div class="ml-6">
+                                    <h3 class="text-xl font-semibold text-farm-green mb-2">Track, Monitor, and Earn</h3>
+                                    <p class="text-gray-600 mb-4">
+                                        Use our intuitive dashboard to monitor your investment performance, track cattle health,
+                                        and receive regular profit distributions.
+                                    </p>
+                                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                        <h4 class="font-medium mb-2">What You Can Track:</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <div class="flex items-start">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green mr-2 mt-0.5">
+                                                    <path d="M20 6 9 17l-5-5"/>
+                                                </svg>
+                                                <span class="text-sm">Milk production yields</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green mr-2 mt-0.5">
+                                                    <path d="M20 6 9 17l-5-5"/>
+                                                </svg>
+                                                <span class="text-sm">Cattle health metrics</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green mr-2 mt-0.5">
+                                                    <path d="M20 6 9 17l-5-5"/>
+                                                </svg>
+                                                <span class="text-sm">Biogas production</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green mr-2 mt-0.5">
+                                                    <path d="M20 6 9 17l-5-5"/>
+                                                </svg>
+                                                <span class="text-sm">Energy generation</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green mr-2 mt-0.5">
+                                                    <path d="M20 6 9 17l-5-5"/>
+                                                </svg>
+                                                <span class="text-sm">Fertilizer production</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green mr-2 mt-0.5">
+                                                    <path d="M20 6 9 17l-5-5"/>
+                                                </svg>
+                                                <span class="text-sm">Financial returns</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQs Section -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl md:text-3xl font-bold text-farm-green mb-8 text-center">Frequently Asked Questions</h2>
+                
+                <div class="max-w-3xl mx-auto">
+                    <div class="space-y-6">
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="text-lg font-semibold text-farm-green mb-2">What is the minimum investment amount?</h3>
+                            <p class="text-gray-600">
+                                The minimum investment starts at $1,000 for fractional cattle ownership. For full cattle ownership,
+                                investments typically start at $2,500 depending on breed and age.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="text-lg font-semibold text-farm-green mb-2">How are returns distributed?</h3>
+                            <p class="text-gray-600">
+                                Returns are distributed monthly based on milk production, biogas generation, and fertilizer sales.
+                                You can choose to reinvest your returns or have them deposited directly to your bank account.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="text-lg font-semibold text-farm-green mb-2">What happens if a cow gets sick or dies?</h3>
+                            <p class="text-gray-600">
+                                All cattle in our program are insured against illness and death. In case of such events,
+                                you'll be compensated according to the insurance policy, or you can choose to reinvest
+                                in another cow without additional costs.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="text-lg font-semibold text-farm-green mb-2">Can I visit the farm and see my cattle?</h3>
+                            <p class="text-gray-600">
+                                Yes! We organize quarterly farm visits for investors to meet their cattle and see the operations.
+                                Virtual farm tours are also available monthly through our platform.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="text-lg font-semibold text-farm-green mb-2">How liquid is my investment?</h3>
+                            <p class="text-gray-600">
+                                You can sell your investment back to SmartDairy or to other investors on our secondary market at any time,
+                                subject to a minimum holding period of 6 months. Market conditions may affect the selling price.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="text-lg font-semibold text-farm-green mb-2">How sustainable are your farming practices?</h3>
+                            <p class="text-gray-600">
+                                Our farms follow organic and regenerative farming practices. The biogas system reduces methane emissions,
+                                and our energy production offsets farm operations. We're certified carbon-neutral through our offsetting program.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="py-16 bg-farm-green text-white">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4">Ready to Start Your Sustainable Investment Journey?</h2>
+                    <p class="text-xl opacity-90 mb-8">Join thousands of investors already earning returns from sustainable dairy farming.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="register.html" class="bg-white text-farm-green hover:bg-gray-100 px-6 py-3 rounded-lg font-medium">Create Account</a>
+                        <a href="roi.html" class="border border-white text-white hover:bg-white/10 px-6 py-3 rounded-lg font-medium">Calculate ROI</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center text-gray-600">
+                <p>&copy; 2023 SmartDairy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

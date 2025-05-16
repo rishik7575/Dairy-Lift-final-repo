@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartDairy - Shopping Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .bg-farm-green {
+            background-color: #0f766e;
+        }
+        .bg-farm-light-green {
+            background-color: #14b8a6;
+        }
+        .text-farm-green {
+            color: #0f766e;
+        }
+        .text-farm-light-green {
+            color: #14b8a6;
+        }
+        .text-farm-cream {
+            color: #f5f5dc;
+        }
+        .border-farm-green {
+            border-color: #0f766e;
+        }
+        .hover\:bg-farm-green:hover {
+            background-color: #0f766e;
+        }
+        .hover\:bg-farm-green\/90:hover {
+            background-color: rgba(15, 118, 110, 0.9);
+        }
+        .hover\:text-farm-green:hover {
+            color: #0f766e;
+        }
+        .hover\:text-farm-light-green:hover {
+            color: #14b8a6;
+        }
+        .bg-farm-green\/10 {
+            background-color: rgba(15, 118, 110, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-farm-green">
+                        <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                    </svg>
+                    <span class="ml-2 text-xl font-bold text-farm-green">SmartDairy</span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="home.html" class="text-gray-600 hover:text-farm-green">Home</a>
+                    <a href="dashboard.html" class="text-gray-600 hover:text-farm-green">Dashboard</a>
+                    <a href="marketplace.html" class="text-gray-600 hover:text-farm-green">Marketplace</a>
+                    <a href="my%20cattle.html" class="text-gray-600 hover:text-farm-green">My Cattle</a>
+                    <a href="energy%20and%20waste.html" class="text-gray-600 hover:text-farm-green">Energy</a>
+                    <a href="howitworks.html" class="text-gray-600 hover:text-farm-green">How It Works</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="cart.html" class="text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <circle cx="8" cy="21" r="1"/>
+                            <circle cx="19" cy="21" r="1"/>
+                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                        </svg>
+                    </a>
+                    <a href="settings.html" class="text-gray-600 hover:text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </a>
+                    <div class="relative">
+                        <button class="flex items-center focus:outline-none">
+                            <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                <span>JS</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="flex-1 container mx-auto px-4 py-8">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-farm-green">Shopping Cart</h1>
+            <p class="text-gray-500">Review and checkout your selected products</p>
+        </div>
+        
+        <div id="empty-cart" class="text-center py-12 hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-12 w-12 mx-auto text-gray-400">
+                <circle cx="8" cy="21" r="1"/>
+                <circle cx="19" cy="21" r="1"/>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+            </svg>
+            <h3 class="mt-4 text-lg font-medium">Your cart is empty</h3>
+            <p class="text-gray-500 mb-6">Browse our marketplace to find quality farm products</p>
+            <a 
+                href="marketplace.html" 
+                class="inline-block bg-farm-green hover:bg-farm-green/90 text-white px-4 py-2 rounded"
+            >
+                Continue Shopping
+            </a>
+        </div>
+        
+        <div id="cart-content" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Cart Items -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="px-6 py-4 border-b">
+                        <h2 class="text-xl font-bold">Cart Items (<span id="cart-count">3</span>)</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[300px]">Product</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Cart Item 1 -->
+                                <tr>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="h-12 w-12 rounded-md overflow-hidden bg-gray-200">
+                                                <img
+                                                    src="/placeholder.svg"
+                                                    alt="Organic Dairy Milk"
+                                                    class="h-full w-full object-cover"
+                                                />
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">Organic Dairy Milk</div>
+                                                <div class="text-xs text-gray-500">From: Green Valley Farm</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">$5.99</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-2">
+                                            <button
+                                                class="h-8 w-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
+                                                onclick="updateQuantity(1, -1)"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                                    <path d="M5 12h14"/>
+                                                </svg>
+                                            </button>
+                                            <span class="w-8 text-center">2</span>
+                                            <button
+                                                class="h-8 w-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
+                                                onclick="updateQuantity(1, 1)"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                                    <path d="M5 12h14"/>
+                                                    <path d="M12 5v14"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-medium">$11.98</td>
+                                    <td class="px-6 py-4">
+                                        <button
+                                            class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded"
+                                            onclick="removeItem(1)"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                                <path d="M3 6h18"/>
+                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                                                <line x1="10" x2="10" y1="11" y2="17"/>
+                                                <line x1="14" x2="14" y1="11" y2="17"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Cart Item 2 -->
+                                <tr>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="h-12 w-12 rounded-md overflow-hidden bg-gray-200">
+                                                <img
+                                                    src="/placeholder.svg"
+                                                    alt="Artisan Cheese Selection"
+                                                    class="h-full w-full object-cover"
+                                                />
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">Artisan Cheese Selection</div>
+                                                <div class="text-xs text-gray-500">From: Hilltop Dairy</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">$12.99</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-2">
+                                            <button
+                                                class="h-8 w-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
+                                                onclick="updateQuantity(2, -1)"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                                    <path d="M5 12h14"/>
+                                                </svg>
+                                            </button>
+                                            <span class="w-8 text-center">1</span>
+                                            <button
+                                                class="h-8 w-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
+                                                onclick="updateQuantity(2, 1)"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                                    <path d="M5 12h14"/>
+                                                    <path d="M12 5v14"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-medium">$12.99</td>
+                                    <td class="px-6 py-4">
+                                        <button
+                                            class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded"
+                                            onclick="removeItem(2)"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                                <path d="M3 6h18"/>
+                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                                                <line x1="10" x2="10" y1="11" y2="17"/>
+                                                <line x1="14" x2="14" y1="11" y2="17"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Cart Item 3 -->
+                                <tr>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="h-12 w-12 rounded-md overflow-hidden bg-gray-200">
+                                                <img
+                                                    src="/placeholder.svg"
+                                                    alt="Biogas Fertilizer"
+                                                    class="h-full w-full object-cover"
+                                                />
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">Biogas Fertilizer</div>
+                                                <div class="text-xs text-gray-500">From: EcoGreen Solutions</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">$19.99</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-2">
+                                            <button
+                                                class="h-8 w-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
+                                                onclick="updateQuantity(3, -1)"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                                    <path d="M5 12h14"/>
+                                                </svg>
+                                            </button>
+                                            <span class="w-8 text-center">1</span>
+                                            <button
+                                                class="h-8 w-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
+                                                onclick="updateQuantity(3, 1)"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                                    <path d="M5 12h14"/>
+                                                    <path d="M12 5v14"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-medium">$19.99</td>
+                                    <td class="px-6 py-4">
+                                        <button
+                                            class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded"
+                                            onclick="removeItem(3)"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                                <path d="M3 6h18"/>
+                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                                                <line x1="10" x2="10" y1="11" y2="17"/>
+                                                <line x1="14" x2="14" y1="11" y2="17"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t flex flex-wrap justify-between gap-2">
+                        <a 
+                            href="marketplace.html" 
+                            class="border border-farm-green text-farm-green hover:bg-gray-50 px-4 py-2 rounded"
+                        >
+                            Continue Shopping
+                        </a>
+                        <button 
+                            class="border border-gray-300 text-gray-500 hover:bg-gray-50 px-4 py-2 rounded"
+                            onclick="clearCart()"
+                        >
+                            Clear Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order Summary -->
+            <div>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="px-6 py-4 border-b">
+                        <h2 class="text-xl font-bold">Order Summary</h2>
+                    </div>
+                    <div class="px-6 py-4">
+                        <div class="space-y-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">Subtotal</span>
+                                <span id="subtotal">$44.96</span>
+                            </div>
+                            
+                            <div id="discount-row" class="flex justify-between text-green-600 hidden">
+                                <span>Discount (10%)</span>
+                                <span id="discount">-$4.50</span>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">Shipping</span>
+                                <span id="shipping">
+                                    <span class="text-green-600">Free</span>
+                                </span>
+                            </div>
+                            
+                            <hr class="border-gray-200" />
+                            
+                            <div class="flex justify-between font-bold">
+                                <span>Total</span>
+                                <span id="total">$44.96</span>
+                            </div>
+                            
+                            <div id="free-shipping-message" class="text-sm text-gray-500 hidden">
+                                Add <span id="remaining-for-free-shipping">$5.04</span> more to qualify for free shipping
+                            </div>
+                            
+                            <div class="flex items-center space-x-2">
+                                <input
+                                    type="text"
+                                    id="coupon-code"
+                                    placeholder="Coupon code"
+                                    class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-farm-green focus:border-transparent"
+                                />
+                                <button 
+                                    id="apply-coupon"
+                                    class="border border-gray-300 px-3 py-2 rounded hover:bg-gray-50"
+                                    onclick="applyCoupon()"
+                                >
+                                    Apply
+                                </button>
+                            </div>
+                            
+                            <div id="coupon-applied" class="bg-green-50 border border-green-200 rounded-md p-2 text-sm text-green-600 flex items-center hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2">
+                                    <path d="M20.91 11.12a1.86 1.86 0 0 0 .22-1.77 1.9 1.9 0 0 0-1.27-1.14 1.91 1.91 0 0 1-1.27-1.14 1.91 1.91 0 0 1 .22-1.77 1.86 1.86 0 0 0 .22-1.77 1.89 1.89 0 0 0-1.27-1.13 1.91 1.91 0 0 1-1.27-1.14 1.9 1.9 0 0 1 .22-1.76 1.86 1.86 0 0 0 .22-1.77 1.89 1.89 0 0 0-1.27-1.14 1.9 1.9 0 0 1-1.27-1.13 1.9 1.9 0 0 1 .22-1.77 1.86 1.86 0 0 0 .22-1.77 1.89 1.89 0 0 0-1.27-1.14 1.79 1.79 0 0 0-.62-.11 1.86 1.86 0 0 0-1.68 1.06 1.9 1.9 0 0 1-1.59 1.06 1.9 1.9 0 0 1-1.59-1.06A1.86 1.86 0 0 0 5.9 2.11a1.89 1.89 0 0 0-1.88 1.24 1.9 1.9 0 0 1-1.59 1.07 1.9 1.9 0 0 1-1.59-1.07A1.86 1.86 0 0 0 .83 2.29"/>
+                                    <path d="m8 16 3 3 5-5"/>
+                                    <path d="M7 19h11a3 3 0 0 0 0-6H6a3 3 0 0 1 0-6h8"/>
+                                </svg>
+                                Coupon "DAIRY10" applied successfully
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 border-t">
+                        <button id="checkout-button" class="w-full bg-farm-green hover:bg-farm-green/90 text-white px-4 py-2 rounded flex items-center justify-center">
+                            Proceed to Checkout
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4">
+                                <path d="m9 18 6-6-6-6"/>
+                            </svg>
+                        </button>
+                        
+                        <div class="flex items-center justify-center space-x-2 text-xs text-gray-500 mt-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                <rect width="20" height="14" x="2" y="5" rx="2"/>
+                                <line x1="2" x2="22" y1="10" y2="10"/>
+                            </svg>
+                            <span>Secure payment</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 ml-2">
+                                <path d="M20.91 11.12a1.86 1.86 0 0 0 .22-1.77 1.9 1.9 0 0 0-1.27-1.14 1.91 1.91 0 0 1-1.27-1.14 1.91 1.91 0 0 1 .22-1.77 1.86 1.86 0 0 0 .22-1.77 1.89 1.89 0 0 0-1.27-1.13 1.91 1.91 0 0 1-1.27-1.14 1.9 1.9 0 0 1 .22-1.76 1.86 1.86 0 0 0 .22-1.77 1.89 1.89 0 0 0-1.27-1.14 1.9 1.9 0 0 1-1.27-1.13 1.9 1.9 0 0 1 .22-1.77 1.86 1.86 0 0 0 .22-1.77 1.89 1.89 0 0 0-1.27-1.14 1.79 1.79 0 0 0-.62-.11 1.86 1.86 0 0 0-1.68 1.06 1.9 1.9 0 0 1-1.59 1.06 1.9 1.9 0 0 1-1.59-1.06A1.86 1.86 0 0 0 5.9 2.11a1.89 1.89 0 0 0-1.88 1.24 1.9 1.9 0 0 1-1.59 1.07 1.9 1.9 0 0 1-1.59-1.07A1.86 1.86 0 0 0 .83 2.29"/>
+                                <path d="m8 16 3 3 5-5"/>
+                                <path d="M7 19h11a3 3 0 0 0 0-6H6a3 3 0 0 1 0-6h8"/>
+                            </svg>
+                            <span>SSL Encrypted</span>
+                        </div>
+                        
+                        <div class="flex justify-center gap-2 mt-4">
+                            <div class="h-8 w-12 bg-gray-200 rounded"></div>
+                            <div class="h-8 w-12 bg-gray-200 rounded"></div>
+                            <div class="h-8 w-12 bg-gray-200 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 hidden transform transition-transform duration-300 translate-y-full">
+        <div class="flex items-start">
+            <div class="flex-shrink-0" id="toast-icon-success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-green-500">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+            </div>
+            <div class="flex-shrink-0 hidden" id="toast-icon-error">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-red-500">
+                    <path d="M18 6 6 18"/>
+                    <path d="m6 6 12 12"/>
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-gray-900" id="toast-title"></p>
+                <p class="mt-1 text-sm text-gray-500" id="toast-description"></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-8 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center text-gray-600">
+                <p>&copy; 2023 SmartDairy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cart items data
+            const cartItems = [
+                {
+                    id: 1,
+                    name: "Organic Dairy Milk",
+                    price: 5.99,
+                    quantity: 2,
+                    image: "/placeholder.svg",
+                    farm: "Green Valley Farm"
+                },
+                {
+                    id: 2,
+                    name: "Artisan Cheese Selection",
+                    price: 12.99,
+                    quantity: 1,
+                    image: "/placeholder.svg",
+                    farm: "Hilltop Dairy"
+                },
+                {
+                    id: 5,
+                    name: "Biogas Fertilizer",
+                    price: 19.99,
+                    quantity: 1,
+                    image: "/placeholder.svg",
+                    farm: "EcoGreen Solutions"
+                }
+            ];
+            
+            let couponApplied = false;
+            
+            // Update quantity
+            window.updateQuantity = function(id, change) {
+                const itemIndex = cartItems.findIndex(item => item.id === id);
+                if (itemIndex !== -1) {
+                    const newQuantity = cartItems[itemIndex].quantity + change;
+                    if (newQuantity < 1) return;
+                    
+                    cartItems[itemIndex].quantity = newQuantity;
+                    
+                    // Update quantity display
+                    const quantityElements = document.querySelectorAll(`tr:nth-child(${itemIndex + 1}) td:nth-child(3) span:nth-child(2)`);
+                    quantityElements.forEach(el => {
+                        el.textContent = newQuantity;
+                    });
+                    
+                    // Update total for this item
+                    const totalPrice = (cartItems[itemIndex].price * newQuantity).toFixed(2);
+                    const totalElements = document.querySelectorAll(`tr:nth-child(${itemIndex + 1}) td:nth-child(4)`);
+                    totalElements.forEach(el => {
+                        el.textContent = `$${totalPrice}`;
+                    });
+                    
+                    updateOrderSummary();
+                    showToast('success', 'Quantity updated', 'Your cart has been updated successfully.');
+                }
+            };
+            
+            // Remove item
+            window.removeItem = function(id) {
+                const itemIndex = cartItems.findIndex(item => item.id === id);
+                if (itemIndex !== -1) {
+                    // Remove item from cart
+                    cartItems.splice(itemIndex, 1);
+                    
+                    // Remove item from table
+                    const rows = document.querySelectorAll('tbody tr');
+                    rows[itemIndex].remove();
+                    
+                    updateOrderSummary();
+                    showToast('success', 'Item removed', 'Product has been removed from your cart.');
+                    
+                    // Update cart count
+                    const cartCountElement = document.getElementById('cart-count');
+                    cartCountElement.textContent = cartItems.length;
+                    
+                    // Show empty cart message if cart is empty
+                    if (cartItems.length === 0) {
+                        document.getElementById('empty-cart').classList.remove('hidden');
+                        document.getElementById('cart-content').classList.add('hidden');
+                    }
+                }
+            };
+            
+            // Clear cart
+            window.clearCart = function() {
+                // Clear cart items
+                cartItems.length = 0;
+                
+                // Show empty cart message
+                document.getElementById('empty-cart').classList.remove('hidden');
+                document.getElementById('cart-content').classList.add('hidden');
+                
+                showToast('success', 'Cart cleared', 'All items have been removed from your cart.');
+            };
+            
+            // Apply coupon
+            window.applyCoupon = function() {
+                const couponCode = document.getElementById('coupon-code').value;
+                
+                if (couponCode.toLowerCase() === 'dairy10') {
+                    couponApplied = true;
+                    
+                    // Show coupon applied message
+                    document.getElementById('coupon-applied').classList.remove('hidden');
+                    
+                    // Disable coupon input and button
+                    document.getElementById('coupon-code').disabled = true;
+                    document.getElementById('apply-coupon').disabled = true;
+                    
+                    // Show discount row
+                    document.getElementById('discount-row').classList.remove('hidden');
+                    
+                    updateOrderSummary();
+                    
+                    showToast('success', 'Coupon applied', '10% discount has been applied to your order.');
+                } else {
+                    showToast('error', 'Invalid coupon', 'The coupon code you entered is invalid or expired.');
+                }
+            };
+            
+            // Update order summary
+            function updateOrderSummary() {
+                const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const discount = couponApplied ? subtotal * 0.1 : 0; // 10% discount if coupon applied
+                const shipping = subtotal > 50 ? 0 : 5.99;
+                const total = subtotal - discount + shipping;
+                
+                // Update subtotal
+                document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+                
+                // Update discount
+                if (couponApplied) {
+                    document.getElementById('discount').textContent = `-$${discount.toFixed(2)}`;
+                }
+                
+                // Update shipping
+                if (shipping === 0) {
+                    document.getElementById('shipping').innerHTML = '<span class="text-green-600">Free</span>';
+                    document.getElementById('free-shipping-message').classList.add('hidden');
+                } else {
+                    document.getElementById('shipping').textContent = `$${shipping.toFixed(2)}`;
+                    
+                    // Show message about how much more to get free shipping
+                    const remainingForFreeShipping = 50 - subtotal;
+                    if (remainingForFreeShipping > 0) {
+                        document.getElementById('free-shipping-message').classList.remove('hidden');
+                        document.getElementById('remaining-for-free-shipping').textContent = `$${remainingForFreeShipping.toFixed(2)}`;
+                    } else {
+                        document.getElementById('free-shipping-message').classList.add('hidden');
+                    }
+                }
+                
+                // Update total
+                document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+            }
+            
+            // Show toast notification
+            function showToast(type, title, description) {
+                const toast = document.getElementById('toast');
+                const toastTitle = document.getElementById('toast-title');
+                const toastDescription = document.getElementById('toast-description');
+                const successIcon = document.getElementById('toast-icon-success');
+                const errorIcon = document.getElementById('toast-icon-error');
+                
+                // Update toast content
+                toastTitle.textContent = title;
+                toastDescription.textContent = description;
+                
+                // Show correct icon
+                if (type === 'success') {
+                    successIcon.classList.remove('hidden');
+                    errorIcon.classList.add('hidden');
+                } else {
+                    successIcon.classList.add('hidden');
+                    errorIcon.classList.remove('hidden');
+                }
+                
+                // Show toast
+                toast.classList.remove('hidden', 'translate-y-full');
+                toast.classList.add('translate-y-0');
+                
+                // Hide toast after 3 seconds
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-0');
+                    toast.classList.add('translate-y-full');
+                    
+                    setTimeout(() => {
+                        toast.classList.add('hidden');
+                    }, 300);
+                }, 3000);
+            }
+            
+            // Handle checkout button click
+            document.getElementById('checkout-button').addEventListener('click', function() {
+                showToast('success', 'Checkout initiated', 'Redirecting to checkout page...');
+                
+                // In a real application, you would redirect to the checkout page
+                setTimeout(() => {
+                    alert('Redirecting to checkout page...');
+                }, 1000);
+            });
+            
+            // Initialize order summary
+            updateOrderSummary();
+        });
+    </script>
+</body>
+</html>

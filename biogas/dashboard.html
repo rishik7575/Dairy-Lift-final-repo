@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartDairy - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .bg-farm-green {
+            background-color: #0f766e;
+        }
+        .bg-farm-light-green {
+            background-color: #14b8a6;
+        }
+        .text-farm-green {
+            color: #0f766e;
+        }
+        .text-farm-light-green {
+            color: #14b8a6;
+        }
+        .border-farm-green {
+            border-color: #0f766e;
+        }
+        .hover\:bg-farm-green:hover {
+            background-color: #0f766e;
+        }
+        .hover\:bg-farm-green\/90:hover {
+            background-color: rgba(15, 118, 110, 0.9);
+        }
+        .bg-farm-green\/10 {
+            background-color: rgba(15, 118, 110, 0.1);
+        }
+        .dashboard-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-farm-green">
+                        <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                    </svg>
+                    <span class="ml-2 text-xl font-bold text-farm-green">SmartDairy</span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="home.html" class="text-gray-600 hover:text-farm-green">Home</a>
+                    <a href="dashboard.html" class="text-farm-green font-medium hover:text-farm-light-green">Dashboard</a>
+                    <a href="marketplace.html" class="text-gray-600 hover:text-farm-green">Marketplace</a>
+                    <a href="my%20cattle.html" class="text-gray-600 hover:text-farm-green">My Cattle</a>
+                    <a href="energy%20and%20waste.html" class="text-gray-600 hover:text-farm-green">Energy</a>
+                    <a href="howitworks.html" class="text-gray-600 hover:text-farm-green">How It Works</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="cart.html" class="text-gray-600 hover:text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <circle cx="8" cy="21" r="1"/>
+                            <circle cx="19" cy="21" r="1"/>
+                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                        </svg>
+                    </a>
+                    <a href="settings.html" class="text-gray-600 hover:text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </a>
+                    <div class="relative">
+                        <button class="flex items-center focus:outline-none">
+                            <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                <span>JS</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="flex-1 container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-farm-green">Investor Dashboard</h1>
+                <p class="text-gray-600">Welcome back, Investor! Here's your farm overview.</p>
+            </div>
+            <div class="flex space-x-2 mt-4 md:mt-0">
+                <button class="flex items-center text-sm border border-gray-300 rounded px-3 py-1.5 hover:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-4 w-4">
+                        <path d="M21 2v6h-6"/>
+                        <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+                        <path d="M3 22v-6h6"/>
+                        <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+                    </svg>
+                    Refresh
+                </button>
+                <button class="flex items-center text-sm border border-gray-300 rounded px-3 py-1.5 hover:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-4 w-4">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" x2="12" y1="15" y2="3"/>
+                    </svg>
+                    Export
+                </button>
+            </div>
+        </div>
+        
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6 dashboard-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-500">Total Investment</h3>
+                    <div class="bg-farm-green/10 rounded-full p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="text-2xl font-bold">$24,500</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-green-500 mr-1">
+                        <path d="m5 12 5 5 9-9"/>
+                    </svg>
+                    <span class="text-green-500 text-sm">8.2%</span>
+                    <span class="text-gray-500 text-xs ml-2">Total value of your dairy farm investments</span>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6 dashboard-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-500">Milk Production</h3>
+                    <div class="bg-farm-green/10 rounded-full p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green">
+                            <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="text-2xl font-bold">248 L</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-green-500 mr-1">
+                        <path d="m5 12 5 5 9-9"/>
+                    </svg>
+                    <span class="text-green-500 text-sm">4.5%</span>
+                    <span class="text-gray-500 text-xs ml-2">Weekly milk yield from your cattle</span>
+                </div>
+                <div class="mt-2">
+                    <div class="bg-gray-200 rounded-full h-1.5">
+                        <div class="bg-green-500 h-1.5 rounded-full" style="width: 82%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6 dashboard-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-500">Biogas Generated</h3>
+                    <div class="bg-farm-green/10 rounded-full p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green">
+                            <path d="M5 22h14"/>
+                            <path d="M5 2h14"/>
+                            <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
+                            <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="text-2xl font-bold">156 m³</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-green-500 mr-1">
+                        <path d="m5 12 5 5 9-9"/>
+                    </svg>
+                    <span class="text-green-500 text-sm">12.3%</span>
+                    <span class="text-gray-500 text-xs ml-2">Monthly biogas production from waste</span>
+                </div>
+                <div class="mt-2">
+                    <div class="bg-gray-200 rounded-full h-1.5">
+                        <div class="bg-green-500 h-1.5 rounded-full" style="width: 78%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6 dashboard-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-500">Monthly Earnings</h3>
+                    <div class="bg-farm-green/10 rounded-full p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green">
+                            <rect width="3" height="15" x="6" y="5" rx="1"/>
+                            <rect width="3" height="10" x="15" y="10" rx="1"/>
+                            <rect width="3" height="5" x="10" y="15" rx="1"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="text-2xl font-bold">$1,845</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-green-500 mr-1">
+                        <path d="m5 12 5 5 9-9"/>
+                    </svg>
+                    <span class="text-green-500 text-sm">6.7%</span>
+                    <span class="text-gray-500 text-xs ml-2">Earnings from all revenue streams</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cattle Health Section -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-farm-green">Cattle Health</h2>
+                <button class="text-sm border border-gray-300 rounded px-3 py-1.5 text-farm-green hover:bg-gray-100">View All</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cattle Card 1 -->
+                <div class="bg-white rounded-lg shadow dashboard-card">
+                    <div class="p-6 border-b">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-semibold text-lg">Bella</h3>
+                                <p class="text-gray-500 text-sm">ID: CAT-1234</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Excellent</span>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <div class="bg-farm-green/10 rounded-full p-2 mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                                    <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">Milk Production</div>
+                                <div class="font-medium">28 L <span class="text-xs text-gray-500">/ 30 L target</span></div>
+                            </div>
+                        </div>
+                        <div class="mb-2 bg-gray-200 rounded-full h-1.5">
+                            <div class="bg-green-500 h-1.5 rounded-full" style="width: 93%"></div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div>
+                                <div class="text-xs text-gray-500">Temperature</div>
+                                <div class="font-medium">38.5°C</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Hydration</div>
+                                <div class="font-medium">94%</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Heart Rate</div>
+                                <div class="font-medium">65 bpm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cattle Card 2 -->
+                <div class="bg-white rounded-lg shadow dashboard-card">
+                    <div class="p-6 border-b">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-semibold text-lg">Daisy</h3>
+                                <p class="text-gray-500 text-sm">ID: CAT-2345</p>
+                            </div>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Good</span>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <div class="bg-farm-green/10 rounded-full p-2 mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                                    <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">Milk Production</div>
+                                <div class="font-medium">25 L <span class="text-xs text-gray-500">/ 32 L target</span></div>
+                            </div>
+                        </div>
+                        <div class="mb-2 bg-gray-200 rounded-full h-1.5">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div>
+                                <div class="text-xs text-gray-500">Temperature</div>
+                                <div class="font-medium">38.7°C</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Hydration</div>
+                                <div class="font-medium">92%</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Heart Rate</div>
+                                <div class="font-medium">68 bpm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cattle Card 3 -->
+                <div class="bg-white rounded-lg shadow dashboard-card">
+                    <div class="p-6 border-b">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-semibold text-lg">Rosie</h3>
+                                <p class="text-gray-500 text-sm">ID: CAT-3456</p>
+                            </div>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">Fair</span>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <div class="bg-farm-green/10 rounded-full p-2 mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                                    <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">Milk Production</div>
+                                <div class="font-medium">22 L <span class="text-xs text-gray-500">/ 28 L target</span></div>
+                            </div>
+                        </div>
+                        <div class="mb-2 bg-gray-200 rounded-full h-1.5">
+                            <div class="bg-yellow-500 h-1.5 rounded-full" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div>
+                                <div class="text-xs text-gray-500">Temperature</div>
+                                <div class="font-medium">39.1°C</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Hydration</div>
+                                <div class="font-medium">89%</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Heart Rate</div>
+                                <div class="font-medium">72 bpm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6 dashboard-card">
+                <h3 class="font-semibold text-lg mb-4">Biogas Production</h3>
+                <div style="height: 250px;">
+                    <canvas id="biogasChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6 dashboard-card">
+                <h3 class="font-semibold text-lg mb-4">Earnings Overview</h3>
+                <div style="height: 250px;">
+                    <canvas id="earningsChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activities and Alerts -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg shadow p-6 lg:col-span-2 dashboard-card">
+                <h3 class="font-semibold text-lg mb-4">Recent Activities</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-4 border-b border-gray-200 pb-4">
+                        <div class="bg-farm-green bg-opacity-10 rounded-full p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium">Payment Processed</h4>
+                            <p class="text-xs text-gray-500">Monthly earnings of $650 have been transferred to your account</p>
+                            <p class="text-xs text-gray-500 mt-1">Today, 8:23 AM</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4 border-b border-gray-200 pb-4">
+                        <div class="bg-farm-green bg-opacity-10 rounded-full p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                                <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium">Cattle Health Check</h4>
+                            <p class="text-xs text-gray-500">Routine health check completed for Bella (CAT-1234)</p>
+                            <p class="text-xs text-gray-500 mt-1">Yesterday, 2:45 PM</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4 border-b border-gray-200 pb-4">
+                        <div class="bg-farm-green bg-opacity-10 rounded-full p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                                <path d="M5 22h14"/>
+                                <path d="M5 2h14"/>
+                                <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
+                                <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium">Biogas Sale</h4>
+                            <p class="text-xs text-gray-500">25 m³ of biogas sold to local energy grid</p>
+                            <p class="text-xs text-gray-500 mt-1">2 days ago, 11:30 AM</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-farm-green bg-opacity-10 rounded-full p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                                <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/>
+                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                                <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/>
+                                <path d="M2 7h20"/>
+                                <path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.8 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.61-.63.7.7 0 0 0-.79 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.61-.63.7.7 0 0 0-.79 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.61-.63.7.7 0 0 0-.79 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium">Dairy Product Sale</h4>
+                            <p class="text-xs text-gray-500">120 units of organic cheese sold through marketplace</p>
+                            <p class="text-xs text-gray-500 mt-1">3 days ago, 9:15 AM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6 dashboard-card">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-semibold text-lg">Alerts & Notifications</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-farm-green">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2 bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-yellow-800">Health Alert</h4>
+                            <p class="text-xs text-yellow-700">
+                                Rosie (CAT-3456) requires additional hydration monitoring
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 bg-green-50 border-l-4 border-green-400 p-3 rounded">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-green-800">Performance Update</h4>
+                            <p class="text-xs text-green-700">
+                                Bella (CAT-1234) has exceeded milk production targets by 5%
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-blue-800">System Update</h4>
+                            <p class="text-xs text-blue-700">
+                                New biogas tracking features will be available next week
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 bg-purple-50 border-l-4 border-purple-400 p-3 rounded">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-purple-800">Market Opportunity</h4>
+                            <p class="text-xs text-purple-700">
+                                New high-yield cattle investment opportunities are available
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-8 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center text-gray-600">
+                <p>&copy; 2023 SmartDairy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Biogas Production Chart
+            const biogasCtx = document.getElementById('biogasChart').getContext('2d');
+            const biogasChart = new Chart(biogasCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                    datasets: [
+                        {
+                            label: 'Production (m³)',
+                            data: [120, 132, 125, 140, 155, 162, 170, 175, 180, 156],
+                            borderColor: '#0f766e',
+                            backgroundColor: 'rgba(15, 118, 110, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Target (m³)',
+                            data: [110, 115, 120, 125, 130, 135, 140, 145, 150, 155],
+                            borderColor: '#9ca3af',
+                            borderDash: [5, 5],
+                            tension: 0.3,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Earnings Overview Chart
+            const earningsCtx = document.getElementById('earningsChart').getContext('2d');
+            const earningsChart = new Chart(earningsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                    datasets: [
+                        {
+                            label: 'Milk Sales ($)',
+                            data: [850, 900, 920, 980, 1050, 1100, 1150, 1200, 1100, 1050],
+                            backgroundColor: 'rgba(15, 118, 110, 0.7)',
+                        },
+                        {
+                            label: 'Biogas Sales ($)',
+                            data: [320, 350, 330, 370, 400, 420, 450, 470, 490, 440],
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        },
+                        {
+                            label: 'Fertilizer Sales ($)',
+                            data: [250, 270, 260, 290, 310, 330, 350, 370, 390, 355],
+                            backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

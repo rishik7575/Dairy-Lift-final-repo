@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartDairy - ROI Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .bg-farm-green {
+            background-color: #0f766e;
+        }
+        .bg-farm-light-green {
+            background-color: #14b8a6;
+        }
+        .text-farm-green {
+            color: #0f766e;
+        }
+        .text-farm-light-green {
+            color: #14b8a6;
+        }
+        .border-farm-green {
+            border-color: #0f766e;
+        }
+        .hover\:bg-farm-green:hover {
+            background-color: #0f766e;
+        }
+        .hover\:bg-farm-green\/90:hover {
+            background-color: rgba(15, 118, 110, 0.9);
+        }
+        .hover\:text-farm-green:hover {
+            color: #0f766e;
+        }
+        .hover\:text-farm-light-green:hover {
+            color: #14b8a6;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-farm-green">
+                        <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                    </svg>
+                    <span class="ml-2 text-xl font-bold text-farm-green">SmartDairy</span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="home.html" class="text-gray-600 hover:text-farm-green">Home</a>
+                    <a href="dashboard.html" class="text-gray-600 hover:text-farm-green">Dashboard</a>
+                    <a href="marketplace.html" class="text-gray-600 hover:text-farm-green">Marketplace</a>
+                    <a href="my%20cattle.html" class="text-gray-600 hover:text-farm-green">My Cattle</a>
+                    <a href="energy%20and%20waste.html" class="text-gray-600 hover:text-farm-green">Energy</a>
+                    <a href="howitworks.html" class="text-gray-600 hover:text-farm-green">How It Works</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="cart.html" class="text-gray-600 hover:text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <circle cx="8" cy="21" r="1"/>
+                            <circle cx="19" cy="21" r="1"/>
+                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                        </svg>
+                    </a>
+                    <a href="settings.html" class="text-gray-600 hover:text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </a>
+                    <div class="relative">
+                        <button class="flex items-center focus:outline-none">
+                            <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                <span>JS</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 container mx-auto px-4 py-8">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-farm-green">Investment ROI Calculator</h1>
+            <p class="text-gray-500">Estimate your return on investment for dairy and biogas investments</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Calculator Form -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="p-6 border-b">
+                        <h2 class="text-lg font-semibold">Investment Parameters</h2>
+                        <p class="text-sm text-gray-500">Adjust the values to calculate your potential ROI</p>
+                    </div>
+                    <div class="p-6">
+                        <form id="roi-form" class="space-y-6">
+                            <div>
+                                <label for="investment-amount" class="block text-sm font-medium text-gray-700">Initial Investment ($)</label>
+                                <input
+                                    type="number"
+                                    id="investment-amount"
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-farm-green focus:border-farm-green"
+                                    value="10000"
+                                    min="1000"
+                                    max="100000"
+                                />
+                                <input
+                                    type="range"
+                                    id="investment-amount-range"
+                                    min="1000"
+                                    max="100000"
+                                    step="1000"
+                                    value="10000"
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
+                                />
+                            </div>
+                            
+                            <div>
+                                <label for="time-period" class="block text-sm font-medium text-gray-700">Investment Period (Years)</label>
+                                <input
+                                    type="number"
+                                    id="time-period"
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-farm-green focus:border-farm-green"
+                                    value="5"
+                                    min="1"
+                                    max="20"
+                                />
+                                <input
+                                    type="range"
+                                    id="time-period-range"
+                                    min="1"
+                                    max="20"
+                                    step="1"
+                                    value="5"
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
+                                />
+                            </div>
+                            
+                            <div>
+                                <label for="milk-revenue" class="block text-sm font-medium text-gray-700">Annual Milk Revenue (%)</label>
+                                <input
+                                    type="number"
+                                    id="milk-revenue"
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-farm-green focus:border-farm-green"
+                                    value="8"
+                                    min="0"
+                                    max="20"
+                                    step="0.5"
+                                />
+                                <input
+                                    type="range"
+                                    id="milk-revenue-range"
+                                    min="0"
+                                    max="20"
+                                    step="0.5"
+                                    value="8"
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
+                                />
+                            </div>
+                            
+                            <div>
+                                <label for="biogas-revenue" class="block text-sm font-medium text-gray-700">Annual Biogas Revenue (%)</label>
+                                <input
+                                    type="number"
+                                    id="biogas-revenue"
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-farm-green focus:border-farm-green"
+                                    value="6"
+                                    min="0"
+                                    max="15"
+                                    step="0.5"
+                                />
+                                <input
+                                    type="range"
+                                    id="biogas-revenue-range"
+                                    min="0"
+                                    max="15"
+                                    step="0.5"
+                                    value="6"
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
+                                />
+                            </div>
+                            
+                            <div>
+                                <label for="operating-costs" class="block text-sm font-medium text-gray-700">Annual Operating Costs (%)</label>
+                                <input
+                                    type="number"
+                                    id="operating-costs"
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-farm-green focus:border-farm-green"
+                                    value="3"
+                                    min="0"
+                                    max="10"
+                                    step="0.5"
+                                />
+                                <input
+                                    type="range"
+                                    id="operating-costs-range"
+                                    min="0"
+                                    max="10"
+                                    step="0.5"
+                                    value="3"
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
+                                />
+                            </div>
+                            
+                            <button
+                                type="submit"
+                                class="w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-farm-green hover:bg-farm-green/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-farm-green"
+                            >
+                                Calculate ROI
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="p-6 border-b">
+                        <h2 class="text-lg font-semibold">Investment Results</h2>
+                        <p class="text-sm text-gray-500">Projected returns based on your inputs</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h3 class="text-sm font-medium text-gray-700 mb-1">Total Return</h3>
+                                <div class="text-2xl font-bold text-farm-green" id="total-return">$15,927</div>
+                                <p class="text-sm text-gray-600">Over 5 years</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h3 class="text-sm font-medium text-gray-700 mb-1">ROI Percentage</h3>
+                                <div class="text-2xl font-bold text-farm-green" id="roi-percentage">59.3%</div>
+                                <p class="text-sm text-gray-600">Total return on investment</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h3 class="text-sm font-medium text-gray-700 mb-1">Annual Return Rate</h3>
+                                <div class="text-2xl font-bold text-farm-green" id="annual-return">11.9%</div>
+                                <p class="text-sm text-gray-600">Average per year</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-md font-medium mb-2">Investment Growth Projection</h3>
+                            <div class="h-80">
+                                <canvas id="investment-chart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-md font-medium mb-2">Revenue Breakdown</h3>
+                                <div class="h-60">
+                                    <canvas id="revenue-chart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-md font-medium mb-2">Yearly Returns</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Return</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200" id="yearly-returns-table">
+                                            <!-- Table rows will be inserted dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-8 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center text-gray-600">
+                <p>&copy; 2023 SmartDairy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize form inputs and ranges
+            initializeRangeInputs();
+            
+            // Initialize charts
+            let investmentChart, revenueChart;
+            initializeCharts();
+            
+            // Handle form submission
+            const roiForm = document.getElementById('roi-form');
+            roiForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                calculateROI();
+            });
+            
+            // Function to synchronize range inputs with text inputs
+            function initializeRangeInputs() {
+                const investmentAmount = document.getElementById('investment-amount');
+                const investmentAmountRange = document.getElementById('investment-amount-range');
+                const timePeriod = document.getElementById('time-period');
+                const timePeriodRange = document.getElementById('time-period-range');
+                const milkRevenue = document.getElementById('milk-revenue');
+                const milkRevenueRange = document.getElementById('milk-revenue-range');
+                const biogasRevenue = document.getElementById('biogas-revenue');
+                const biogasRevenueRange = document.getElementById('biogas-revenue-range');
+                const operatingCosts = document.getElementById('operating-costs');
+                const operatingCostsRange = document.getElementById('operating-costs-range');
+                
+                // Investment amount
+                investmentAmount.addEventListener('input', function() {
+                    investmentAmountRange.value = this.value;
+                });
+                investmentAmountRange.addEventListener('input', function() {
+                    investmentAmount.value = this.value;
+                });
+                
+                // Time period
+                timePeriod.addEventListener('input', function() {
+                    timePeriodRange.value = this.value;
+                });
+                timePeriodRange.addEventListener('input', function() {
+                    timePeriod.value = this.value;
+                });
+                
+                // Milk revenue
+                milkRevenue.addEventListener('input', function() {
+                    milkRevenueRange.value = this.value;
+                });
+                milkRevenueRange.addEventListener('input', function() {
+                    milkRevenue.value = this.value;
+                });
+                
+                // Biogas revenue
+                biogasRevenue.addEventListener('input', function() {
+                    biogasRevenueRange.value = this.value;
+                });
+                biogasRevenueRange.addEventListener('input', function() {
+                    biogasRevenue.value = this.value;
+                });
+                
+                // Operating costs
+                operatingCosts.addEventListener('input', function() {
+                    operatingCostsRange.value = this.value;
+                });
+                operatingCostsRange.addEventListener('input', function() {
+                    operatingCosts.value = this.value;
+                });
+            }
+            
+            // Initialize charts
+            function initializeCharts() {
+                // Investment growth chart
+                const investmentCtx = document.getElementById('investment-chart').getContext('2d');
+                investmentChart = new Chart(investmentCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Year 0', 'Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                        datasets: [{
+                            label: 'Investment Value',
+                            data: [10000, 11000, 12100, 13310, 14641, 15927],
+                            borderColor: '#0f766e',
+                            backgroundColor: 'rgba(15, 118, 110, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return 'Value: $' + context.parsed.y.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                // Revenue breakdown chart
+                const revenueCtx = document.getElementById('revenue-chart').getContext('2d');
+                revenueChart = new Chart(revenueCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Milk Revenue', 'Biogas Revenue', 'Operating Costs', 'Net Profit'],
+                        datasets: [{
+                            data: [4000, 3000, -1500, 5500],
+                            backgroundColor: [
+                                '#0f766e',
+                                '#14b8a6',
+                                '#ef4444',
+                                '#22c55e'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.parsed;
+                                        return context.label + ': $' + Math.abs(value).toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                // Initialize yearly returns table
+                updateYearlyReturnsTable([
+                    { year: 1, value: 11000, return: 1000 },
+                    { year: 2, value: 12100, return: 1100 },
+                    { year: 3, value: 13310, return: 1210 },
+                    { year: 4, value: 14641, return: 1331 },
+                    { year: 5, value: 15927, return: 1286 }
+                ]);
+            }
+            
+            // Calculate ROI based on form inputs
+            function calculateROI() {
+                const investmentAmount = parseFloat(document.getElementById('investment-amount').value);
+                const timePeriod = parseInt(document.getElementById('time-period').value);
+                const milkRevenue = parseFloat(document.getElementById('milk-revenue').value) / 100;
+                const biogasRevenue = parseFloat(document.getElementById('biogas-revenue').value) / 100;
+                const operatingCosts = parseFloat(document.getElementById('operating-costs').value) / 100;
+                
+                // Calculate net annual return rate
+                const netReturnRate = milkRevenue + biogasRevenue - operatingCosts;
+                
+                // Calculate investment growth over time
+                const yearlyData = [];
+                let currentValue = investmentAmount;
+                
+                yearlyData.push({
+                    year: 0,
+                    value: currentValue,
+                    return: 0
+                });
+                
+                for (let year = 1; year <= timePeriod; year++) {
+                    const yearReturn = currentValue * netReturnRate;
+                    currentValue += yearReturn;
+                    
+                    yearlyData.push({
+                        year: year,
+                        value: currentValue,
+                        return: yearReturn
+                    });
+                }
+                
+                // Calculate total return and ROI
+                const totalReturn = currentValue - investmentAmount;
+                const roiPercentage = (totalReturn / investmentAmount) * 100;
+                const annualReturn = Math.pow((1 + roiPercentage / 100), 1 / timePeriod) - 1;
+                
+                // Update the UI
+                document.getElementById('total-return').textContent = '$' + totalReturn.toLocaleString(undefined, { maximumFractionDigits: 0 });
+                document.getElementById('roi-percentage').textContent = roiPercentage.toFixed(1) + '%';
+                document.getElementById('annual-return').textContent = (annualReturn * 100).toFixed(1) + '%';
+                
+                // Update the investment chart
+                updateInvestmentChart(yearlyData);
+                
+                // Update the revenue chart
+                updateRevenueChart(investmentAmount, milkRevenue, biogasRevenue, operatingCosts, netReturnRate);
+                
+                // Update yearly returns table
+                updateYearlyReturnsTable(yearlyData.slice(1)); // Skip year 0
+            }
+            
+            // Update investment chart
+            function updateInvestmentChart(yearlyData) {
+                const labels = yearlyData.map(data => 'Year ' + data.year);
+                const values = yearlyData.map(data => data.value);
+                
+                investmentChart.data.labels = labels;
+                investmentChart.data.datasets[0].data = values;
+                investmentChart.update();
+            }
+            
+            // Update revenue chart
+            function updateRevenueChart(investmentAmount, milkRevenue, biogasRevenue, operatingCosts, netReturnRate) {
+                const milkRevenueAmount = investmentAmount * milkRevenue;
+                const biogasRevenueAmount = investmentAmount * biogasRevenue;
+                const operatingCostsAmount = investmentAmount * operatingCosts;
+                const netProfitAmount = investmentAmount * netReturnRate;
+                
+                revenueChart.data.datasets[0].data = [
+                    milkRevenueAmount,
+                    biogasRevenueAmount,
+                    -operatingCostsAmount, // Negative for costs
+                    netProfitAmount
+                ];
+                
+                revenueChart.update();
+            }
+            
+            // Update yearly returns table
+            function updateYearlyReturnsTable(yearlyData) {
+                const tableBody = document.getElementById('yearly-returns-table');
+                tableBody.innerHTML = '';
+                
+                yearlyData.forEach(data => {
+                    const row = document.createElement('tr');
+                    
+                    const yearCell = document.createElement('td');
+                    yearCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-900';
+                    yearCell.textContent = 'Year ' + data.year;
+                    
+                    const valueCell = document.createElement('td');
+                    valueCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium';
+                    valueCell.textContent = '$' + data.value.toLocaleString(undefined, { maximumFractionDigits: 0 });
+                    
+                    const returnCell = document.createElement('td');
+                    returnCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-green-600';
+                    returnCell.textContent = '+$' + data.return.toLocaleString(undefined, { maximumFractionDigits: 0 });
+                    
+                    row.appendChild(yearCell);
+                    row.appendChild(valueCell);
+                    row.appendChild(returnCell);
+                    
+                    tableBody.appendChild(row);
+                });
+            }
+            
+            // Calculate ROI on initial load
+            calculateROI();
+        });
+    </script>
+</body>
+</html>

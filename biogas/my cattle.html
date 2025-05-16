@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartDairy - My Cattle</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .bg-farm-green {
+            background-color: #0f766e;
+        }
+        .bg-farm-light-green {
+            background-color: #14b8a6;
+        }
+        .text-farm-green {
+            color: #0f766e;
+        }
+        .text-farm-light-green {
+            color: #14b8a6;
+        }
+        .border-farm-green {
+            border-color: #0f766e;
+        }
+        .hover\:bg-farm-green:hover {
+            background-color: #0f766e;
+        }
+        .hover\:bg-farm-green\/90:hover {
+            background-color: rgba(15, 118, 110, 0.9);
+        }
+        .bg-farm-green\/10 {
+            background-color: rgba(15, 118, 110, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-farm-green">
+                        <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                    </svg>
+                    <span class="ml-2 text-xl font-bold text-farm-green">SmartDairy</span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="home.html" class="text-gray-600 hover:text-farm-green">Home</a>
+                    <a href="dashboard.html" class="text-gray-600 hover:text-farm-green">Dashboard</a>
+                    <a href="marketplace.html" class="text-gray-600 hover:text-farm-green">Marketplace</a>
+                    <a href="my%20cattle.html" class="text-farm-green font-medium hover:text-farm-light-green">My Cattle</a>
+                    <a href="energy%20and%20waste.html" class="text-gray-600 hover:text-farm-green">Energy</a>
+                    <a href="howitworks.html" class="text-gray-600 hover:text-farm-green">How It Works</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="cart.html" class="text-gray-600 hover:text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <circle cx="8" cy="21" r="1"/>
+                            <circle cx="19" cy="21" r="1"/>
+                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                        </svg>
+                    </a>
+                    <a href="settings.html" class="text-gray-600 hover:text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </a>
+                    <div class="relative">
+                        <button class="flex items-center focus:outline-none">
+                            <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                <span>JS</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="flex-1 container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-farm-green">My Cattle</h1>
+                <p class="text-gray-600">Manage and monitor your dairy cattle investment</p>
+            </div>
+            <div class="flex space-x-2 mt-4 md:mt-0">
+                <button class="flex items-center text-sm border border-gray-300 rounded px-3 py-1.5 hover:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-4 w-4">
+                        <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>
+                    </svg>
+                    Filter
+                </button>
+                <button class="flex items-center text-sm border border-gray-300 rounded px-3 py-1.5 hover:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-4 w-4">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" x2="12" y1="15" y2="3"/>
+                    </svg>
+                    Export
+                </button>
+                <button class="flex items-center bg-farm-green text-white text-sm rounded px-3 py-1.5 hover:bg-farm-green/90">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-4 w-4">
+                        <path d="M5 12h14"/>
+                        <path d="M12 5v14"/>
+                    </svg>
+                    Add Cattle
+                </button>
+            </div>
+        </div>
+        
+        <!-- Search and Filter -->
+        <div class="mb-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="relative flex-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.3-4.3"/>
+                    </svg>
+                    <input 
+                        type="text" 
+                        placeholder="Search cattle by name or ID..." 
+                        class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-farm-green focus:border-transparent"
+                    />
+                </div>
+                <div class="w-full md:w-auto">
+                    <div class="flex border border-gray-300 rounded-md overflow-hidden">
+                        <button class="px-4 py-2 bg-farm-green text-white font-medium">All Cattle</button>
+                        <button class="px-4 py-2 text-gray-700 hover:bg-gray-100">Healthy</button>
+                        <button class="px-4 py-2 text-gray-700 hover:bg-gray-100">Needs Attention</button>
+                        <button class="px-4 py-2 text-gray-700 hover:bg-gray-100">In Treatment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cattle Table -->
+        <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b">
+                <h3 class="font-semibold text-lg">Cattle Inventory</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cattle</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Breed</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Milk Yield</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Health Check</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Cattle Row 1 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAT-1234</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                        <span>BE</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Bella</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Holstein</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4 years</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Healthy
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-900">28L</span>
+                                    <span class="text-sm text-gray-500 ml-1">/ 30L</span>
+                                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-green-100 text-green-800">Target Met</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-10-12</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end gap-2">
+                                    <button class="p-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                                            <path d="M17 21h-10a2 2 0 0 1-2-2v-14a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
+                                            <path d="M9 9h1"/>
+                                            <path d="M9 13h6"/>
+                                            <path d="M9 17h6"/>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                            <rect width="3" height="15" x="6" y="5" rx="1"/>
+                                            <rect width="3" height="10" x="15" y="10" rx="1"/>
+                                            <rect width="3" height="5" x="10" y="15" rx="1"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Cattle Row 2 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAT-2345</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                        <span>DA</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Daisy</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jersey</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5 years</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Needs Attention
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-900">25L</span>
+                                    <span class="text-sm text-gray-500 ml-1">/ 32L</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-10-10</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end gap-2">
+                                    <button class="p-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                                            <path d="M17 21h-10a2 2 0 0 1-2-2v-14a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
+                                            <path d="M9 9h1"/>
+                                            <path d="M9 13h6"/>
+                                            <path d="M9 17h6"/>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                            <rect width="3" height="15" x="6" y="5" rx="1"/>
+                                            <rect width="3" height="10" x="15" y="10" rx="1"/>
+                                            <rect width="3" height="5" x="10" y="15" rx="1"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Cattle Row 3 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAT-3456</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                        <span>RO</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Rosie</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Brown Swiss</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3 years</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    Treatment
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-900">22L</span>
+                                    <span class="text-sm text-gray-500 ml-1">/ 28L</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-10-11</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end gap-2">
+                                    <button class="p-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                                            <path d="M17 21h-10a2 2 0 0 1-2-2v-14a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
+                                            <path d="M9 9h1"/>
+                                            <path d="M9 13h6"/>
+                                            <path d="M9 17h6"/>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                            <rect width="3" height="15" x="6" y="5" rx="1"/>
+                                            <rect width="3" height="10" x="15" y="10" rx="1"/>
+                                            <rect width="3" height="5" x="10" y="15" rx="1"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Cattle Row 4 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAT-4567</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                        <span>BU</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Buttercup</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Holstein</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">6 years</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Healthy
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-900">31L</span>
+                                    <span class="text-sm text-gray-500 ml-1">/ 30L</span>
+                                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-green-100 text-green-800">Target Met</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-10-09</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end gap-2">
+                                    <button class="p-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                                            <path d="M17 21h-10a2 2 0 0 1-2-2v-14a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
+                                            <path d="M9 9h1"/>
+                                            <path d="M9 13h6"/>
+                                            <path d="M9 17h6"/>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                            <rect width="3" height="15" x="6" y="5" rx="1"/>
+                                            <rect width="3" height="10" x="15" y="10" rx="1"/>
+                                            <rect width="3" height="5" x="10" y="15" rx="1"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Cattle Row 5 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAT-5678</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                        <span>CL</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Clover</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jersey</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4 years</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Healthy
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-900">27L</span>
+                                    <span class="text-sm text-gray-500 ml-1">/ 26L</span>
+                                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-green-100 text-green-800">Target Met</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-10-08</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end gap-2">
+                                    <button class="p-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                                            <path d="M17 21h-10a2 2 0 0 1-2-2v-14a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
+                                            <path d="M9 9h1"/>
+                                            <path d="M9 13h6"/>
+                                            <path d="M9 17h6"/>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                                            <rect width="3" height="15" x="6" y="5" rx="1"/>
+                                            <rect width="3" height="10" x="15" y="10" rx="1"/>
+                                            <rect width="3" height="5" x="10" y="15" rx="1"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium">Total Cattle</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green">
+                        <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                    </svg>
+                </div>
+                <div class="text-2xl font-bold">5</div>
+                <p class="text-xs text-gray-500">Across multiple breeds</p>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium">Avg. Milk Yield</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green">
+                        <rect width="3" height="15" x="6" y="5" rx="1"/>
+                        <rect width="3" height="10" x="15" y="10" rx="1"/>
+                        <rect width="3" height="5" x="10" y="15" rx="1"/>
+                    </svg>
+                </div>
+                <div class="text-2xl font-bold">26.6L</div>
+                <p class="text-xs text-gray-500">Per cattle per day</p>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium">Healthy Cattle</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green">
+                        <rect width="3" height="15" x="6" y="5" rx="1"/>
+                        <rect width="3" height="10" x="15" y="10" rx="1"/>
+                        <rect width="3" height="5" x="10" y="15" rx="1"/>
+                    </svg>
+                </div>
+                <div class="text-2xl font-bold">3</div>
+                <p class="text-xs text-gray-500">60% of total cattle</p>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium">Next Check-up</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green">
+                        <path d="M21 2v6h-6"/>
+                        <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+                        <path d="M3 22v-6h6"/>
+                        <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+                    </svg>
+                </div>
+                <div class="text-2xl font-bold">Oct 15, 2023</div>
+                <p class="text-xs text-gray-500">For 2 cattle</p>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-8 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center text-gray-600">
+                <p>&copy; 2023 SmartDairy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search functionality
+            const searchInput = document.querySelector('input[type="text"]');
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+                
+                rows.forEach(row => {
+                    const id = row.querySelector('td:first-child').textContent.toLowerCase();
+                    const name = row.querySelector('.text-sm.font-medium.text-gray-900').textContent.toLowerCase();
+                    
+                    if (id.includes(searchTerm) || name.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Tab switching
+            const tabs = document.querySelectorAll('.border.border-gray-300.rounded-md.overflow-hidden button');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => {
+                        t.classList.remove('bg-farm-green', 'text-white', 'font-medium');
+                        t.classList.add('text-gray-700', 'hover:bg-gray-100');
+                    });
+                    
+                    // Add active class to clicked tab
+                    this.classList.remove('text-gray-700', 'hover:bg-gray-100');
+                    this.classList.add('bg-farm-green', 'text-white', 'font-medium');
+                    
+                    // Filter rows based on selected tab
+                    const status = this.textContent.trim();
+                    const rows = document.querySelectorAll('tbody tr');
+                    
+                    rows.forEach(row => {
+                        const rowStatus = row.querySelector('td:nth-child(5) span').textContent.trim();
+                        
+                        if (status === 'All Cattle' || rowStatus === status) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

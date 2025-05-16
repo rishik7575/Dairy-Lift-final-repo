@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartDairy - Marketplace</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <script src="hamburger-menu.js" defer></script>
+    <script src="marketplace-animations.js" defer></script>
+    <style>
+        .bg-farm-green {
+            background-color: var(--farm-green);
+        }
+        .bg-farm-light-green {
+            background-color: var(--farm-light-green);
+        }
+        .text-farm-green {
+            color: var(--farm-green);
+        }
+        .text-farm-light-green {
+            color: var(--farm-light-green);
+        }
+        .border-farm-green {
+            border-color: var(--farm-green);
+        }
+        .hover\:bg-farm-green:hover {
+            background-color: var(--farm-green);
+        }
+        .hover\:bg-farm-green\/90:hover {
+            background-color: rgba(10, 106, 98, 0.9);
+        }
+        .hover\:text-farm-green:hover {
+            color: var(--farm-green);
+        }
+        .hover\:text-farm-light-green:hover {
+            color: var(--farm-light-green);
+        }
+        .from-green-50 {
+            --tw-gradient-from: #f0fdf4;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(240, 253, 244, 0));
+        }
+        .to-blue-50 {
+            --tw-gradient-to: #f0f9ff;
+        }
+        .line-clamp-1 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+        }
+        .line-clamp-2 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+        /* Animation classes */
+        .animate-bounce {
+            animation: bounce 1s ease infinite;
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-25%);
+            }
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* Transition effects */
+        #products-grid > div {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        #category-tabs button {
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .button-transition {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-farm-green">
+                        <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                    </svg>
+                    <span class="ml-2 text-xl font-bold text-farm-green">SmartDairy</span>
+                </div>
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:flex space-x-6">
+                    <a href="home.html" class="text-gray-600 hover:text-farm-green">Home</a>
+                    <a href="dashboard.html" class="text-gray-600 hover:text-farm-green">Dashboard</a>
+                    <a href="marketplace.html" class="text-farm-green font-medium hover:text-farm-light-green">Marketplace</a>
+                    <a href="my%20cattle.html" class="text-gray-600 hover:text-farm-green">My Cattle</a>
+                    <a href="energy%20and%20waste.html" class="text-gray-600 hover:text-farm-green">Energy</a>
+                    <a href="howitworks.html" class="text-gray-600 hover:text-farm-green">How It Works</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="cart.html" class="text-gray-600 hover:text-farm-green relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <circle cx="8" cy="21" r="1"/>
+                            <circle cx="19" cy="21" r="1"/>
+                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                        </svg>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-farm-green text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </a>
+                    <a href="settings.html" class="text-gray-600 hover:text-farm-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </a>
+                    <div class="relative">
+                        <button class="flex items-center focus:outline-none button-transition">
+                            <div class="h-8 w-8 rounded-full bg-farm-green text-white flex items-center justify-center">
+                                <span>JS</span>
+                            </div>
+                        </button>
+                    </div>
+                    <!-- Hamburger Menu Button (visible on all screen sizes) -->
+                    <div id="hamburger-button" class="hamburger-button cursor-pointer">
+                        <div class="hamburger-line"></div>
+                        <div class="hamburger-line"></div>
+                        <div class="hamburger-line"></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="mobile-menu hidden flex-col">
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-farm-green">
+                    <path d="M10.5 11.5h3M12 8v7M4 19c0-3 1.6-5 5-5.5 0 0 3 1 5 5.5M9.75 9A12.95 12.95 0 0 0 2 4c4.2 3 6 7 6 11.5 0 .5 0 1 .15 1.5h0A5.5 5.5 0 1 0 16 13c-2.783 0-2.5-2-2.5-2s1.267 2 3.5 2a3.5 3.5 0 1 0 0-7h-.572"/>
+                </svg>
+                <span class="ml-2 text-xl font-bold text-farm-green">SmartDairy</span>
+            </div>
+            <button id="close-menu-button" class="text-gray-600 hover:text-farm-green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="flex flex-col space-y-4">
+            <a href="home.html" class="text-gray-600 hover:text-farm-green py-2 border-b border-gray-200">Home</a>
+            <a href="dashboard.html" class="text-gray-600 hover:text-farm-green py-2 border-b border-gray-200">Dashboard</a>
+            <a href="marketplace.html" class="text-farm-green font-medium hover:text-farm-light-green py-2 border-b border-gray-200">Marketplace</a>
+            <a href="my%20cattle.html" class="text-gray-600 hover:text-farm-green py-2 border-b border-gray-200">My Cattle</a>
+            <a href="energy%20and%20waste.html" class="text-gray-600 hover:text-farm-green py-2 border-b border-gray-200">Energy</a>
+            <a href="howitworks.html" class="text-gray-600 hover:text-farm-green py-2 border-b border-gray-200">How It Works</a>
+        </div>
+    </div>
+    
+    <main class="flex-1 container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-farm-green">Marketplace</h1>
+                <p class="text-gray-600">Buy and sell farm products and equipment</p>
+            </div>
+            <div class="flex space-x-2 mt-4 md:mt-0">
+                <a href="cart.html" class="flex items-center text-sm border border-gray-300 rounded px-3 py-1.5 hover:bg-gray-100 relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <circle cx="8" cy="21" r="1"/>
+                        <circle cx="19" cy="21" r="1"/>
+                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                    </svg>
+                    <span class="ml-2">Cart</span>
+                    <span class="absolute -top-2 -right-2 bg-farm-green text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden" id="secondary-cart-count">0</span>
+                </a>
+                <button class="flex items-center bg-farm-green text-white text-sm rounded px-3 py-1.5 hover:bg-farm-green/90">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-4 w-4">
+                        <path d="M5 12h14"/>
+                        <path d="M12 5v14"/>
+                    </svg>
+                    Sell Product
+                </button>
+            </div>
+        </div>
+        
+        <!-- Search and Filter -->
+        <div class="mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4">
+                <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.3-4.3"/>
+                    </svg>
+                    <input 
+                        type="text" 
+                        id="search-input"
+                        placeholder="Search products, farms, or categories..." 
+                        class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-farm-green focus:border-transparent"
+                    />
+                </div>
+                <button class="hidden md:flex items-center justify-center p-2 border border-gray-300 rounded-md hover:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Categories -->
+        <div class="mb-8">
+            <div class="border-b border-gray-200">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium" id="category-tabs">
+                    <li class="mr-2">
+                        <button class="inline-block p-4 border-b-2 border-farm-green text-farm-green" data-category="all">All Products</button>
+                    </li>
+                    <li class="mr-2">
+                        <button class="inline-block p-4 border-b-2 border-transparent hover:text-farm-green text-gray-500" data-category="dairy">Dairy Products</button>
+                    </li>
+                    <li class="mr-2">
+                        <button class="inline-block p-4 border-b-2 border-transparent hover:text-farm-green text-gray-500" data-category="fertilizer">Fertilizers</button>
+                    </li>
+                    <li class="mr-2">
+                        <button class="inline-block p-4 border-b-2 border-transparent hover:text-farm-green text-gray-500" data-category="equipment">Equipment</button>
+                    </li>
+                    <li class="mr-2">
+                        <button class="inline-block p-4 border-b-2 border-transparent hover:text-farm-green text-gray-500" data-category="feed">Cattle Feed</button>
+                    </li>
+                    <li class="mr-2">
+                        <button class="inline-block p-4 border-b-2 border-transparent hover:text-farm-green text-gray-500" data-category="other">Other</button>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="mt-6" id="products-container">
+                <div id="empty-message" class="text-center py-12 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-12 w-12 mx-auto text-gray-400">
+                        <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/>
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                        <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/>
+                        <path d="M2 7h20"/>
+                        <path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.8 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.61-.63.7.7 0 0 0-.79 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.61-.63.7.7 0 0 0-.79 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.61-.63.7.7 0 0 0-.79 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/>
+                    </svg>
+                    <h3 class="mt-4 text-lg font-medium">No products found</h3>
+                    <p class="text-gray-500">Try adjusting your search or filter criteria</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="products-grid">
+                    <!-- Product cards will be inserted here dynamically -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Featured Section -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold text-farm-green mb-4">Featured Products</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-green-50 to-blue-50 border border-farm-green rounded-lg shadow">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold">Premium Organic Milk</h3>
+                        <p class="text-sm text-gray-500">Special promotion this week</p>
+                    </div>
+                    <div class="px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-3xl font-bold">$4.99</p>
+                                <p class="text-sm line-through text-gray-500">$5.99</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Save 16%</span>
+                        </div>
+                        <p class="mt-2 text-sm">Premium milk from grass-fed cows, rich in nutrients and naturally creamy.</p>
+                    </div>
+                    <div class="px-6 py-4">
+                        <button class="w-full bg-farm-green hover:bg-farm-green/90 text-white rounded px-4 py-2 flex items-center justify-center" onclick="addToCart('Premium Organic Milk')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1">
+                                <circle cx="8" cy="21" r="1"/>
+                                <circle cx="19" cy="21" r="1"/>
+                                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                            </svg>
+                            Shop Now
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-amber-50 to-green-50 rounded-lg shadow md:col-span-2">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold">Farm to Table Bundle</h3>
+                        <p class="text-sm text-gray-500">Complete dairy starter pack</p>
+                    </div>
+                    <div class="px-6 py-4">
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <div class="flex-1">
+                                <p class="text-sm mb-2">Bundle includes:</p>
+                                <ul class="space-y-1">
+                                    <li class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green mr-2">
+                                            <path d="M20 6 9 17l-5-5"/>
+                                        </svg>
+                                        <span class="text-sm">2L Organic Milk</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green mr-2">
+                                            <path d="M20 6 9 17l-5-5"/>
+                                        </svg>
+                                        <span class="text-sm">500g Artisan Cheese Selection</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green mr-2">
+                                            <path d="M20 6 9 17l-5-5"/>
+                                        </svg>
+                                        <span class="text-sm">500g Natural Yogurt</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green mr-2">
+                                            <path d="M20 6 9 17l-5-5"/>
+                                        </svg>
+                                        <span class="text-sm">250g Organic Butter</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="md:border-l md:pl-4">
+                                <div class="mb-2">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl font-bold">$29.99</span>
+                                        <span class="ml-2 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Save 20%</span>
+                                    </div>
+                                    <p class="text-sm line-through text-gray-500">$36.95</p>
+                                </div>
+                                <div class="flex items-center text-sm mt-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1 text-farm-green">
+                                        <rect width="16" height="10" x="4" y="6" rx="2"/>
+                                        <path d="M17 14v7"/>
+                                        <path d="M7 14v7"/>
+                                        <path d="M17 3v3"/>
+                                        <path d="M7 3v3"/>
+                                        <path d="M10 14h4"/>
+                                    </svg>
+                                    <span>Free delivery on this bundle</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4">
+                        <button class="w-full bg-farm-green hover:bg-farm-green/90 text-white rounded px-4 py-2 flex items-center justify-center" onclick="addToCart('Farm to Table Bundle')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1">
+                                <circle cx="8" cy="21" r="1"/>
+                                <circle cx="19" cy="21" r="1"/>
+                                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                            </svg>
+                            Buy Bundle
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seller Section -->
+        <div>
+            <h2 class="text-xl font-bold text-farm-green mb-4">Become a Seller</h2>
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-2">Sell Your Farm Products</h3>
+                            <p class="text-sm text-gray-500 mb-4">
+                                Join our marketplace to sell your dairy products, biogas, fertilizers and more directly to buyers.
+                            </p>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green mr-2 mt-1">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                                    <span class="text-sm">Reach thousands of buyers looking for quality farm products</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green mr-2 mt-1">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                                    <span class="text-sm">Simple listing process with detailed product descriptions</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green mr-2 mt-1">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                                    <span class="text-sm">Secure payment processing and logistics support</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-farm-green mr-2 mt-1">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                                    <span class="text-sm">Marketplace analytics to track your sales performance</span>
+                                </li>
+                            </ul>
+                            <button class="mt-4 bg-farm-green hover:bg-farm-green/90 text-white px-4 py-2 rounded">
+                                Register as Seller
+                            </button>
+                        </div>
+                        <div class="md:border-l md:pl-8 flex-1">
+                            <h3 class="text-lg font-semibold mb-2">Why Sell With Us?</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="p-3 bg-green-50 rounded-md">
+                                    <h4 class="font-medium text-farm-green">Direct Market Access</h4>
+                                    <p class="text-xs">Connect directly with buyers without intermediaries</p>
+                                </div>
+                                <div class="p-3 bg-green-50 rounded-md">
+                                    <h4 class="font-medium text-farm-green">Fair Pricing</h4>
+                                    <p class="text-xs">Set your own prices and receive better margins</p>
+                                </div>
+                                <div class="p-3 bg-green-50 rounded-md">
+                                    <h4 class="font-medium text-farm-green">Brand Building</h4>
+                                    <p class="text-xs">Establish your farm's brand and reputation</p>
+                                </div>
+                                <div class="p-3 bg-green-50 rounded-md">
+                                    <h4 class="font-medium text-farm-green">Community Support</h4>
+                                    <p class="text-xs">Join our network of sustainable farmers</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-sm font-medium">Our seller fee: only 5% per transaction</p>
+                                <p class="text-xs text-gray-500">No monthly fees or hidden costs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 hidden transform transition-transform duration-300 translate-y-full">
+        <div class="flex items-start">
+            <div class="flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-green-500">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-gray-900" id="toast-title">Added to cart</p>
+                <p class="mt-1 text-sm text-gray-500" id="toast-description">Product has been added to your cart.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-8 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center text-gray-600">
+                <p>&copy; 2023 SmartDairy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Product data
+            const products = [
+                {
+                    id: 1,
+                    name: "Organic Dairy Milk",
+                    category: "dairy",
+                    price: 5.99,
+                    unit: "liter",
+                    rating: 4.8,
+                    reviews: 156,
+                    image: "/placeholder.svg",
+                    available: true,
+                    description: "Fresh organic milk from grass-fed cows",
+                    farm: "Green Valley Farm",
+                    inStock: 120
+                },
+                {
+                    id: 2,
+                    name: "Artisan Cheese Selection",
+                    category: "dairy",
+                    price: 12.99,
+                    unit: "pack",
+                    rating: 4.7,
+                    reviews: 89,
+                    image: "/placeholder.svg",
+                    available: true,
+                    description: "Handcrafted cheese variety pack including cheddar, swiss, and gouda",
+                    farm: "Hilltop Dairy",
+                    inStock: 45
+                },
+                {
+                    id: 3,
+                    name: "Natural Yogurt",
+                    category: "dairy",
+                    price: 4.49,
+                    unit: "500g",
+                    rating: 4.5,
+                    reviews: 112,
+                    image: "/placeholder.svg",
+                    available: true,
+                    description: "Probiotic-rich natural yogurt with no additives",
+                    farm: "Sunrise Farms",
+                    inStock: 78
+                },
+                {
+                    id: 4,
+                    name: "Organic Butter",
+                    category: "dairy",
+                    price: 6.99,
+                    unit: "250g",
+                    rating: 4.6,
+                    reviews: 67,
+                    image: "/placeholder.svg",
+                    available: true,
+                    description: "Creamy butter made from organic cream",
+                    farm: "Meadow Farms",
+                    inStock: 52
+                },
+                {
+                    id: 5,
+                    name: "Biogas Fertilizer",
+                    category: "fertilizer",
+                    price: 19.99,
+                    unit: "25kg",
+                    rating: 4.9,
+                    reviews: 34,
+                    image: "/placeholder.svg",
+                    available: true,
+                    description: "Nutrient-rich organic fertilizer produced from biogas digestate",
+                    farm: "EcoGreen Solutions",
+                    inStock: 30
+                },
+                {
+                    id: 6,
+                    name: "Raw Honey",
+                    category: "other",
+                    price: 8.99,
+                    unit: "jar",
+                    rating: 4.9,
+                    reviews: 78,
+                    image: "/placeholder.svg",
+                    available: true,
+                    description: "Pure raw honey from farm-kept bees",
+                    farm: "Sunny Meadows",
+                    inStock: 25
+                },
+                {
+                    id: 7,
+                    name: "Biogas Generator 5kW",
+                    category: "equipment",
+                    price: 3499.99,
+                    unit: "unit",
+                    rating: 4.7,
+                    reviews: 12,
+                    image: "/placeholder.svg",
+                    available: false,
+                    description: "Compact biogas generator for small farm operations",
+                    farm: "GreenTech Solutions",
+                    inStock: 0
+                },
+                {
+                    id: 8,
+                    name: "Cattle Feed - Premium",
+                    category: "feed",
+                    price: 45.99,
+                    unit: "50kg",
+                    rating: 4.6,
+                    reviews: 56,
+                    image: "/placeholder.svg",
+                    available: true,
+                    description: "Nutrient-rich feed for dairy cattle",
+                    farm: "FarmFeed Co.",
+                    inStock: 64
+                }
+            ];
+            
+            // Cart counter
+            let cartCount = 0;
+            
+            // Display products
+            function renderProducts(filteredProducts) {
+                const productsGrid = document.getElementById('products-grid');
+                const emptyMessage = document.getElementById('empty-message');
+                
+                productsGrid.innerHTML = '';
+                
+                if (filteredProducts.length === 0) {
+                    productsGrid.classList.add('hidden');
+                    emptyMessage.classList.remove('hidden');
+                } else {
+                    productsGrid.classList.remove('hidden');
+                    emptyMessage.classList.add('hidden');
+                    
+                    filteredProducts.forEach(product => {
+                        const productCard = `
+                            <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col">
+                                <div class="relative">
+                                    <img 
+                                        src="${product.image}" 
+                                        alt="${product.name}" 
+                                        class="w-full h-48 object-cover"
+                                    />
+                                    <button 
+                                        class="absolute top-2 right-2 bg-white rounded-full p-1 hover:bg-gray-100"
+                                        aria-label="Add to favorites"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-500">
+                                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                                        </svg>
+                                    </button>
+                                    ${!product.available ? `
+                                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                            <span class="bg-white px-2 py-1 rounded-md text-sm font-medium">Out of Stock</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                
+                                <div class="p-4 flex-grow">
+                                    <div class="mb-2 flex items-center">
+                                        <span class="px-2 py-0.5 text-xs border border-gray-300 rounded-full">
+                                            ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}
+                                        </span>
+                                        <div class="ml-auto flex items-center text-yellow-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3 fill-yellow-500">
+                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                            </svg>
+                                            <span class="text-xs ml-1">${product.rating}</span>
+                                            <span class="text-xs text-gray-500 ml-1">(${product.reviews})</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <h3 class="font-semibold text-base line-clamp-1">${product.name}</h3>
+                                    <p class="text-sm text-gray-500 mb-2 line-clamp-2">${product.description}</p>
+                                    
+                                    <p class="text-xs text-gray-500">From: ${product.farm}</p>
+                                </div>
+                                
+                                <div class="p-4 border-t flex-shrink-0">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-bold text-lg">$${product.price.toFixed(2)}</p>
+                                            <p class="text-xs text-gray-500">per ${product.unit}</p>
+                                        </div>
+                                        
+                                        <button
+                                            ${!product.available ? 'disabled' : ''}
+                                            class="bg-farm-green hover:bg-farm-green/90 text-white px-3 py-1.5 rounded flex items-center text-sm ${!product.available ? 'opacity-50 cursor-not-allowed' : ''}"
+                                            onclick="addToCart('${product.name}')"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1">
+                                                <circle cx="8" cy="21" r="1"/>
+                                                <circle cx="19" cy="21" r="1"/>
+                                                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                                            </svg>
+                                            Add to Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        productsGrid.innerHTML += productCard;
+                    });
+                }
+            }
+            
+            // Initial render
+            renderProducts(products);
+            
+            // Filter by category
+            const categoryTabs = document.querySelectorAll('#category-tabs button');
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Update active tab
+                    categoryTabs.forEach(t => {
+                        t.classList.remove('border-farm-green', 'text-farm-green');
+                        t.classList.add('border-transparent', 'text-gray-500');
+                    });
+                    this.classList.remove('border-transparent', 'text-gray-500');
+                    this.classList.add('border-farm-green', 'text-farm-green');
+                    
+                    // Filter products
+                    const category = this.getAttribute('data-category');
+                    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+                    
+                    filterProducts(category, searchTerm);
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const activeCategory = document.querySelector('#category-tabs button.text-farm-green').getAttribute('data-category');
+                
+                filterProducts(activeCategory, searchTerm);
+            });
+            
+            // Filter products by category and search term
+            function filterProducts(category, searchTerm) {
+                let filteredProducts = products;
+                
+                // Filter by category
+                if (category !== 'all') {
+                    filteredProducts = filteredProducts.filter(product => product.category === category);
+                }
+                
+                // Filter by search term
+                if (searchTerm) {
+                    filteredProducts = filteredProducts.filter(product => 
+                        product.name.toLowerCase().includes(searchTerm) || 
+                        product.description.toLowerCase().includes(searchTerm) ||
+                        product.farm.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                renderProducts(filteredProducts);
+            }
+            
+            // Add to cart functionality
+            window.addToCart = function(productName) {
+                cartCount++;
+                updateCartCount();
+                showToast(`Added to cart`, `${productName} has been added to your cart.`);
+            };
+            
+            // Update cart count
+            function updateCartCount() {
+                const cartCountElements = document.querySelectorAll('#cart-count, #secondary-cart-count');
+                cartCountElements.forEach(el => {
+                    el.textContent = cartCount;
+                    
+                    if (cartCount > 0) {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // Show toast notification
+            function showToast(title, description) {
+                const toast = document.getElementById('toast');
+                const toastTitle = document.getElementById('toast-title');
+                const toastDescription = document.getElementById('toast-description');
+                
+                toastTitle.textContent = title;
+                toastDescription.textContent = description;
+                
+                // Show toast
+                toast.classList.remove('hidden', 'translate-y-full');
+                toast.classList.add('translate-y-0');
+                
+                // Hide toast after 3 seconds
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-0');
+                    toast.classList.add('translate-y-full');
+                    
+                    setTimeout(() => {
+                        toast.classList.add('hidden');
+                    }, 300);
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
