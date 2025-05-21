@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <!-- Additional Resources -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
@@ -144,17 +144,17 @@
       overflow: hidden;
       z-index: 50;
     }
-    
+
     .mobile-menu-toggle:hover {
       background-color: var(--primary-light);
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
     }
-    
+
     .mobile-menu-toggle:active {
       transform: scale(0.95);
     }
-    
+
     .hamburger-lines {
       width: 22px;
       height: 18px;
@@ -163,7 +163,7 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    
+
     .hamburger-line {
       display: block;
       height: 2px;
@@ -173,22 +173,22 @@
       transition: all 0.3s ease-in-out;
       transform-origin: center;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
       transform: translateY(8px) rotate(45deg);
       width: 22px;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
       opacity: 0;
       transform: translateX(-10px);
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
       transform: translateY(-8px) rotate(-45deg);
       width: 22px;
     }
-    
+
     .mobile-menu-toggle::after {
       content: '';
       position: absolute;
@@ -200,11 +200,11 @@
       transform: scale(0);
       transition: transform 0.3s ease;
     }
-    
+
     .mobile-menu-toggle:hover::after {
       transform: scale(1);
     }
-    
+
     .menu-toggle-ripple {
       position: absolute;
       background-color: rgba(173, 110, 245, 0.3);
@@ -213,7 +213,7 @@
       animation: ripple 0.6s linear;
       pointer-events: none;
     }
-    
+
     @keyframes ripple {
       to {
         transform: scale(2);
@@ -240,12 +240,12 @@
       transition: opacity 0.3s ease, visibility 0.3s ease;
       backdrop-filter: blur(2px);
     }
-    
+
     .mobile-menu-overlay.active {
       opacity: 1;
       visibility: visible;
     }
-    
+
     .mobile-menu {
       position: fixed;
       top: 0;
@@ -266,7 +266,7 @@
     .mobile-menu.active {
       transform: translateX(280px);
     }
-    
+
     .mobile-menu-header {
       display: flex;
       align-items: center;
@@ -275,14 +275,14 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 1rem;
     }
-    
+
     .mobile-menu-logo {
       font-family: 'Pacifico', cursive;
       font-size: 1.5rem;
       color: var(--primary);
       text-decoration: none;
     }
-    
+
     .mobile-menu-close {
       background: none;
       border: none;
@@ -296,7 +296,7 @@
       border-radius: 50%;
       transition: all 0.2s ease;
     }
-    
+
     .mobile-menu-close:hover {
       background-color: var(--muted);
       color: var(--foreground);
@@ -319,7 +319,7 @@
       background-color: var(--muted);
       transform: translateX(5px);
     }
-    
+
     .mobile-nav-link::after {
       content: '';
       position: absolute;
@@ -330,7 +330,7 @@
       background-color: var(--primary);
       transition: width 0.3s ease;
     }
-    
+
     .mobile-nav-link:hover::after {
       width: 30%;
     }
@@ -341,7 +341,7 @@
       background-color: var(--primary-light);
       margin-top: 0.75rem;
     }
-    
+
     .mobile-nav-link-primary:hover {
       background-color: var(--primary-light);
       transform: translateX(5px) scale(1.02);
@@ -679,10 +679,11 @@
       font-size: 0.9rem;
       outline: none;
       -moz-appearance: textfield;
+      appearance: textfield;
     }
 
-    .quantity-input::-webkit-inner-spin-button, 
-    .quantity-input::-webkit-outer-spin-button { 
+    .quantity-input::-webkit-inner-spin-button,
+    .quantity-input::-webkit-outer-spin-button {
       -webkit-appearance: none;
       margin: 0;
     }
@@ -705,7 +706,7 @@
       width: 32px;
       transition: all 0.3s ease;
     }
-    
+
     .cart-item-remove:hover {
       transform: scale(1.2);
       color: #dc2626;
@@ -962,7 +963,7 @@
     }
 
     .newsletter-btn:hover {
-      background-color: #2d7a34;
+      background-color: #9b55e0;
     }
 
     .copyright {
@@ -1070,7 +1071,7 @@
         flex-direction: column;
         gap: 1rem;
       }
-      
+
       /* Notification styles */
       .notification {
         position: fixed;
@@ -1086,7 +1087,7 @@
         opacity: 0;
         transition: all 0.3s ease;
       }
-      
+
       .notification.show {
         transform: translateY(0);
         opacity: 1;
@@ -1111,7 +1112,7 @@
         grid-template-columns: 1fr;
       }
     }
-    
+
     /* Remix Icons Fix */
     :where([class^="ri-"])::before { content: "\f3c2"; }
   </style>
@@ -1176,7 +1177,7 @@
         </svg>
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
-      
+
       <a href="FOR-INVESTORS/visit-farm.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
@@ -1226,7 +1227,7 @@
       </a>
     </div>
   </header>
-    
+
   <main class="main">
     <div class="container">
       <div class="page-header">
@@ -1300,9 +1301,6 @@
       </div>
     </div>
   </main>
-  
-  <!-- Notification -->
-  <div id="notification" class="notification"></div>
 
   <!-- Footer -->
   <footer class="bg-gray-900 text-white pt-16 pb-8">
@@ -1589,18 +1587,18 @@
       loadFromStorage() {
         // Try both possible localStorage keys to ensure compatibility
         let savedCart = localStorage.getItem('Dairy-LiftCart');
-        
+
         if (!savedCart) {
           // Try alternative key if first one doesn't exist
           savedCart = localStorage.getItem('dairyliftCart');
-          
+
           // If found with alternative key, migrate to the new key format
           if (savedCart) {
             localStorage.setItem('Dairy-LiftCart', savedCart);
             localStorage.removeItem('dairyliftCart');
           }
         }
-        
+
         if (savedCart) {
           this.items = JSON.parse(savedCart);
         }
@@ -1618,7 +1616,7 @@
         }
 
         const existingItem = this.items.find(item => item.id === productId);
-        
+
         if (existingItem) {
           existingItem.quantity += quantity;
         } else {
@@ -1690,73 +1688,73 @@
       getTotalItems() {
         return this.items.reduce((total, item) => total + item.quantity, 0);
       }
-      
+
       getSmartDiscountSuggestion() {
         const subtotal = this.getSubtotal();
         const freeShippingThreshold = 50;
         const amountForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
-        
+
         // Free shipping suggestion
         if (amountForFreeShipping > 0 && subtotal > 0) {
           return `Add ${formatPrice(amountForFreeShipping)} more to get FREE shipping!`;
         } else if (subtotal > 0) {
           return "You've qualified for free shipping!";
         }
-        
+
         return null;
       }
-      
+
       getComboDeals() {
         // Count butter products in cart
         const butterProducts = this.items.filter(item => {
           const product = productsData.find(p => p.id === item.id);
           return product?.category === 'butter';
         });
-        
+
         if (butterProducts.length === 1) {
           return "Buy one more butter pack to get 10% off both!";
         }
-        
+
         return null;
       }
 
       updateSmartDiscounts() {
         const discountContainer = document.getElementById('discount-container');
         if (!discountContainer) return;
-        
+
         // Clear previous suggestions
         discountContainer.innerHTML = '';
-        
+
         // Get suggestions
         const shipSuggestion = this.getSmartDiscountSuggestion();
         const comboDeal = this.getComboDeals();
-        
+
         // If no suggestions, return
         if (!shipSuggestion && !comboDeal) return;
-        
+
         let html = '<div class="smart-discount">';
-        
+
         if (shipSuggestion) {
           html += `<p>${shipSuggestion}</p>`;
         }
-        
+
         if (comboDeal) {
           html += `<p class="mt-2">${comboDeal}</p>`;
         }
-        
+
         html += '</div>';
-        
+
         discountContainer.innerHTML = html;
       }
 
       showNotification(message, type = "success") {
         const notification = document.getElementById('notification');
-        
+
         // Set icon based on type
         let icon = 'check-circle';
         if (type === 'error') icon = 'times-circle';
         if (type === 'info') icon = 'info-circle';
-        
+
         // Set content
         notification.innerHTML = `
           <div style="display: flex; align-items: center; gap: 10px;">
@@ -1766,7 +1764,7 @@
             </div>
           </div>
         `;
-        
+
         // Set color based on type
         if (type === 'error') {
           notification.style.backgroundColor = 'var(--destructive)';
@@ -1775,10 +1773,10 @@
         } else {
           notification.style.backgroundColor = 'var(--primary)';
         }
-        
+
         // Show notification
         notification.classList.add('show');
-        
+
         // Hide notification after 3 seconds
         setTimeout(() => {
           notification.classList.remove('show');
@@ -1795,9 +1793,9 @@
         // Update cart items display
         const cartItemsContainer = document.getElementById('cart-items-container');
         if (!cartItemsContainer) return;
-        
+
         console.log("Cart items:", this.items); // Debug log
-        
+
         if (this.items.length === 0) {
           cartItemsContainer.innerHTML = `
             <div class="cart-empty">
@@ -1809,7 +1807,7 @@
               </a>
             </div>
           `;
-          
+
           // Disable checkout button
           const checkoutBtn = document.getElementById('checkout-btn');
           if (checkoutBtn) {
@@ -1817,16 +1815,16 @@
           }
         } else {
           let cartItemsHTML = '';
-          
+
           this.items.forEach(item => {
             // Find product in productsData
             const product = productsData.find(p => p.id === item.id);
-            
+
             // Use item data directly if product not found in productsData
             const productName = product ? product.name : item.name;
             const productDescription = product ? product.description : '';
             const productImage = item.imageUrl || (product ? product.imageUrl : '');
-            
+
             cartItemsHTML += `
               <div class="cart-item" data-id="${item.id}">
                 <div class="cart-item-product">
@@ -1835,8 +1833,8 @@
                   </div>
                   <div class="cart-item-details">
                     <h3>${productName}</h3>
-                    ${productDescription ? 
-                      `<p>${productDescription.substring(0, 70)}${productDescription.length > 70 ? '...' : ''}</p>` : 
+                    ${productDescription ?
+                      `<p>${productDescription.substring(0, 70)}${productDescription.length > 70 ? '...' : ''}</p>` :
                       ''}
                   </div>
                 </div>
@@ -1855,15 +1853,15 @@
               </div>
             `;
           });
-          
+
           cartItemsContainer.innerHTML = cartItemsHTML;
-          
+
           // Enable checkout button
           const checkoutBtn = document.getElementById('checkout-btn');
           if (checkoutBtn) {
             checkoutBtn.disabled = false;
           }
-          
+
           // Add event listeners for cart items
           this.addCartItemEventListeners();
         }
@@ -1881,7 +1879,7 @@
             if (item) this.updateQuantity(id, item.quantity - 1);
           });
         });
-        
+
         // Quantity increase buttons
         document.querySelectorAll('.increase-qty').forEach(btn => {
           btn.addEventListener('click', () => {
@@ -1890,7 +1888,7 @@
             if (item) this.updateQuantity(id, item.quantity + 1);
           });
         });
-        
+
         // Quantity input fields
         document.querySelectorAll('.quantity-input').forEach(input => {
           input.addEventListener('change', () => {
@@ -1901,7 +1899,7 @@
             }
           });
         });
-        
+
         // Remove item buttons
         document.querySelectorAll('.cart-item-remove').forEach(btn => {
           btn.addEventListener('click', () => {
@@ -1941,7 +1939,7 @@
             alert('Proceeding to checkout... This would redirect to the checkout page in a real store.');
           });
         }
-        
+
         // Apply coupon button
         const applyCouponBtn = document.getElementById('apply-coupon');
         if (applyCouponBtn) {
@@ -1976,37 +1974,37 @@
 
         // Get cart item IDs
         const cartItemIds = this.cart.items.map(item => item.id);
-        
+
         // Filter products not in cart and in stock
-        const availableProducts = productsData.filter(product => 
+        const availableProducts = productsData.filter(product =>
           !cartItemIds.includes(product.id) && product.inStock
         );
-        
+
         // Featured or random products
         let suggestedProducts = availableProducts.filter(product => product.featured);
-        
+
         // If not enough featured products, add some random ones
         if (suggestedProducts.length < 4) {
           const nonFeatured = availableProducts.filter(product => !product.featured);
           const randomProducts = this.getRandomItems(nonFeatured, 4 - suggestedProducts.length);
           suggestedProducts = [...suggestedProducts, ...randomProducts];
         }
-        
+
         // If still not enough, just get random products (allowing duplicates with cart)
         if (suggestedProducts.length < 4) {
-          const inStockProducts = productsData.filter(product => 
+          const inStockProducts = productsData.filter(product =>
             product.inStock && !suggestedProducts.map(p => p.id).includes(product.id)
           );
           const additionalProducts = this.getRandomItems(inStockProducts, 4 - suggestedProducts.length);
           suggestedProducts = [...suggestedProducts, ...additionalProducts];
         }
-        
+
         // Take at most 4 products
         suggestedProducts = suggestedProducts.slice(0, 4);
-        
+
         // Render suggestions
         let suggestionsHTML = '';
-        
+
         suggestedProducts.forEach(product => {
           suggestionsHTML += `
             <div class="suggestion-card">
@@ -2021,9 +2019,9 @@
             </div>
           `;
         });
-        
+
         suggestionsContainer.innerHTML = suggestionsHTML;
-        
+
         // Add event listeners for suggestion buttons
         document.querySelectorAll('.suggestion-button').forEach(btn => {
           btn.addEventListener('click', () => {
@@ -2044,29 +2042,29 @@
       console.log("Dairy-LiftCart:", localStorage.getItem('Dairy-LiftCart'));
       console.log("dairyliftCart:", localStorage.getItem('dairyliftCart'));
     }
-    
+
     // Initialize cart and suggestions on page load
     document.addEventListener('DOMContentLoaded', function() {
       // Debug localStorage before cart initialization
       debugLocalStorage();
-      
+
       const cart = new Cart();
       const suggestions = new Suggestions(cart);
-      
+
       console.log("Cart items after initialization:", cart.items);
-      
+
       // Preload some items into cart for testing (comment out for production)
-      /* 
+      /*
       if (cart.items.length === 0) {
         cart.addItem('prod-001', 2);
         cart.addItem('prod-002', 1);
       }
       */
-      
+
       // Initialize cart functionality
     });
   </script>
-  
+
   <script>
     // Mobile Menu Toggle - Exact implementation from home_page.html
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
@@ -2074,32 +2072,32 @@
     const mobileMenuClose = document.getElementById('mobile-menu-close');
     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
     const body = document.body;
-    
+
     // Function to open mobile menu
     function openMobileMenu() {
       mobileMenu.classList.add('active');
       mobileMenuOverlay.classList.add('active');
       mobileMenuToggle.classList.add('active');
       body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-      
+
       // Add a subtle ripple effect on click
       const ripple = document.createElement('span');
       ripple.classList.add('menu-toggle-ripple');
       mobileMenuToggle.appendChild(ripple);
-      
+
       // Position the ripple where the click happened
       const rect = mobileMenuToggle.getBoundingClientRect();
       const size = Math.max(rect.width, rect.height) * 2;
-      
+
       ripple.style.width = ripple.style.height = `${size}px`;
       ripple.style.left = `${-size/4}px`;
       ripple.style.top = `${-size/4}px`;
-      
+
       // Remove the ripple after animation completes
       setTimeout(() => {
         ripple.remove();
       }, 600);
-      
+
       // Add entrance animation to each nav link
       const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
       navLinks.forEach((link, index) => {
@@ -2107,7 +2105,7 @@
         link.style.transform = 'translateX(-10px)';
         link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
         link.style.transitionDelay = `${0.05 * (index + 1)}s`;
-        
+
         setTimeout(() => {
           link.style.opacity = '1';
           link.style.transform = 'translateX(0)';
@@ -2132,19 +2130,19 @@
         openMobileMenu();
       }
     });
-    
+
     // Close menu when clicking the close button
     mobileMenuClose.addEventListener('click', closeMobileMenu);
-    
+
     // Close menu when clicking the overlay
     mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-    
+
     // Close mobile menu when clicking on a link
     const mobileLinks = document.querySelectorAll('.mobile-nav-link');
     mobileLinks.forEach(link => {
       link.addEventListener('click', closeMobileMenu);
     });
-    
+
     // Close mobile menu when pressing Escape key
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
