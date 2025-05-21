@@ -1321,7 +1321,9 @@
         <nav class="desktop-nav">
           <a href="home_page.html" class="nav-link">Home</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="YourCattle.html" class="nav-link">All Cattle</a>
           <a href="store.html" class="nav-link">Store</a>
+          <a href="visit-farm.html" class="nav-link">Visit Farm</a>
           <a href="admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
         <div class="navbar-actions">
@@ -1366,7 +1368,7 @@
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
 
-      <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+      <a href="visit-farm.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
           <rect x="14" y="3" width="7" height="7"></rect>
@@ -1374,6 +1376,13 @@
           <rect x="3" y="14" width="7" height="7"></rect>
         </svg>
         <span style="margin-left: 10px;">Visit Farm</span>
+      </a>
+      <a href="YourCattle.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 11.08V8l-6-6H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2v-3.08c.58-.21 1-.76 1-1.42V12.5c0-.66-.42-1.21-1-1.42z"></path>
+          <path d="M14 3v5h5M12 18v-6M9 15h6"></path>
+        </svg>
+        <span style="margin-left: 10px;">All Cattle</span>
       </a>
       <a href="navhome.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
@@ -1593,34 +1602,7 @@
         </div>
       </div>
 
-      <!-- Cattle Section -->
-      <!-- Cattle Section - Fully Integrated into Dashboard -->
-<div class="mb-10 px-4 md:px-0" style="max-height: 14000px; overflow: auto;">
-  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-    <h2 class="text-2xl font-bold text-gray-800">Your Cattle</h2>
-    <div class="flex space-x-2 w-full md:w-auto">
-      <select id="cattleFilter"
-        class="border border-gray-300 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-green-600 w-full md:w-[180px]">
-        <option value="all">All Cattle</option>
-        <option value="active">Active Lactation</option>
-        <option value="dry">Dry Period</option>
-      </select>
-      <select id="sortOrder"
-        class="border border-gray-300 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-green-600 w-full md:w-[180px]">
-        <option value="newest">Newest First</option>
-        <option value="oldest">Oldest First</option>
-        <option value="production">Highest Production</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- Fully Blended Iframe (No Card Look) -->
-  <iframe id="cattleIframe"
-          src="YourCattle.html"
-          frameborder="0"
-          class="w-full"
-          style="height: auto; max-height: 14000px; border-radius: 0; background-color: transparent;"></iframe>
-        </div>
+      <!-- Cattle Section Removed - Now Available as a Separate Page via "All Cattle" Button -->
 
       <!-- Recent Updates & Upcoming Events -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -2060,8 +2042,7 @@
         'cattle-lifecycle-frame',
         'weather-impact-frame',
         'waste-to-profit-frame',
-        'investor-trust-frame',
-        'cattleIframe'
+        'investor-trust-frame'
       ];
 
       frameIds.forEach(id => {
@@ -2117,35 +2098,7 @@
         }
       });
 
-      // Cattle filter and sort functionality
-      const cattleFilter = document.getElementById('cattleFilter');
-      const sortOrder = document.getElementById('sortOrder');
-      const cattleIframe = document.getElementById('cattleIframe');
-
-      function updateCattleFilters() {
-        if (cattleIframe && cattleIframe.contentWindow) {
-          try {
-            cattleIframe.contentWindow.postMessage({
-              type: 'updateCattleFilter',
-              filter: cattleFilter.value,
-              sort: sortOrder.value
-            }, '*');
-            showToast('Cattle filter applied: ' + cattleFilter.options[cattleFilter.selectedIndex].text);
-          } catch (e) {
-            console.error('Error sending message to iframe:', e);
-            showToast('Failed to update cattle filter', 'error');
-          }
-        }
-      }
-
-      // Add listeners for filter changes
-      if (cattleFilter) {
-        cattleFilter.addEventListener('change', updateCattleFilters);
-      }
-
-      if (sortOrder) {
-        sortOrder.addEventListener('change', updateCattleFilters);
-      }
+      // Cattle filter and sort functionality removed - now on separate page
 
       // Cattle details modal event listeners
       const cattleDetailsModal = document.getElementById('cattleDetailsModal');
@@ -2726,30 +2679,7 @@
       }
     };
 
-    // Adjust iframe height for YourCattle.html
-    window.addEventListener('load', function() {
-      const cattleIframe = document.getElementById('cattleIframe');
-      if (cattleIframe) {
-        // Set initial height
-        cattleIframe.style.height = '1000px'; // Default height
-
-        // Adjust height based on content
-        cattleIframe.onload = function() {
-          try {
-            // Try to get the height of the content
-            const iframeContent = cattleIframe.contentWindow.document.body;
-            if (iframeContent) {
-              const contentHeight = iframeContent.scrollHeight;
-              cattleIframe.style.height = contentHeight + 'px';
-            }
-          } catch (e) {
-            console.log('Could not adjust iframe height automatically');
-          }
-        };
-
-        // Height messages are now handled by the main message event listener
-      }
-    });
+    // Cattle iframe height adjustment code removed - now on separate page
   </script>
 
   <!-- Footer -->

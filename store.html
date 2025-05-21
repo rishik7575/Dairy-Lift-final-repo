@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <!-- Additional Resources -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
@@ -72,7 +72,7 @@
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--foreground);
@@ -82,12 +82,12 @@
       display: flex;
       flex-direction: column;
     }
-    
+
     a {
       text-decoration: none;
       color: inherit;
     }
-    
+
     img {
       max-width: 100%;
       height: auto;
@@ -155,17 +155,17 @@
       overflow: hidden;
       z-index: 50;
     }
-    
+
     .mobile-menu-toggle:hover {
       background-color: var(--primary-light);
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
     }
-    
+
     .mobile-menu-toggle:active {
       transform: scale(0.95);
     }
-    
+
     .hamburger-lines {
       width: 22px;
       height: 18px;
@@ -174,7 +174,7 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    
+
     .hamburger-line {
       display: block;
       height: 2px;
@@ -184,22 +184,22 @@
       transition: all 0.3s ease-in-out;
       transform-origin: center;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
       transform: translateY(8px) rotate(45deg);
       width: 22px;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
       opacity: 0;
       transform: translateX(-10px);
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
       transform: translateY(-8px) rotate(-45deg);
       width: 22px;
     }
-    
+
     .mobile-menu-toggle::after {
       content: '';
       position: absolute;
@@ -211,11 +211,11 @@
       transform: scale(0);
       transition: transform 0.3s ease;
     }
-    
+
     .mobile-menu-toggle:hover::after {
       transform: scale(1);
     }
-    
+
     .menu-toggle-ripple {
       position: absolute;
       background-color: rgba(173, 110, 245, 0.3);
@@ -224,14 +224,14 @@
       animation: ripple 0.6s linear;
       pointer-events: none;
     }
-    
+
     @keyframes ripple {
       to {
         transform: scale(2);
         opacity: 0;
       }
     }
-    
+
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -242,7 +242,7 @@
         transform: translateY(0);
       }
     }
-    
+
     .animate-in {
       animation: fadeInUp 0.8s ease-out both;
     }
@@ -267,7 +267,7 @@
     .mobile-menu.active {
       transform: translateX(280px);
     }
-    
+
     .mobile-menu-overlay {
       position: fixed;
       top: 0;
@@ -281,12 +281,12 @@
       transition: opacity 0.3s ease, visibility 0.3s ease;
       backdrop-filter: blur(2px);
     }
-    
+
     .mobile-menu-overlay.active {
       opacity: 1;
       visibility: visible;
     }
-    
+
     .mobile-nav-link {
       display: flex;
       align-items: center;
@@ -304,7 +304,7 @@
       background-color: var(--muted);
       transform: translateX(5px);
     }
-    
+
     .mobile-nav-link::after {
       content: '';
       position: absolute;
@@ -315,7 +315,7 @@
       background-color: var(--primary);
       transition: width 0.3s ease;
     }
-    
+
     .mobile-nav-link:hover::after {
       width: 30%;
     }
@@ -332,7 +332,7 @@
       transform: translateX(5px) scale(1.02);
       box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
     }
-    
+
     .mobile-menu-header {
       display: flex;
       align-items: center;
@@ -341,14 +341,14 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 1rem;
     }
-    
+
     .mobile-menu-logo {
       font-family: 'Pacifico', cursive;
       font-size: 1.5rem;
       color: var(--primary);
       text-decoration: none;
     }
-    
+
     .mobile-menu-close {
       background: none;
       border: none;
@@ -362,7 +362,7 @@
       border-radius: 50%;
       transition: all 0.2s ease;
     }
-    
+
     .mobile-menu-close:hover {
       background-color: var(--muted);
       color: var(--foreground);
@@ -444,7 +444,7 @@
       padding: 0.5rem 0;
       transition: color 0.3s;
     }
-    
+
     .navbar-link:hover {
       color: var(--primary);
     }
@@ -452,7 +452,7 @@
     .navbar-link.active {
       color: var(--primary);
     }
-    
+
     .navbar-link::after {
       content: '';
       position: absolute;
@@ -463,7 +463,7 @@
       background-color: var(--primary);
       transition: width 0.3s;
     }
-    
+
     .navbar-link:hover::after {
       width: 100%;
     }
@@ -485,17 +485,17 @@
       cursor: pointer;
       border: none;
     }
-    
+
     .button:hover, .btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    
+
     .button:active, .btn:active {
       transform: translateY(0);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-    
+
     .btn-primary {
       background-color: var(--primary);
       color: var(--primary-foreground);
@@ -614,7 +614,7 @@
       font-weight: 600;
       margin-bottom: 1rem;
     }
-    
+
     .glass {
       background: rgba(255, 255, 255, 0.4);
       backdrop-filter: blur(10px);
@@ -745,7 +745,7 @@
       margin: 1rem 0;
       transition: transform 0.3s ease;
     }
-    
+
     .product-card:hover {
       transform: translateY(-10px);
     }
@@ -896,7 +896,7 @@
     .add-to-cart-btn {
       flex: 1;
     }
-    
+
     .view-cart-btn {
       white-space: nowrap;
     }
@@ -920,7 +920,7 @@
       transition: all 0.3s ease;
       backdrop-filter: blur(4px);
     }
-    
+
     @keyframes floating {
       0% {
         transform: translateY(0);
@@ -932,7 +932,7 @@
         transform: translateY(0);
       }
     }
-    
+
     @keyframes pulse {
       0% {
         transform: scale(1);
@@ -1299,17 +1299,17 @@
         flex-direction: column;
         align-items: flex-start;
       }
-      
+
       nav a {
         display: block;
         margin: 0.5rem 0;
       }
-      
+
       .button, .btn {
         width: 100%;
         margin-top: 1rem;
       }
-      
+
       .toolbar {
         flex-direction: column;
         align-items: stretch;
@@ -1352,10 +1352,10 @@
         display: block;
       }
     }
-    
+
     /* Remix Icons Fix */
     :where([class^="ri-"])::before { content: "\f3c2"; }
-    
+
     /* Header photo styles */
     .header-photo-container {
       display: flex;
@@ -1366,7 +1366,7 @@
       height: 70px;
       flex-shrink: 0;
     }
-    
+
     .header-photo {
       width: 100%;
       height: 100%;
@@ -1375,7 +1375,7 @@
       background-color: white;
       padding: 2px;
     }
-    
+
     /* Override navbar-content styles */
     .navbar-content {
       display: flex !important;
@@ -1385,7 +1385,7 @@
       position: relative !important;
       padding: 0.5rem 0 !important;
     }
-    
+
     /* Override logo styles */
     .logo {
       font-weight: bold !important;
@@ -1397,14 +1397,14 @@
       display: inline-block !important;
       padding: 0 15px !important;
     }
-    
+
     @media (min-width: 768px) {
       .header-photo-container {
         width: 80px;
         height: 80px;
         margin: 0 30px 0 20px;
       }
-      
+
       .logo {
         font-size: 1.5rem !important;
         min-width: 250px !important;
@@ -1431,6 +1431,7 @@
         <nav class="desktop-nav">
           <a href="home_page.html" class="nav-link">Home</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="YourCattle.html" class="nav-link">All Cattle</a>
           <a href="store.html" class="nav-link">Store</a>
           <a href="admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
@@ -1479,8 +1480,8 @@
           </svg>
           <span style="margin-left: 10px;">Bio-Gas</span>
         </a>
-        
-        <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+
+      <a href="FOR-INVESTORS/visit-farm.html" class="mobile-nav-link">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
             <rect x="3" y="3" width="7" height="7"></rect>
             <rect x="14" y="3" width="7" height="7"></rect>
@@ -1546,7 +1547,7 @@
         <aside class="store-sidebar" id="store-sidebar">
           <div class="card filter-card">
             <h3 class="card-title">Filter Products</h3>
-            
+
             <div class="filter-section">
               <h4 class="filter-section-title">Categories</h4>
               <div class="checkbox-group">
@@ -1570,7 +1571,7 @@
                 </label>
               </div>
             </div>
-            
+
             <div class="filter-section">
               <h4 class="filter-section-title">Price Range</h4>
               <input type="range" min="0" max="20" value="20" class="range-slider" id="price-range">
@@ -1579,7 +1580,7 @@
                 <span id="price-range-value">$20</span>
               </div>
             </div>
-            
+
             <div class="filter-section">
               <h4 class="filter-section-title">Availability</h4>
               <div class="checkbox-group">
@@ -1591,12 +1592,12 @@
                 </label>
               </div>
             </div>
-            
+
             <div class="filter-section">
               <h4 class="filter-section-title">Rating</h4>
               <div class="checkbox-group">
                 <label class="checkbox-item">
-                  <input type="checkbox" class="checkbox rating-filter" value="5" checked> 
+                  <input type="checkbox" class="checkbox rating-filter" value="5" checked>
                   <div class="rating-stars">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -1606,7 +1607,7 @@
                   </div>
                 </label>
                 <label class="checkbox-item">
-                  <input type="checkbox" class="checkbox rating-filter" value="4" checked> 
+                  <input type="checkbox" class="checkbox rating-filter" value="4" checked>
                   <div class="rating-stars">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -1616,7 +1617,7 @@
                   </div>
                 </label>
                 <label class="checkbox-item">
-                  <input type="checkbox" class="checkbox rating-filter" value="3" checked> 
+                  <input type="checkbox" class="checkbox rating-filter" value="3" checked>
                   <div class="rating-stars">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -1631,13 +1632,13 @@
             <button class="btn btn-primary" id="apply-filters">Apply Filters</button>
           </div>
         </aside>
-        
+
         <div class="store-main">
           <div class="search-bar">
             <i class="fas fa-search search-icon"></i>
             <input type="search" class="search-input" id="search-products" placeholder="Search products...">
           </div>
-          
+
           <div class="toolbar">
             <div class="category-tags">
               <span class="category-tag active" data-category="all">All Products</span>
@@ -1647,7 +1648,7 @@
               <span class="category-tag" data-category="butter">Butter</span>
               <span class="category-tag" data-category="icecream">Ice Cream</span>
             </div>
-            
+
             <select class="sort-select" id="sort-products">
               <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>
@@ -1656,7 +1657,7 @@
               <option value="newest">Newest</option>
             </select>
           </div>
-          
+
           <div class="product-grid" id="product-grid">
             <!-- Products will be loaded here via JavaScript -->
           </div>
@@ -1708,14 +1709,14 @@
   <script>
     // Check if products exist in localStorage from manage_store.html
     let productsData = [];
-    
+
     // Try to load products from localStorage first
     const storedProducts = localStorage.getItem('dairyvestProducts');
-    
+
     if (storedProducts) {
       // Convert the stored products to the format expected by the store page
       const managedProducts = JSON.parse(storedProducts);
-      
+
       productsData = managedProducts.map(product => {
         return {
           id: product.id.toString(),
@@ -1736,7 +1737,7 @@
         };
       });
     }
-    
+
     // If no products were found in localStorage or the array is empty, use default products
     if (productsData.length === 0) {
       productsData = [
@@ -2231,7 +2232,7 @@
           protein: '4g',
           calcium: '15% DV'
         }
-      }, 
+      },
       {
         id: 'prod-008',
         name: 'Mango Ice Cream',
@@ -2249,7 +2250,7 @@
           calcium: '15% DV'
         }
       },
-     
+
       {
         id: 'prod-008',
         name: 'ButterScotch',
@@ -2401,14 +2402,14 @@
           this.items = JSON.parse(savedCart);
         }
       }
-      
+
       // Sync cart with updated products from manage_store.html
       syncWithUpdatedProducts() {
         // Remove any cart items that no longer exist in the products list
         this.items = this.items.filter(item => {
           return productsData.some(product => product.id === item.id);
         });
-        
+
         // Update product details in cart items
         this.items.forEach(item => {
           const product = productsData.find(p => p.id === item.id);
@@ -2422,7 +2423,7 @@
             }
           }
         });
-        
+
         // Save the updated cart
         this.saveToStorage();
       }
@@ -2451,7 +2452,7 @@
         this.saveToStorage();
         this.updateCartDisplay();
         this.showAddToCartNotification(product.name);
-        
+
         // Show the View Cart button on the product card
         const productCard = document.querySelector(`.product-card[data-id="${productId}"]`);
         if (productCard) {
@@ -2517,7 +2518,7 @@
           checkoutBtn.disabled = true;
         } else {
           let cartItemsHTML = '<div class="cart-items">';
-          
+
           this.items.forEach(item => {
             cartItemsHTML += `
               <div class="cart-item" data-id="${item.id}">
@@ -2596,14 +2597,14 @@
             </div>
           </div>
         `;
-        
+
         document.body.appendChild(notification);
-        
+
         // Show notification
         setTimeout(() => {
           notification.style.transform = 'translateY(0)';
         }, 10);
-        
+
         // Hide and remove notification
         setTimeout(() => {
           notification.style.transform = 'translateY(100px)';
@@ -2633,8 +2634,8 @@
 
         // Close cart when clicking outside
         document.addEventListener('click', (event) => {
-          if (cartDrawer.classList.contains('open') && 
-              !cartDrawer.contains(event.target) && 
+          if (cartDrawer.classList.contains('open') &&
+              !cartDrawer.contains(event.target) &&
               !cartToggle.contains(event.target)) {
             cartDrawer.classList.remove('open');
           }
@@ -2701,7 +2702,7 @@
         this.showOutOfStock = false;
         this.ratings = [3, 4, 5];
         this.searchQuery = '';
-        
+
         this.initEventListeners();
         this.render();
       }
@@ -2819,8 +2820,8 @@
 
         // Apply search filter
         if (this.searchQuery) {
-          filtered = filtered.filter(product => 
-            product.name.toLowerCase().includes(this.searchQuery) || 
+          filtered = filtered.filter(product =>
+            product.name.toLowerCase().includes(this.searchQuery) ||
             product.description.toLowerCase().includes(this.searchQuery) ||
             product.category.toLowerCase().includes(this.searchQuery)
           );
@@ -2852,7 +2853,7 @@
 
       render() {
         const productGrid = document.getElementById('product-grid');
-        
+
         if (this.filteredProducts.length === 0) {
           productGrid.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 0;">
@@ -2865,16 +2866,16 @@
         }
 
         let productsHTML = '';
-        
+
         this.filteredProducts.forEach(product => {
           const isInWishlist = this.wishlist.isInWishlist(product.id);
-          
+
           productsHTML += `
             <div class="card product-card" data-id="${product.id}">
               <div class="product-image-container">
                 <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
-                ${product.inStock ? 
-                  (product.featured ? '<span class="product-badge">Featured</span>' : '') : 
+                ${product.inStock ?
+                  (product.featured ? '<span class="product-badge">Featured</span>' : '') :
                   '<span class="product-badge out-of-stock">Out of Stock</span>'
                 }
                 <div class="product-actions">
@@ -2913,9 +2914,9 @@
             </div>
           `;
         });
-        
+
         productGrid.innerHTML = productsHTML;
-        
+
         // Add event listeners to product cards
         document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
           btn.addEventListener('click', (event) => {
@@ -2951,7 +2952,7 @@
         const isInWishlist = this.wishlist.isInWishlist(productId);
         const modal = document.getElementById('quick-view-modal');
         const modalContent = document.getElementById('quick-view-content');
-        
+
         modalContent.innerHTML = `
           <div class="modal-image">
             <img src="${product.imageUrl}" alt="${product.name}">
@@ -2966,7 +2967,7 @@
             </div>
             <p class="modal-product-price">${formatPrice(product.price)}</p>
             <p class="modal-product-description">${product.description}</p>
-            
+
             <div class="modal-product-meta">
               <div class="meta-item">
                 <span class="meta-label">Category:</span>
@@ -2990,13 +2991,13 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="quantity-selector">
               <button class="quantity-btn decrease-quantity">-</button>
               <input type="number" class="quantity-input" value="1" min="1" max="99" id="quick-view-quantity">
               <button class="quantity-btn increase-quantity">+</button>
             </div>
-            
+
             <div class="modal-actions">
               <button class="btn btn-primary quick-view-add-to-cart" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
                 <i class="fas fa-shopping-cart"></i> Add to Cart
@@ -3007,58 +3008,58 @@
             </div>
           </div>
         `;
-        
+
         modal.classList.add('open');
-        
+
         // Add event listeners for the quick view modal
         const closeModal = document.getElementById('close-modal');
         closeModal.addEventListener('click', () => {
           modal.classList.remove('open');
         });
-        
+
         // Close modal when clicking outside
         modal.addEventListener('click', (event) => {
           if (event.target === modal) {
             modal.classList.remove('open');
           }
         });
-        
+
         // Quantity buttons
         const quantityInput = document.getElementById('quick-view-quantity');
         const decreaseBtn = document.querySelector('.decrease-quantity');
         const increaseBtn = document.querySelector('.increase-quantity');
-        
+
         decreaseBtn.addEventListener('click', () => {
           let value = parseInt(quantityInput.value);
           if (value > 1) {
             quantityInput.value = value - 1;
           }
         });
-        
+
         increaseBtn.addEventListener('click', () => {
           let value = parseInt(quantityInput.value);
           quantityInput.value = value + 1;
         });
-        
+
         // Add to cart button
         const addToCartBtn = document.querySelector('.quick-view-add-to-cart');
         addToCartBtn.addEventListener('click', () => {
           if (!product.inStock) return;
-          
+
           const quantity = parseInt(quantityInput.value);
           this.cart.addItem(product.id, quantity);
           modal.classList.remove('open');
         });
-        
+
         // Add to wishlist button
         const addToWishlistBtn = document.querySelector('.quick-view-add-to-wishlist');
         addToWishlistBtn.addEventListener('click', () => {
           const isNowInWishlist = this.wishlist.toggleItem(product.id);
           addToWishlistBtn.innerHTML = `
-            <i class="fa${isNowInWishlist ? 's' : 'r'} fa-heart"></i> 
+            <i class="fa${isNowInWishlist ? 's' : 'r'} fa-heart"></i>
             ${isNowInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
           `;
-          
+
           // Also update the heart icon on the product card
           const wishlistBtn = document.querySelector(`.wishlist-btn[data-id="${product.id}"]`);
           if (wishlistBtn) {
@@ -3074,7 +3075,7 @@
       const cart = new Cart();
       const wishlist = new Wishlist();
       const productListing = new ProductListing(cart, wishlist);
-      
+
       // Mobile Menu Toggle
       const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
@@ -3090,25 +3091,25 @@
           mobileMenuOverlay.classList.add('active');
           mobileMenuToggle.classList.add('active');
           body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-          
+
           // Add a subtle ripple effect on click
           const ripple = document.createElement('span');
           ripple.classList.add('menu-toggle-ripple');
           mobileMenuToggle.appendChild(ripple);
-          
+
           // Position the ripple where the click happened
           const rect = mobileMenuToggle.getBoundingClientRect();
           const size = Math.max(rect.width, rect.height) * 2;
-          
+
           ripple.style.width = ripple.style.height = `${size}px`;
           ripple.style.left = `${-size/4}px`;
           ripple.style.top = `${-size/4}px`;
-          
+
           // Remove the ripple after animation completes
           setTimeout(() => {
             ripple.remove();
           }, 600);
-          
+
           // Add entrance animation to each nav link
           const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
           navLinks.forEach((link, index) => {
@@ -3116,7 +3117,7 @@
             link.style.transform = 'translateX(-10px)';
             link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
             link.style.transitionDelay = `${0.05 * (index + 1)}s`;
-            
+
             setTimeout(() => {
               link.style.opacity = '1';
               link.style.transform = 'translateX(0)';
@@ -3144,7 +3145,7 @@
 
         // Close menu when clicking the close button
         mobileMenuClose.addEventListener('click', closeMobileMenu);
-        
+
         // Close menu when clicking the overlay
         mobileMenuOverlay.addEventListener('click', closeMobileMenu);
 
@@ -3153,7 +3154,7 @@
         mobileLinks.forEach(link => {
           link.addEventListener('click', closeMobileMenu);
         });
-        
+
         // Close mobile menu when pressing Escape key
         document.addEventListener('keydown', function(event) {
           if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {

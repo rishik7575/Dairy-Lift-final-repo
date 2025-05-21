@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <!-- Additional Resources -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
@@ -132,7 +132,7 @@
       height: 70px;
       flex-shrink: 0;
     }
-    
+
     .header-photo {
       width: 100%;
       height: 100%;
@@ -141,7 +141,7 @@
       background-color: white;
       padding: 2px;
     }
-    
+
     .logo {
       font-weight: bold;
       font-size: 1.5rem;
@@ -183,17 +183,17 @@
       margin-left: 5px;
       flex-shrink: 0;
     }
-    
+
     .mobile-menu-toggle:hover {
       background-color: var(--primary-light);
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
     }
-    
+
     .mobile-menu-toggle:active {
       transform: scale(0.95);
     }
-    
+
     .hamburger-lines {
       width: 22px;
       height: 18px;
@@ -202,7 +202,7 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    
+
     .hamburger-line {
       display: block;
       height: 2px;
@@ -212,22 +212,22 @@
       transition: all 0.3s ease-in-out;
       transform-origin: center;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
       transform: translateY(8px) rotate(45deg);
       width: 22px;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
       opacity: 0;
       transform: translateX(-10px);
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
       transform: translateY(-8px) rotate(-45deg);
       width: 22px;
     }
-    
+
     .mobile-menu-toggle::after {
       content: '';
       position: absolute;
@@ -239,11 +239,11 @@
       transform: scale(0);
       transition: transform 0.3s ease;
     }
-    
+
     .mobile-menu-toggle:hover::after {
       transform: scale(1);
     }
-    
+
     .menu-toggle-ripple {
       position: absolute;
       background-color: rgba(173, 110, 245, 0.3);
@@ -252,7 +252,7 @@
       animation: ripple 0.6s linear;
       pointer-events: none;
     }
-    
+
     @keyframes ripple {
       to {
         transform: scale(2);
@@ -280,7 +280,7 @@
     .mobile-menu.active {
       transform: translateX(280px);
     }
-    
+
     .mobile-menu-overlay {
       position: fixed;
       top: 0;
@@ -294,7 +294,7 @@
       transition: opacity 0.3s ease, visibility 0.3s ease;
       backdrop-filter: blur(2px);
     }
-    
+
     .mobile-menu-overlay.active {
       opacity: 1;
       visibility: visible;
@@ -317,7 +317,7 @@
       background-color: var(--muted);
       transform: translateX(5px);
     }
-    
+
     .mobile-nav-link::after {
       content: '';
       position: absolute;
@@ -328,7 +328,7 @@
       background-color: var(--primary);
       transition: width 0.3s ease;
     }
-    
+
     .mobile-nav-link:hover::after {
       width: 30%;
     }
@@ -345,7 +345,7 @@
       transform: translateX(5px) scale(1.02);
       box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
     }
-    
+
     .mobile-menu-header {
       display: flex;
       align-items: center;
@@ -354,14 +354,14 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 1rem;
     }
-    
+
     .mobile-menu-logo {
       font-family: 'Pacifico', cursive;
       font-size: 1.5rem;
       color: var(--primary);
       text-decoration: none;
     }
-    
+
     .mobile-menu-close {
       background: none;
       border: none;
@@ -375,7 +375,7 @@
       border-radius: 50%;
       transition: all 0.2s ease;
     }
-    
+
     .mobile-menu-close:hover {
       background-color: var(--muted);
       color: var(--foreground);
@@ -402,13 +402,13 @@
       .mobile-menu-toggle {
         display: block;
       }
-      
+
       .header-photo-container {
         width: 80px;
         height: 80px;
         margin: 0 30px 0 20px;
       }
-      
+
       .logo {
         font-size: 1.5rem;
         min-width: 250px;
@@ -450,10 +450,10 @@
         color: var(--primary);
       }
     }
-    
+
     /* Remix Icons Fix */
     :where([class^="ri-"])::before { content: "\f3c2"; }
-    
+
     /* Button Styles */
     .btn {
       display: inline-flex;
@@ -517,7 +517,7 @@
       width: 16px;
       height: 16px;
     }
-    
+
       .hero-section {
   position: relative;
   width: 100%;
@@ -642,8 +642,8 @@
       opacity: 0.9;
       }
       }
-      
-      
+
+
       @keyframes milkSplash {
       0% {
       transform: scale(1);
@@ -919,6 +919,7 @@
         <nav class="desktop-nav">
           <a href="./index.html" class="nav-link">Home</a>
           <a href="./dashboard.html" class="nav-link">Dashboard</a>
+          <a href="YourCattle.html" class="nav-link">All Cattle</a>
           <a href="./store.html" class="nav-link">Store</a>
           <a href="./admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
@@ -963,8 +964,8 @@
         </svg>
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
-      
-      <a href="./farmvisit/index.html" class="mobile-nav-link">
+
+      <a href="FOR-INVESTORS/visit-farm.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
           <rect x="14" y="3" width="7" height="7"></rect>
@@ -1019,7 +1020,7 @@
       <source src="video/daackground.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
-    
+
     <section class="hero-section pt-24 pb-16 md:pt-32 md:pb-24">
       <div class="animated-bg">
         <div class="milk-droplet"></div>
@@ -1042,7 +1043,7 @@
           <video autoplay muted loop playsinline class="background-video">
             <source src="your-video.mp4" type="video/mp4" />
           </video>
-        
+
           <div class="content-wrapper">
             <h1>Invest in Premium Dairy Cattle</h1>
             <p>
@@ -1055,7 +1056,7 @@
             </div>
           </div>
         </section>
-        
+
           </p>
           <div class="mt-8 flex flex-wrap gap-4 hero-buttons">
             <button
@@ -2276,25 +2277,25 @@
         mobileMenuOverlay.classList.add('active');
         mobileMenuToggle.classList.add('active');
         body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-        
+
         // Add a subtle ripple effect on click
         const ripple = document.createElement('span');
         ripple.classList.add('menu-toggle-ripple');
         mobileMenuToggle.appendChild(ripple);
-        
+
         // Position the ripple where the click happened
         const rect = mobileMenuToggle.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height) * 2;
-        
+
         ripple.style.width = ripple.style.height = `${size}px`;
         ripple.style.left = `${-size/4}px`;
         ripple.style.top = `${-size/4}px`;
-        
+
         // Remove the ripple after animation completes
         setTimeout(() => {
           ripple.remove();
         }, 600);
-        
+
         // Add entrance animation to each nav link
         const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
         navLinks.forEach((link, index) => {
@@ -2302,7 +2303,7 @@
           link.style.transform = 'translateX(-10px)';
           link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
           link.style.transitionDelay = `${0.05 * (index + 1)}s`;
-          
+
           setTimeout(() => {
             link.style.opacity = '1';
             link.style.transform = 'translateX(0)';
@@ -2330,7 +2331,7 @@
 
       // Close menu when clicking the close button
       mobileMenuClose.addEventListener('click', closeMobileMenu);
-      
+
       // Close menu when clicking the overlay
       mobileMenuOverlay.addEventListener('click', closeMobileMenu);
 
@@ -2339,7 +2340,7 @@
       mobileLinks.forEach(link => {
         link.addEventListener('click', closeMobileMenu);
       });
-      
+
       // Close mobile menu when pressing Escape key
       document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {

@@ -1,31 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Herd Health Tracker</title>
+  <title>Dairy-Lift - All Cattle</title>
+  <meta name="description"
+    content="View and manage all your cattle investments with Dairy-Lift." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
   <style>
     :root {
-      --background: #FFFFFF;
-      --foreground: #111827;
-      --card: #FFFFFF;
-      --card-foreground: #111827;
-      --popover: #FFFFFF;
-      --popover-foreground: #111827;
-      --primary: #9b87f5;
+      --primary: #ad6ef5;
       --primary-foreground: #f8fafc;
-      --secondary: #f1f5f9;
-      --secondary-foreground: #1e293b;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --background: #ffffff;
+      --foreground: #020617;
       --muted: #f1f5f9;
-      --muted-foreground: #6b7280;
-      --accent: #f1f5f9;
-      --accent-foreground: #1e293b;
-      --destructive: #ef4444;
-      --destructive-foreground: #f8fafc;
+      --muted-foreground: #64748b;
       --border: #e2e8f0;
-      --input: #e2e8f0;
-      --ring: #9b87f5;
       --radius: 0.5rem;
     }
 
@@ -35,25 +64,474 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      background-color: var(--background);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--foreground);
+      background-color: var(--background);
       line-height: 1.5;
-      margin: 0;
-      padding: 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
       height: auto;
-      overflow: visible;
     }
 
     .container {
+      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 1rem;
-      height: auto;
-      overflow: visible;
+      padding: 0 1rem;
     }
 
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        padding: 0 2rem;
+      }
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+      position: relative;
+      padding: 0.5rem 0;
+      width: 100%;
+    }
+
+    .header-photo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 25px 0 15px;
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+    }
+
+    .header-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      background-color: white;
+      padding: 2px;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 220px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+      padding: 0 15px;
+      text-decoration: none;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
+      flex-shrink: 0;
+      margin-right: 10px;
+      margin-left: 0;
+      border: 1px solid transparent;
+    }
+
+    .mobile-menu-toggle:hover {
+      border-color: var(--primary-light);
+      background-color: rgba(173, 110, 245, 0.1);
+    }
+
+    .nav-link {
+      color: #333;
+      text-decoration: none;
+      padding: 8px 16px;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .nav-link.active {
+      color: var(--primary);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--primary);
+    }
+
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .hamburger-lines {
+      width: 24px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger-line {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .header-photo-container {
+        width: 80px;
+        height: 80px;
+        margin: 0 30px 0 20px;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        min-width: 250px;
+      }
+    }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+
+    /* Remix Icons Fix */
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline-primary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    /* Cattle specific styles */
     .header {
       margin-bottom: 2rem;
     }
@@ -104,6 +582,11 @@
     select:focus {
       border-color: var(--ring);
       box-shadow: 0 0 0 2px rgba(155, 135, 245, 0.2);
+    }
+
+    /* Content Spacing */
+    .mt-8 {
+      margin-top: 2rem;
     }
 
     .grid {
@@ -519,7 +1002,128 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <!-- Header -->
+  <header class="navbar" style="padding:10px">
+    <div class="container" style="margin:0px">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+          <div class="hamburger-lines">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </div>
+        </button>
+        <div class="header-photo-container">
+          <img src="image/no background.png" alt="Header Photo" class="header-photo">
+        </div>
+        <a href="#" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
+        <nav class="desktop-nav">
+          <a href="./index.html" class="nav-link">Home</a>
+          <a href="./dashboard.html" class="nav-link">Dashboard</a>
+          <a href="./YourCattle.html" class="nav-link active">All Cattle</a>
+          <a href="./store.html" class="nav-link">Store</a>
+          <a href="./admin-dashboard.html" class="nav-link">Admin</a>
+        </nav>
+        <div class="navbar-actions">
+          <a href="watchliststore.html" class="btn btn-icon">
+            <i class="fas fa-heart"></i>
+          </a>
+          <a href="login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span style="margin-left: 10px;">Buy Cattle</span>
+      </a>
+      <a href="./biogas/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span style="margin-left: 10px;">Bio-Gas</span>
+      </a>
+
+      <a href="FOR-INVESTORS/visit-farm.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Visit Farm</span>
+      </a>
+      <a href="navhome.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Insurance</span>
+      </a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+          <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+        </svg>
+        <span style="margin-left: 10px;">Register Cattle</span>
+      </a>
+      <a href="#" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Contact-Us</span>
+      </a>
+      <a href="help/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span style="margin-left: 10px;">Support</span>
+      </a>
+      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Login / Register</span>
+      </a>
+    </div>
+    </div>
+  </header>
+
+  <div class="container mt-8">
+    <div class="header">
+      <h1>Your Cattle</h1>
+      <p>Manage and monitor your dairy cattle investments</p>
+    </div>
+
     <div class="filters">
       <div class="filter-group">
         <label for="cattleFilter">Filter Cattle</label>
@@ -574,21 +1178,21 @@
             <div class="info-grid">
               <span class="info-label">Health:</span>
               <span id="modalHealth" class="info-value"></span>
-              
+
               <span class="info-label">Lactation:</span>
               <span id="modalLactation" class="info-value"></span>
-              
+
               <span class="info-label">Daily Production:</span>
               <span id="modalProduction" class="info-value"></span>
-              
+
               <span class="info-label">Age:</span>
               <span id="modalAge" class="info-value"></span>
-              
+
               <span class="info-label">Breed:</span>
               <span id="modalBreed" class="info-value"></span>
             </div>
           </div>
-          
+
           <div class="info-card">
             <h3>Daily Feed Consumption</h3>
             <div class="chart-container">
@@ -596,7 +1200,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="info-card">
           <h3>Health Metrics</h3>
           <div class="progress-container">
@@ -608,7 +1212,7 @@
               <div class="progress-fill" style="width: 0%" data-width="98.7%"></div>
             </div>
           </div>
-          
+
           <div class="progress-container">
             <div class="progress-header">
               <span class="progress-label">Heart Rate</span>
@@ -618,7 +1222,7 @@
               <div class="progress-fill" style="width: 0%" data-width="96%"></div>
             </div>
           </div>
-          
+
           <div class="progress-container">
             <div class="progress-header">
               <span class="progress-label">Respiration</span>
@@ -637,7 +1241,7 @@
           <div class="chart-container">
             <canvas id="milkProductionChart"></canvas>
           </div>
-          
+
           <div class="stats-container">
             <div class="stat-card">
               <p class="stat-card-label">Daily Average</p>
@@ -800,7 +1404,7 @@
       try {
         const storedCattle = JSON.parse(localStorage.getItem('newCattle')) || [];
         console.log('Found stored cattle data:', storedCattle);
-        
+
         if (Array.isArray(storedCattle) && storedCattle.length > 0) {
           // Generate new IDs for the stored cattle
           storedCattle.forEach(cattle => {
@@ -808,15 +1412,15 @@
             const highestId = Math.max(...cattleData.map(c => parseInt(c.id)));
             const newId = (highestId + 1).toString();
             cattle.id = newId;
-            
+
             // Log each cattle being added
             console.log('Adding cattle to display:', cattle);
-            
+
             cattleData.push(cattle);
           });
           // Clear the localStorage after adding to prevent duplicates
           localStorage.removeItem('newCattle');
-          
+
           // Log the updated cattle data
           console.log('Updated cattle data:', cattleData);
         }
@@ -868,7 +1472,7 @@
       // Initialize health and fertility records
       function populateHealthRecords() {
         healthRecordsBody.innerHTML = '';
-        
+
         healthRecords.forEach(record => {
           const row = document.createElement('tr');
           row.innerHTML = `
@@ -883,7 +1487,7 @@
 
       function populateFertilityRecords() {
         fertilityRecordsBody.innerHTML = '';
-        
+
         fertilityRecords.forEach(record => {
           const row = document.createElement('tr');
           row.innerHTML = `
@@ -910,7 +1514,7 @@
       function filterAndSortCattle() {
         const filter = cattleFilter.value;
         const sort = sortOrder.value;
-        
+
         return cattleData
           .filter(cattle => {
             if (filter === 'all') return true;
@@ -938,21 +1542,21 @@
       function renderCattleCards() {
         const filteredCattle = filterAndSortCattle();
         cattleGrid.innerHTML = '';
-        
+
         if (filteredCattle.length === 0) {
           emptyCattle.style.display = 'block';
           return;
         }
-        
+
         emptyCattle.style.display = 'none';
-        
+
         filteredCattle.forEach((cattle, index) => {
           const card = document.createElement('div');
           card.className = 'cattle-card animate-fade-in';
           card.style.animationDelay = `${index * 0.1}s`;
-          
+
           const healthClass = getHealthClass(cattle.health || 'Good');
-          
+
           // Ensure all required properties exist
           const cattleData = {
             image: cattle.image || 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=600&q=80',
@@ -965,7 +1569,7 @@
             purchaseDate: cattle.purchaseDate || 'Unknown',
             id: cattle.id
           };
-          
+
           card.innerHTML = `
             <div class="image-container">
               <img src="${cattleData.image}" alt="${cattleData.name}">
@@ -1018,10 +1622,10 @@
               <button class="btn view-details" data-id="${cattleData.id}">View Details</button>
             </div>
           `;
-          
+
           cattleGrid.appendChild(card);
         });
-        
+
         // Add click events to view details buttons
         document.querySelectorAll('.view-details').forEach(button => {
           button.addEventListener('click', function() {
@@ -1037,11 +1641,11 @@
       // Chart initialization
       function initFeedChart() {
         const ctx = document.getElementById('feedChart').getContext('2d');
-        
+
         if (feedChart) {
           feedChart.destroy();
         }
-        
+
         feedChart = new Chart(ctx, {
           type: 'bar',
           data: {
@@ -1081,11 +1685,11 @@
 
       function initMilkProductionChart() {
         const ctx = document.getElementById('milkProductionChart').getContext('2d');
-        
+
         if (milkProductionChart) {
           milkProductionChart.destroy();
         }
-        
+
         milkProductionChart = new Chart(ctx, {
           type: 'line',
           data: {
@@ -1128,7 +1732,7 @@
         progressFills.forEach(fill => {
           const width = fill.getAttribute('data-width');
           fill.style.width = '0%';
-          
+
           setTimeout(() => {
             fill.style.width = width;
           }, 100);
@@ -1139,13 +1743,13 @@
       function setActiveTab(tabName) {
         const allTabs = document.querySelectorAll('.tab');
         const allContents = document.querySelectorAll('.tab-content');
-        
+
         allTabs.forEach(tab => tab.classList.remove('active'));
         allContents.forEach(content => content.classList.remove('active'));
-        
+
         document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
         document.getElementById(`${tabName}Tab`).classList.add('active');
-        
+
         // Initialize charts for specific tabs
         if (tabName === 'overview') {
           initFeedChart();
@@ -1167,7 +1771,7 @@
           age: cattle.age || 'Unknown age',
           breed: cattle.breed || 'Unknown'
         };
-        
+
         modalTitle.textContent = cattleData.name;
         modalTitle.className = `modal-title ${getHealthClass(cattleData.health)}`;
         modalImage.src = cattleData.image;
@@ -1178,14 +1782,14 @@
         modalProduction.textContent = cattleData.dailyProduction;
         modalAge.textContent = cattleData.age;
         modalBreed.textContent = cattleData.breed;
-        
+
         // Populate health and fertility records
         populateHealthRecords();
         populateFertilityRecords();
-        
+
         // Reset to overview tab
         setActiveTab('overview');
-        
+
         // Show modal
         modal.classList.add('open');
       }
@@ -1197,10 +1801,10 @@
       // Event listeners
       cattleFilter.addEventListener('change', renderCattleCards);
       sortOrder.addEventListener('change', renderCattleCards);
-      
+
       closeModal.addEventListener('click', closeModalFn);
       closeBtn.addEventListener('click', closeModalFn);
-      
+
       // Tab click event
       tabs.forEach(tab => {
         tab.addEventListener('click', function() {
@@ -1208,7 +1812,7 @@
           setActiveTab(tabName);
         });
       });
-      
+
       nextSectionBtn.addEventListener('click', function() {
         const tabs = ['overview', 'production', 'health', 'fertility'];
         const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
@@ -1216,7 +1820,7 @@
         const nextIndex = (currentIndex + 1) % tabs.length;
         setActiveTab(tabs[nextIndex]);
       });
-      
+
       // Close modal when clicking outside
       modal.addEventListener('click', function(e) {
         if (e.target === modal) {
@@ -1226,7 +1830,7 @@
 
       // Initial render
       renderCattleCards();
-      
+
       // Communicate height to parent frame
       function updateParentHeight() {
         const height = document.body.scrollHeight;
@@ -1234,17 +1838,256 @@
           window.parent.postMessage({ type: 'iframe-height', height: height }, '*');
         }
       }
-      
+
       // Update height after content loads
       window.addEventListener('load', function() {
         updateParentHeight();
         // Also update after a short delay to account for dynamic content
         setTimeout(updateParentHeight, 500);
       });
-      
+
       // Update height when window resizes
       window.addEventListener('resize', updateParentHeight);
+
+      // Mobile Menu Toggle
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuClose = document.getElementById('mobile-menu-close');
+      const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+      const body = document.body;
+
+      // Function to open mobile menu
+      function openMobileMenu() {
+        mobileMenu.classList.add('active');
+        mobileMenuOverlay.classList.add('active');
+        mobileMenuToggle.classList.add('active');
+        body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+
+        // Add a subtle ripple effect on click
+        const ripple = document.createElement('span');
+        ripple.classList.add('menu-toggle-ripple');
+        mobileMenuToggle.appendChild(ripple);
+
+        // Position the ripple where the click happened
+        const rect = mobileMenuToggle.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height) * 2;
+
+        ripple.style.width = ripple.style.height = `${size}px`;
+        ripple.style.left = `${-size/4}px`;
+        ripple.style.top = `${-size/4}px`;
+
+        // Remove the ripple after animation completes
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+
+        // Add entrance animation to each nav link
+        const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+        navLinks.forEach((link, index) => {
+          link.style.opacity = '0';
+          link.style.transform = 'translateX(-10px)';
+          link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+          link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+
+          setTimeout(() => {
+            link.style.opacity = '1';
+            link.style.transform = 'translateX(0)';
+          }, 10);
+        });
+      }
+
+      // Function to close mobile menu
+      function closeMobileMenu() {
+        mobileMenu.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        mobileMenuToggle.classList.remove('active');
+        body.style.overflow = ''; // Restore scrolling
+      }
+
+      // Toggle menu when clicking the hamburger button
+      mobileMenuToggle.addEventListener('click', function(event) {
+        event.stopPropagation();
+        if (mobileMenu.classList.contains('active')) {
+          closeMobileMenu();
+        } else {
+          openMobileMenu();
+        }
+      });
+
+      // Close menu when clicking the close button
+      mobileMenuClose.addEventListener('click', closeMobileMenu);
+
+      // Close menu when clicking the overlay
+      mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+      // Close mobile menu when clicking on a link
+      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      // Close mobile menu when pressing Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+          closeMobileMenu();
+        }
+      });
     });
   </script>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12 mt-16">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 class="text-lg font-semibold mb-4">About Dairy-Lift</h3>
+          <p class="text-gray-400 mb-4">
+            Dairy-Lift connects investors with premium dairy cattle operations,
+            providing stable returns and transparent management.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="ri-facebook-fill"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="ri-twitter-fill"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="ri-instagram-fill"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="ri-linkedin-fill"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="aboutus.html"
+                class="text-gray-400 hover:text-white transition-colors"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Investment Options</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Performance Reports</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Farm Tours</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Testimonials</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >FAQs</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-map-pin-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400"
+                >123 Dairy Farm Road, Green Valley, CA 94535</span
+              >
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-phone-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">+1 (555) 123-4567</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-mail-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">dairylift@gmail.com</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-time-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">Mon-Fri: 9AM-5PM (PST)</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+          <p class="text-gray-400 mb-4">
+            Subscribe to receive updates on dairy market trends and investment
+            opportunities.
+          </p>
+          <form class="space-y-4">
+            <div>
+              <input
+                type="email"
+                placeholder="Your email address"
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary text-white"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary hover:bg-primary/90 text-white py-2 font-medium !rounded-button whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
+      >
+        <p class="text-gray-400 text-sm">
+          © 2025 Dairy-Lift. All rights reserved.
+        </p>
+        <div class="mt-4 md:mt-0 flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Privacy Policy</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Terms of Service</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Cookie Policy</a
+          >
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

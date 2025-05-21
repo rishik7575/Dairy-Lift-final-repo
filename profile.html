@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <!-- Additional Resources -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
@@ -138,23 +138,23 @@
         padding: 0 2rem;
       }
     }
-    
+
     /* Scrollbar styling */
     ::-webkit-scrollbar {
       width: 10px;
       height: 10px;
     }
-    
+
     ::-webkit-scrollbar-track {
       background: var(--muted);
       border-radius: 5px;
     }
-    
+
     ::-webkit-scrollbar-thumb {
       background: var(--primary-light);
       border-radius: 5px;
     }
-    
+
     ::-webkit-scrollbar-thumb:hover {
       background: var(--primary);
     }
@@ -195,7 +195,7 @@
       font-family: 'Pacifico', cursive;
       letter-spacing: 0.5px;
     }
-    
+
     .logo:hover {
       transform: scale(1.05);
       text-shadow: 0 2px 4px rgba(173, 110, 245, 0.3);
@@ -234,17 +234,17 @@
       margin-right: 0.5rem;
       -webkit-tap-highlight-color: transparent;
     }
-    
+
     .mobile-menu-toggle:hover {
       background-color: var(--primary-light);
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
     }
-    
+
     .mobile-menu-toggle:active {
       transform: scale(0.95);
     }
-    
+
     .hamburger-lines {
       width: 24px;
       height: 18px;
@@ -253,7 +253,7 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    
+
     .hamburger-line {
       display: block;
       height: 2px;
@@ -263,22 +263,22 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       transform-origin: center;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
       transform: translateY(8px) rotate(45deg);
       width: 24px;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
       opacity: 0;
       transform: translateX(-10px);
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
       transform: translateY(-8px) rotate(-45deg);
       width: 24px;
     }
-    
+
     .mobile-menu-toggle::after {
       content: '';
       position: absolute;
@@ -290,11 +290,11 @@
       transform: scale(0);
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     .mobile-menu-toggle:hover::after {
       transform: scale(1);
     }
-    
+
     .menu-toggle-ripple {
       position: absolute;
       background-color: rgba(173, 110, 245, 0.3);
@@ -303,7 +303,7 @@
       animation: ripple 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none;
     }
-    
+
     @keyframes ripple {
       to {
         transform: scale(2.5);
@@ -331,7 +331,7 @@
     .mobile-menu.active {
       transform: translateX(300px);
     }
-    
+
     .mobile-menu-overlay {
       position: fixed;
       top: 0;
@@ -346,7 +346,7 @@
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
     }
-    
+
     .mobile-menu-overlay.active {
       opacity: 1;
       visibility: visible;
@@ -370,7 +370,7 @@
       transform: translateX(8px);
       color: var(--primary);
     }
-    
+
     .mobile-nav-link::after {
       content: '';
       position: absolute;
@@ -381,7 +381,7 @@
       background-color: var(--primary);
       transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     .mobile-nav-link:hover::after {
       width: 40%;
     }
@@ -399,7 +399,7 @@
       transform: translateX(8px) scale(1.03);
       box-shadow: var(--shadow-md);
     }
-    
+
     .mobile-menu-header {
       display: flex;
       align-items: center;
@@ -408,7 +408,7 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 1.25rem;
     }
-    
+
     .mobile-menu-logo {
       font-family: 'Pacifico', cursive;
       font-size: 1.75rem;
@@ -418,11 +418,11 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       letter-spacing: 0.5px;
     }
-    
+
     .mobile-menu-logo:hover {
       transform: scale(1.05);
     }
-    
+
     .mobile-menu-close {
       background: none;
       border: none;
@@ -437,7 +437,7 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       -webkit-tap-highlight-color: transparent;
     }
-    
+
     .mobile-menu-close:hover {
       background-color: var(--muted);
       color: var(--foreground);
@@ -511,45 +511,45 @@
         background-color: var(--primary-light);
         transform: translateY(-2px) scale(1.1);
       }
-      
+
       .btn-primary {
         padding: 0.6rem 1.25rem;
         font-weight: 600;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: var(--shadow-md);
       }
-      
+
       .btn-primary:hover {
         transform: translateY(-2px);
         box-shadow: var(--shadow-lg);
         background-color: var(--primary-hover);
       }
     }
-    
+
     @media (min-width: 1024px) {
       .desktop-nav {
         gap: 4rem;
       }
-      
+
       .navbar-content {
         padding: 0 1rem;
       }
     }
-    
+
     @media (max-width: 767px) {
       .mobile-menu-toggle {
         margin-right: 0;
       }
-      
+
       .logo {
         font-size: 1.5rem;
         min-width: 150px;
       }
     }
-    
+
     /* Remix Icons Fix */
     :where([class^="ri-"])::before { content: "\f3c2"; }
-    
+
     /* Button Styles */
     .btn {
       display: inline-flex;
@@ -568,7 +568,7 @@
       letter-spacing: 0.01em;
       -webkit-tap-highlight-color: transparent;
     }
-    
+
     .btn::after {
       content: '';
       position: absolute;
@@ -584,7 +584,7 @@
       opacity: 0;
       transition: transform 0.5s, opacity 0.8s;
     }
-    
+
     .btn:active::after {
       transform: scale(0, 0);
       opacity: 0.3;
@@ -602,7 +602,7 @@
       box-shadow: var(--shadow-md);
       transform: translateY(-2px);
     }
-    
+
     .btn-primary:active {
       transform: translateY(1px);
       box-shadow: var(--shadow-sm);
@@ -621,7 +621,7 @@
       transform: translateY(-2px);
       box-shadow: var(--shadow);
     }
-    
+
     .btn-secondary:active {
       transform: translateY(1px);
       box-shadow: none;
@@ -638,7 +638,7 @@
       border-color: var(--border-hover);
       transform: translateY(-2px);
     }
-    
+
     .btn-outline:active {
       transform: translateY(1px);
     }
@@ -654,7 +654,7 @@
       transform: translateY(-2px);
       box-shadow: 0 2px 8px rgba(173, 110, 245, 0.15);
     }
-    
+
     .btn-outline-primary:active {
       transform: translateY(1px);
       box-shadow: none;
@@ -664,7 +664,7 @@
       padding: 0.75rem 1.5rem;
       font-size: 1rem;
     }
-    
+
     .btn-sm {
       padding: 0.35rem 0.75rem;
       font-size: 0.875rem;
@@ -675,14 +675,14 @@
       width: 16px;
       height: 16px;
     }
-    
+
     .btn-icon {
       padding: 0.5rem;
       border-radius: 50%;
       width: 36px;
       height: 36px;
     }
-    
+
     .btn-icon svg, .btn-icon i {
       margin-right: 0;
     }
@@ -701,24 +701,24 @@
     .text-2xl { font-size: 1.5rem; line-height: 1.4; }
     .text-3xl { font-size: 1.875rem; line-height: 1.3; }
     .text-4xl { font-size: 2.25rem; line-height: 1.2; }
-    
+
     .font-light { font-weight: 300; }
     .font-normal { font-weight: 400; }
     .font-medium { font-weight: 500; }
     .font-semibold { font-weight: 600; }
     .font-bold { font-weight: 700; }
-    
+
     .tracking-tight { letter-spacing: -0.025em; }
     .tracking-normal { letter-spacing: 0; }
     .tracking-wide { letter-spacing: 0.025em; }
-    
+
     .leading-none { line-height: 1; }
     .leading-tight { line-height: 1.25; }
     .leading-snug { line-height: 1.375; }
     .leading-normal { line-height: 1.5; }
     .leading-relaxed { line-height: 1.625; }
     .leading-loose { line-height: 2; }
-    
+
     /* Card Styles */
     .card {
       background-color: var(--card);
@@ -728,33 +728,33 @@
       overflow: hidden;
       border: 1px solid var(--border);
     }
-    
+
     .card:hover {
       box-shadow: var(--shadow-md);
       transform: translateY(-2px);
     }
-    
+
     .card-header {
       padding: 1.25rem 1.5rem;
       border-bottom: 1px solid var(--border);
     }
-    
+
     .card-title {
       font-size: 1.25rem;
       font-weight: 600;
       color: var(--foreground);
       margin-bottom: 0.25rem;
     }
-    
+
     .card-description {
       color: var(--muted-foreground);
       font-size: 0.875rem;
     }
-    
+
     .card-content {
       padding: 1.5rem;
     }
-    
+
     .card-footer {
       padding: 1.25rem 1.5rem;
       border-top: 1px solid var(--border);
@@ -762,7 +762,7 @@
       justify-content: flex-end;
       gap: 0.75rem;
     }
-    
+
     /* Colors */
     .bg-background { background-color: var(--background); }
     .bg-card { background-color: var(--card); }
@@ -773,7 +773,7 @@
     .bg-success { background-color: var(--success); }
     .bg-warning { background-color: var(--warning); }
     .bg-info { background-color: var(--info); }
-    
+
     .text-foreground { color: var(--foreground); }
     .text-primary { color: var(--primary); }
     .text-primary-foreground { color: var(--primary-foreground); }
@@ -838,7 +838,7 @@
     .space-y-6 > * + * { margin-top: 1.5rem; }
     .space-x-2 > * + * { margin-left: 0.5rem; }
     .divide-y > * + * { border-top-width: 1px; }
-    
+
     /* Spacing */
     .p-0 { padding: 0; }
     .p-1 { padding: 0.25rem; }
@@ -860,7 +860,7 @@
     .pt-6 { padding-top: 1.5rem; }
     .pt-16 { padding-top: 4rem; }
     .pb-4 { padding-bottom: 1rem; }
-    
+
     .m-0 { margin: 0; }
     .m-1 { margin: 0.25rem; }
     .m-2 { margin: 0.5rem; }
@@ -886,7 +886,7 @@
     .mb-8 { margin-bottom: 2rem; }
     .-top-1 { top: -0.25rem; }
     .-right-1 { right: -0.25rem; }
-    
+
     /* Borders */
     .rounded { border-radius: 0.25rem; }
     .rounded-md { border-radius: calc(var(--radius) - 2px); }
@@ -900,12 +900,12 @@
     .border-white { border-color: white; }
     .border-input { border-color: hsl(var(--input)); }
     .border-gray-300 { border-color: rgb(209 213 219); }
-    
+
     /* Effects */
     .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
     .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
     .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-    
+
     /* Positioning */
     .relative { position: relative; }
     .absolute { position: absolute; }
@@ -924,12 +924,12 @@
     .z-30 { z-index: 30; }
     .z-40 { z-index: 40; }
     .z-50 { z-index: 50; }
-    
+
     /* Transforms */
     .translate-x-0 { transform: translateX(0); }
     .-translate-x-full { transform: translateX(-100%); }
     .-translate-y-1\/2 { transform: translateY(-50%); }
-    
+
     /* Utilities */
     .hidden { display: none; }
     .opacity-0 { opacity: 0; }
@@ -942,43 +942,43 @@
     .text-center { text-align: center; }
     .text-left { text-align: left; }
     .align-text-top { vertical-align: text-top; }
-    
+
     /* Transitions */
     .transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
     .transition-opacity { transition-property: opacity; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
     .transition-transform { transition-property: transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
     .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
-    
+
     /* Custom components */
     .card {
       background-color: hsl(var(--card));
       border-radius: var(--radius);
       box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     }
-    
+
     .card-header {
       display: flex;
       flex-direction: column;
       padding: 1.5rem 1.5rem 0;
     }
-    
+
     .card-gradient-header {
       background: linear-gradient(to right, #f9fafb, #f3f4f6);
       border-top-left-radius: var(--radius);
       border-top-right-radius: var(--radius);
       padding: 1rem 1.5rem;
     }
-    
+
     .card-title {
       font-size: 1.125rem;
       font-weight: 600;
       color: hsl(var(--card-foreground));
     }
-    
+
     .card-content {
       padding: 1.5rem;
     }
-    
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -994,44 +994,44 @@
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-duration: 150ms;
     }
-    
+
     .btn-primary {
       background-color: hsl(var(--primary));
       color: hsl(var(--primary-foreground));
     }
-    
+
     .btn-primary:hover {
       background-color: hsla(var(--primary), 0.9);
     }
-    
+
     .btn-outline {
       border: 1px solid hsl(var(--input));
       background-color: transparent;
       color: hsl(var(--foreground));
     }
-    
+
     .btn-outline:hover {
       background-color: hsl(var(--accent));
       color: hsl(var(--accent-foreground));
     }
-    
+
     .btn-ghost {
       background-color: transparent;
       color: hsl(var(--foreground));
     }
-    
+
     .btn-ghost:hover {
       background-color: hsl(var(--accent));
       color: hsl(var(--accent-foreground));
     }
-    
+
     .btn-sm {
       height: 2.25rem;
       padding-left: 0.75rem;
       padding-right: 0.75rem;
       border-radius: calc(var(--radius) - 2px);
     }
-    
+
     .avatar {
       position: relative;
       display: flex;
@@ -1041,13 +1041,13 @@
       background-color: hsl(var(--muted));
       border-radius: 9999px;
     }
-    
+
     .avatar-image {
       height: 100%;
       width: 100%;
       object-fit: cover;
     }
-    
+
     .avatar-fallback {
       height: 100%;
       width: 100%;
@@ -1056,7 +1056,7 @@
       justify-content: center;
       font-weight: 500;
     }
-    
+
     .dropdown-menu {
       position: absolute;
       z-index: 50;
@@ -1068,24 +1068,24 @@
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       animation: fadeIn 0.2s ease-out forwards;
     }
-    
+
     .dropdown-menu-content {
       padding: 0.5rem;
     }
-    
+
     .dropdown-menu-label {
       padding: 0.5rem;
       font-size: 0.875rem;
       font-weight: 600;
       color: hsl(var(--foreground));
     }
-    
+
     .dropdown-menu-separator {
       height: 1px;
       margin: 0.25rem -0.5rem;
       background-color: hsl(var(--border));
     }
-    
+
     .dropdown-menu-item {
       display: flex;
       align-items: center;
@@ -1094,7 +1094,7 @@
       cursor: pointer;
       user-select: none;
     }
-    
+
     .dropdown-menu-item:hover {
       background-color: hsl(var(--accent));
     }
@@ -1106,13 +1106,13 @@
       background-color: hsl(var(--secondary));
       border-radius: 9999px;
     }
-    
+
     .progress-indicator {
       height: 100%;
       background-color: hsl(var(--primary));
       transition: width 0.2s ease;
     }
-    
+
     .input {
       width: 100%;
       height: 2.5rem;
@@ -1122,17 +1122,17 @@
       background-color: hsl(var(--background));
       font-size: 0.875rem;
     }
-    
+
     .input:focus {
       outline: none;
       box-shadow: 0 0 0 2px hsla(var(--ring), 0.3);
     }
-    
+
     .input:read-only {
       background-color: hsl(var(--muted));
       cursor: not-allowed;
     }
-    
+
     .textarea {
       width: 100%;
       min-height: 6rem;
@@ -1143,24 +1143,24 @@
       font-size: 0.875rem;
       resize: vertical;
     }
-    
+
     .textarea:focus {
       outline: none;
       box-shadow: 0 0 0 2px hsla(var(--ring), 0.3);
     }
-    
+
     .tabs {
       display: flex;
       flex-direction: column;
     }
-    
+
     .tabs-list {
       display: flex;
       background-color: hsl(var(--muted));
       padding: 0.25rem;
       border-radius: var(--radius);
     }
-    
+
     .tabs-trigger {
       flex: 1;
       display: inline-flex;
@@ -1175,13 +1175,13 @@
       transition: all 0.2s ease;
       cursor: pointer;
     }
-    
+
     .tabs-trigger[data-state="active"] {
       background-color: hsl(var(--background));
       color: hsl(var(--foreground));
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
-    
+
     .tabs-content {
       margin-top: 0.5rem;
     }
@@ -1197,11 +1197,11 @@
       transition: background-color 0.2s ease;
       cursor: pointer;
     }
-    
+
     .switch[data-state="checked"] {
       background-color: hsl(var(--primary));
     }
-    
+
     .switch-thumb {
       position: absolute;
       left: 0.125rem;
@@ -1212,7 +1212,7 @@
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
       transition: transform 0.2s ease;
     }
-    
+
     .switch[data-state="checked"] .switch-thumb {
       transform: translateX(1.25rem);
     }
@@ -1226,7 +1226,7 @@
       max-width: 24rem;
       z-index: 50;
     }
-    
+
     .toast {
       display: flex;
       background-color: hsl(var(--background));
@@ -1237,12 +1237,12 @@
       margin-top: 0.5rem;
       animation: slideIn 0.2s ease-out;
     }
-    
+
     .toast-title {
       font-weight: 600;
       margin-bottom: 0.25rem;
     }
-    
+
     .toast-description {
       font-size: 0.875rem;
       color: hsl(var(--muted-foreground));
@@ -1256,7 +1256,7 @@
       .sm\:flex-row { flex-direction: row; }
       .sm\:space-x-2 > * + * { margin-left: 0.5rem; }
     }
-    
+
     @media (min-width: 768px) {
       .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -1272,7 +1272,7 @@
       .md\:translate-x-0 { transform: translateX(0); }
       .md\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
     }
-    
+
     @media (min-width: 1024px) {
       .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
@@ -1282,12 +1282,12 @@
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
+
     @keyframes slideIn {
       from { transform: translateX(100%); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
     }
-    
+
     @keyframes slideOut {
       from { transform: translateX(0); opacity: 1; }
       to { transform: translateX(100%); opacity: 0; }
@@ -1302,7 +1302,7 @@
         const size = props.size || 24;
         const color = props.color || 'currentColor';
         const strokeWidth = props.strokeWidth || 2;
-        
+
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('width', size);
         svg.setAttribute('height', size);
@@ -1313,7 +1313,7 @@
         svg.setAttribute('stroke-linecap', 'round');
         svg.setAttribute('stroke-linejoin', 'round');
         svg.innerHTML = path;
-        
+
         return svg;
       };
     }
@@ -1371,7 +1371,7 @@
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
             const body = document.body;
-            
+
             if (this.classList.contains('active')) {
               this.classList.remove('active');
               mobileMenu.classList.remove('active');
@@ -1412,7 +1412,7 @@
         const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
         const body = document.body;
-        
+
         mobileMenuToggle.classList.remove('active');
         mobileMenu.classList.remove('active');
         this.classList.remove('active');
@@ -1420,7 +1420,7 @@
         return false;
       };
     </script>
-    
+
     <div class="mobile-menu" id="mobile-menu">
       <div class="mobile-menu-header">
         <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
@@ -1437,7 +1437,7 @@
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
             const body = document.body;
-            
+
             mobileMenuToggle.classList.remove('active');
             mobileMenu.classList.remove('active');
             mobileMenuOverlay.classList.remove('active');
@@ -1461,8 +1461,8 @@
         </svg>
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
-      
-      <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+
+      <a href="FOR-INVESTORS/visit-farm.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
           <rect x="14" y="3" width="7" height="7"></rect>
@@ -1517,7 +1517,7 @@
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
             const body = document.body;
-            
+
             mobileMenuToggle.classList.remove('active');
             mobileMenu.classList.remove('active');
             mobileMenuOverlay.classList.remove('active');
@@ -1538,7 +1538,7 @@
               View and manage your personal information and account settings
             </p>
           </div>
-          
+
           <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
             <!-- Profile Header -->
             <div class="md:col-span-3">
@@ -1547,7 +1547,7 @@
                   <div class="avatar h-24 w-24 rounded-full border-4 border-white shadow-md">
                     <div class="avatar-fallback bg-primary text-2xl text-primary-foreground">A</div>
                   </div>
-                  
+
                   <label for="profile-image" class="absolute bottom-0 right-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm opacity-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
@@ -1556,12 +1556,12 @@
                     <input type="file" id="profile-image" class="hidden" accept="image/*">
                   </label>
                 </div>
-                
+
                 <div class="mt-4 text-center md:ml-6 md:text-left">
                   <h1 class="text-2xl font-bold">Admin User</h1>
                   <p class="text-muted-foreground">admin@dairy-lift.com</p>
                   <p class="mt-1 text-sm">Farm Manager</p>
-                  
+
                   <div class="mt-3 flex gap-2 justify-center md:justify-start">
                     <button class="btn btn-outline btn-sm" id="editProfileBtn">Edit Profile</button>
                     <button class="btn btn-outline btn-sm" id="exportPdfBtn">Export PDF</button>
@@ -1569,7 +1569,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Profile Tabs and Content -->
             <div class="md:col-span-2 space-y-6">
               <div class="tabs" id="profileTabs">
@@ -1579,7 +1579,7 @@
                   <button class="tabs-trigger" data-tab="notifications">Notifications</button>
                   <button class="tabs-trigger" data-tab="social">Social Links</button>
                 </div>
-                
+
                 <div class="tabs-content mt-2">
                   <!-- Personal Info Tab -->
                   <div class="tab-panel" id="personal-tab" data-active="true">
@@ -1600,43 +1600,43 @@
                               <label for="firstName" class="text-sm font-medium">First Name</label>
                               <input id="firstName" class="input" value="Admin">
                             </div>
-                            
+
                             <div class="space-y-2">
                               <label for="lastName" class="text-sm font-medium">Last Name</label>
                               <input id="lastName" class="input" value="User">
                             </div>
-                            
+
                             <div class="space-y-2">
                               <label for="email" class="text-sm font-medium">Email Address</label>
                               <input id="email" type="email" class="input" value="admin@dairy-lift.com">
                             </div>
-                            
+
                             <div class="space-y-2">
                               <label for="phone" class="text-sm font-medium">Phone Number</label>
                               <input id="phone" class="input" value="+91 9876543210">
                             </div>
-                            
+
                             <div class="space-y-2">
                               <label for="role" class="text-sm font-medium">Role</label>
                               <input id="role" class="input" value="Farm Manager">
                             </div>
-                            
+
                             <div class="space-y-2">
                               <label for="joined" class="text-sm font-medium">Date Joined</label>
                               <input id="joined" class="input bg-muted" value="January 15, 2023" readonly>
                             </div>
                           </div>
-                          
+
                           <div class="mt-6 space-y-2">
                             <label for="address" class="text-sm font-medium">Address</label>
                             <input id="address" class="input" value="123 Dairy Lane, Milk County, 560001">
                           </div>
-                          
+
                           <div class="mt-6 space-y-2">
                             <label for="bio" class="text-sm font-medium">Bio</label>
                             <textarea id="bio" class="textarea" rows="4">Experienced farm manager with over 5 years in dairy farm operations and management. Specializing in cattle health, milk production optimization, and investor relations.</textarea>
                           </div>
-                          
+
                           <div class="mt-6 flex justify-end gap-2">
                             <button type="button" class="btn btn-outline" id="cancelPersonalBtn">Cancel</button>
                             <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -1645,7 +1645,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <!-- Security Tab -->
                   <div class="tab-panel hidden" id="security-tab">
                     <div class="card mb-8">
@@ -1675,7 +1675,7 @@
                                 </button>
                               </div>
                             </div>
-                            
+
                             <div class="space-y-2">
                               <label for="newPassword" class="text-sm font-medium">New Password</label>
                               <div class="relative">
@@ -1690,7 +1690,7 @@
                                 </button>
                               </div>
                             </div>
-                            
+
                             <div class="space-y-2">
                               <label for="confirmPassword" class="text-sm font-medium">Confirm New Password</label>
                               <div class="relative">
@@ -1706,7 +1706,7 @@
                               </div>
                             </div>
                           </div>
-                          
+
                           <div class="mt-6 flex justify-end gap-2">
                             <button type="button" class="btn btn-outline">Cancel</button>
                             <button type="submit" class="btn btn-primary">Update Password</button>
@@ -1733,7 +1733,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <!-- Notifications Tab -->
                   <div class="tab-panel hidden" id="notifications-tab">
                     <div class="card mb-8">
@@ -1757,7 +1757,7 @@
                               <div class="switch-thumb"></div>
                             </div>
                           </div>
-                          
+
                           <div class="flex items-center justify-between">
                             <div>
                               <h4 class="font-medium">SMS Notifications</h4>
@@ -1767,7 +1767,7 @@
                               <div class="switch-thumb"></div>
                             </div>
                           </div>
-                          
+
                           <div class="flex items-center justify-between">
                             <div>
                               <h4 class="font-medium">Push Notifications</h4>
@@ -1777,7 +1777,7 @@
                               <div class="switch-thumb"></div>
                             </div>
                           </div>
-                          
+
                           <div class="flex items-center justify-between">
                             <div>
                               <h4 class="font-medium">Marketing Emails</h4>
@@ -1788,7 +1788,7 @@
                             </div>
                           </div>
                         </div>
-                        
+
                         <div class="mt-6 flex justify-between">
                           <button class="btn btn-outline" id="resetDefaultsBtn">Reset to Default</button>
                           <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
@@ -1796,7 +1796,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <!-- Social Links Tab -->
                   <div class="tab-panel hidden" id="social-tab">
                     <div class="card mb-8">
@@ -1816,23 +1816,23 @@
                             <label for="linkedin" class="text-sm font-medium">LinkedIn</label>
                             <input id="linkedin" class="input" placeholder="https://linkedin.com/in/username" value="https://linkedin.com/in/adminuser">
                           </div>
-                          
+
                           <div class="space-y-2">
                             <label for="twitter" class="text-sm font-medium">Twitter</label>
                             <input id="twitter" class="input" placeholder="https://twitter.com/username" value="">
                           </div>
-                          
+
                           <div class="space-y-2">
                             <label for="facebook" class="text-sm font-medium">Facebook</label>
                             <input id="facebook" class="input" placeholder="https://facebook.com/username" value="https://facebook.com/adminuser">
                           </div>
-                          
+
                           <div class="space-y-2">
                             <label for="instagram" class="text-sm font-medium">Instagram</label>
                             <input id="instagram" class="input" placeholder="https://instagram.com/username" value="">
                           </div>
                         </div>
-                        
+
                         <div class="mt-6 flex justify-end">
                           <button class="btn btn-primary" id="saveSocialBtn">Save Links</button>
                         </div>
@@ -1842,7 +1842,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Sidebar Content -->
             <div class="space-y-6">
               <!-- Profile Completion -->
@@ -1858,7 +1858,7 @@
                   <div class="progress h-2 mb-6">
                     <div class="progress-indicator" style="width: 60%"></div>
                   </div>
-                  
+
                   <div class="space-y-3">
                     <div class="flex items-center text-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-success">
@@ -1896,7 +1896,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Investor Summary -->
               <div class="card mb-8">
                 <div class="card-gradient-header">
@@ -1918,7 +1918,7 @@
                         <p class="text-xl font-semibold">₹2,50,000</p>
                       </div>
                     </div>
-                    
+
                     <div class="flex items-center gap-4">
                       <div class="flex h-12 w-12 items-center justify-center rounded-full bg-success/10">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-success">
@@ -1931,7 +1931,7 @@
                         <p class="text-xl font-semibold">₹32,125</p>
                       </div>
                     </div>
-                    
+
                     <div class="flex items-center gap-4">
                       <div class="flex h-12 w-12 items-center justify-center rounded-full bg-warning/10">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-warning">
@@ -1943,7 +1943,7 @@
                         <p class="text-xl font-semibold">5</p>
                       </div>
                     </div>
-                    
+
                     <div class="flex items-center gap-4">
                       <div class="flex h-12 w-12 items-center justify-center rounded-full bg-info/10">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-info">
@@ -1959,7 +1959,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Quick Links -->
               <div class="card mb-8">
                 <div class="card-gradient-header">
@@ -1973,7 +1973,7 @@
                       </svg>
                       Manage Cattle
                     </a>
-                    
+
                     <a href="/reports" class="btn btn-outline w-full justify-start">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
                         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
@@ -1984,7 +1984,7 @@
                       </svg>
                       View Reports
                     </a>
-                    
+
                     <a href="/store" class="btn btn-outline w-full justify-start">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
                         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -1993,7 +1993,7 @@
                       </svg>
                       View Store
                     </a>
-                    
+
                     <a href="/support" class="btn btn-outline w-full justify-start">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -2004,7 +2004,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Activity Log -->
             <div class="md:col-span-2">
               <div class="card mb-8">
@@ -2031,7 +2031,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="flex items-center gap-3 p-4">
                       <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
@@ -2051,7 +2051,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="flex items-center gap-3 p-4">
                       <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
@@ -2071,7 +2071,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="flex items-center gap-3 p-4">
                       <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
@@ -2090,7 +2090,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="flex items-center gap-3 p-4">
                       <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
@@ -2114,7 +2114,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Login Stats -->
             <div>
               <div class="card mb-8">
@@ -2135,7 +2135,7 @@
                         <p class="text-sm text-muted-foreground">Bengaluru, Karnataka</p>
                       </div>
                     </div>
-                    
+
                     <div class="flex items-start gap-3">
                       <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
@@ -2149,7 +2149,7 @@
                         <p class="text-sm text-muted-foreground">Chrome on Windows, iPhone App</p>
                       </div>
                     </div>
-                    
+
                     <div class="flex items-start gap-3">
                       <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
@@ -2170,7 +2170,7 @@
                         <p class="text-sm text-muted-foreground">March 15, 2025</p>
                       </div>
                     </div>
-                    
+
                     <div class="flex items-start gap-3">
                       <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
@@ -2371,26 +2371,26 @@
       // Toggle user dropdown menu
       const userDropdown = document.getElementById('userDropdown');
       const userMenu = document.getElementById('userMenu');
-      
+
       userDropdown.addEventListener('click', (e) => {
         e.stopPropagation();
         userMenu.classList.toggle('hidden');
       });
-      
+
       // Close dropdown when clicking outside
       document.addEventListener('click', () => {
         if (!userMenu.classList.contains('hidden')) {
           userMenu.classList.add('hidden');
         }
       });
-      
+
       // Toast notification system
       const toastContainer = document.getElementById('toastContainer');
-      
+
       function showToast(title, description, type = 'default', duration = 3000) {
         const toast = document.createElement('div');
         toast.className = 'toast';
-        
+
         if (type === 'error') {
           toast.style.borderLeftColor = 'hsl(var(--destructive))';
           toast.style.borderLeftWidth = '4px';
@@ -2398,16 +2398,16 @@
           toast.style.borderLeftColor = 'hsl(var(--success))';
           toast.style.borderLeftWidth = '4px';
         }
-        
+
         toast.innerHTML = `
           <div>
             <div class="toast-title">${title}</div>
             <div class="toast-description">${description}</div>
           </div>
         `;
-        
+
         toastContainer.appendChild(toast);
-        
+
         setTimeout(() => {
           toast.style.animation = 'slideOut 0.3s ease-out forwards';
           setTimeout(() => {
@@ -2415,19 +2415,19 @@
           }, 300);
         }, duration);
       }
-      
+
       // Profile image hover effect
       const profileImageContainer = document.getElementById('profile-image-container');
       const cameraButton = profileImageContainer.querySelector('label');
-      
+
       profileImageContainer.addEventListener('mouseenter', () => {
         cameraButton.style.opacity = '1';
       });
-      
+
       profileImageContainer.addEventListener('mouseleave', () => {
         cameraButton.style.opacity = '0';
       });
-      
+
       // Profile image upload
       const profileImage = document.getElementById('profile-image');
       profileImage.addEventListener('change', (e) => {
@@ -2442,14 +2442,14 @@
               if (avatarFallback) {
                 avatarFallback.style.display = 'none';
               }
-              
+
               avatarImage = document.createElement('img');
               avatarImage.className = 'avatar-image';
               profileImageContainer.querySelector('.avatar').appendChild(avatarImage);
             }
-            
+
             avatarImage.src = event.target.result;
-            
+
             // Also update header avatar
             const headerAvatar = document.querySelector('#userDropdown .avatar');
             let headerAvatarImage = headerAvatar.querySelector('.avatar-image');
@@ -2458,28 +2458,28 @@
               if (headerAvatarFallback) {
                 headerAvatarFallback.style.display = 'none';
               }
-              
+
               headerAvatarImage = document.createElement('img');
               headerAvatarImage.className = 'avatar-image';
               headerAvatar.appendChild(headerAvatarImage);
             }
-            
+
             headerAvatarImage.src = event.target.result;
-            
+
             showToast('Profile Image Updated', 'Your profile image has been updated successfully.', 'success');
           };
           reader.readAsDataURL(file);
         }
       });
-      
+
       // Tab switching
       const tabButtons = document.querySelectorAll('.tabs-trigger');
       const tabPanels = document.querySelectorAll('.tab-panel');
-      
+
       tabButtons.forEach(button => {
         button.addEventListener('click', () => {
           const tabId = button.getAttribute('data-tab');
-          
+
           // Update button states
           tabButtons.forEach(btn => {
             if (btn.getAttribute('data-tab') === tabId) {
@@ -2488,7 +2488,7 @@
               btn.setAttribute('data-state', 'inactive');
             }
           });
-          
+
           // Update tab panels
           tabPanels.forEach(panel => {
             if (panel.id === `${tabId}-tab`) {
@@ -2501,14 +2501,14 @@
           });
         });
       });
-      
+
       // Toggle password visibility
       const togglePasswordButtons = document.querySelectorAll('.toggle-password');
       togglePasswordButtons.forEach(button => {
         button.addEventListener('click', () => {
           const inputId = button.getAttribute('data-for');
           const input = document.getElementById(inputId);
-          
+
           if (input.type === 'password') {
             input.type = 'text';
             button.innerHTML = `
@@ -2530,7 +2530,7 @@
           }
         });
       });
-      
+
       // Toggle switches
       const switches = document.querySelectorAll('.switch');
       switches.forEach(switchEl => {
@@ -2549,61 +2549,61 @@
         e.preventDefault();
         showToast('Profile Updated', 'Your profile information has been updated successfully.', 'success');
       });
-      
+
       const passwordForm = document.getElementById('passwordForm');
       if (passwordForm) {
         passwordForm.addEventListener('submit', (e) => {
           e.preventDefault();
-          
+
           const newPassword = document.getElementById('newPassword').value;
           const confirmPassword = document.getElementById('confirmPassword').value;
-          
+
           if (newPassword !== confirmPassword) {
             showToast('Error', 'New passwords do not match.', 'error');
             return;
           }
-          
+
           showToast('Password Updated', 'Your password has been updated successfully.', 'success');
           passwordForm.reset();
         });
       }
-      
+
       // Event handlers for various buttons
       document.getElementById('notificationBtn').addEventListener('click', () => {
         showToast('Notifications', 'You have 3 unread notifications');
       });
-      
+
       document.getElementById('logoutBtn').addEventListener('click', () => {
         showToast('Logged out successfully', 'You have been logged out of your account');
       });
-      
+
       document.getElementById('editProfileBtn').addEventListener('click', () => {
         // Ensure Personal Info tab is active
         const personalTab = document.querySelector('[data-tab="personal"]');
         personalTab.click();
-        
+
         showToast('Edit Profile', 'You can now edit your profile information below.');
-        
+
         // Scroll to the form
         document.getElementById('personal').scrollIntoView({ behavior: 'smooth' });
       });
-      
+
       document.getElementById('exportPdfBtn').addEventListener('click', () => {
         showToast('Export PDF', 'Your profile is being exported as PDF');
       });
-      
+
       if (document.getElementById('enable2FABtn')) {
         document.getElementById('enable2FABtn').addEventListener('click', () => {
           showToast('Two-Factor Authentication', 'Two-factor authentication setup process initiated.');
         });
       }
-      
+
       if (document.getElementById('saveSettingsBtn')) {
         document.getElementById('saveSettingsBtn').addEventListener('click', () => {
           showToast('Settings Saved', 'Your notification preferences have been updated.');
         });
       }
-      
+
       if (document.getElementById('resetDefaultsBtn')) {
         document.getElementById('resetDefaultsBtn').addEventListener('click', () => {
           const switches = document.querySelectorAll('#notifications-tab .switch');
@@ -2614,23 +2614,23 @@
               switchEl.setAttribute('data-state', 'unchecked');
             }
           });
-          
+
           showToast('Settings Reset', 'Your notification preferences have been reset to default.');
         });
       }
-      
+
       if (document.getElementById('saveSocialBtn')) {
         document.getElementById('saveSocialBtn').addEventListener('click', () => {
           showToast('Social Links Updated', 'Your social media links have been updated successfully.');
         });
       }
-      
+
       if (document.getElementById('cancelPersonalBtn')) {
         document.getElementById('cancelPersonalBtn').addEventListener('click', () => {
           showToast('Changes Cancelled', 'Your changes have been discarded.');
         });
       }
-      
+
       // Close all the open divs for the content section
       document.addEventListener('DOMContentLoaded', function() {
         // Make sure all divs are properly closed
@@ -2640,19 +2640,19 @@
           console.log('Content structure loaded correctly');
         }
       });
-      
+
       // Add animation for mobile menu links
       document.addEventListener('DOMContentLoaded', function() {
         // Animate menu items when menu opens
         const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
-        
+
         if (mobileMenuToggle && mobileMenu) {
           const originalOnClick = mobileMenuToggle.onclick;
-          
+
           mobileMenuToggle.onclick = function() {
             const result = originalOnClick.apply(this, arguments);
-            
+
             // If menu is now open, animate the links
             if (mobileMenu.classList.contains('active')) {
               const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
@@ -2661,18 +2661,18 @@
                 link.style.transform = 'translateX(-15px)';
                 link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                 link.style.transitionDelay = `${0.05 * (index + 1)}s`;
-                
+
                 setTimeout(() => {
                   link.style.opacity = '1';
                   link.style.transform = 'translateX(0)';
                 }, 10);
               });
             }
-            
+
             return result;
           };
         }
-        
+
         // Close menu when pressing Escape key
         document.addEventListener('keydown', function(event) {
           if (event.key === 'Escape') {
@@ -2680,7 +2680,7 @@
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
             const body = document.body;
-            
+
             if (mobileMenu && mobileMenu.classList.contains('active')) {
               mobileMenuToggle.classList.remove('active');
               mobileMenu.classList.remove('active');
