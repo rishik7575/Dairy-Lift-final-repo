@@ -1,0 +1,279 @@
+[33mcommit cce7173fc93765ee9f982ea15569e19434584f8a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Thu May 22 01:07:41 2025 +0530
+
+    Fix: added FOR-INVESTORS and farm-vista-scheduler-flow as normal folders
+
+[33mcommit 450069ab6579aa19bc0dec30a896e48bb4c282fc[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Thu May 22 01:05:39 2025 +0530
+
+    Removed submodules FOR-INVESTORS and farm-vista-scheduler-flow
+
+[33mcommit 5ba6e41b842f8f5d90eeb867054399e920d86ae7[m
+Merge: 2d605e4a 5d3db30c
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Thu May 22 00:58:43 2025 +0530
+
+    Merge remote-tracking branch 'origin/main' with unrelated histories
+
+[33mcommit 2d605e4ad89c0474e07df07221ebcdb8e6cc2369[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Thu May 22 00:51:55 2025 +0530
+
+    check\\
+
+[33mcommit a0ddb66722475ea1fc45343f257bbbedb7d109db[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Thu May 22 00:25:25 2025 +0530
+
+    check
+
+[33mcommit 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Thu May 22 00:23:56 2025 +0530
+
+    Update farm-vista-scheduler-flow submodule
+
+[33mcommit 5ecbd96a3282b344d643d9b6d16768d58b3a2b87[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Thu May 22 00:20:38 2025 +0530
+
+    Updates for links and new things
+
+[33mcommit f9c0eaacf83c177c2ee92d2d22a9e9aae84a93e2[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Thu May 22 00:19:17 2025 +0530
+
+    updates for links and new things
+
+[33mcommit c9204cfc293b5156025a1c210b5495b1e4926c89[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Wed May 21 20:39:39 2025 +0530
+
+    email
+
+[33mcommit 94305b523b5ebf81c0f019fd73e3323629b7dba6[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Fri May 16 20:26:19 2025 +0530
+
+    qwertyuio
+
+[33mcommit 94001db5c6d1de5cb59c77c2aee76563eb8b1cc0[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Fri May 16 20:19:35 2025 +0530
+
+    mi
+
+[33mcommit 9e47e37b3c106a3946f1bf292a31e235489af289[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Tue May 6 19:11:28 2025 +0530
+
+     Add farmvisit files to main repository
+
+[33mcommit c9ad84e1de561e5efcce77bbd771310d591d3433[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Tue May 6 19:06:08 2025 +0530
+
+    something
+
+[33mcommit 952e36af6b7cbb8dc7b604edd7babfdc1ba9b219[m
+Merge: 694aec51 8b810827
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Tue May 6 18:50:47 2025 +0530
+
+     Merge remote changes with local changes
+
+[33mcommit 694aec51db6bb9999f65d98d0df14becde0a78e4[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun May 4 07:57:56 2025 +0530
+
+    Update submodule reference for farm-vista-scheduler-flow
+
+[33mcommit 8b8108271f4f392c037c62620a27e9e7f737b2ec[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun May 4 07:57:11 2025 +0530
+
+    Commit changes in farm-vista-scheduler-flow
+
+[33mcommit e51804aa84ebca53693c13024f067603e0d23a6b[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun May 4 07:49:21 2025 +0530
+
+    visit farm
+
+[33mcommit 55845a49e98f66873ff6d111fd4b1309090c0424[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Thu Apr 24 14:00:08 2025 +0530
+
+    perfect
+
+[33mcommit 0882a71b5bf31af76d4daa127eab528f788ad6b9[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Wed Apr 23 22:23:09 2025 +0530
+
+    perfect one
+
+[33mcommit 6569b50980cb9b912a84be689a6b43fff6d9e7de[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Tue Apr 22 02:20:03 2025 +0530
+
+    footers and headers update
+
+[33mcommit baa5bad2783bfbb27da9e419477b5f67ab21187c[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun Apr 20 23:05:57 2025 +0530
+
+    small upade on headers
+
+[33mcommit ce4d341b8c7485c5fc3b82e1333ad7f982a9d639[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun Apr 20 22:41:04 2025 +0530
+
+    storecart
+
+[33mcommit d6a9089a9d0fb7d4ad02cf76d23acd168c1bf6ed[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun Apr 20 22:19:39 2025 +0530
+
+    store,manage_store,addcattle,add_new_cattle working
+
+[33mcommit 8489d9bca7330f164940033ff84b1d36285180b5[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun Apr 20 20:30:00 2025 +0530
+
+    3line buttonn
+
+[33mcommit 127e543a87d42c851ae0d4cddbb029f3047157c4[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun Apr 20 20:29:09 2025 +0530
+
+    3line buttonn
+
+[33mcommit ba0860f086d59f1e4027ceedd7eb52787f9a23d5[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun Apr 20 16:28:30 2025 +0530
+
+    headers
+
+[33mcommit c9de42a12ad6640aee2b5c79b702c7dde7ce7306[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun Apr 20 16:18:45 2025 +0530
+
+    headers update
+
+[33mcommit cad6a0176e9c199e66bd4c11b426503bbf6ffe4a[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun Apr 20 12:21:36 2025 +0530
+
+    visit farm
+
+[33mcommit 8281ccb32691d9bbf4061960c67c2d6826028a35[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun Apr 20 12:05:46 2025 +0530
+
+    visit farm 2nd update
+
+[33mcommit 2032806e412857610214c271de66565a0c150831[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sun Apr 20 11:52:24 2025 +0530
+
+    visit farm update
+
+[33mcommit 87e16545dad406edd93444cad54b7ede7446ab8b[m
+Author: gpt-engineer-app[bot] <159125892+gpt-engineer-app[bot]@users.noreply.github.com>
+Date:   Sun Apr 20 05:46:41 2025 +0000
+
+    Refactor: Improve UI and add features
+
+[33mcommit a2dde6cb316cda08ec1ec960c0fc359a824e2094[m
+Author: gpt-engineer-app[bot] <159125892+gpt-engineer-app[bot]@users.noreply.github.com>
+Date:   Sun Apr 20 05:43:15 2025 +0000
+
+    Add farm visit page
+    
+    Implement a fully functional and attractive farm visit page with scheduling and a functional 3-line navigation button in the header.
+
+[33mcommit 65b167bbced672a67e9b7f30fc2b9a6892d01151[m
+Author: gpt-engineer-app[bot] <159125892+gpt-engineer-app[bot]@users.noreply.github.com>
+Date:   Sun Apr 20 05:40:09 2025 +0000
+
+    Use tech stack vite_react_shadcn_ts
+
+[33mcommit 4f5bc7def80c75428fbdb81e63fd0bc0e7ca9642[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sat Apr 19 22:51:49 2025 +0530
+
+    Your actual changes here
+
+[33mcommit 557ab47e821933d8c49b764de9277c4ae992a5ab[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sat Apr 19 22:18:20 2025 +0530
+
+    buy cattle update
+
+[33mcommit 2a63ad3a0b244fd06481df6698d37d48367e9131[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sat Apr 19 21:58:46 2025 +0530
+
+     Add Buy Cattle React application and link it from home page
+
+[33mcommit 7287110eae73237bd71b8ddba137277d2b58d86c[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sat Apr 19 20:20:16 2025 +0530
+
+    visitfarm update
+
+[33mcommit 4634502e580f254f5d5151da80eefc5ed1b8880e[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sat Apr 19 20:19:28 2025 +0530
+
+    beter update
+
+[33mcommit 74b77353891c8e1e505ff1392fed12949c184a6b[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Sat Apr 19 16:45:39 2025 +0530
+
+    beter update
+
+[33mcommit 8611e50b86675d01bec61d39625be20bafbe4226[m
+Author: RISHIK MADURI <rishikmaduri@gmail.com>
+Date:   Sat Apr 19 16:26:34 2025 +0530
+
+    Update cartstore.html
+
+[33mcommit 324073ce0b7f4df124762f9f1212d8fbe537d104[m
+Author: RISHIK MADURI <rishikmaduri@gmail.com>
+Date:   Sat Apr 19 15:26:58 2025 +0530
+
+    Rename buycattles to buycattles.html
+
+[33mcommit 2ab89b7d8a0ef10fb414f638cde512d20909acef[m
+Author: RISHIK MADURI <rishikmaduri@gmail.com>
+Date:   Sat Apr 19 15:26:26 2025 +0530
+
+    Update dashboard.html
+
+[33mcommit 5ebb885a4b749149326a5062fd623e9214b27794[m
+Author: RISHIK MADURI <rishikmaduri@gmail.com>
+Date:   Sat Apr 19 15:16:43 2025 +0530
+
+    Update buycattles
+
+[33mcommit 0e8f7ffc048ee6f4a09ef12d82845e59549e51d5[m
+Author: RISHIK MADURI <rishikmaduri@gmail.com>
+Date:   Sat Apr 19 15:16:14 2025 +0530
+
+    Create buycattles
+
+[33mcommit 7ab6338989816accc0ca63553f083685314131c1[m
+Author: Sathwika Reddy <22wj8a0575@gniindia.org>
+Date:   Fri Apr 18 20:57:12 2025 +0530
+
+    header updates
+
+[33mcommit 42bd9fd895b99b42afa47766fa779efa17f1ff01[m
+Author: rishik <22wj8a05b8@gniindia.org>
+Date:   Fri Apr 18 18:31:35 2025 +0530
+
+    nav button upadt
