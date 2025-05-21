@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
   <title>Dairy-Lift Support - Customer Support Portal</title>
   <meta name="description" content="Get help and support for your Dairy-Lift account and investments." />
   <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
@@ -71,12 +72,28 @@
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--foreground);
       background-color: var(--background);
+=======
+  <title>Supportia - Customer Support Portal</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <style>
+    /* Base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #333;
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
     
+<<<<<<< HEAD
     a {
       text-decoration: none;
       color: inherit;
@@ -88,12 +105,16 @@
     }
     
     .container {
+=======
+    .container-custom {
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 1rem;
     }
     
+<<<<<<< HEAD
     @media (min-width: 640px) {
       .container {
         padding: 0 1.5rem;
@@ -823,6 +844,36 @@
       margin-right: 0.5rem;
       width: 16px;
       height: 16px;
+=======
+    /* Header styles */
+    header {
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      background-color: white;
+      z-index: 30;
+    }
+    
+    .header-container {
+      display: flex;
+      height: 4rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #2563eb;
+      text-decoration: none;
+    }
+    
+    .nav-desktop {
+      display: none;
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     }
     
     @media (min-width: 768px) {
@@ -920,6 +971,7 @@
       display: none;
     }
     
+<<<<<<< HEAD
     /* Additional styles for active links */
     
     .nav-link.active {
@@ -930,6 +982,51 @@
     .mobile-nav-link.active {
       color: var(--primary);
       background-color: var(--primary-light);
+=======
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset-x: 0;
+      top: 4rem;
+      z-index: 20;
+      background-color: white;
+      border-bottom: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .mobile-menu.open {
+      display: block;
+    }
+    
+    .mobile-nav {
+      padding: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      color: #64748b;
+      text-decoration: none;
+    }
+    
+    .mobile-nav-link:hover {
+      background-color: #f0f7ff;
+      color: #2563eb;
+    }
+    
+    .mobile-nav-link.active {
+      color: #2563eb;
+      background-color: #f0f7ff;
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     }
     
     /* Hero section */
@@ -1185,6 +1282,7 @@
   </style>
 </head>
 <body>
+<<<<<<< HEAD
   <!-- Navbar -->
   <header class="navbar" style="padding:10px">
     <div class="container" style="margin:0px">
@@ -1292,6 +1390,71 @@
     <!-- Hero section -->
     <section class="hero">
       <div class="container hero-container">
+=======
+  <header>
+    <div class="container-custom header-container">
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="logo">
+          <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+          <span>Supportia</span>
+        </a>
+      </div>
+      <nav class="nav-desktop">
+        <a href="home.html" class="nav-link active">Home</a>
+        <a href="livechat.html" class="nav-link">Live Chat</a>
+        <a href="faqs.html" class="nav-link">FAQs</a>
+        <a href="helparticles.html" class="nav-link">Help Articles</a>
+        <a href="submitticket.html" class="nav-link">Submit Ticket</a>
+        <a href="supportstatus.html" class="nav-link">Support Status</a>
+      </nav>
+      <div class="right-nav">
+        <button class="btn btn-outline btn-icon btn-desktop" aria-label="Search">
+          <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <a href="contact.html" class="btn btn-primary btn-desktop">Contact Support</a>
+        <button class="btn btn-outline btn-icon mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+          <svg class="icon-small" id="menuIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <svg class="icon-small" id="closeIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <nav class="container-custom mobile-nav">
+      <a href="home.html" class="mobile-nav-link active">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Home
+      </a>
+      <a href="livechat.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        Live Chat
+      </a>
+      <a href="faqs.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        FAQs
+      </a>
+      <a href="helparticles.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+        Help Articles
+      </a>
+      <a href="submitticket.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6"></path><path d="M18 8v4H6V8"></path><path d="M22 4H2"></path><path d="M12 2v2"></path><path d="M12 12v6"></path><path d="M10 18h4"></path></svg>
+        Submit Ticket
+      </a>
+      <a href="supportstatus.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+        Support Status
+      </a>
+      <a href="contact.html" class="btn btn-primary">Contact Support</a>
+    </nav>
+  </div>
+
+  <main>
+    <!-- Hero section -->
+    <section class="hero">
+      <div class="container-custom hero-container">
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         <div class="hero-content">
           <h1 class="hero-title">How can we help you today?</h1>
           <p class="hero-desc">
@@ -1313,7 +1476,11 @@
 
     <!-- Support options section -->
     <section class="options-section">
+<<<<<<< HEAD
       <div class="container">
+=======
+      <div class="container-custom">
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         <h2 class="section-title">Choose How You'd Like Support</h2>
         <div class="options-grid">
           <!-- Live Chat -->
@@ -1423,7 +1590,11 @@
 
     <!-- CTA section -->
     <section class="cta-section">
+<<<<<<< HEAD
       <div class="container">
+=======
+      <div class="container-custom">
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         <div class="cta-container">
           <div class="cta-content">
             <h3 class="cta-title">Still need help?</h3>
@@ -1439,6 +1610,7 @@
   </main>
 
   <footer>
+<<<<<<< HEAD
     <div class="container footer-container">
       <div class="footer-logo">
         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
@@ -1446,6 +1618,15 @@
       </div>
       <div class="copyright">
         &copy; <span id="currentYear"></span> Dairy-Lift. All rights reserved.
+=======
+    <div class="container-custom footer-container">
+      <div class="footer-logo">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+        <span>Supportia</span>
+      </div>
+      <div class="copyright">
+        &copy; <span id="currentYear"></span> Supportia. All rights reserved.
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       </div>
     </div>
   </footer>
@@ -1454,6 +1635,7 @@
     // Set current year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
+<<<<<<< HEAD
     // Mobile Menu Toggle
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -1540,6 +1722,29 @@
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
         closeMobileMenu();
+=======
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuIcon = document.getElementById('menuIcon');
+    const closeIcon = document.getElementById('closeIcon');
+    let isMenuOpen = false;
+
+    mobileMenuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      mobileMenu.classList.toggle('open', isMenuOpen);
+      menuIcon.style.display = isMenuOpen ? 'none' : 'block';
+      closeIcon.style.display = isMenuOpen ? 'block' : 'none';
+    });
+
+    // Close mobile menu when window is resized to desktop size
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768 && isMenuOpen) {
+        isMenuOpen = false;
+        mobileMenu.classList.remove('open');
+        menuIcon.style.display = 'block';
+        closeIcon.style.display = 'none';
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       }
     });
   </script>

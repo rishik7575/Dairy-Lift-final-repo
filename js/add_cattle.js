@@ -1,7 +1,11 @@
 // JavaScript for add_new_cattle.html
 document.addEventListener('DOMContentLoaded', function() {
   // Get the form element
+<<<<<<< HEAD
   const cattleForm = document.getElementById('cattle-form');
+=======
+  const cattleForm = document.getElementById('addCattleForm');
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   
   // If the form exists, add a submit event listener
   if (cattleForm) {
@@ -13,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Create a cattle object from form data
       const newCattle = {
+<<<<<<< HEAD
         name: formData.get('tagId') || 'Unnamed',
         breed: document.getElementById('breed') ? 
           document.getElementById('breed').options[document.getElementById('breed').selectedIndex].text : 
@@ -33,6 +38,18 @@ document.addEventListener('DOMContentLoaded', function() {
       // Log the data for debugging
       console.log('Saving cattle data from add_cattle.js:', newCattle);
       
+=======
+        name: formData.get('cattleName') || 'Unnamed',
+        breed: formData.get('breed') || 'Unknown',
+        age: formData.get('age') ? formData.get('age') + ' years old' : 'Unknown age',
+        image: formData.get('imageUrl') || 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=600&q=80',
+        health: formData.get('healthStatus') || 'Good',
+        lactationStatus: formData.get('lactationStatus') || 'Active',
+        dailyProduction: formData.get('milkProduction') ? formData.get('milkProduction') + ' liters' : '0 liters',
+        purchaseDate: formatDate(formData.get('purchaseDate'))
+      };
+      
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       // Get existing cattle from localStorage or create a new array
       let storedCattle = [];
       try {
@@ -53,9 +70,15 @@ document.addEventListener('DOMContentLoaded', function() {
       // Show success message
       showToast('Success', 'Cattle added successfully!', 'success');
       
+<<<<<<< HEAD
       // Redirect to add_new_cattle.html after a short delay
       setTimeout(() => {
         window.location.href = 'add_new_cattle.html';
+=======
+      // Redirect to YourCattle.html after a short delay
+      setTimeout(() => {
+        window.location.href = 'YourCattle.html';
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       }, 1500);
     });
   }

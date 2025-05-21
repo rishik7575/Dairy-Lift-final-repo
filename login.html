@@ -6,15 +6,56 @@
   <title>Dairy-Lift - Login/Register</title>
   <meta name="description" content="Dairy-Lift - Dairy Investment Platform" />
   <meta name="author" content="Dairy-Lift" />
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<<<<<<< HEAD
   
   <!-- Additional Resources -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+=======
+
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Ensure auth.js is properly initialized
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+      } else {
+        console.error('Auth script not loaded properly');
+        // Try to load it again
+        var script = document.createElement('script');
+        script.src = 'js/auth.js';
+        script.onload = function() {
+          console.log('Auth script loaded dynamically');
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.initAuth();
+          }
+        };
+        document.head.appendChild(script);
+      }
+    });
+
+    // Listen for auth.js loaded event
+    document.addEventListener('dairyLiftAuthLoaded', function(event) {
+      console.log('Auth script loaded event received');
+      if (window.DairyLiftAuth) {
+        window.DairyLiftAuth.initAuth();
+      }
+    });
+  </script>
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <script>
     tailwind.config = {
       theme: {
@@ -57,7 +98,11 @@
       --ring: #ad6ef5;
       --radius: 0.5rem;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     #bg-video {
       position: fixed;
       top: 0;
@@ -69,7 +114,11 @@
       object-fit: cover;
       z-index: -2;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     /* Video overlay */
     .bg-overlay {
       position: fixed;
@@ -257,17 +306,29 @@
       overflow: hidden;
       z-index: 50;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle:hover {
       background-color: rgba(173, 110, 245, 0.2);
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
     }
+<<<<<<< HEAD
     
     .mobile-menu-toggle:active {
       transform: scale(0.95);
     }
     
+=======
+
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .hamburger-lines {
       width: 22px;
       height: 18px;
@@ -276,7 +337,11 @@
       flex-direction: column;
       justify-content: space-between;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .hamburger-line {
       display: block;
       height: 2px;
@@ -286,22 +351,38 @@
       transition: all 0.3s ease-in-out;
       transform-origin: center;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
       transform: translateY(8px) rotate(45deg);
       width: 22px;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
       opacity: 0;
       transform: translateX(-10px);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
       transform: translateY(-8px) rotate(-45deg);
       width: 22px;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle::after {
       content: '';
       position: absolute;
@@ -313,11 +394,19 @@
       transform: scale(0);
       transition: transform 0.3s ease;
     }
+<<<<<<< HEAD
     
     .mobile-menu-toggle:hover::after {
       transform: scale(1);
     }
     
+=======
+
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .menu-toggle-ripple {
       position: absolute;
       background-color: rgba(173, 110, 245, 0.3);
@@ -326,14 +415,22 @@
       animation: ripple 0.6s linear;
       pointer-events: none;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     @keyframes ripple {
       to {
         transform: scale(2);
         opacity: 0;
       }
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -344,7 +441,11 @@
         transform: translateY(0);
       }
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .animate-in {
       animation: fadeInUp 0.8s ease-out both;
     }
@@ -369,7 +470,11 @@
     .mobile-menu.active {
       transform: translateX(280px);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-overlay {
       position: fixed;
       top: 0;
@@ -383,12 +488,20 @@
       transition: opacity 0.3s ease, visibility 0.3s ease;
       backdrop-filter: blur(2px);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-overlay.active {
       opacity: 1;
       visibility: visible;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-nav-link {
       display: flex;
       align-items: center;
@@ -406,7 +519,11 @@
       background-color: #f1f5f9;
       transform: translateX(5px);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-nav-link::after {
       content: '';
       position: absolute;
@@ -417,7 +534,11 @@
       background-color: #ad6ef5;
       transition: width 0.3s ease;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-nav-link:hover::after {
       width: 30%;
     }
@@ -434,7 +555,11 @@
       transform: translateX(5px) scale(1.02);
       box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-header {
       display: flex;
       align-items: center;
@@ -443,14 +568,22 @@
       border-bottom: 1px solid #e2e8f0;
       margin-bottom: 1rem;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-logo {
       font-family: 'Pacifico', cursive;
       font-size: 1.5rem;
       color: #ad6ef5;
       text-decoration: none;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-close {
       background: none;
       border: none;
@@ -464,7 +597,11 @@
       border-radius: 50%;
       transition: all 0.2s ease;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-close:hover {
       background-color: #f1f5f9;
       color: #020617;
@@ -575,7 +712,11 @@
     .tab-trigger:hover {
       color: var(--foreground);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .tab-trigger::after {
       content: '';
       position: absolute;
@@ -587,7 +728,11 @@
       transition: all 0.3s ease;
       transform: translateX(-50%);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .tab-trigger[data-state="active"]::after {
       width: 30%;
     }
@@ -610,7 +755,11 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       border: 1px solid rgba(226, 232, 240, 0.7);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .card:hover {
       transform: translateY(-3px);
       box-shadow: 0 15px 30px rgba(0,0,0,0.12);
@@ -710,7 +859,11 @@
       transition: all 0.3s ease;
       color: #020617;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .input:hover {
       border-color: #cbd5e1;
     }
@@ -784,7 +937,11 @@
       position: relative;
       overflow: hidden;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .btn::after {
       content: '';
       position: absolute;
@@ -798,7 +955,11 @@
       border-radius: inherit;
       transition: transform 0.5s ease, opacity 0.5s ease;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .btn:active::after {
       transform: scale(2);
       opacity: 1;
@@ -826,7 +987,11 @@
       transform: translateY(-2px);
       box-shadow: 0 6px 15px rgba(173, 110, 245, 0.4);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .btn-primary:active {
       transform: translateY(0);
       box-shadow: 0 2px 5px rgba(173, 110, 245, 0.3);
@@ -841,7 +1006,11 @@
       position: relative;
       transition: all 0.3s ease;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .btn-link::after {
       content: '';
       position: absolute;
@@ -852,7 +1021,11 @@
       background-color: var(--primary);
       transition: width 0.3s ease;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .btn-link:hover::after {
       width: 100%;
     }
@@ -1043,7 +1216,11 @@
     .readOnly {
       background-color: #f3f4f6;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     /* Footer specific styles */
     footer.bg-gray-900 {
       margin-top: 2rem;
@@ -1052,6 +1229,7 @@
       width: 100%;
       overflow-x: hidden;
     }
+<<<<<<< HEAD
     
     footer .container {
       max-width: 100%;
@@ -1081,10 +1259,42 @@
       border-radius: 0.5rem;
     }
     
+=======
+
+    footer .container {
+      max-width: 100%;
+    }
+
+    footer .text-primary {
+      color: var(--primary);
+    }
+
+    footer .hover\:bg-primary:hover {
+      background-color: var(--primary);
+    }
+
+    footer .focus\:ring-primary:focus {
+      --tw-ring-color: var(--primary);
+    }
+
+    footer .bg-primary {
+      background-color: var(--primary);
+    }
+
+    footer .hover\:bg-primary\/90:hover {
+      background-color: rgba(173, 110, 245, 0.9);
+    }
+
+    footer .rounded-button {
+      border-radius: 0.5rem;
+    }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     footer .hover\:text-white:hover {
       color: white !important;
       transition: color 0.3s ease;
     }
+<<<<<<< HEAD
     
     footer .transition-colors {
       transition: color 0.3s ease, background-color 0.3s ease;
@@ -1106,6 +1316,29 @@
       margin-left: 1.5rem;
     }
     
+=======
+
+    footer .transition-colors {
+      transition: color 0.3s ease, background-color 0.3s ease;
+    }
+
+    footer .space-y-3 > * + * {
+      margin-top: 0.75rem;
+    }
+
+    footer .space-y-4 > * + * {
+      margin-top: 1rem;
+    }
+
+    footer .space-x-4 > * + * {
+      margin-left: 1rem;
+    }
+
+    footer .space-x-6 > * + * {
+      margin-left: 1.5rem;
+    }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .container {
       width: 100%;
       margin-left: auto;
@@ -1113,25 +1346,41 @@
       padding-left: 1rem;
       padding-right: 1rem;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     @media (min-width: 640px) {
       .container {
         max-width: 640px;
       }
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     @media (min-width: 768px) {
       .container {
         max-width: 768px;
       }
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     @media (min-width: 1024px) {
       .container {
         max-width: 1024px;
       }
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     @media (min-width: 1280px) {
       .container {
         max-width: 1280px;
@@ -1143,15 +1392,24 @@
       .grid-cols-3 {
         grid-template-columns: 1fr;
       }
+<<<<<<< HEAD
       
       .grid-cols-2 {
         grid-template-columns: 1fr;
       }
       
+=======
+
+      .grid-cols-2 {
+        grid-template-columns: 1fr;
+      }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       footer {
         padding-left: 0;
         padding-right: 0;
       }
+<<<<<<< HEAD
       
       .space-x-6 > * + * {
         margin-left: 1rem;
@@ -1165,6 +1423,21 @@
         padding-bottom: 1.5rem;
       }
       
+=======
+
+      .space-x-6 > * + * {
+        margin-left: 1rem;
+      }
+
+      .pt-16 {
+        padding-top: 3rem;
+      }
+
+      .pb-8 {
+        padding-bottom: 1.5rem;
+      }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       html, body {
         overflow-x: hidden;
         width: 100%;
@@ -1179,7 +1452,11 @@
         Your browser does not support HTML5 video.
     </video>
     <div class="bg-overlay"></div>
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <div id="app" class="flex flex-col min-h-screen overflow-x-hidden">
     <!-- Navbar -->
     <header class="navbar" style="padding:10px; background-color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; z-index: 30; margin-bottom: 20px;">
@@ -1199,7 +1476,11 @@
         </div>
       </div>
     </header>
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     <!-- Mobile Menu -->
     <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
     <div class="mobile-menu" id="mobile-menu">
@@ -1227,7 +1508,11 @@
           </svg>
           <span style="margin-left: 10px;">Bio-Gas</span>
         </a>
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
             <rect x="3" y="3" width="7" height="7"></rect>
@@ -1287,7 +1572,11 @@
             <button class="tab-trigger" data-state="active" data-tab="login">Login</button>
             <button class="tab-trigger" data-state="inactive" data-tab="register">Register</button>
           </div>
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           <!-- Login Tab Content -->
           <div class="tab-content" data-state="active" data-tab="login">
             <div class="card shadow-xl border border-gray-100 rounded-lg overflow-hidden transform transition-all hover:shadow-2xl" style="background-color: white; border-top: 4px solid #ad6ef5; box-shadow: 0 10px 25px -5px rgba(173, 110, 245, 0.1), 0 10px 10px -5px rgba(173, 110, 245, 0.04);">
@@ -1298,7 +1587,11 @@
                     Enter your credentials to access your account
                   </p>
                 </div>
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                 <form id="login-form" class="space-y-4">
                   <div class="space-y-2">
                     <label for="login-email" class="label font-medium">Email Address <span class="text-red-500">*</span></label>
@@ -1312,7 +1605,11 @@
                       <input id="login-email" type="email" placeholder="name@example.com" class="input pl-10 h-11 w-full focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
                     </div>
                   </div>
+<<<<<<< HEAD
                   
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                   <div class="space-y-2">
                     <div class="flex items-center justify-between">
                       <label for="login-password" class="label font-medium">Password <span class="text-red-500">*</span></label>
@@ -1336,14 +1633,90 @@
                       </button>
                     </div>
                   </div>
+<<<<<<< HEAD
                   
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                   <div class="flex items-center mt-2">
                     <input type="checkbox" id="remember-me" class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary/25">
                     <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
                   </div>
+<<<<<<< HEAD
                   
                   <button type="submit" class="btn btn-primary w-full h-11 mt-4 font-medium transition-all hover:shadow-md hover:shadow-primary/20 active:scale-[0.98]">Sign In</button>
                 </form>
+=======
+
+                  <button type="submit" class="btn btn-primary w-full h-11 mt-4 font-medium transition-all hover:shadow-md hover:shadow-primary/20 active:scale-[0.98]">Sign In</button>
+                </form>
+
+                <script>
+                  // Handle login form submission
+                  document.getElementById('login-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const email = document.getElementById('login-email').value;
+                    const password = document.getElementById('login-password').value;
+
+                    // Simple validation
+                    if (!email || !password) {
+                      alert('Please enter both email and password');
+                      return;
+                    }
+
+                    // Create user data object
+                    const userData = {
+                      email: email,
+                      name: email.split('@')[0], // Just use the part before @ as name for demo
+                      lastLogin: new Date().toISOString(),
+                      role: 'investor'
+                    };
+
+                    // Set user as logged in using the auth.js utility
+                    if (window.DairyLiftAuth) {
+                      window.DairyLiftAuth.setLoggedIn(userData);
+
+                      // Show success message
+                      alert('Login successful!');
+
+                      // Redirect to dashboard
+                      setTimeout(function() {
+                        window.location.href = 'dashboard.html';
+                      }, 500);
+                    } else {
+                      console.error('Auth script not loaded properly');
+                      alert('Login failed. Please try again later.');
+                    }
+                  });
+
+                  // Toggle password visibility
+                  document.querySelectorAll('.toggle-password').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                      const input = this.closest('.relative').querySelector('input');
+                      if (input.type === 'password') {
+                        input.type = 'text';
+                        this.innerHTML = `
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                          </svg>
+                        `;
+                      } else {
+                        input.type = 'password';
+                        this.innerHTML = `
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                            <line x1="2" x2="22" y1="2" y2="22"/>
+                          </svg>
+                        `;
+                      }
+                    });
+                  });
+                </script>
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
               </div>
               <div class="card-footer bg-gray-50 rounded-b-lg">
                 <p class="text-sm text-gray-600">
@@ -1353,7 +1726,11 @@
               </div>
             </div>
           </div>
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           <!-- Register Tab Content -->
           <div class="tab-content" data-state="inactive" data-tab="register">
             <div class="card">
@@ -1364,7 +1741,11 @@
                     Select your account type and enter your information
                   </p>
                 </div>
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                 <form id="register-form" class="space-y-6">
                   <!-- Account Type Selection -->
                   <div class="grid grid-cols-3 gap-3">
@@ -1377,7 +1758,11 @@
                       </span>
                       <span class="text-xs font-medium">Investor</span>
                     </div>
+<<<<<<< HEAD
                     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                     <div class="p-3 rounded-lg border bg-white hover:bg-gray-50 cursor-pointer flex flex-col items-center justify-center h-24 text-center transition-colors" data-type="manager">
                       <span class="h-5 w-5 mb-2 text-gray-700">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1396,7 +1781,11 @@
                       </span>
                       <span class="text-xs font-medium">Farm Manager</span>
                     </div>
+<<<<<<< HEAD
                     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                     <div class="p-3 rounded-lg border bg-white hover:bg-gray-50 cursor-pointer flex flex-col items-center justify-center h-24 text-center transition-colors" data-type="customer">
                       <span class="h-5 w-5 mb-2 text-gray-700">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1408,7 +1797,11 @@
                       <span class="text-xs font-medium">Customer</span>
                     </div>
                   </div>
+<<<<<<< HEAD
                   
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                   <!-- Personal Information -->
                   <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
@@ -1421,7 +1814,11 @@
                         <input id="last-name" placeholder="Doe" class="input h-11" required>
                       </div>
                     </div>
+<<<<<<< HEAD
                     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                     <div class="space-y-2">
                       <label for="email" class="label">Email</label>
                       <div class="relative">
@@ -1434,7 +1831,11 @@
                         <input id="email" type="email" placeholder="name@example.com" class="input pl-10 h-11" required>
                       </div>
                     </div>
+<<<<<<< HEAD
                     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                     <div class="space-y-2">
                       <label for="phone" class="label">Phone number</label>
                       <div class="relative">
@@ -1446,7 +1847,11 @@
                         <input id="phone" type="tel" placeholder="+1 (555) 000-0000" class="input pl-10 h-11" required>
                       </div>
                     </div>
+<<<<<<< HEAD
                     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                     <div class="space-y-2">
                       <label for="password" class="label">Password</label>
                       <div class="relative">
@@ -1467,7 +1872,11 @@
                         </button>
                       </div>
                     </div>
+<<<<<<< HEAD
                     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                     <div class="space-y-2">
                       <label for="confirm-password" class="label">Confirm password</label>
                       <div class="relative">
@@ -1489,7 +1898,11 @@
                       </div>
                     </div>
                   </div>
+<<<<<<< HEAD
                   
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                   <!-- Account Type Information -->
                   <div id="account-info" class="p-4 bg-gray-50 rounded-lg border border-gray-100">
                     <div>
@@ -1510,7 +1923,11 @@
                       </ul>
                     </div>
                   </div>
+<<<<<<< HEAD
                   
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
                   <button type="submit" class="btn btn-primary w-full h-11">Create Account</button>
                 </form>
               </div>
@@ -1525,7 +1942,11 @@
         </div>
       </div>
     </main>
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     <!-- Footer -->
     <footer class="bg-gray-900 text-white pt-16 pb-8 mt-auto relative z-10 w-full">
       <div class="container mx-auto px-4">
@@ -1693,7 +2114,11 @@
           class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center flex-wrap"
         >
           <p class="text-gray-400 text-sm flex items-center">
+<<<<<<< HEAD
             <i class="ri-copyright-line mr-1"></i> 2025 
+=======
+            <i class="ri-copyright-line mr-1"></i> 2025
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
             <span class="text-primary mx-1 font-['Pacifico']">Dairy-Lift</span>. All rights reserved.
           </p>
           <div class="mt-4 md:mt-0 flex flex-wrap gap-4">
@@ -1721,7 +2146,11 @@
       const tabTriggers = document.querySelectorAll('.tab-trigger');
       const tabContents = document.querySelectorAll('.tab-content');
       const switchTabButtons = document.querySelectorAll('.switch-tab');
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       function switchTab(tabId) {
         // Update tab triggers
         tabTriggers.forEach(trigger => {
@@ -1731,7 +2160,11 @@
             trigger.dataset.state = 'inactive';
           }
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Update tab contents
         tabContents.forEach(content => {
           if (content.dataset.tab === tabId) {
@@ -1741,28 +2174,47 @@
           }
         });
       }
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       tabTriggers.forEach(trigger => {
         trigger.addEventListener('click', () => {
           switchTab(trigger.dataset.tab);
         });
       });
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       switchTabButtons.forEach(button => {
         button.addEventListener('click', () => {
           switchTab(button.dataset.tab);
         });
       });
+<<<<<<< HEAD
       
       // Password visibility toggle
       const togglePasswordButtons = document.querySelectorAll('.toggle-password');
       
+=======
+
+      // Password visibility toggle
+      const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       togglePasswordButtons.forEach(button => {
         button.addEventListener('click', () => {
           const input = button.closest('.relative').querySelector('input');
           const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
           input.setAttribute('type', type);
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           // Toggle icon and add title for accessibility
           if (type === 'text') {
             button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
@@ -1773,7 +2225,11 @@
             button.setAttribute('title', 'Show password');
             button.classList.remove('text-primary');
           }
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           // Add a subtle animation
           button.classList.add('animate-pulse');
           setTimeout(() => {
@@ -1781,11 +2237,19 @@
           }, 300);
         });
       });
+<<<<<<< HEAD
       
       // Account type selection
       const accountTypes = document.querySelectorAll('[data-type]');
       const accountInfo = document.getElementById('account-info');
       
+=======
+
+      // Account type selection
+      const accountTypes = document.querySelectorAll('[data-type]');
+      const accountInfo = document.getElementById('account-info');
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       const accountTypeInfo = {
         investor: `
           <div>
@@ -1845,14 +2309,22 @@
           </div>
         `
       };
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       accountTypes.forEach(type => {
         type.addEventListener('click', () => {
           // Remove active class from all account types
           accountTypes.forEach(t => {
             t.classList.remove('bg-primary', 'text-white', 'border-primary');
             t.classList.add('bg-white', 'hover:bg-gray-50', 'cursor-pointer');
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
             // Update icon color
             const icon = t.querySelector('span:first-child');
             if (icon) {
@@ -1860,63 +2332,104 @@
               icon.classList.add('text-gray-700');
             }
           });
+<<<<<<< HEAD
           
           // Add active class to clicked account type
           type.classList.remove('bg-white', 'hover:bg-gray-50');
           type.classList.add('bg-primary', 'text-white', 'border-primary');
           
+=======
+
+          // Add active class to clicked account type
+          type.classList.remove('bg-white', 'hover:bg-gray-50');
+          type.classList.add('bg-primary', 'text-white', 'border-primary');
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           // Update icon color
           const icon = type.querySelector('span:first-child');
           if (icon) {
             icon.classList.remove('text-gray-700');
             icon.classList.add('text-white');
           }
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           // Update account info
           const accountType = type.dataset.type;
           accountInfo.innerHTML = accountTypeInfo[accountType];
         });
       });
+<<<<<<< HEAD
       
       // Form submission
       const loginForm = document.getElementById('login-form');
       const registerForm = document.getElementById('register-form');
       
+=======
+
+      // Form submission
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
         const rememberMe = document.getElementById('remember-me').checked;
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         if (!email || !password) {
           showToast('Missing information', 'Please fill in all required fields', 'error');
           return;
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
           showToast('Invalid email', 'Please enter a valid email address', 'error');
           return;
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Password validation (minimum 6 characters)
         if (password.length < 6) {
           showToast('Invalid password', 'Password must be at least 6 characters', 'error');
           return;
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Simulate login process
         const submitButton = loginForm.querySelector('button[type="submit"]');
         submitButton.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Signing in...';
         submitButton.disabled = true;
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // If remember me is checked, store in localStorage (in a real app, use secure cookies)
         if (rememberMe) {
           localStorage.setItem('rememberedEmail', email);
         } else {
           localStorage.removeItem('rememberedEmail');
         }
+<<<<<<< HEAD
         
         setTimeout(() => {
           showToast('Login successful', 'Welcome back! Redirecting...', 'success');
@@ -1930,6 +2443,78 @@
         }, 1500);
       });
       
+=======
+
+        // Create user data object
+        const userData = {
+          email: email,
+          name: email.split('@')[0], // Simple name extraction from email
+          profileImage: null, // No profile image by default
+          lastLogin: new Date().toISOString()
+        };
+
+        // Function to handle the login process
+        const processLogin = function() {
+          console.log('Processing login with userData:', userData);
+
+          // Set user as logged in using our auth utility
+          if (window.DairyLiftAuth) {
+            try {
+              console.log('Setting user as logged in:', userData);
+              window.DairyLiftAuth.setLoggedIn(userData);
+
+              showToast('Login successful', 'Welcome back! Redirecting...', 'success');
+
+              // Force UI update
+              window.DairyLiftAuth.updateAuthUI();
+
+              // Redirect to dashboard after successful login
+              setTimeout(() => {
+                window.location.href = 'dashboard.html';
+              }, 1500);
+            } catch (error) {
+              console.error('Error during login:', error);
+              showToast('Login error', 'An error occurred during login. Please try again.', 'error');
+            }
+          } else {
+            console.error('Auth utility not available');
+            showToast('Login error', 'Authentication system not available. Reloading page...', 'error');
+
+            // Try to reload the page to fix the issue
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
+
+          submitButton.innerText = 'Sign In';
+          submitButton.disabled = false;
+        };
+
+        // Check if auth.js is loaded, if not, wait for it
+        if (!window.DairyLiftAuth) {
+          console.log('Auth not available, loading script...');
+
+          // Try to load auth.js
+          var script = document.createElement('script');
+          script.src = 'js/auth.js';
+          script.onload = function() {
+            console.log('Auth script loaded dynamically during login');
+            setTimeout(processLogin, 500); // Give it time to initialize
+          };
+          script.onerror = function() {
+            console.error('Failed to load auth.js');
+            showToast('Login error', 'Failed to load authentication system', 'error');
+            submitButton.innerText = 'Sign In';
+            submitButton.disabled = false;
+          };
+          document.head.appendChild(script);
+        } else {
+          // Auth is available, process login after a short delay
+          setTimeout(processLogin, 500);
+        }
+      });
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       registerForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const firstName = document.getElementById('first-name').value;
@@ -1938,16 +2523,32 @@
         const phone = document.getElementById('phone').value;
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
           showToast('Missing information', 'Please fill in all required fields', 'error');
           return;
         }
+<<<<<<< HEAD
         
+=======
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showToast('Invalid email', 'Please enter a valid email address', 'error');
+          return;
+        }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         if (password !== confirmPassword) {
           showToast('Passwords don\'t match', 'Please make sure your passwords match', 'error');
           return;
         }
+<<<<<<< HEAD
         
         // Simulate registration process
         const submitButton = registerForm.querySelector('button[type="submit"]');
@@ -1968,6 +2569,109 @@
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
         
+=======
+
+        // Password validation (minimum 6 characters)
+        if (password.length < 6) {
+          showToast('Invalid password', 'Password must be at least 6 characters', 'error');
+          return;
+        }
+
+        // Simulate registration process
+        const submitButton = registerForm.querySelector('button[type="submit"]');
+        submitButton.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Creating account...';
+        submitButton.disabled = true;
+
+        // Get selected account type
+        let accountType = 'investor'; // Default
+        document.querySelectorAll('[data-type]').forEach(type => {
+          if (type.classList.contains('bg-primary')) {
+            accountType = type.dataset.type;
+          }
+        });
+
+        // Create user data object
+        const userData = {
+          email: email,
+          name: firstName + ' ' + lastName,
+          phone: phone,
+          accountType: accountType,
+          profileImage: null,
+          registrationDate: new Date().toISOString(),
+          lastLogin: new Date().toISOString()
+        };
+
+        // Function to handle the registration process
+        const processRegistration = function() {
+          console.log('Processing registration with userData:', userData);
+
+          // Set user as logged in using our auth utility
+          if (window.DairyLiftAuth) {
+            try {
+              console.log('Registering new user:', userData);
+              window.DairyLiftAuth.setLoggedIn(userData);
+
+              showToast('Registration successful', 'Welcome to Dairy-Lift! Redirecting...', 'success');
+
+              // Force UI update
+              window.DairyLiftAuth.updateAuthUI();
+
+              // Redirect to dashboard after successful registration
+              setTimeout(() => {
+                window.location.href = 'dashboard.html';
+              }, 1500);
+            } catch (error) {
+              console.error('Error during registration:', error);
+              showToast('Registration error', 'An error occurred during registration. Please try again.', 'error');
+            }
+          } else {
+            console.error('Auth utility not available');
+            showToast('Registration error', 'Authentication system not available. Reloading page...', 'error');
+
+            // Try to reload the page to fix the issue
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
+
+          submitButton.innerText = 'Create Account';
+          submitButton.disabled = false;
+        };
+
+        // Check if auth.js is loaded, if not, wait for it
+        if (!window.DairyLiftAuth) {
+          console.log('Auth not available, loading script...');
+
+          // Try to load auth.js
+          var script = document.createElement('script');
+          script.src = 'js/auth.js';
+          script.onload = function() {
+            console.log('Auth script loaded dynamically during registration');
+            setTimeout(processRegistration, 500); // Give it time to initialize
+          };
+          script.onerror = function() {
+            console.error('Failed to load auth.js');
+            showToast('Registration error', 'Failed to load authentication system', 'error');
+            submitButton.innerText = 'Create Account';
+            submitButton.disabled = false;
+          };
+          document.head.appendChild(script);
+        } else {
+          // Auth is available, process registration after a short delay
+          setTimeout(processRegistration, 500);
+        }
+
+
+      });
+
+      // Toast notification function
+      function showToast(title, message, type = 'success') {
+        const toastContainer = document.getElementById('toast-container');
+
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         toast.innerHTML = `
           <div class="toast-content">
             <div class="toast-title">${title}</div>
@@ -1980,22 +2684,36 @@
             </svg>
           </button>
         `;
+<<<<<<< HEAD
         
         toastContainer.appendChild(toast);
         
+=======
+
+        toastContainer.appendChild(toast);
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Add close button functionality
         const closeButton = toast.querySelector('.toast-close');
         closeButton.addEventListener('click', () => {
           toast.remove();
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Auto-remove toast after 5 seconds
         setTimeout(() => {
           toast.remove();
         }, 5000);
       }
     });
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     // Mobile Menu Toggle
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -2009,11 +2727,16 @@
       mobileMenuOverlay.classList.add('active');
       mobileMenuToggle.classList.add('active');
       body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       // Add a subtle ripple effect on click
       const ripple = document.createElement('span');
       ripple.classList.add('menu-toggle-ripple');
       mobileMenuToggle.appendChild(ripple);
+<<<<<<< HEAD
       
       // Position the ripple where the click happened
       const rect = mobileMenuToggle.getBoundingClientRect();
@@ -2023,11 +2746,26 @@
       ripple.style.left = `${-size/4}px`;
       ripple.style.top = `${-size/4}px`;
       
+=======
+
+      // Position the ripple where the click happened
+      const rect = mobileMenuToggle.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height) * 2;
+
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${-size/4}px`;
+      ripple.style.top = `${-size/4}px`;
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       // Remove the ripple after animation completes
       setTimeout(() => {
         ripple.remove();
       }, 600);
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       // Add entrance animation to each nav link
       const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
       navLinks.forEach((link, index) => {
@@ -2035,7 +2773,11 @@
         link.style.transform = 'translateX(-10px)';
         link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
         link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         setTimeout(() => {
           link.style.opacity = '1';
           link.style.transform = 'translateX(0)';
@@ -2063,7 +2805,11 @@
 
     // Close menu when clicking the close button
     mobileMenuClose.addEventListener('click', closeMobileMenu);
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     // Close menu when clicking the overlay
     mobileMenuOverlay.addEventListener('click', closeMobileMenu);
 
@@ -2072,27 +2818,43 @@
     mobileLinks.forEach(link => {
       link.addEventListener('click', closeMobileMenu);
     });
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     // Close mobile menu when pressing Escape key
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
         closeMobileMenu();
       }
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       // Check for remembered email on page load
       const rememberedEmail = localStorage.getItem('rememberedEmail');
       if (rememberedEmail) {
         document.getElementById('login-email').value = rememberedEmail;
         document.getElementById('remember-me').checked = true;
       }
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       // Add focus effect to input fields
       const inputFields = document.querySelectorAll('.input');
       inputFields.forEach(input => {
         input.addEventListener('focus', function() {
           this.parentElement.classList.add('ring-2', 'ring-primary/20');
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         input.addEventListener('blur', function() {
           this.parentElement.classList.remove('ring-2', 'ring-primary/20');
         });

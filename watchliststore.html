@@ -12,11 +12,110 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <!-- Additional Resources -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<<<<<<< HEAD
+=======
+  <script src="js/auth.js"></script>
+  <script>
+    // Function to initialize auth and dispatch events
+    function initializeAuth() {
+      console.log('Initializing auth in watchlist page...');
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+
+        // Force UI update after a short delay
+        setTimeout(function() {
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.updateAuthUI();
+          }
+        }, 500);
+      } else {
+        console.error('Auth script not loaded properly');
+        // Try to load it again
+        var script = document.createElement('script');
+        script.src = 'js/auth.js';
+        script.onload = function() {
+          console.log('Auth script loaded dynamically');
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.initAuth();
+
+            // Force UI update after a short delay
+            setTimeout(function() {
+              if (window.DairyLiftAuth) {
+                window.DairyLiftAuth.updateAuthUI();
+              }
+            }, 500);
+          }
+        };
+        document.head.appendChild(script);
+      }
+    }
+
+    // Call initialization on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', initializeAuth);
+
+    // Also call initialization immediately if document is already loaded
+    if (document.readyState !== 'loading') {
+      initializeAuth();
+    }
+
+    // Call initialization on window load
+    window.addEventListener('load', initializeAuth);
+
+    // Listen for auth.js loaded event
+    document.addEventListener('dairyLiftAuthLoaded', function(event) {
+      console.log('Auth script loaded event received');
+      initializeAuth();
+    });
+
+    // Listen for storage events to sync auth state across tabs
+    window.addEventListener('storage', function(event) {
+      if (event.key === 'dairyLift_auth') {
+        console.log('Auth state changed in another tab, updating UI');
+        if (window.DairyLiftAuth) {
+          window.DairyLiftAuth.updateAuthUI();
+
+          // Force UI update after a short delay
+          setTimeout(function() {
+            if (window.DairyLiftAuth) {
+              window.DairyLiftAuth.updateAuthUI();
+            }
+          }, 300);
+        }
+      }
+    });
+
+    // Set up periodic check for auth state
+    setInterval(function() {
+      if (window.DairyLiftAuth) {
+        const isLoggedIn = window.DairyLiftAuth.isLoggedIn();
+        const profileIcon = document.getElementById('profile-icon-link');
+
+        if (isLoggedIn && !profileIcon) {
+          console.log('Periodic check: User is logged in but profile icon not found, updating UI');
+          window.DairyLiftAuth.updateAuthUI();
+        }
+      }
+    }, 1000);
+
+    // Force an update when the user becomes visible (tab focus)
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden && window.DairyLiftAuth) {
+        console.log('Page became visible, forcing UI update');
+        window.DairyLiftAuth.updateAuthUI();
+      }
+    });
+  </script>
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <script>
     tailwind.config = {
       theme: {
@@ -72,7 +171,11 @@
       padding: 0;
       box-sizing: border-box;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--foreground);
@@ -147,7 +250,11 @@
     .navbar-actions {
       display: none;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle {
       background: none;
       border: none;
@@ -165,17 +272,29 @@
       overflow: hidden;
       z-index: 50;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle:hover {
       background-color: var(--primary-light);
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
     }
+<<<<<<< HEAD
     
     .mobile-menu-toggle:active {
       transform: scale(0.95);
     }
     
+=======
+
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .hamburger-lines {
       width: 22px;
       height: 18px;
@@ -184,7 +303,11 @@
       flex-direction: column;
       justify-content: space-between;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .hamburger-line {
       display: block;
       height: 2px;
@@ -194,22 +317,38 @@
       transition: all 0.3s ease-in-out;
       transform-origin: center;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
       transform: translateY(8px) rotate(45deg);
       width: 22px;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
       opacity: 0;
       transform: translateX(-10px);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
       transform: translateY(-8px) rotate(-45deg);
       width: 22px;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-toggle::after {
       content: '';
       position: absolute;
@@ -221,11 +360,19 @@
       transform: scale(0);
       transition: transform 0.3s ease;
     }
+<<<<<<< HEAD
     
     .mobile-menu-toggle:hover::after {
       transform: scale(1);
     }
     
+=======
+
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .menu-toggle-ripple {
       position: absolute;
       background-color: rgba(173, 110, 245, 0.3);
@@ -234,7 +381,11 @@
       animation: ripple 0.6s linear;
       pointer-events: none;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     @keyframes ripple {
       to {
         transform: scale(2);
@@ -255,12 +406,20 @@
       transition: opacity 0.3s ease, visibility 0.3s ease;
       backdrop-filter: blur(2px);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-overlay.active {
       opacity: 1;
       visibility: visible;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu {
       position: fixed;
       top: 0;
@@ -281,7 +440,11 @@
     .mobile-menu.active {
       transform: translateX(280px);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-header {
       display: flex;
       align-items: center;
@@ -290,14 +453,22 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 1rem;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-logo {
       font-family: 'Pacifico', cursive;
       font-size: 1.5rem;
       color: var(--primary);
       text-decoration: none;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-close {
       background: none;
       border: none;
@@ -311,7 +482,11 @@
       border-radius: 50%;
       transition: all 0.2s ease;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-menu-close:hover {
       background-color: var(--muted);
       color: var(--foreground);
@@ -334,7 +509,11 @@
       background-color: var(--muted);
       transform: translateX(5px);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-nav-link::after {
       content: '';
       position: absolute;
@@ -345,7 +524,11 @@
       background-color: var(--primary);
       transition: width 0.3s ease;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-nav-link:hover::after {
       width: 30%;
     }
@@ -356,7 +539,11 @@
       background-color: var(--primary-light);
       margin-top: 0.75rem;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .mobile-nav-link-primary:hover {
       background-color: var(--primary-light);
       transform: translateX(5px) scale(1.02);
@@ -396,6 +583,28 @@
       background-color: var(--muted);
     }
 
+<<<<<<< HEAD
+=======
+    /* Profile Icon Styles */
+    .profile-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(173, 110, 245, 0.2);
+      color: #ad6ef5;
+      transition: all 0.3s ease;
+    }
+
+    .profile-icon:hover {
+      background-color: rgba(173, 110, 245, 0.3);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .btn-sm {
       padding: 0.25rem 0.5rem;
       font-size: 0.875rem;
@@ -1108,7 +1317,11 @@
         flex-direction: column;
       }
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     /* Remix Icons Fix */
     :where([class^="ri-"])::before { content: "\f3c2"; }
   </style>
@@ -1129,7 +1342,10 @@
         <nav class="desktop-nav">
           <a href="home_page.html" class="nav-link">Home</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
+<<<<<<< HEAD
           <a href="YourCattle.html" class="nav-link">All Cattle</a>
+=======
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           <a href="store.html" class="nav-link">Store</a>
           <a href="admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
@@ -1175,8 +1391,13 @@
         </svg>
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
+<<<<<<< HEAD
       
       <a href="FOR-INVESTORS/visit-farm.html" class="mobile-nav-link">
+=======
+
+      <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
           <rect x="14" y="3" width="7" height="7"></rect>
@@ -1226,7 +1447,11 @@
     </div>
     </div>
   </header>
+<<<<<<< HEAD
    
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <main class="main">
     <div class="container">
       <div class="page-header">
@@ -1243,7 +1468,11 @@
             <option value="out-of-stock">Out of Stock Only</option>
           </select>
         </div>
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         <div class="wishlist-filter">
           <span class="filter-label">Sort By:</span>
           <select class="select-dropdown" id="sort-filter">
@@ -1253,7 +1482,11 @@
             <option value="name">Name</option>
           </select>
         </div>
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         <div class="wishlist-actions">
           <button class="btn btn-outline" id="clear-wishlist">Clear Wishlist</button>
           <button class="btn btn-primary" id="add-all-to-cart">Add All to Cart</button>
@@ -1486,7 +1719,11 @@
         const cartToggle = document.getElementById('cart-toggle');
         const closeCart = document.getElementById('close-cart');
         const cartDrawer = document.getElementById('cart-drawer');
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         if (cartToggle && closeCart && cartDrawer) {
           cartToggle.addEventListener('click', () => {
             cartDrawer.classList.add('open');
@@ -1503,9 +1740,15 @@
         const cartBody = document.getElementById('cart-body');
         const cartSubtotal = document.getElementById('cart-subtotal');
         const checkoutBtn = document.getElementById('checkout-btn');
+<<<<<<< HEAD
         
         if (!cartBody || !cartSubtotal || !checkoutBtn) return;
         
+=======
+
+        if (!cartBody || !cartSubtotal || !checkoutBtn) return;
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         if (this.items.length === 0) {
           cartBody.innerHTML = `
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 300px; text-align: center;">
@@ -1519,7 +1762,11 @@
           checkoutBtn.disabled = true;
         } else {
           let cartHTML = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           this.items.forEach(item => {
             cartHTML += `
               <div style="display: flex; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);">
@@ -1534,10 +1781,17 @@
               </div>
             `;
           });
+<<<<<<< HEAD
           
           cartHTML += '</div>';
           cartBody.innerHTML = cartHTML;
           
+=======
+
+          cartHTML += '</div>';
+          cartBody.innerHTML = cartHTML;
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           const total = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
           cartSubtotal.textContent = formatPrice(total);
           checkoutBtn.disabled = false;
@@ -1567,14 +1821,24 @@
             </div>
           </div>
         `;
+<<<<<<< HEAD
         
         document.body.appendChild(notification);
         
+=======
+
+        document.body.appendChild(notification);
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Show notification
         setTimeout(() => {
           notification.style.transform = 'translateY(0)';
         }, 10);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Hide and remove notification
         setTimeout(() => {
           notification.style.transform = 'translateY(100px)';
@@ -1641,7 +1905,11 @@
 
       addAllToCart() {
         let addedCount = 0;
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         this.filteredItems.forEach(productId => {
           const product = productsData.find(p => p.id === productId);
           if (product && product.inStock) {
@@ -1650,7 +1918,11 @@
             }
           }
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         if (addedCount > 0) {
           this.showNotification(`${addedCount} ${addedCount === 1 ? 'item' : 'items'} added to cart`);
         } else {
@@ -1679,14 +1951,24 @@
             </div>
           </div>
         `;
+<<<<<<< HEAD
         
         document.body.appendChild(notification);
         
+=======
+
+        document.body.appendChild(notification);
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Show notification
         setTimeout(() => {
           notification.style.transform = 'translateY(0)';
         }, 10);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Hide and remove notification
         setTimeout(() => {
           notification.style.transform = 'translateY(100px)';
@@ -1699,12 +1981,20 @@
       applyFilters() {
         // Filter by availability
         let filtered = [...this.items];
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         if (this.availabilityFilter !== 'all') {
           filtered = filtered.filter(itemId => {
             const product = productsData.find(p => p.id === itemId);
             if (!product) return false;
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
             if (this.availabilityFilter === 'in-stock') {
               return product.inStock;
             } else if (this.availabilityFilter === 'out-of-stock') {
@@ -1713,13 +2003,21 @@
             return true;
           });
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Get full product data
         const products = filtered.map(id => {
           const product = productsData.find(p => p.id === id);
           return { id, ...product };
         }).filter(p => p);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Sort products
         switch (this.sortBy) {
           case 'price-low':
@@ -1736,7 +2034,11 @@
             // Use the original order, which is the order they were added to wishlist
             break;
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Extract IDs back
         this.filteredItems = products.map(p => p.id);
       }
@@ -1751,7 +2053,11 @@
             this.render();
           });
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Sort filter
         const sortFilter = document.getElementById('sort-filter');
         if (sortFilter) {
@@ -1761,7 +2067,11 @@
             this.render();
           });
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Clear wishlist button
         const clearWishlistBtn = document.getElementById('clear-wishlist');
         if (clearWishlistBtn) {
@@ -1771,7 +2081,11 @@
             }
           });
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Add all to cart button
         const addAllToCartBtn = document.getElementById('add-all-to-cart');
         if (addAllToCartBtn) {
@@ -1787,9 +2101,15 @@
 
         const modal = document.getElementById('quick-view-modal');
         const modalContent = document.getElementById('quick-view-content');
+<<<<<<< HEAD
         
         if (!modal || !modalContent) return;
         
+=======
+
+        if (!modal || !modalContent) return;
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         modalContent.innerHTML = `
           <div class="modal-image">
             <img src="${product.imageUrl}" alt="${product.name}">
@@ -1804,7 +2124,11 @@
             </div>
             <p class="modal-product-price">${formatPrice(product.price)}</p>
             <p class="modal-product-description">${product.description}</p>
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
             <div class="modal-product-meta">
               <div class="meta-item">
                 <span class="meta-label">Category:</span>
@@ -1817,13 +2141,21 @@
                 </span>
               </div>
             </div>
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
             <div class="quantity-selector">
               <button class="quantity-btn decrease-quantity">-</button>
               <input type="number" class="quantity-input" value="1" min="1" max="99" id="quick-view-quantity">
               <button class="quantity-btn increase-quantity">+</button>
             </div>
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
             <div class="modal-actions">
               <button class="btn btn-primary quick-view-add-to-cart" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
                 <i class="fas fa-shopping-cart"></i> Add to Cart
@@ -1834,51 +2166,85 @@
             </div>
           </div>
         `;
+<<<<<<< HEAD
         
         modal.classList.add('open');
         
+=======
+
+        modal.classList.add('open');
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Add event listeners for the quick view modal
         const closeModal = document.getElementById('close-modal');
         closeModal.addEventListener('click', () => {
           modal.classList.remove('open');
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Close modal when clicking outside
         modal.addEventListener('click', (event) => {
           if (event.target === modal) {
             modal.classList.remove('open');
           }
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Quantity buttons
         const quantityInput = document.getElementById('quick-view-quantity');
         const decreaseBtn = document.querySelector('.decrease-quantity');
         const increaseBtn = document.querySelector('.increase-quantity');
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         decreaseBtn.addEventListener('click', () => {
           let value = parseInt(quantityInput.value);
           if (value > 1) {
             quantityInput.value = value - 1;
           }
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         increaseBtn.addEventListener('click', () => {
           let value = parseInt(quantityInput.value);
           quantityInput.value = value + 1;
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Add to cart button
         const addToCartBtn = document.querySelector('.quick-view-add-to-cart');
         addToCartBtn.addEventListener('click', () => {
           if (!product.inStock) return;
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           const quantity = parseInt(quantityInput.value);
           if (this.cart.addItem(product.id, quantity)) {
             this.cart.showAddToCartNotification(product.name);
             modal.classList.remove('open');
           }
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Remove from wishlist button
         const removeFromWishlistBtn = document.querySelector('.quick-view-remove-from-wishlist');
         removeFromWishlistBtn.addEventListener('click', () => {
@@ -1890,12 +2256,21 @@
       render() {
         const wishlistContainer = document.getElementById('wishlist-container');
         const wishlistCount = document.getElementById('wishlist-count');
+<<<<<<< HEAD
         
         if (!wishlistContainer || !wishlistCount) return;
         
         // Update count
         wishlistCount.textContent = `${this.filteredItems.length} ${this.filteredItems.length === 1 ? 'item' : 'items'}`;
         
+=======
+
+        if (!wishlistContainer || !wishlistCount) return;
+
+        // Update count
+        wishlistCount.textContent = `${this.filteredItems.length} ${this.filteredItems.length === 1 ? 'item' : 'items'}`;
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Render wishlist items or empty state
         if (this.filteredItems.length === 0) {
           wishlistContainer.innerHTML = `
@@ -1910,11 +2285,19 @@
           `;
         } else {
           let wishlistHTML = '<div class="wishlist-grid">';
+<<<<<<< HEAD
           
           this.filteredItems.forEach(itemId => {
             const product = productsData.find(p => p.id === itemId);
             if (!product) return;
             
+=======
+
+          this.filteredItems.forEach(itemId => {
+            const product = productsData.find(p => p.id === itemId);
+            if (!product) return;
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
             wishlistHTML += `
               <div class="product-card" data-id="${product.id}">
                 <div class="product-image-container">
@@ -1953,10 +2336,17 @@
               </div>
             `;
           });
+<<<<<<< HEAD
           
           wishlistHTML += '</div>';
           wishlistContainer.innerHTML = wishlistHTML;
           
+=======
+
+          wishlistHTML += '</div>';
+          wishlistContainer.innerHTML = wishlistHTML;
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           // Add event listeners to product cards
           document.querySelectorAll('.product-card .btn-primary').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1969,14 +2359,22 @@
               }
             });
           });
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           document.querySelectorAll('.remove-wishlist-item').forEach(btn => {
             btn.addEventListener('click', () => {
               const id = btn.getAttribute('data-id');
               this.removeItem(id);
             });
           });
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           document.querySelectorAll('.quick-view-btn').forEach(btn => {
             btn.addEventListener('click', () => {
               const id = btn.getAttribute('data-id');
@@ -1991,7 +2389,11 @@
     document.addEventListener('DOMContentLoaded', function() {
       const cart = new Cart();
       const wishlist = new Wishlist(cart);
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       // Mobile Menu Toggle
       const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
@@ -2007,11 +2409,16 @@
           mobileMenuOverlay.classList.add('active');
           mobileMenuToggle.classList.add('active');
           body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           // Add a subtle ripple effect on click
           const ripple = document.createElement('span');
           ripple.classList.add('menu-toggle-ripple');
           mobileMenuToggle.appendChild(ripple);
+<<<<<<< HEAD
           
           // Position the ripple where the click happened
           const rect = mobileMenuToggle.getBoundingClientRect();
@@ -2021,11 +2428,26 @@
           ripple.style.left = `${-size/4}px`;
           ripple.style.top = `${-size/4}px`;
           
+=======
+
+          // Position the ripple where the click happened
+          const rect = mobileMenuToggle.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height) * 2;
+
+          ripple.style.width = ripple.style.height = `${size}px`;
+          ripple.style.left = `${-size/4}px`;
+          ripple.style.top = `${-size/4}px`;
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           // Remove the ripple after animation completes
           setTimeout(() => {
             ripple.remove();
           }, 600);
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           // Add entrance animation to each nav link
           const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
           navLinks.forEach((link, index) => {
@@ -2033,7 +2455,11 @@
             link.style.transform = 'translateX(-10px)';
             link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
             link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
             setTimeout(() => {
               link.style.opacity = '1';
               link.style.transform = 'translateX(0)';
@@ -2074,7 +2500,11 @@
         mobileLinks.forEach(link => {
           link.addEventListener('click', closeMobileMenu);
         });
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         // Close menu when pressing Escape key
         document.addEventListener('keydown', function(event) {
           if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
@@ -2085,7 +2515,11 @@
       }
     });
   </script>
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <!-- Footer -->
   <footer class="bg-gray-900 text-white pt-16 pb-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

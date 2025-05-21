@@ -1,8 +1,11 @@
 {
+<<<<<<< HEAD
     "liveServer.settings.port": 5511,
     "liveServer.settings.donotShowInfoMsg": true,
     "liveServer.settings.donotVerifyTags": true,
     "liveServer.settings.useLocalIp": false,
     "liveServer.settings.ChromeDebuggingAttachment": false,
+=======
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     "zencoder.enableRepoIndexing": true
 }

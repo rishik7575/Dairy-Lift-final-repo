@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
   <title>Dairy-Lift Support - Live Chat</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
   
@@ -25,6 +26,12 @@
       --radius: 0.5rem;
     }
     
+=======
+  <title>Live Chat - Supportia</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <style>
+    /* Base styles */
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     * {
       box-sizing: border-box;
       margin: 0;
@@ -32,13 +39,21 @@
     }
     
     body {
+<<<<<<< HEAD
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       color: var(--foreground);
+=======
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #333;
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+<<<<<<< HEAD
       background-color: var(--background);
+=======
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     }
     
     .container-custom {
@@ -48,6 +63,7 @@
       padding: 0 1rem;
     }
     
+<<<<<<< HEAD
     /* Navbar Styles */
     .navbar {
       background-color: var(--background);
@@ -424,6 +440,36 @@
       margin-right: 0.5rem;
       width: 16px;
       height: 16px;
+=======
+    /* Header styles */
+    header {
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      background-color: white;
+      z-index: 30;
+    }
+    
+    .header-container {
+      display: flex;
+      height: 4rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #2563eb;
+      text-decoration: none;
+    }
+    
+    .nav-desktop {
+      display: none;
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     }
     
     @media (min-width: 768px) {
@@ -968,6 +1014,7 @@
   </style>
 </head>
 <body>
+<<<<<<< HEAD
   <!-- Navbar -->
   <header class="navbar" style="padding:10px">
     <div class="container-custom" style="margin:0px">
@@ -1058,6 +1105,67 @@
     </div>
   </header>
 
+=======
+  <header>
+    <div class="container-custom header-container">
+      <div class="flex items-center gap-2">
+        <a href="home.html" class="logo">
+          <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+          <span>Supportia</span>
+        </a>
+      </div>
+      <nav class="nav-desktop">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="livechat.html" class="nav-link active">Live Chat</a>
+        <a href="faqs.html" class="nav-link">FAQs</a>
+        <a href="helparticles.html" class="nav-link">Help Articles</a>
+        <a href="submitticket.html" class="nav-link">Submit Ticket</a>
+        <a href="supportstatus.html" class="nav-link">Support Status</a>
+      </nav>
+      <div class="right-nav">
+        <button class="btn btn-outline btn-icon btn-desktop" aria-label="Search">
+          <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <a href="contact.html" class="btn btn-primary btn-desktop">Contact Support</a>
+        <button class="btn btn-outline btn-icon mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+          <svg class="icon-small" id="menuIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <svg class="icon-small" id="closeIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <nav class="container-custom mobile-nav">
+      <a href="home.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Home
+      </a>
+      <a href="livechat.html" class="mobile-nav-link active">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        Live Chat
+      </a>
+      <a href="faqs.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        FAQs
+      </a>
+      <a href="helparticles.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+        Help Articles
+      </a>
+      <a href="submitticket.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6"></path><path d="M18 8v4H6V8"></path><path d="M22 4H2"></path><path d="M12 2v2"></path><path d="M12 12v6"></path><path d="M10 18h4"></path></svg>
+        Submit Ticket
+      </a>
+      <a href="supportstatus.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+        Support Status
+      </a>
+      <a href="contact.html" class="btn btn-primary">Contact Support</a>
+    </nav>
+  </div>
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <main>
     <div class="container-custom py-12">
       <div class="page-header">
@@ -1192,6 +1300,7 @@
     // Set current year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
+<<<<<<< HEAD
     // Mobile Menu Toggle
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -1273,6 +1382,29 @@
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
         closeMobileMenu();
+=======
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuIcon = document.getElementById('menuIcon');
+    const closeIcon = document.getElementById('closeIcon');
+    let isMenuOpen = false;
+
+    mobileMenuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      mobileMenu.classList.toggle('open', isMenuOpen);
+      menuIcon.style.display = isMenuOpen ? 'none' : 'block';
+      closeIcon.style.display = isMenuOpen ? 'block' : 'none';
+    });
+
+    // Close mobile menu when window is resized to desktop size
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768 && isMenuOpen) {
+        isMenuOpen = false;
+        mobileMenu.classList.remove('open');
+        menuIcon.style.display = 'block';
+        closeIcon.style.display = 'none';
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
       }
     });
 

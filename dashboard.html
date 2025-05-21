@@ -19,6 +19,55 @@
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<<<<<<< HEAD
+=======
+  <script src="js/auth.js"></script>
+  <script>
+    // Ensure auth.js is properly initialized
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+
+        // Check if user is logged in
+        if (!window.DairyLiftAuth.isLoggedIn()) {
+          console.log('User not logged in, redirecting to login page');
+          window.location.href = 'login.html';
+        }
+      } else {
+        console.error('Auth script not loaded properly');
+        // Try to load it again
+        var script = document.createElement('script');
+        script.src = 'js/auth.js';
+        script.onload = function() {
+          console.log('Auth script loaded dynamically');
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.initAuth();
+            // Check if user is logged in
+            if (!window.DairyLiftAuth.isLoggedIn()) {
+              console.log('User not logged in, redirecting to login page');
+              window.location.href = 'login.html';
+            }
+          }
+        };
+        document.head.appendChild(script);
+      }
+    });
+
+    // Listen for auth.js loaded event
+    document.addEventListener('dairyLiftAuthLoaded', function(event) {
+      console.log('Auth script loaded event received');
+      if (window.DairyLiftAuth) {
+        window.DairyLiftAuth.initAuth();
+        // Check if user is logged in
+        if (!window.DairyLiftAuth.isLoggedIn()) {
+          console.log('User not logged in, redirecting to login page');
+          window.location.href = 'login.html';
+        }
+      }
+    });
+  </script>
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <script>
     tailwind.config = {
       theme: {
@@ -464,6 +513,28 @@
       background-color: var(--muted);
     }
 
+<<<<<<< HEAD
+=======
+    /* Profile Icon Styles */
+    .profile-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .profile-icon:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .btn-outline-primary {
       background-color: transparent;
       color: var(--primary);
@@ -2850,5 +2921,23 @@
       </div>
     </div>
   </footer>
+<<<<<<< HEAD
+=======
+
+  <!-- Authentication Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize authentication UI
+      if (window.DairyLiftAuth) {
+        window.DairyLiftAuth.updateAuthUI();
+
+        // Check if user is logged in, if not redirect to login page
+        if (!window.DairyLiftAuth.isLoggedIn()) {
+          window.location.href = 'login.html';
+        }
+      }
+    });
+  </script>
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
 </body>
 </html>

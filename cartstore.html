@@ -17,6 +17,101 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<<<<<<< HEAD
+=======
+  <script src="js/auth.js"></script>
+  <script>
+    // Function to initialize auth and dispatch events
+    function initializeAuth() {
+      console.log('Initializing auth in cart page...');
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+
+        // Force UI update after a short delay
+        setTimeout(function() {
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.updateAuthUI();
+          }
+        }, 500);
+      } else {
+        console.error('Auth script not loaded properly');
+        // Try to load it again
+        var script = document.createElement('script');
+        script.src = 'js/auth.js';
+        script.onload = function() {
+          console.log('Auth script loaded dynamically');
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.initAuth();
+
+            // Force UI update after a short delay
+            setTimeout(function() {
+              if (window.DairyLiftAuth) {
+                window.DairyLiftAuth.updateAuthUI();
+              }
+            }, 500);
+          }
+        };
+        document.head.appendChild(script);
+      }
+    }
+
+    // Call initialization on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', initializeAuth);
+
+    // Also call initialization immediately if document is already loaded
+    if (document.readyState !== 'loading') {
+      initializeAuth();
+    }
+
+    // Call initialization on window load
+    window.addEventListener('load', initializeAuth);
+
+    // Listen for auth.js loaded event
+    document.addEventListener('dairyLiftAuthLoaded', function(event) {
+      console.log('Auth script loaded event received');
+      initializeAuth();
+    });
+
+    // Listen for storage events to sync auth state across tabs
+    window.addEventListener('storage', function(event) {
+      if (event.key === 'dairyLift_auth') {
+        console.log('Auth state changed in another tab, updating UI');
+        if (window.DairyLiftAuth) {
+          window.DairyLiftAuth.updateAuthUI();
+
+          // Force UI update after a short delay
+          setTimeout(function() {
+            if (window.DairyLiftAuth) {
+              window.DairyLiftAuth.updateAuthUI();
+            }
+          }, 300);
+        }
+      }
+    });
+
+    // Set up periodic check for auth state
+    setInterval(function() {
+      if (window.DairyLiftAuth) {
+        const isLoggedIn = window.DairyLiftAuth.isLoggedIn();
+        const profileIcon = document.getElementById('profile-icon-link');
+
+        if (isLoggedIn && !profileIcon) {
+          console.log('Periodic check: User is logged in but profile icon not found, updating UI');
+          window.DairyLiftAuth.updateAuthUI();
+        }
+      }
+    }, 1000);
+
+    // Force an update when the user becomes visible (tab focus)
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden && window.DairyLiftAuth) {
+        console.log('Page became visible, forcing UI update');
+        window.DairyLiftAuth.updateAuthUI();
+      }
+    });
+  </script>
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <script>
     tailwind.config = {
       theme: {
@@ -450,6 +545,28 @@
       background-color: var(--muted);
     }
 
+<<<<<<< HEAD
+=======
+    /* Profile Icon Styles */
+    .profile-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(173, 110, 245, 0.2);
+      color: #ad6ef5;
+      transition: all 0.3s ease;
+    }
+
+    .profile-icon:hover {
+      background-color: rgba(173, 110, 245, 0.3);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     .btn-outline-primary {
       background-color: transparent;
       color: var(--primary);
@@ -678,8 +795,13 @@
       text-align: center;
       font-size: 0.9rem;
       outline: none;
+<<<<<<< HEAD
       -moz-appearance: textfield;
       appearance: textfield;
+=======
+      appearance: textfield;
+      -moz-appearance: textfield;
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     }
 
     .quantity-input::-webkit-inner-spin-button,
@@ -963,7 +1085,11 @@
     }
 
     .newsletter-btn:hover {
+<<<<<<< HEAD
       background-color: #9b55e0;
+=======
+      background-color: #2d7a34;
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
     }
 
     .copyright {
@@ -1178,7 +1304,11 @@
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
 
+<<<<<<< HEAD
       <a href="FOR-INVESTORS/visit-farm.html" class="mobile-nav-link">
+=======
+      <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
           <rect x="14" y="3" width="7" height="7"></rect>
@@ -1302,6 +1432,12 @@
     </div>
   </main>
 
+<<<<<<< HEAD
+=======
+  <!-- Notification -->
+  <div id="notification" class="notification"></div>
+
+>>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
   <!-- Footer -->
   <footer class="bg-gray-900 text-white pt-16 pb-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
