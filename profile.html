@@ -17,6 +17,40 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Ensure auth.js is properly initialized
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+
+        // Check if user is logged in
+        if (!window.DairyLiftAuth.isLoggedIn()) {
+          console.log('User not logged in, redirecting to login page');
+          window.location.href = 'login.html';
+        } else {
+          // Load user profile data
+          const userData = window.DairyLiftAuth.getCurrentUser();
+          if (userData) {
+            // Update profile information
+            const profileNameElement = document.getElementById('profile-name');
+            const profileEmailElement = document.getElementById('profile-email');
+
+            if (profileNameElement && userData.name) {
+              profileNameElement.textContent = userData.name;
+            }
+
+            if (profileEmailElement && userData.email) {
+              profileEmailElement.textContent = userData.email;
+            }
+          }
+        }
+      } else {
+        console.error('Auth script not loaded properly');
+      }
+    });
+  </script>
   <script>
     tailwind.config = {
       theme: {
@@ -637,6 +671,25 @@
       background-color: var(--muted);
       border-color: var(--border-hover);
       transform: translateY(-2px);
+    }
+
+    /* Profile Icon Styles */
+    .profile-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .profile-icon:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
     }
 
     .btn-outline:active {
@@ -1462,7 +1515,7 @@
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
 
-      <a href="FOR-INVESTORS/visit-farm.html" class="mobile-nav-link">
+      <a href="visit-farm.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
           <rect x="14" y="3" width="7" height="7"></rect>
@@ -1967,14 +2020,14 @@
                 </div>
                 <div class="card-content p-6">
                   <div class="grid grid-cols-2 gap-4">
-                    <a href="/cattle" class="btn btn-outline w-full justify-start">
+                    <a href="YourCattle.html" class="btn btn-outline w-full justify-start">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
                         <path d="M12.83 9.37a2.71 2.71 0 0 0-1.42-2.23 2.63 2.63 0 0 0-1.9-.18 2.72 2.72 0 0 1 .21-5.45 2.71 2.71 0 0 0-1.82 2.41c-2.2.94-3.35 2-3.35 3.65 0 3.64 6.4 8.25 10.92 10.66a2.72 2.72 0 0 1-2.69 2.27A2.72 2.72 0 0 0 15.51 18c.19-.62.76-1.1 1.38-1.65 2.13-1.88 4.56-4 4.56-7.79 0-2.58-1.94-2.55-1.94-5.06 0-.65.14-1.24.7-1.79"></path>
                       </svg>
                       Manage Cattle
                     </a>
 
-                    <a href="/reports" class="btn btn-outline w-full justify-start">
+                    <a href="dashboard.html" class="btn btn-outline w-full justify-start">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
                         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
@@ -1982,25 +2035,50 @@
                         <line x1="16" x2="8" y1="17" y2="17"></line>
                         <line x1="10" x2="8" y1="9" y2="9"></line>
                       </svg>
-                      View Reports
+                      Dashboard
                     </a>
 
-                    <a href="/store" class="btn btn-outline w-full justify-start">
+                    <a href="filesforbuycattle/dist/index.html" class="btn btn-outline w-full justify-start">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
                         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                         <line x1="3" x2="21" y1="6" y2="6"></line>
                         <path d="M16 10a4 4 0 0 1-8 0"></path>
                       </svg>
-                      View Store
+                      Buy Cattle
                     </a>
 
-                    <a href="/support" class="btn btn-outline w-full justify-start">
+                    <a href="help/home.html" class="btn btn-outline w-full justify-start">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                       </svg>
-                      Contact Support
+                      Support
                     </a>
                   </div>
+
+                  <!-- Logout Button -->
+                  <div class="mt-6">
+                    <button id="logout-button" class="btn w-full bg-red-500 hover:bg-red-600 text-white justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                      </svg>
+                      Logout
+                    </button>
+                  </div>
+
+                  <script>
+                    // Add event listener for logout button
+                    document.getElementById('logout-button').addEventListener('click', function() {
+                      if (window.DairyLiftAuth) {
+                        // Call the logout function from auth.js
+                        window.DairyLiftAuth.logout();
+                      } else {
+                        console.error('Auth utility not available');
+                        alert('Logout failed. Please try again later.');
+                      }
+                    });
+                  </script>
                 </div>
               </div>
             </div>
@@ -2368,6 +2446,33 @@
   <!-- JavaScript -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Initialize authentication UI
+      if (window.DairyLiftAuth) {
+        window.DairyLiftAuth.updateAuthUI();
+
+        // Check if user is logged in, if not redirect to login page
+        if (!window.DairyLiftAuth.isLoggedIn()) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // Populate user data if available
+        const userData = window.DairyLiftAuth.getCurrentUser();
+        if (userData) {
+          // Update profile name and email if elements exist
+          const nameElement = document.querySelector('h1.text-2xl.font-bold');
+          const emailElement = document.querySelector('p.text-muted-foreground');
+
+          if (nameElement && userData.name) {
+            nameElement.textContent = userData.name;
+          }
+
+          if (emailElement && userData.email) {
+            emailElement.textContent = userData.email;
+          }
+        }
+      }
+
       // Toggle user dropdown menu
       const userDropdown = document.getElementById('userDropdown');
       const userMenu = document.getElementById('userMenu');
@@ -2574,7 +2679,17 @@
       });
 
       document.getElementById('logoutBtn').addEventListener('click', () => {
-        showToast('Logged out successfully', 'You have been logged out of your account');
+        // Use our auth utility to log out
+        if (window.DairyLiftAuth) {
+          window.DairyLiftAuth.logout();
+        }
+
+        showToast('Logged out successfully', 'You have been logged out of your account', 'success');
+
+        // Redirect to home page after a short delay
+        setTimeout(() => {
+          window.location.href = 'home_page.html';
+        }, 1500);
       });
 
       document.getElementById('editProfileBtn').addEventListener('click', () => {

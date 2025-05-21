@@ -16,21 +16,12 @@ const Hero = () => {
             optimal returns.
           </p>
           <div className="flex flex-wrap gap-4">
-<<<<<<< HEAD
-            <Button className="bg-dairy-green hover:bg-dairy-green/90 text-white">
-              View Breeds
-            </Button>
-            <Button variant="outline" className="border-dairy-green text-dairy-green hover:bg-dairy-green hover:text-white">
-              Learn More
-            </Button>
-=======
             <a href="#featured-cattle" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-dairy-green hover:bg-dairy-green/90 text-white h-10 px-4 py-2">
               View Breeds
             </a>
             <a href="../store.html" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-dairy-green text-dairy-green hover:bg-dairy-green hover:text-white h-10 px-4 py-2">
               Browse Store
             </a>
->>>>>>> 5d3db30ce480ba1cd34ea9b7ed479dda3e099eb4
           </div>
         </div>
       </div>
