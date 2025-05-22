@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cattle Details View</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 222.2 84% 4.9%;
+      --card: 0 0% 100%;
+      --card-foreground: 222.2 84% 4.9%;
+      --popover: 0 0% 100%;
+      --popover-foreground: 222.2 84% 4.9%;
+      --primary: 222.2 47.4% 11.2%;
+      --primary-foreground: 210 40% 98%;
+      --secondary: 210 40% 96.1%;
+      --secondary-foreground: 222.2 47.4% 11.2%;
+      --muted: 210 40% 96.1%;
+      --muted-foreground: 215.4 16.3% 46.9%;
+      --accent: 210 40% 96.1%;
+      --accent-foreground: 222.2 47.4% 11.2%;
+      --destructive: 0 84.2% 60.2%;
+      --destructive-foreground: 210 40% 98%;
+      --border: 214.3 31.8% 91.4%;
+      --input: 214.3 31.8% 91.4%;
+      --ring: 222.2 84% 4.9%;
+      --radius: 0.5rem;
+      
+      /* Cattle-specific colors */
+      --cattle-primary: #8B5CF6;
+      --cattle-primary-light: rgba(139, 92, 246, 0.1);
+      --cattle-primary-dark: #7c3aed;
+      --cattle-blue: #3B82F6;
+      --cattle-green: #22C55E;
+      --cattle-yellow: #F59E0B;
+      --cattle-red: #EF4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background-color: #f9fafb;
+      color: hsl(var(--foreground));
+    }
+    
+    .dialog {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      backdrop-filter: blur(2px);
+    }
+
+    .dialog-content {
+      background-color: white;
+      border-radius: var(--radius);
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      animation: scaleIn 0.3s ease forwards;
+    }
+    
+    @keyframes scaleIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .dialog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      padding-bottom: 1rem;
+    }
+
+    .dialog-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .close-button {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .close-button:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .close-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: #6b7280;
+    }
+
+    .image-container {
+      aspect-ratio: 16/9;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .cattle-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .cattle-image:hover {
+      transform: scale(1.01);
+    }
+
+    .tabs {
+      display: flex;
+      background-color: rgba(210, 40%, 96.1%, 0.5);
+      border-bottom: 1px solid hsl(var(--border));
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab {
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      color: hsl(var(--muted-foreground));
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .tab:hover {
+      color: var(--cattle-primary);
+      background-color: rgba(139, 92, 246, 0.05);
+    }
+
+    .tab[aria-selected="true"] {
+      color: var(--cattle-primary);
+      font-weight: 600;
+      border-bottom-color: var(--cattle-primary);
+    }
+    
+    .tab[aria-selected="true"]::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--cattle-primary);
+      animation: slideIn 0.3s ease forwards;
+    }
+    
+    @keyframes slideIn {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    .tab-content {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .tab-panel {
+      height: 100%;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: none;
+      animation: fadeIn 0.3s ease forwards;
+      max-height: 60vh;
+    }
+    
+    .tab-panel[aria-hidden="false"] {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+    
+    .grid-cols-1 {
+      grid-template-columns: 1fr;
+    }
+    
+    @media (min-width: 768px) {
+      .md\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      
+      .md\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      
+      .md\:col-span-2 {
+        grid-column: span 2 / span 2;
+      }
+    }
+    
+    .space-y-3 > * + * {
+      margin-top: 0.75rem;
+    }
+    
+    .space-y-4 > * + * {
+      margin-top: 1rem;
+    }
+    
+    .space-y-5 > * + * {
+      margin-top: 1.25rem;
+    }
+    
+    .space-y-6 > * + * {
+      margin-top: 1.5rem;
+    }
+    
+    .flex {
+      display: flex;
+    }
+    
+    .items-center {
+      align-items: center;
+    }
+    
+    .justify-between {
+      justify-content: space-between;
+    }
+    
+    .justify-center {
+      justify-content: center;
+    }
+    
+    .text-muted-foreground {
+      color: hsl(var(--muted-foreground));
+    }
+    
+    .font-medium {
+      font-weight: 500;
+    }
+    
+    .font-semibold {
+      font-weight: 600;
+    }
+    
+    .mb-1 {
+      margin-bottom: 0.25rem;
+    }
+    
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+    
+    .text-sm {
+      font-size: 0.875rem;
+    }
+    
+    .text-lg {
+      font-size: 1.125rem;
+    }
+    
+    .text-xl {
+      font-size: 1.25rem;
+    }
+    
+    .text-center {
+      text-align: center;
+    }
+    
+    .rounded-lg {
+      border-radius: var(--radius);
+    }
+    
+    .rounded-full {
+      border-radius: 9999px;
+    }
+    
+    .p-4 {
+      padding: 1rem;
+    }
+    
+    .p-5 {
+      padding: 1.25rem;
+    }
+    
+    .p-3 {
+      padding: 0.75rem;
+    }
+    
+    .px-3 {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+    
+    .py-1 {
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
+    
+    .gap-2 {
+      gap: 0.5rem;
+    }
+    
+    .gap-4 {
+      gap: 1rem;
+    }
+    
+    .h-full {
+      height: 100%;
+    }
+    
+    .w-full {
+      width: 100%;
+    }
+    
+    .w-36 {
+      width: 9rem;
+    }
+    
+    .h-36 {
+      height: 9rem;
+    }
+    
+    .h-2 {
+      height: 0.5rem;
+    }
+    
+    .w-2 {
+      width: 0.5rem;
+    }
+    
+    .bg-cattle-primary-light {
+      background-color: var(--cattle-primary-light);
+    }
+    
+    .bg-background\/50 {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .bg-muted {
+      background-color: hsl(var(--muted));
+    }
+    
+    .bg-muted\/50 {
+      background-color: hsla(var(--muted), 0.5);
+    }
+    
+    .bg-cattle-primary {
+      background-color: var(--cattle-primary);
+    }
+    
+    .bg-cattle-primary\/20 {
+      background-color: rgba(139, 92, 246, 0.2);
+    }
+    
+    .text-cattle-green {
+      color: var(--cattle-green);
+    }
+    
+    .text-cattle-blue {
+      color: var(--cattle-blue);
+    }
+    
+    .text-cattle-yellow {
+      color: var(--cattle-yellow);
+    }
+    
+    .text-cattle-red {
+      color: var(--cattle-red);
+    }
+    
+    .text-cattle-primary {
+      color: var(--cattle-primary);
+    }
+    
+    .border-8 {
+      border-width: 8px;
+    }
+    
+    .border-cattle-primary {
+      border-color: var(--cattle-primary);
+    }
+    
+    .shadow-sm {
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+    
+    .shadow-md {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .shadow-inner {
+      box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    }
+    
+    .transition-all {
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 200ms;
+    }
+    
+    .hover\:translate-y-\[-2px\]:hover {
+      transform: translateY(-2px);
+    }
+    
+    .hover\:shadow-md:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .hover\:bg-cattle-primary-light\/30:hover {
+      background-color: rgba(139, 92, 246, 0.1);
+    }
+    
+    /* Health table styles */
+    .health-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .health-table th,
+    .health-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid hsl(var(--border));
+      text-align: left;
+    }
+    
+    .health-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .health-table th {
+      background-color: rgba(210, 40%, 96.1%, 0.5);
+      font-weight: 600;
+      color: hsl(var(--foreground));
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .health-table tbody tr:hover {
+      background-color: rgba(139, 92, 246, 0.05);
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 0.5rem;
+      background-color: hsl(var(--muted));
+      border-radius: 9999px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--cattle-primary);
+      border-radius: 9999px;
+      background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent);
+      background-size: 1rem 1rem;
+      animation: progressAnimation 1s linear infinite;
+    }
+    
+    @keyframes progressAnimation {
+      0% { background-position: 1rem 0; }
+      100% { background-position: 0 0; }
+    }
+    
+    .health-excellent { 
+      color: var(--cattle-green);
+      font-weight: 600;
+    }
+    
+    .health-good { 
+      color: var(--cattle-blue);
+      font-weight: 600;
+    }
+    
+    .health-fair { 
+      color: var(--cattle-yellow);
+      font-weight: 600;
+    }
+    
+    .health-poor { 
+      color: var(--cattle-red);
+      font-weight: 600;
+    }
+    
+    .pl-6 {
+      padding-left: 1.5rem;
+    }
+    
+    .relative {
+      position: relative;
+    }
+    
+    .absolute {
+      position: absolute;
+    }
+    
+    .left-0 {
+      left: 0;
+    }
+    
+    .left-1 {
+      left: 0.25rem;
+    }
+    
+    .top-1 {
+      top: 0.25rem;
+    }
+    
+    .bottom-0 {
+      bottom: 0;
+    }
+    
+    .w-\[1px\] {
+      width: 1px;
+    }
+    
+    .bg-cattle-primary\/30 {
+      background-color: rgba(139, 92, 246, 0.3);
+    }
+    
+    .divide-y > * + * {
+      border-top-width: 1px;
+      border-top-style: solid;
+      border-color: hsl(var(--border));
+    }
+    
+    .chart-container {
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      background-color: rgba(210, 40%, 96.1%, 0.5);
+      padding: 1rem;
+    }
+    
+    /* Custom scrollbar */
+    .custom-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: hsla(var(--muted-foreground), 0.5) transparent;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: hsla(var(--muted-foreground), 0.5);
+      border-radius: 9999px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 0.5rem;
+      }
+      
+      .tab {
+        padding: 0.75rem 1rem;
+      }
+      
+      .tab-panel {
+        padding: 1rem;
+      }
+      
+      .dialog-content {
+        width: 95%;
+        max-height: 95vh;
+      }
+    }
+    
+    /* Fix for Safari */
+    @supports (-webkit-touch-callout: none) {
+      .dialog-content {
+        height: -webkit-fill-available;
+        max-height: 85vh;
+      }
+    }
+    
+    /* Improve close button visibility */
+    .close-button:focus, .close-button:active {
+      outline: 2px solid var(--cattle-primary);
+      outline-offset: 2px;
+    }
+    
+    /* Chart tooltip improvements */
+    .chart-tooltip {
+      background-color: white !important;
+      border: 1px solid #e5e7eb !important;
+      border-radius: 8px !important;
+      padding: 8px 12px !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+      color: #111827 !important;
+      font-family: system-ui, sans-serif !important;
+      font-size: 14px !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h2 class="dialog-title" id="cattle-name">Bessie</h2>
+        <button class="close-button" id="close-button" aria-label="Close">
+          <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="image-container">
+        <img id="cattle-image" src="https://images.unsplash.com/photo-1546445317-29f4545e9d53?q=80&w=1000&auto=format&fit=crop" alt="Cattle" class="cattle-image">
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="overview-panel" id="overview-tab">Overview</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="production-panel" id="production-tab">Milk Production</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="health-panel" id="health-tab">Health Records</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="fertility-panel" id="fertility-tab">Fertility</button>
+      </div>
+      
+      <div class="tab-content">
+        <div class="tab-panel custom-scrollbar" id="overview-panel" role="tabpanel" aria-labelledby="overview-tab" aria-hidden="false">
+          <div class="grid grid-cols-1 md:grid-cols-2 space-y-6 md:space-y-0 gap-6">
+            <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm hover:translate-y-[-2px] hover:shadow-md transition-all duration-200">
+              <h3 class="font-semibold mb-4">Current Status</h3>
+              <div class="space-y-3">
+                <div class="flex justify-between">
+                  <span class="text-muted-foreground">Health:</span>
+                  <span id="health-status" class="health-excellent">Excellent</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-muted-foreground">Lactation:</span>
+                  <span id="lactation-status" class="font-medium">Active (3rd)</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-muted-foreground">Daily Production:</span>
+                  <span id="daily-production" class="font-medium">31.2 L</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm hover:translate-y-[-2px] hover:shadow-md transition-all duration-200">
+              <h3 class="font-semibold mb-4">Health Metrics</h3>
+              <div class="space-y-5">
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span>Temperature</span>
+                    <span>38.5°C</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 85%;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span>Heart Rate</span>
+                    <span>72 BPM</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 90%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm hover:translate-y-[-2px] hover:shadow-md transition-all duration-200 md:col-span-2">
+              <h3 class="font-semibold mb-4">General Information</h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-background/50 p-4 rounded-lg">
+                  <p class="text-sm text-muted-foreground">Breed</p>
+                  <p class="text-lg font-medium">Holstein</p>
+                </div>
+                <div class="bg-background/50 p-4 rounded-lg">
+                  <p class="text-sm text-muted-foreground">Age</p>
+                  <p class="text-lg font-medium">4 years 2 months</p>
+                </div>
+                <div class="bg-background/50 p-4 rounded-lg">
+                  <p class="text-sm text-muted-foreground">Weight</p>
+                  <p class="text-lg font-medium">625 kg</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-panel custom-scrollbar" id="production-panel" role="tabpanel" aria-labelledby="production-tab" aria-hidden="true">
+          <div class="space-y-6">
+            <div class="chart-container">
+              <canvas id="productionChart"></canvas>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-muted/50 p-4 rounded-lg text-center shadow-sm hover:translate-y-[-2px] hover:shadow transition-all duration-200">
+                <p class="text-sm text-muted-foreground">Daily Average</p>
+                <p class="text-xl font-bold">29.8 L</p>
+              </div>
+              <div class="bg-muted/50 p-4 rounded-lg text-center shadow-sm hover:translate-y-[-2px] hover:shadow transition-all duration-200">
+                <p class="text-sm text-muted-foreground">Weekly Total</p>
+                <p class="text-xl font-bold">209 L</p>
+              </div>
+              <div class="bg-muted/50 p-4 rounded-lg text-center shadow-sm hover:translate-y-[-2px] hover:shadow transition-all duration-200">
+                <p class="text-sm text-muted-foreground">Peak Production</p>
+                <p class="text-xl font-bold">32 L</p>
+              </div>
+            </div>
+            
+            <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm">
+              <h3 class="font-semibold mb-4">Production Trends</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-background/50 p-4 rounded-lg">
+                  <p class="text-sm text-muted-foreground">Month-over-Month Change</p>
+                  <div class="flex items-end gap-2">
+                    <p class="text-lg font-medium text-cattle-green">+2.5%</p>
+                    <p class="text-xs text-muted-foreground">from March</p>
+                  </div>
+                </div>
+                <div class="bg-background/50 p-4 rounded-lg">
+                  <p class="text-sm text-muted-foreground">Year-to-Date Average</p>
+                  <p class="text-lg font-medium">28.4 L per day</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-panel custom-scrollbar" id="health-panel" role="tabpanel" aria-labelledby="health-tab" aria-hidden="true">
+          <div class="space-y-6">
+            <div class="overflow-hidden rounded-lg border shadow-sm">
+              <table class="health-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Procedure</th>
+                    <th>Performed By</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y">
+                  <tr class="hover:bg-cattle-primary-light/30 transition-colors">
+                    <td class="p-3">2023-04-15</td>
+                    <td class="p-3">Health Check</td>
+                    <td class="p-3">Dr. Smith</td>
+                    <td class="p-3">All vitals normal</td>
+                  </tr>
+                  <tr class="hover:bg-cattle-primary-light/30 transition-colors">
+                    <td class="p-3">2023-03-12</td>
+                    <td class="p-3">Vaccination</td>
+                    <td class="p-3">Dr. Patel</td>
+                    <td class="p-3">FMD vaccine administered</td>
+                  </tr>
+                  <tr class="hover:bg-cattle-primary-light/30 transition-colors">
+                    <td class="p-3">2023-02-28</td>
+                    <td class="p-3">Hoof Trimming</td>
+                    <td class="p-3">John Miller</td>
+                    <td class="p-3">No issues detected</td>
+                  </tr>
+                  <tr class="hover:bg-cattle-primary-light/30 transition-colors">
+                    <td class="p-3">2023-01-15</td>
+                    <td class="p-3">General Checkup</td>
+                    <td class="p-3">Dr. Smith</td>
+                    <td class="p-3">Slight fever, prescribed antibiotics</td>
+                  </tr>
+                  <tr class="hover:bg-cattle-primary-light/30 transition-colors">
+                    <td class="p-3">2022-12-05</td>
+                    <td class="p-3">Parasite Treatment</td>
+                    <td class="p-3">Dr. Patel</td>
+                    <td class="p-3">Routine deworming</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm hover:translate-y-[-2px] hover:shadow-md transition-all duration-200">
+                <h3 class="font-semibold mb-4">Upcoming Procedures</h3>
+                <ul class="space-y-3">
+                  <li class="flex justify-between items-center p-3 bg-background/50 rounded-lg">
+                    <div>
+                      <p class="font-medium">Health Check</p>
+                      <p class="text-sm text-muted-foreground">Dr. Smith</p>
+                    </div>
+                    <p class="text-sm font-medium px-3 py-1 bg-cattle-primary/20 rounded-full">May 15, 2023</p>
+                  </li>
+                  <li class="flex justify-between items-center p-3 bg-background/50 rounded-lg">
+                    <div>
+                      <p class="font-medium">Vaccination Booster</p>
+                      <p class="text-sm text-muted-foreground">Dr. Patel</p>
+                    </div>
+                    <p class="text-sm font-medium px-3 py-1 bg-cattle-primary/20 rounded-full">June 12, 2023</p>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm hover:translate-y-[-2px] hover:shadow-md transition-all duration-200">
+                <h3 class="font-semibold mb-4">Health Score Trend</h3>
+                <div class="flex flex-col items-center">
+                  <div class="w-36 h-36 rounded-full flex items-center justify-center border-8 border-cattle-primary text-cattle-primary mb-4">
+                    <span class="text-3xl font-bold">92%</span>
+                  </div>
+                  <p class="text-center text-sm text-muted-foreground">Overall health score based on recent checkups and vitals</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-panel custom-scrollbar" id="fertility-panel" role="tabpanel" aria-labelledby="fertility-tab" aria-hidden="true">
+          <div class="space-y-6">
+            <div class="overflow-hidden rounded-lg border shadow-sm">
+              <table class="health-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Event</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y">
+                  <tr class="hover:bg-cattle-primary-light/30 transition-colors">
+                    <td class="p-3">2023-05-20</td>
+                    <td class="p-3">Heat Detection</td>
+                    <td class="p-3">Normal cycle observed</td>
+                  </tr>
+                  <tr class="hover:bg-cattle-primary-light/30 transition-colors">
+                    <td class="p-3">2023-04-15</td>
+                    <td class="p-3">Calving</td>
+                    <td class="p-3">Healthy female calf delivered</td>
+                  </tr>
+                  <tr class="hover:bg-cattle-primary-light/30 transition-colors">
+                    <td class="p-3">2022-07-12</td>
+                    <td class="p-3">Pregnancy Confirmation</td>
+                    <td class="p-3">Positive, 3 months along</td>
+                  </tr>
+                  <tr class="hover:bg-cattle-primary-light/30 transition-colors">
+                    <td class="p-3">2022-04-05</td>
+                    <td class="p-3">Artificial Insemination</td>
+                    <td class="p-3">Second attempt, successful</td>
+                  </tr>
+                  <tr class="hover:bg-cattle-primary-light/30 transition-colors">
+                    <td class="p-3">2022-03-20</td>
+                    <td class="p-3">Artificial Insemination</td>
+                    <td class="p-3">First attempt, unsuccessful</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm hover:translate-y-[-2px] hover:shadow-md transition-all duration-200">
+                <h3 class="font-semibold mb-4">Reproductive Timeline</h3>
+                <div class="space-y-4">
+                  <div class="relative pl-6">
+                    <div class="absolute left-0 top-1 w-2 h-2 rounded-full bg-cattle-primary"></div>
+                    <p class="font-medium">Birth</p>
+                    <p class="text-sm text-muted-foreground">March 15, 2019</p>
+                  </div>
+                  <div class="relative pl-6">
+                    <div class="absolute left-0 top-1 w-2 h-2 rounded-full bg-cattle-primary"></div>
+                    <div class="absolute left-1 top-1 bottom-0 w-[1px] bg-cattle-primary/30"></div>
+                    <p class="font-medium">First Heat</p>
+                    <p class="text-sm text-muted-foreground">April 20, 2020</p>
+                  </div>
+                  <div class="relative pl-6">
+                    <div class="absolute left-0 top-1 w-2 h-2 rounded-full bg-cattle-primary"></div>
+                    <div class="absolute left-1 top-1 bottom-0 w-[1px] bg-cattle-primary/30"></div>
+                    <p class="font-medium">First Calving</p>
+                    <p class="text-sm text-muted-foreground">June 10, 2021</p>
+                  </div>
+                  <div class="relative pl-6">
+                    <div class="absolute left-0 top-1 w-2 h-2 rounded-full bg-cattle-primary"></div>
+                    <p class="font-medium">Second Calving</p>
+                    <p class="text-sm text-muted-foreground">April 15, 2023</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm hover:translate-y-[-2px] hover:shadow-md transition-all duration-200">
+                <h3 class="font-semibold mb-4">Fertility Metrics</h3>
+                <div class="space-y-3">
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Calving Interval:</span>
+                    <span class="font-medium">22 months</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Services per Conception:</span>
+                    <span class="font-medium">1.5</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Days Open:</span>
+                    <span class="font-medium">85 days</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Conception Rate:</span>
+                    <span class="font-medium">67%</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Next Expected Heat:</span>
+                    <span class="font-medium text-cattle-primary">June 8, 2023</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching functionality
+      const tabs = document.querySelectorAll('[role="tab"]');
+      const tabPanels = document.querySelectorAll('[role="tabpanel"]');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Deactivate all tabs
+          tabs.forEach(t => {
+            t.setAttribute('aria-selected', 'false');
+          });
+          
+          // Hide all panels
+          tabPanels.forEach(panel => {
+            panel.setAttribute('aria-hidden', 'true');
+          });
+          
+          // Activate clicked tab
+          tab.setAttribute('aria-selected', 'true');
+          
+          // Show corresponding panel
+          const panelId = tab.getAttribute('aria-controls');
+          document.getElementById(panelId).setAttribute('aria-hidden', 'false');
+        });
+      });
+      
+      // Close button functionality - multiple ways to ensure it works
+      const closeButton = document.getElementById('close-button');
+      const closeDialog = () => {
+        // Try multiple methods to ensure cross-browser compatibility
+        
+        // Method 1: For when used as iframe
+        if (window.parent && window.parent !== window) {
+          try {
+            window.parent.postMessage({ type: 'closeModal' }, '*');
+          } catch (e) {
+            console.log('Could not send postMessage to parent');
+          }
+        }
+        
+        // Method 2: If in standalone mode
+        const dialog = document.querySelector('.dialog');
+        if (dialog) {
+          dialog.style.display = 'none';
+        }
+        
+        // Method 3: If integrated in a framework
+        const event = new CustomEvent('closeModal', { bubbles: true });
+        document.dispatchEvent(event);
+        
+        // Method 4: For when window.close() is allowed
+        try {
+          window.close();
+        } catch (e) {
+          console.log('Could not close window');
+        }
+      };
+      
+      // Add click event listener
+      closeButton.addEventListener('click', closeDialog);
+      
+      // Add keyboard support for accessibility
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeDialog();
+        }
+      });
+      
+      // Production chart - with better styling and responsiveness
+      const ctx = document.getElementById('productionChart').getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Apr 1', 'Apr 2', 'Apr 3', 'Apr 4', 'Apr 5', 'Apr 6', 'Apr 7'],
+          datasets: [{
+            label: 'Daily Production (L)',
+            data: [28, 29, 30, 31, 32, 30, 29],
+            borderColor: '#8B5CF6',
+            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+            tension: 0.4,
+            fill: true,
+            pointBackgroundColor: '#8B5CF6',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              titleColor: '#111827',
+              bodyColor: '#111827',
+              borderColor: '#E5E7EB',
+              borderWidth: 1,
+              cornerRadius: 8,
+              displayColors: false,
+              padding: 12,
+              titleFont: {
+                weight: 'bold'
+              },
+              callbacks: {
+                labelTextColor: function() {
+                  return '#111827';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                font: {
+                  family: 'system-ui, sans-serif'
+                }
+              }
+            },
+            y: {
+              beginAtZero: false,
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              },
+              ticks: {
+                font: {
+                  family: 'system-ui, sans-serif'
+                },
+                callback: function(value) {
+                  return value + ' L';
+                }
+              }
+            }
+          },
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          },
+          elements: {
+            line: {
+              borderWidth: 3
+            }
+          }
+        }
+      });
+      
+      // Make chart responsive
+      const resizeChart = () => {
+        if (chart) {
+          chart.resize();
+        }
+      };
+      
+      window.addEventListener('resize', resizeChart);
+      
+      // Listen for messages from parent window
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'showCattleDetails') {
+          const cattle = event.data.cattle;
+          updateCattleDetails(cattle);
+        }
+      });
+      
+      // Check for cattle data in localStorage (from YourCattle.html)
+      document.addEventListener('DOMContentLoaded', function() {
+        const storedCattle = localStorage.getItem('selectedCattle');
+        if (storedCattle) {
+          try {
+            const cattle = JSON.parse(storedCattle);
+            updateCattleDetails(cattle);
+            // Clear the localStorage after using the data
+            localStorage.removeItem('selectedCattle');
+          } catch (e) {
+            console.error('Error parsing cattle data from localStorage:', e);
+          }
+        }
+      });
+      
+      // Function to update cattle details in the UI
+      function updateCattleDetails(cattle) {
+        // Update cattle details
+        document.getElementById('cattle-name').textContent = cattle.name;
+        document.getElementById('cattle-image').src = cattle.image;
+        
+        const healthStatus = document.getElementById('health-status');
+        healthStatus.textContent = cattle.health;
+        healthStatus.className = '';
+        
+        // Set health status class
+        if (cattle.health === 'Excellent') {
+          healthStatus.classList.add('health-excellent');
+        } else if (cattle.health === 'Good') {
+          healthStatus.classList.add('health-good');
+        } else if (cattle.health === 'Fair') {
+          healthStatus.classList.add('health-fair');
+        } else if (cattle.health === 'Poor') {
+          healthStatus.classList.add('health-poor');
+        }
+        
+        document.getElementById('lactation-status').textContent = cattle.lactationStatus;
+        document.getElementById('daily-production').textContent = cattle.dailyProduction;
+      }
+      
+      // Example data for testing without parent window
+      const exampleCattle = {
+        name: 'Bessie',
+        image: 'https://images.unsplash.com/photo-1546445317-29f4545e9d53?q=80&w=1000&auto=format&fit=crop',
+        health: 'Excellent',
+        lactationStatus: 'Active (3rd)',
+        dailyProduction: '31.2 L'
+      };
+      
+      // Update with example data if not in iframe and no localStorage data was found
+      if (window.self === window.top && !localStorage.getItem('selectedCattle')) {
+        document.getElementById('cattle-name').textContent = exampleCattle.name;
+        document.getElementById('cattle-image').src = exampleCattle.image;
+        document.getElementById('health-status').textContent = exampleCattle.health;
+        document.getElementById('lactation-status').textContent = exampleCattle.lactationStatus;
+        document.getElementById('daily-production').textContent = exampleCattle.dailyProduction;
+      }
+    });
+  </script>
+</body>
+</html>

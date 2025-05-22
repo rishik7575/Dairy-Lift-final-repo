@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moo Capital Ventures - About Us</title>
+  <meta name="description" content="About Moo Capital Ventures - Dairy Farm Investment" />
+  <meta name="author" content="Lovable" />
+  <style>
+    /* Tailwind-inspired utility classes based on the current theme */
+    :root {
+      --dairy-cream: hsl(36, 67%, 95%);
+      --dairy-green: hsl(120, 27%, 39%);
+      --dairy-light-green: hsl(120, 31%, 65%);
+      --dairy-beige: hsl(38, 39%, 85%);
+      --dairy-brown: hsl(30, 26%, 44%);
+      --background: hsl(0, 0%, 100%);
+      --foreground: hsl(222.2, 84%, 4.9%);
+      --card: hsl(0, 0%, 100%);
+      --card-foreground: hsl(222.2, 84%, 4.9%);
+      --border: hsl(214.3, 31.8%, 91.4%);
+      --radius: 0.5rem;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      border-color: var(--border);
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, var(--dairy-cream) 0%, rgba(232, 221, 201, 0.3) 100%);
+      color: var(--foreground);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    .container {
+      max-width: 800px;
+      width: 100%;
+      padding: 2rem;
+    }
+    
+    .card {
+      background-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--dairy-beige);
+      overflow: hidden;
+    }
+    
+    .card-header {
+      border-bottom: 2px solid var(--dairy-beige);
+      padding-bottom: 1rem;
+    }
+    
+    .card-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--dairy-green);
+      text-align: center;
+      padding: 1.5rem 1rem 1rem;
+    }
+    
+    .card-content {
+      padding: 1.5rem;
+    }
+    
+    section {
+      margin-bottom: 2rem;
+    }
+    
+    section:last-child {
+      margin-bottom: 0;
+    }
+    
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--dairy-green);
+      margin-bottom: 0.75rem;
+    }
+    
+    p {
+      color: var(--dairy-brown);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    ul {
+      list-style: none;
+      color: var(--dairy-brown);
+      line-height: 1.6;
+    }
+    
+    li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    
+    li:before {
+      content: "•";
+      position: absolute;
+      left: 0.25rem;
+      color: var(--dairy-green);
+      font-weight: bold;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 640px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .card-title {
+        font-size: 1.75rem;
+      }
+      
+      h3 {
+        font-size: 1.1rem;
+      }
+      
+      .card-content {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="card-title">About Us</h1>
+      </div>
+      <div class="card-content">
+        <section>
+          <h3>Who We Are</h3>
+          <p>
+            We are a dedicated team of experts in dairy farming, investment management, and technology, 
+            providing a hassle-free way for individuals to own cattle without daily responsibilities.
+          </p>
+        </section>
+        
+        <section>
+          <h3>Our Mission</h3>
+          <p>
+            To bridge the gap between dairy farming and investors by offering a seamless, 
+            transparent, and profitable solution.
+          </p>
+        </section>
+        
+        <section>
+          <h3>What We Do</h3>
+          <ul>
+            <li>Allow investors to buy cattle without direct involvement in farm operations.</li>
+            <li>Take care of cattle health, feeding, and milk production.</li>
+            <li>Share dairy yield profits with investors.</li>
+            <li>Provide real-time lactation tracking and updates.</li>
+            <li>Sell fresh dairy products directly to consumers.</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h3>Why Choose Us</h3>
+          <ul>
+            <li>100% transparent operations with real-time tracking.</li>
+            <li>A well-managed and profitable dairy farming model.</li>
+            <li>High-quality dairy products sourced from well-maintained cattle.</li>
+            <li>A seamless investment process with regular updates.</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+</body>
+</html>

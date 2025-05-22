@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Impact Analytics</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #8B5CF6;
+      --yellow: #F59E0B;
+      --yellow-light: rgba(245, 158, 11, 0.1);
+      --green: #22C55E;
+      --green-light: rgba(34, 197, 94, 0.1);
+      --blue: #3B82F6;
+      --blue-light: rgba(59, 130, 246, 0.1);
+      --red: #EF4444;
+      --border: #E5E7EB;
+      --foreground: #111827;
+      --muted: #6B7280;
+      --muted-foreground: #9CA3AF;
+      --radius: 0.5rem;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: transparent;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .card {
+      background-color: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      height: 100%;
+      overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .card-header {
+      padding: 1rem 1.5rem 0.5rem 1.5rem;
+    }
+    
+    .card-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--foreground);
+      margin: 0;
+    }
+    
+    .card-content {
+      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .weather-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .weather-main {
+      display: flex;
+      align-items: center;
+    }
+    
+    .weather-icon {
+      font-size: 2rem;
+      color: var(--yellow);
+      margin-right: 0.5rem;
+    }
+    
+    .weather-info p {
+      margin: 0;
+    }
+    
+    .weather-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .weather-temp {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    
+    .weather-details {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    
+    .weather-detail {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+    }
+    
+    .weather-detail-icon {
+      color: var(--blue);
+      margin-right: 0.25rem;
+    }
+    
+    .impact-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+      flex: 1;
+    }
+    
+    .impact-item {
+      border-left: 4px solid transparent;
+      padding-left: 0.75rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    
+    .impact-item-yellow {
+      border-color: var(--yellow);
+    }
+    
+    .impact-item-green {
+      border-color: var(--green);
+    }
+    
+    .impact-item-blue {
+      border-color: var(--blue);
+    }
+    
+    .impact-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+    
+    .impact-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .impact-status {
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    
+    .impact-status-moderate {
+      color: var(--yellow);
+    }
+    
+    .impact-status-good {
+      color: var(--green);
+    }
+    
+    .impact-status-excellent {
+      color: var(--blue);
+    }
+    
+    .impact-description {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin: 0;
+    }
+    
+    .border-top {
+      border-top: 1px solid var(--border);
+      padding-top: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .weekly-temps {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .weekly-day {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .day-name {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+    
+    .day-icon {
+      margin: 0.25rem 0;
+    }
+    
+    .day-temp {
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Weather Impact Analytics</h2>
+    </div>
+    <div class="card-content">
+      <div class="weather-header animate-fade-in">
+        <div class="weather-main">
+          <i class="fas fa-sun weather-icon"></i>
+          <div class="weather-info">
+            <p class="weather-label">Today's Weather</p>
+            <p class="weather-temp">28°C</p>
+          </div>
+        </div>
+        <div class="weather-details">
+          <div class="weather-detail">
+            <i class="fas fa-tint weather-detail-icon"></i>
+            <span>40% Humidity</span>
+          </div>
+          <div class="weather-detail mt-1">
+            <i class="fas fa-wind weather-detail-icon"></i>
+            <span>10 km/h Wind</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="impact-items">
+        <div class="impact-item impact-item-yellow animate-fade-in delay-100">
+          <div class="impact-header">
+            <p class="impact-label">Milk Yield Impact</p>
+            <p class="impact-status impact-status-moderate">Moderate</p>
+          </div>
+          <p class="impact-description">Hot weather may reduce production by ~3%</p>
+        </div>
+        
+        <div class="impact-item impact-item-green animate-fade-in delay-200">
+          <div class="impact-header">
+            <p class="impact-label">Cattle Health Impact</p>
+            <p class="impact-status impact-status-good">Good</p>
+          </div>
+          <p class="impact-description">No significant health concerns</p>
+        </div>
+        
+        <div class="impact-item impact-item-blue animate-fade-in delay-300">
+          <div class="impact-header">
+            <p class="impact-label">Fodder Availability</p>
+            <p class="impact-status impact-status-excellent">Excellent</p>
+          </div>
+          <p class="impact-description">Recent rains have improved growth</p>
+        </div>
+      </div>
+
+      <div class="border-top">
+        <p class="text-xs text-gray-500 mb-2">Weekly Temperature Trend</p>
+        <div class="weekly-temps animate-fade-in delay-400">
+          <div class="weekly-day">
+            <span class="day-name">Mon</span>
+            <div class="day-icon">
+              <i class="fas fa-thermometer-half text-yellow-500 text-xs"></i>
+            </div>
+            <span class="day-temp">26°</span>
+          </div>
+          
+          <div class="weekly-day">
+            <span class="day-name">Tue</span>
+            <div class="day-icon">
+              <i class="fas fa-thermometer-half text-yellow-500 text-xs"></i>
+            </div>
+            <span class="day-temp">28°</span>
+          </div>
+          
+          <div class="weekly-day">
+            <span class="day-name">Wed</span>
+            <div class="day-icon">
+              <i class="fas fa-thermometer-three-quarters text-red-500 text-xs"></i>
+            </div>
+            <span class="day-temp">32°</span>
+          </div>
+          
+          <div class="weekly-day">
+            <span class="day-name">Thu</span>
+            <div class="day-icon">
+              <i class="fas fa-thermometer-half text-yellow-500 text-xs"></i>
+            </div>
+            <span class="day-temp">29°</span>
+          </div>
+          
+          <div class="weekly-day">
+            <span class="day-name">Fri</span>
+            <div class="day-icon">
+              <i class="fas fa-thermometer-half text-yellow-500 text-xs"></i>
+            </div>
+            <span class="day-temp">27°</span>
+          </div>
+          
+          <div class="weekly-day">
+            <span class="day-name">Sat</span>
+            <div class="day-icon">
+              <i class="fas fa-thermometer-half text-yellow-500 text-xs"></i>
+            </div>
+            <span class="day-temp">25°</span>
+          </div>
+          
+          <div class="weekly-day">
+            <span class="day-name">Sun</span>
+            <div class="day-icon">
+              <i class="fas fa-thermometer-half text-yellow-500 text-xs"></i>
+            </div>
+            <span class="day-temp">26°</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // You could add interactive features here, like temperature updates or weather alerts
+    document.addEventListener('DOMContentLoaded', function() {
+      // For demo purposes, we could simulate weather changes
+      const weatherIcon = document.querySelector('.weather-icon');
+      const weatherTemp = document.querySelector('.weather-temp');
+      
+      // Randomly change weather every minute for demo
+      setInterval(() => {
+        const weatherTypes = [
+          { icon: 'fa-sun', temp: '28°C' },
+          { icon: 'fa-cloud-sun', temp: '26°C' },
+          { icon: 'fa-cloud', temp: '24°C' }
+        ];
+        
+        const randomWeather = weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+        
+        weatherIcon.className = `fas ${randomWeather.icon} weather-icon`;
+        weatherTemp.textContent = randomWeather.temp;
+      }, 60000);
+      
+      // Using fixed height for this component
+    });
+  </script>
+</body>
+</html>

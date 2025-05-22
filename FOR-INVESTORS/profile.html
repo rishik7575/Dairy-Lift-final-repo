@@ -1,0 +1,2811 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dairy-Lift Profile</title>
+  <meta name="description"
+    content="Invest in cattle, earn from milk production, and make a positive impact with Dairy-Lift." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Ensure auth.js is properly initialized
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+
+        // Check if user is logged in
+        if (!window.DairyLiftAuth.isLoggedIn()) {
+          console.log('User not logged in, redirecting to login page');
+          window.location.href = 'login.html';
+        } else {
+          // Load user profile data
+          const userData = window.DairyLiftAuth.getCurrentUser();
+          if (userData) {
+            // Update profile information
+            const profileNameElement = document.getElementById('profile-name');
+            const profileEmailElement = document.getElementById('profile-email');
+
+            if (profileNameElement && userData.name) {
+              profileNameElement.textContent = userData.name;
+            }
+
+            if (profileEmailElement && userData.email) {
+              profileEmailElement.textContent = userData.email;
+            }
+          }
+        }
+      } else {
+        console.error('Auth script not loaded properly');
+      }
+    });
+  </script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --primary-hover: #9b55e0;
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --border-hover: #cbd5e1;
+      --radius: 0.5rem;
+      --card: #ffffff;
+      --card-foreground: #020617;
+      --card-hover: #f8fafc;
+      --destructive: #ef4444;
+      --destructive-foreground: #f8fafc;
+      --success: #10b981;
+      --success-foreground: #f8fafc;
+      --warning: #f59e0b;
+      --warning-foreground: #f8fafc;
+      --info: #3b82f6;
+      --info-foreground: #f8fafc;
+      --ring: rgba(173, 110, 245, 0.3);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--foreground);
+      background-color: var(--background);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--primary);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: 100%;
+      line-height: 1.15;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        padding: 0 2rem;
+      }
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--muted);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-light);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+      padding: 0.5rem 0;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+      position: relative;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.75rem;
+      color: var(--primary);
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-shadow: 0 1px 2px rgba(173, 110, 245, 0.2);
+      font-family: 'Pacifico', cursive;
+      letter-spacing: 0.5px;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      text-shadow: 0 2px 4px rgba(173, 110, 245, 0.3);
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      gap: 2.5rem;
+    }
+
+    .navbar-actions {
+      display: none;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      z-index: 50;
+      margin-right: 0.5rem;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .hamburger-lines {
+      width: 24px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: center;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 24px;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 24px;
+    }
+
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(2.5);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 300px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: var(--shadow-xl);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(300px);
+    }
+
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      margin: 0.35rem 0.75rem;
+      border-radius: 0.75rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(8px);
+      color: var(--primary);
+    }
+
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-nav-link:hover::after {
+      width: 40%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 1.25rem;
+      border: 1px solid rgba(173, 110, 245, 0.3);
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(8px) scale(1.03);
+      box-shadow: var(--shadow-md);
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.25rem;
+    }
+
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.75rem;
+      color: var(--primary);
+      text-decoration: none;
+      text-shadow: 0 1px 2px rgba(173, 110, 245, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.5px;
+    }
+
+    .mobile-menu-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+      transform: rotate(90deg);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-weight: 500;
+        font-size: 1.05rem;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+        transform: translateY(-2px);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background-color: var(--primary);
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 3px;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+        background-color: var(--primary-light);
+        transform: translateY(-2px) scale(1.1);
+      }
+
+      .btn-primary {
+        padding: 0.6rem 1.25rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-md);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        background-color: var(--primary-hover);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .desktop-nav {
+        gap: 4rem;
+      }
+
+      .navbar-content {
+        padding: 0 1rem;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .mobile-menu-toggle {
+        margin-right: 0;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        min-width: 150px;
+      }
+    }
+
+    /* Remix Icons Fix */
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      letter-spacing: 0.01em;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      transform: scale(10, 10);
+      opacity: 0;
+      transition: transform 0.5s, opacity 0.8s;
+    }
+
+    .btn:active::after {
+      transform: scale(0, 0);
+      opacity: 0.3;
+      transition: 0s;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--muted);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Profile Icon Styles */
+    .profile-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .profile-icon:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-outline:active {
+      transform: translateY(1px);
+    }
+
+    .btn-outline-primary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(173, 110, 245, 0.15);
+    }
+
+    .btn-outline-primary:active {
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .btn-sm {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .btn svg, .btn i {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn-icon {
+      padding: 0.5rem;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+    }
+
+    .btn-icon svg, .btn-icon i {
+      margin-right: 0;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* Typography */
+    .text-xs { font-size: 0.75rem; line-height: 1.5; }
+    .text-sm { font-size: 0.875rem; line-height: 1.5; }
+    .text-base { font-size: 1rem; line-height: 1.6; }
+    .text-lg { font-size: 1.125rem; line-height: 1.6; }
+    .text-xl { font-size: 1.25rem; line-height: 1.5; }
+    .text-2xl { font-size: 1.5rem; line-height: 1.4; }
+    .text-3xl { font-size: 1.875rem; line-height: 1.3; }
+    .text-4xl { font-size: 2.25rem; line-height: 1.2; }
+
+    .font-light { font-weight: 300; }
+    .font-normal { font-weight: 400; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+
+    .tracking-tight { letter-spacing: -0.025em; }
+    .tracking-normal { letter-spacing: 0; }
+    .tracking-wide { letter-spacing: 0.025em; }
+
+    .leading-none { line-height: 1; }
+    .leading-tight { line-height: 1.25; }
+    .leading-snug { line-height: 1.375; }
+    .leading-normal { line-height: 1.5; }
+    .leading-relaxed { line-height: 1.625; }
+    .leading-loose { line-height: 2; }
+
+    /* Card Styles */
+    .card {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--foreground);
+      margin-bottom: 0.25rem;
+    }
+
+    .card-description {
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
+    }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .card-footer {
+      padding: 1.25rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    /* Colors */
+    .bg-background { background-color: var(--background); }
+    .bg-card { background-color: var(--card); }
+    .bg-primary { background-color: var(--primary); }
+    .bg-primary-light { background-color: var(--primary-light); }
+    .bg-muted { background-color: var(--muted); }
+    .bg-destructive { background-color: var(--destructive); }
+    .bg-success { background-color: var(--success); }
+    .bg-warning { background-color: var(--warning); }
+    .bg-info { background-color: var(--info); }
+
+    .text-foreground { color: var(--foreground); }
+    .text-primary { color: var(--primary); }
+    .text-primary-foreground { color: var(--primary-foreground); }
+    .text-muted-foreground { color: var(--muted-foreground); }
+    .text-destructive { color: var(--destructive); }
+    .text-success { color: var(--success); }
+    .text-warning { color: var(--warning); }
+    .text-info { color: var(--info); }
+    .text-info { color: hsl(var(--info)); }
+    .text-white { color: white; }
+
+    /* Layout */
+    .container { width: 100%; max-width: 80rem; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+    .flex { display: flex; }
+    .inline-flex { display: inline-flex; }
+    .grid { display: grid; }
+    .hidden { display: none; }
+    .h-3 { height: 0.75rem; }
+    .h-4 { height: 1rem; }
+    .h-5 { height: 1.25rem; }
+    .h-6 { height: 1.5rem; }
+    .h-8 { height: 2rem; }
+    .h-9 { height: 2.25rem; }
+    .h-10 { height: 2.5rem; }
+    .h-12 { height: 3rem; }
+    .h-16 { height: 4rem; }
+    .h-24 { height: 6rem; }
+    .h-full { height: 100%; }
+    .w-2 { width: 0.5rem; }
+    .w-3 { width: 0.75rem; }
+    .w-4 { width: 1rem; }
+    .w-5 { width: 1.25rem; }
+    .w-6 { width: 1.5rem; }
+    .w-8 { width: 2rem; }
+    .w-9 { width: 2.25rem; }
+    .w-10 { width: 2.5rem; }
+    .w-11 { width: 2.75rem; }
+    .w-12 { width: 3rem; }
+    .w-24 { width: 6rem; }
+    .w-44 { width: 11rem; }
+    .w-56 { width: 14rem; }
+    .w-64 { width: 16rem; }
+    .w-full { width: 100%; }
+    .max-w-6xl { max-width: 72rem; }
+    .flex-1 { flex: 1 1 0%; }
+    .shrink-0 { flex-shrink: 0; }
+    .flex-col { flex-direction: column; }
+    .items-start { align-items: flex-start; }
+    .items-center { align-items: center; }
+    .justify-start { justify-content: flex-start; }
+    .justify-center { justify-content: center; }
+    .justify-end { justify-content: flex-end; }
+    .justify-between { justify-content: space-between; }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-6 { gap: 1.5rem; }
+    .space-y-1 > * + * { margin-top: 0.25rem; }
+    .space-y-2 > * + * { margin-top: 0.5rem; }
+    .space-y-3 > * + * { margin-top: 0.75rem; }
+    .space-y-6 > * + * { margin-top: 1.5rem; }
+    .space-x-2 > * + * { margin-left: 0.5rem; }
+    .divide-y > * + * { border-top-width: 1px; }
+
+    /* Spacing */
+    .p-0 { padding: 0; }
+    .p-1 { padding: 0.25rem; }
+    .p-2 { padding: 0.5rem; }
+    .p-4 { padding: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .px-1 { padding-left: 0.25rem; padding-right: 0.25rem; }
+    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .py-0 { padding-top: 0; padding-bottom: 0; }
+    .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .pt-0 { padding-top: 0; }
+    .pt-6 { padding-top: 1.5rem; }
+    .pt-16 { padding-top: 4rem; }
+    .pb-4 { padding-bottom: 1rem; }
+
+    .m-0 { margin: 0; }
+    .m-1 { margin: 0.25rem; }
+    .m-2 { margin: 0.5rem; }
+    .m-4 { margin: 1rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .ml-1 { margin-left: 0.25rem; }
+    .ml-2 { margin-left: 0.5rem; }
+    .ml-3 { margin-left: 0.75rem; }
+    .ml-6 { margin-left: 1.5rem; }
+    .ml-8 { margin-left: 2rem; }
+    .ml-auto { margin-left: auto; }
+    .mr-1 { margin-right: 0.25rem; }
+    .mr-2 { margin-right: 0.5rem; }
+    .mr-3 { margin-right: 0.75rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .-top-1 { top: -0.25rem; }
+    .-right-1 { right: -0.25rem; }
+
+    /* Borders */
+    .rounded { border-radius: 0.25rem; }
+    .rounded-md { border-radius: calc(var(--radius) - 2px); }
+    .rounded-lg { border-radius: var(--radius); }
+    .rounded-full { border-radius: 9999px; }
+    .border { border-width: 1px; }
+    .border-2 { border-width: 2px; }
+    .border-4 { border-width: 4px; }
+    .border-b { border-bottom-width: 1px; }
+    .border-t { border-top-width: 1px; }
+    .border-white { border-color: white; }
+    .border-input { border-color: hsl(var(--input)); }
+    .border-gray-300 { border-color: rgb(209 213 219); }
+
+    /* Effects */
+    .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+    .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+
+    /* Positioning */
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .sticky { position: sticky; }
+    .fixed { position: fixed; }
+    .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+    .inset-y-0 { top: 0; bottom: 0; }
+    .top-0 { top: 0; }
+    .top-1\/2 { top: 50%; }
+    .bottom-0 { bottom: 0; }
+    .right-0 { right: 0; }
+    .right-3 { right: 0.75rem; }
+    .right-4 { right: 1rem; }
+    .left-0 { left: 0; }
+    .z-10 { z-index: 10; }
+    .z-30 { z-index: 30; }
+    .z-40 { z-index: 40; }
+    .z-50 { z-index: 50; }
+
+    /* Transforms */
+    .translate-x-0 { transform: translateX(0); }
+    .-translate-x-full { transform: translateX(-100%); }
+    .-translate-y-1\/2 { transform: translateY(-50%); }
+
+    /* Utilities */
+    .hidden { display: none; }
+    .opacity-0 { opacity: 0; }
+    .opacity-70 { opacity: 0.7; }
+    .opacity-100 { opacity: 1; }
+    .cursor-pointer { cursor: pointer; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-y-auto { overflow-y: auto; }
+    .whitespace-nowrap { white-space: nowrap; }
+    .text-center { text-align: center; }
+    .text-left { text-align: left; }
+    .align-text-top { vertical-align: text-top; }
+
+    /* Transitions */
+    .transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .transition-opacity { transition-property: opacity; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .transition-transform { transition-property: transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+    /* Custom components */
+    .card {
+      background-color: hsl(var(--card));
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    }
+
+    .card-header {
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1.5rem 0;
+    }
+
+    .card-gradient-header {
+      background: linear-gradient(to right, #f9fafb, #f3f4f6);
+      border-top-left-radius: var(--radius);
+      border-top-right-radius: var(--radius);
+      padding: 1rem 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: hsl(var(--card-foreground));
+    }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.875rem;
+      height: 2.5rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      transition-property: color, background-color, border-color;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+
+    .btn-primary {
+      background-color: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+    }
+
+    .btn-primary:hover {
+      background-color: hsla(var(--primary), 0.9);
+    }
+
+    .btn-outline {
+      border: 1px solid hsl(var(--input));
+      background-color: transparent;
+      color: hsl(var(--foreground));
+    }
+
+    .btn-outline:hover {
+      background-color: hsl(var(--accent));
+      color: hsl(var(--accent-foreground));
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: hsl(var(--foreground));
+    }
+
+    .btn-ghost:hover {
+      background-color: hsl(var(--accent));
+      color: hsl(var(--accent-foreground));
+    }
+
+    .btn-sm {
+      height: 2.25rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      border-radius: calc(var(--radius) - 2px);
+    }
+
+    .avatar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background-color: hsl(var(--muted));
+      border-radius: 9999px;
+    }
+
+    .avatar-image {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-fallback {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      z-index: 50;
+      min-width: 8rem;
+      overflow: hidden;
+      background-color: hsl(var(--popover));
+      border-radius: var(--radius);
+      border: 1px solid hsl(var(--border));
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+
+    .dropdown-menu-content {
+      padding: 0.5rem;
+    }
+
+    .dropdown-menu-label {
+      padding: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: hsl(var(--foreground));
+    }
+
+    .dropdown-menu-separator {
+      height: 1px;
+      margin: 0.25rem -0.5rem;
+      background-color: hsl(var(--border));
+    }
+
+    .dropdown-menu-item {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      border-radius: calc(var(--radius) - 2px);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .dropdown-menu-item:hover {
+      background-color: hsl(var(--accent));
+    }
+
+    .progress {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background-color: hsl(var(--secondary));
+      border-radius: 9999px;
+    }
+
+    .progress-indicator {
+      height: 100%;
+      background-color: hsl(var(--primary));
+      transition: width 0.2s ease;
+    }
+
+    .input {
+      width: 100%;
+      height: 2.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid hsl(var(--input));
+      background-color: hsl(var(--background));
+      font-size: 0.875rem;
+    }
+
+    .input:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px hsla(var(--ring), 0.3);
+    }
+
+    .input:read-only {
+      background-color: hsl(var(--muted));
+      cursor: not-allowed;
+    }
+
+    .textarea {
+      width: 100%;
+      min-height: 6rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid hsl(var(--input));
+      background-color: hsl(var(--background));
+      font-size: 0.875rem;
+      resize: vertical;
+    }
+
+    .textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px hsla(var(--ring), 0.3);
+    }
+
+    .tabs {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tabs-list {
+      display: flex;
+      background-color: hsl(var(--muted));
+      padding: 0.25rem;
+      border-radius: var(--radius);
+    }
+
+    .tabs-trigger {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: hsl(var(--muted-foreground));
+      border-radius: calc(var(--radius) - 2px);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .tabs-trigger[data-state="active"] {
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .tabs-content {
+      margin-top: 0.5rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      width: 2.75rem;
+      height: 1.5rem;
+      border-radius: 9999px;
+      background-color: hsl(var(--input));
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .switch[data-state="checked"] {
+      background-color: hsl(var(--primary));
+    }
+
+    .switch-thumb {
+      position: absolute;
+      left: 0.125rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 9999px;
+      background-color: white;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .switch[data-state="checked"] .switch-thumb {
+      transform: translateX(1.25rem);
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      padding: 1rem;
+      width: 100%;
+      max-width: 24rem;
+      z-index: 50;
+    }
+
+    .toast {
+      display: flex;
+      background-color: hsl(var(--background));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+      margin-top: 0.5rem;
+      animation: slideIn 0.2s ease-out;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-description {
+      font-size: 0.875rem;
+      color: hsl(var(--muted-foreground));
+    }
+
+    /* Responsive utilities */
+    @media (min-width: 640px) {
+      .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sm\:text-left { text-align: left; }
+      .sm\:justify-end { justify-content: flex-end; }
+      .sm\:flex-row { flex-direction: row; }
+      .sm\:space-x-2 > * + * { margin-left: 0.5rem; }
+    }
+
+    @media (min-width: 768px) {
+      .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .md\:col-span-2 { grid-column: span 2 / span 2; }
+      .md\:col-span-3 { grid-column: span 3 / span 3; }
+      .md\:flex-row { flex-direction: row; }
+      .md\:items-start { align-items: flex-start; }
+      .md\:justify-start { justify-content: flex-start; }
+      .md\:text-left { text-align: left; }
+      .md\:ml-6 { margin-left: 1.5rem; }
+      .md\:inline { display: inline; }
+      .md\:block { display: block; }
+      .md\:translate-x-0 { transform: translateX(0); }
+      .md\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+
+    @media (min-width: 1024px) {
+      .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    /* Animation keyframes */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+  </style>
+
+  <!-- Icons from Lucide (Feather) -->
+  <script>
+    // Minimal implementation of Lucide icons as inline SVG
+    function createIcon(name, path) {
+      window[name] = function(props = {}) {
+        const size = props.size || 24;
+        const color = props.color || 'currentColor';
+        const strokeWidth = props.strokeWidth || 2;
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', size);
+        svg.setAttribute('height', size);
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('fill', 'none');
+        svg.setAttribute('stroke', color);
+        svg.setAttribute('stroke-width', strokeWidth);
+        svg.setAttribute('stroke-linecap', 'round');
+        svg.setAttribute('stroke-linejoin', 'round');
+        svg.innerHTML = path;
+
+        return svg;
+      };
+    }
+
+    // Define icons
+    createIcon('Bell', '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>');
+    createIcon('Menu', '<line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/>');
+    createIcon('LogOut', '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>');
+    createIcon('User', '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>');
+    createIcon('Settings', '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>');
+    createIcon('Home', '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>');
+    createIcon('LayoutDashboard', '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>');
+    createIcon('Store', '<path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/>');
+    createIcon('Camera', '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>');
+    createIcon('Eye', '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>');
+    createIcon('EyeOff', '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>');
+    createIcon('Lock', '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>');
+    createIcon('ShieldCheck', '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>');
+    createIcon('Link2', '<path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/>');
+    createIcon('BarChart2', '<line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/>');
+    createIcon('Users', '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>');
+    createIcon('DollarSign', '<line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>');
+    createIcon('Beef', '<path d="M12.83 9.37a2.71 2.71 0 0 0-1.42-2.23 2.63 2.63 0 0 0-1.9-.18 2.72 2.72 0 0 1 .21-5.45 2.71 2.71 0 0 0-1.82 2.41c-2.2.94-3.35 2-3.35 3.65 0 3.64 6.4 8.25 10.92 10.66a2.72 2.72 0 0 1-2.69 2.27A2.72 2.72 0 0 0 15.51 18c.19-.62.76-1.1 1.38-1.65 2.13-1.88 4.56-4 4.56-7.79 0-2.58-1.94-2.55-1.94-5.06 0-.65.14-1.24.7-1.79"/>');
+    createIcon('FileText', '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/>');
+    createIcon('ShoppingBag', '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>');
+    createIcon('MessageSquare', '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>');
+    createIcon('Coins', '<circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 0 10.37 18.09"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/>');
+    createIcon('TrendingUp', '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>');
+    createIcon('LineChart', '<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>');
+    createIcon('Circle', '<circle cx="12" cy="12" r="10"/>');
+    createIcon('CheckCircle', '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>');
+    createIcon('Clock', '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>');
+    createIcon('Calendar', '<rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/>');
+    createIcon('MapPin', '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>');
+    createIcon('Monitor', '<rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>');
+    createIcon('Key', '<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>');
+    createIcon('LogIn', '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/>');
+  </script>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" type="button">
+          <div class="hamburger-lines">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </div>
+        </button>
+        <script>
+          // Immediate fix for hamburger button
+          document.getElementById('mobile-menu-toggle').onclick = function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const body = document.body;
+
+            if (this.classList.contains('active')) {
+              this.classList.remove('active');
+              mobileMenu.classList.remove('active');
+              mobileMenuOverlay.classList.remove('active');
+              body.style.overflow = '';
+            } else {
+              this.classList.add('active');
+              mobileMenu.classList.add('active');
+              mobileMenuOverlay.classList.add('active');
+              body.style.overflow = 'hidden';
+            }
+            return false;
+          };
+        </script>
+        <a href="home_page.html" class="logo">Dairy-Lift</a>
+        <nav class="desktop-nav">
+          <a href="home_page.html" class="nav-link">Home</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="storenew.html" class="nav-link">Store</a>
+          <a href="admin-dashboard.html" class="nav-link">Admin</a>
+        </nav>
+        <a href="login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            <span>Login</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <script>
+      // Fix for overlay click
+      document.getElementById('mobile-menu-overlay').onclick = function() {
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const body = document.body;
+
+        mobileMenuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        this.classList.remove('active');
+        body.style.overflow = '';
+        return false;
+      };
+    </script>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <script>
+          // Fix for close button
+          document.getElementById('mobile-menu-close').onclick = function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const body = document.body;
+
+            mobileMenuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileMenuOverlay.classList.remove('active');
+            body.style.overflow = '';
+            return false;
+          };
+        </script>
+      </div>
+      <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span style="margin-left: 10px;">Buy Cattle</span>
+      </a>
+      <a href="#" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span style="margin-left: 10px;">Bio-Gas</span>
+      </a>
+
+      <a href="visit-farm.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Visit Farm</span>
+      </a>
+      <a href="navhome.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Insurance</span>
+      </a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+          <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+        </svg>
+        <span style="margin-left: 10px;">Register Cattle</span>
+      </a>
+      <a href="#" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Contact-Us</span>
+      </a>
+      <a href="help/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span style="margin-left: 10px;">Support</span>
+      </a>
+      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Login / Register</span>
+      </a>
+      <script>
+        // Fix for mobile menu links
+        document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+          link.addEventListener('click', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const body = document.body;
+
+            mobileMenuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileMenuOverlay.classList.remove('active');
+            body.style.overflow = '';
+          });
+        });
+      </script>
+    </div>
+  </header>
+
+  <div class="relative min-h-screen bg-background">
+    <div class="flex">
+      <main class="flex-1 px-4 pt-6 md:px-6">
+        <div class="container mx-auto max-w-6xl">
+          <div class="mb-6">
+            <h1 class="text-2xl font-bold">Your Profile</h1>
+            <p class="text-muted-foreground">
+              View and manage your personal information and account settings
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <!-- Profile Header -->
+            <div class="md:col-span-3">
+              <div class="mb-8 flex flex-col items-center md:flex-row md:items-start">
+                <div class="relative" id="profile-image-container">
+                  <div class="avatar h-24 w-24 rounded-full border-4 border-white shadow-md">
+                    <div class="avatar-fallback bg-primary text-2xl text-primary-foreground">A</div>
+                  </div>
+
+                  <label for="profile-image" class="absolute bottom-0 right-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm opacity-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                      <circle cx="12" cy="13" r="3"></circle>
+                    </svg>
+                    <input type="file" id="profile-image" class="hidden" accept="image/*">
+                  </label>
+                </div>
+
+                <div class="mt-4 text-center md:ml-6 md:text-left">
+                  <h1 class="text-2xl font-bold">Admin User</h1>
+                  <p class="text-muted-foreground">admin@dairy-lift.com</p>
+                  <p class="mt-1 text-sm">Farm Manager</p>
+
+                  <div class="mt-3 flex gap-2 justify-center md:justify-start">
+                    <button class="btn btn-outline btn-sm" id="editProfileBtn">Edit Profile</button>
+                    <button class="btn btn-outline btn-sm" id="exportPdfBtn">Export PDF</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Profile Tabs and Content -->
+            <div class="md:col-span-2 space-y-6">
+              <div class="tabs" id="profileTabs">
+                <div class="tabs-list grid grid-cols-4 w-full">
+                  <button class="tabs-trigger" data-tab="personal" data-state="active">Personal Info</button>
+                  <button class="tabs-trigger" data-tab="security">Security</button>
+                  <button class="tabs-trigger" data-tab="notifications">Notifications</button>
+                  <button class="tabs-trigger" data-tab="social">Social Links</button>
+                </div>
+
+                <div class="tabs-content mt-2">
+                  <!-- Personal Info Tab -->
+                  <div class="tab-panel" id="personal-tab" data-active="true">
+                    <div class="card mb-8" id="personal">
+                      <div class="card-gradient-header">
+                        <div class="card-title flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                          </svg>
+                          Personal Information
+                        </div>
+                      </div>
+                      <div class="card-content p-6">
+                        <form id="personalInfoForm">
+                          <div class="grid gap-6 md:grid-cols-2">
+                            <div class="space-y-2">
+                              <label for="firstName" class="text-sm font-medium">First Name</label>
+                              <input id="firstName" class="input" value="Admin">
+                            </div>
+
+                            <div class="space-y-2">
+                              <label for="lastName" class="text-sm font-medium">Last Name</label>
+                              <input id="lastName" class="input" value="User">
+                            </div>
+
+                            <div class="space-y-2">
+                              <label for="email" class="text-sm font-medium">Email Address</label>
+                              <input id="email" type="email" class="input" value="admin@dairy-lift.com">
+                            </div>
+
+                            <div class="space-y-2">
+                              <label for="phone" class="text-sm font-medium">Phone Number</label>
+                              <input id="phone" class="input" value="+91 9876543210">
+                            </div>
+
+                            <div class="space-y-2">
+                              <label for="role" class="text-sm font-medium">Role</label>
+                              <input id="role" class="input" value="Farm Manager">
+                            </div>
+
+                            <div class="space-y-2">
+                              <label for="joined" class="text-sm font-medium">Date Joined</label>
+                              <input id="joined" class="input bg-muted" value="January 15, 2023" readonly>
+                            </div>
+                          </div>
+
+                          <div class="mt-6 space-y-2">
+                            <label for="address" class="text-sm font-medium">Address</label>
+                            <input id="address" class="input" value="123 Dairy Lane, Milk County, 560001">
+                          </div>
+
+                          <div class="mt-6 space-y-2">
+                            <label for="bio" class="text-sm font-medium">Bio</label>
+                            <textarea id="bio" class="textarea" rows="4">Experienced farm manager with over 5 years in dairy farm operations and management. Specializing in cattle health, milk production optimization, and investor relations.</textarea>
+                          </div>
+
+                          <div class="mt-6 flex justify-end gap-2">
+                            <button type="button" class="btn btn-outline" id="cancelPersonalBtn">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Security Tab -->
+                  <div class="tab-panel hidden" id="security-tab">
+                    <div class="card mb-8">
+                      <div class="card-gradient-header">
+                        <div class="card-title flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                          </svg>
+                          Change Password
+                        </div>
+                      </div>
+                      <div class="card-content p-6">
+                        <form id="passwordForm">
+                          <div class="space-y-6">
+                            <div class="space-y-2">
+                              <label for="currentPassword" class="text-sm font-medium">Current Password</label>
+                              <div class="relative">
+                                <input id="currentPassword" type="password" class="input">
+                                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 toggle-password" data-for="currentPassword">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                                    <line x1="2" x2="22" y1="2" y2="22"></line>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+
+                            <div class="space-y-2">
+                              <label for="newPassword" class="text-sm font-medium">New Password</label>
+                              <div class="relative">
+                                <input id="newPassword" type="password" class="input">
+                                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 toggle-password" data-for="newPassword">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                                    <line x1="2" x2="22" y1="2" y2="22"></line>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+
+                            <div class="space-y-2">
+                              <label for="confirmPassword" class="text-sm font-medium">Confirm New Password</label>
+                              <div class="relative">
+                                <input id="confirmPassword" type="password" class="input">
+                                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 toggle-password" data-for="confirmPassword">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                                    <line x1="2" x2="22" y1="2" y2="22"></line>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="mt-6 flex justify-end gap-2">
+                            <button type="button" class="btn btn-outline">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="card mb-8">
+                      <div class="card-gradient-header">
+                        <div class="card-title flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                          </svg>
+                          Two-Factor Authentication
+                        </div>
+                      </div>
+                      <div class="card-content p-6">
+                        <p class="mb-4">
+                          Secure your account with two-factor authentication. When enabled, you'll be required to provide an additional authentication code when logging in.
+                        </p>
+                        <button class="btn btn-primary" id="enable2FABtn">Enable Two-Factor</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Notifications Tab -->
+                  <div class="tab-panel hidden" id="notifications-tab">
+                    <div class="card mb-8">
+                      <div class="card-gradient-header">
+                        <div class="card-title flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                          </svg>
+                          Notification Preferences
+                        </div>
+                      </div>
+                      <div class="card-content p-6">
+                        <div class="space-y-6">
+                          <div class="flex items-center justify-between">
+                            <div>
+                              <h4 class="font-medium">Email Notifications</h4>
+                              <p class="text-sm text-muted-foreground">Receive email notifications for important updates.</p>
+                            </div>
+                            <div class="switch" data-state="checked">
+                              <div class="switch-thumb"></div>
+                            </div>
+                          </div>
+
+                          <div class="flex items-center justify-between">
+                            <div>
+                              <h4 class="font-medium">SMS Notifications</h4>
+                              <p class="text-sm text-muted-foreground">Receive text messages for critical alerts.</p>
+                            </div>
+                            <div class="switch" data-state="checked">
+                              <div class="switch-thumb"></div>
+                            </div>
+                          </div>
+
+                          <div class="flex items-center justify-between">
+                            <div>
+                              <h4 class="font-medium">Push Notifications</h4>
+                              <p class="text-sm text-muted-foreground">Receive push notifications on your devices.</p>
+                            </div>
+                            <div class="switch" data-state="checked">
+                              <div class="switch-thumb"></div>
+                            </div>
+                          </div>
+
+                          <div class="flex items-center justify-between">
+                            <div>
+                              <h4 class="font-medium">Marketing Emails</h4>
+                              <p class="text-sm text-muted-foreground">Receive updates about new features and offers.</p>
+                            </div>
+                            <div class="switch" data-state="unchecked">
+                              <div class="switch-thumb"></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="mt-6 flex justify-between">
+                          <button class="btn btn-outline" id="resetDefaultsBtn">Reset to Default</button>
+                          <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Social Links Tab -->
+                  <div class="tab-panel hidden" id="social-tab">
+                    <div class="card mb-8">
+                      <div class="card-gradient-header">
+                        <div class="card-title flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5">
+                            <path d="M9 17H7A5 5 0 0 1 7 7h2"></path>
+                            <path d="M15 7h2a5 5 0 1 1 0 10h-2"></path>
+                            <line x1="8" x2="16" y1="12" y2="12"></line>
+                          </svg>
+                          Social Media Links
+                        </div>
+                      </div>
+                      <div class="card-content p-6">
+                        <div class="space-y-6">
+                          <div class="space-y-2">
+                            <label for="linkedin" class="text-sm font-medium">LinkedIn</label>
+                            <input id="linkedin" class="input" placeholder="https://linkedin.com/in/username" value="https://linkedin.com/in/adminuser">
+                          </div>
+
+                          <div class="space-y-2">
+                            <label for="twitter" class="text-sm font-medium">Twitter</label>
+                            <input id="twitter" class="input" placeholder="https://twitter.com/username" value="">
+                          </div>
+
+                          <div class="space-y-2">
+                            <label for="facebook" class="text-sm font-medium">Facebook</label>
+                            <input id="facebook" class="input" placeholder="https://facebook.com/username" value="https://facebook.com/adminuser">
+                          </div>
+
+                          <div class="space-y-2">
+                            <label for="instagram" class="text-sm font-medium">Instagram</label>
+                            <input id="instagram" class="input" placeholder="https://instagram.com/username" value="">
+                          </div>
+                        </div>
+
+                        <div class="mt-6 flex justify-end">
+                          <button class="btn btn-primary" id="saveSocialBtn">Save Links</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sidebar Content -->
+            <div class="space-y-6">
+              <!-- Profile Completion -->
+              <div class="card mb-8">
+                <div class="card-gradient-header">
+                  <div class="card-title">Profile Completion</div>
+                </div>
+                <div class="card-content pt-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium">Your profile is 60% complete</span>
+                    <span class="text-sm font-medium">60%</span>
+                  </div>
+                  <div class="progress h-2 mb-6">
+                    <div class="progress-indicator" style="width: 60%"></div>
+                  </div>
+
+                  <div class="space-y-3">
+                    <div class="flex items-center text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-success">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                      <span>Personal Info</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-muted-foreground">
+                        <circle cx="12" cy="12" r="10"></circle>
+                      </svg>
+                      <span>Profile Image</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-success">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                      <span>Contact Details</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-success">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                      <span>Bio</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4 text-muted-foreground">
+                        <circle cx="12" cy="12" r="10"></circle>
+                      </svg>
+                      <span>Social Links</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Investor Summary -->
+              <div class="card mb-8">
+                <div class="card-gradient-header">
+                  <div class="card-title">Investor Performance Summary</div>
+                </div>
+                <div class="card-content p-6">
+                  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div class="flex items-center gap-4">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary">
+                          <circle cx="8" cy="8" r="6"></circle>
+                          <path d="M18.09 10.37A6 6 0 1 0 10.37 18.09"></path>
+                          <path d="M7 6h1v4"></path>
+                          <path d="m16.71 13.88.7.71-2.82 2.82"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm text-muted-foreground">Total Investment</p>
+                        <p class="text-xl font-semibold">₹2,50,000</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-success/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-success">
+                          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                          <polyline points="16 7 22 7 22 13"></polyline>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm text-muted-foreground">Returns Earned</p>
+                        <p class="text-xl font-semibold">₹32,125</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-warning/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-warning">
+                          <path d="M12.83 9.37a2.71 2.71 0 0 0-1.42-2.23 2.63 2.63 0 0 0-1.9-.18 2.72 2.72 0 0 1 .21-5.45 2.71 2.71 0 0 0-1.82 2.41c-2.2.94-3.35 2-3.35 3.65 0 3.64 6.4 8.25 10.92 10.66a2.72 2.72 0 0 1-2.69 2.27A2.72 2.72 0 0 0 15.51 18c.19-.62.76-1.1 1.38-1.65 2.13-1.88 4.56-4 4.56-7.79 0-2.58-1.94-2.55-1.94-5.06 0-.65.14-1.24.7-1.79"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm text-muted-foreground">Active Cattle Owned</p>
+                        <p class="text-xl font-semibold">5</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-info/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-info">
+                          <path d="M3 3v18h18"></path>
+                          <path d="m19 9-5 5-4-4-3 3"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-sm text-muted-foreground">Monthly Profit</p>
+                        <p class="text-xl font-semibold">₹4,125</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick Links -->
+              <div class="card mb-8">
+                <div class="card-gradient-header">
+                  <div class="card-title">Quick Links</div>
+                </div>
+                <div class="card-content p-6">
+                  <div class="grid grid-cols-2 gap-4">
+                    <a href="YourCattle.html" class="btn btn-outline w-full justify-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                        <path d="M12.83 9.37a2.71 2.71 0 0 0-1.42-2.23 2.63 2.63 0 0 0-1.9-.18 2.72 2.72 0 0 1 .21-5.45 2.71 2.71 0 0 0-1.82 2.41c-2.2.94-3.35 2-3.35 3.65 0 3.64 6.4 8.25 10.92 10.66a2.72 2.72 0 0 1-2.69 2.27A2.72 2.72 0 0 0 15.51 18c.19-.62.76-1.1 1.38-1.65 2.13-1.88 4.56-4 4.56-7.79 0-2.58-1.94-2.55-1.94-5.06 0-.65.14-1.24.7-1.79"></path>
+                      </svg>
+                      Manage Cattle
+                    </a>
+
+                    <a href="dashboard.html" class="btn btn-outline w-full justify-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" x2="8" y1="13" y2="13"></line>
+                        <line x1="16" x2="8" y1="17" y2="17"></line>
+                        <line x1="10" x2="8" y1="9" y2="9"></line>
+                      </svg>
+                      Dashboard
+                    </a>
+
+                    <a href="filesforbuycattle/dist/index.html" class="btn btn-outline w-full justify-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" x2="21" y1="6" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                      </svg>
+                      Buy Cattle
+                    </a>
+
+                    <a href="help/home.html" class="btn btn-outline w-full justify-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                      Support
+                    </a>
+                  </div>
+
+                  <!-- Logout Button -->
+                  <div class="mt-6">
+                    <button id="logout-button" class="btn w-full bg-red-500 hover:bg-red-600 text-white justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                      </svg>
+                      Logout
+                    </button>
+                  </div>
+
+                  <script>
+                    // Add event listener for logout button
+                    document.getElementById('logout-button').addEventListener('click', function() {
+                      if (window.DairyLiftAuth) {
+                        // Call the logout function from auth.js
+                        window.DairyLiftAuth.logout();
+                      } else {
+                        console.error('Auth utility not available');
+                        alert('Logout failed. Please try again later.');
+                      }
+                    });
+                  </script>
+                </div>
+              </div>
+            </div>
+
+            <!-- Activity Log -->
+            <div class="md:col-span-2">
+              <div class="card mb-8">
+                <div class="card-gradient-header">
+                  <div class="card-title">Recent Activity</div>
+                </div>
+                <div class="card-content p-0">
+                  <div class="divide-y">
+                    <div class="flex items-center gap-3 p-4">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium">Updated Profile</p>
+                        <div class="flex items-center text-xs text-muted-foreground">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          <span>2025-04-10, 10:30 AM</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-4">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <circle cx="7.5" cy="15.5" r="5.5"></circle>
+                          <path d="m21 2-9.6 9.6"></path>
+                          <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium">Changed Password</p>
+                        <div class="flex items-center text-xs text-muted-foreground">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          <span>2025-04-09, 04:12 PM</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-4">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                          <polyline points="10 17 15 12 10 7"></polyline>
+                          <line x1="15" x2="3" y1="12" y2="12"></line>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium">Logged In</p>
+                        <div class="flex items-center text-xs text-muted-foreground">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          <span>2025-04-09, 01:02 PM</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-4">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium">Updated Cattle Records</p>
+                        <div class="flex items-center text-xs text-muted-foreground">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          <span>2025-04-08, 11:45 AM</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-4">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                          <polyline points="10 17 15 12 10 7"></polyline>
+                          <line x1="15" x2="3" y1="12" y2="12"></line>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium">Logged In</p>
+                        <div class="flex items-center text-xs text-muted-foreground">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          <span>2025-04-08, 09:17 AM</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Login Stats -->
+            <div>
+              <div class="card mb-8">
+                <div class="card-gradient-header">
+                  <div class="card-title">Login Statistics</div>
+                </div>
+                <div class="card-content p-6">
+                  <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div class="flex items-start gap-3">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-medium">Last Login Location</p>
+                        <p class="text-sm text-muted-foreground">Bengaluru, Karnataka</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                          <line x1="8" x2="16" y1="21" y2="21"></line>
+                          <line x1="12" x2="12" y1="17" y2="21"></line>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-medium">Devices</p>
+                        <p class="text-sm text-muted-foreground">Chrome on Windows, iPhone App</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                          <line x1="16" x2="16" y1="2" y2="6"></line>
+                          <line x1="8" x2="8" y1="2" y2="6"></line>
+                          <line x1="3" x2="21" y1="10" y2="10"></line>
+                          <path d="M8 14h.01"></path>
+                          <path d="M12 14h.01"></path>
+                          <path d="M16 14h.01"></path>
+                          <path d="M8 18h.01"></path>
+                          <path d="M12 18h.01"></path>
+                          <path d="M16 18h.01"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-medium">Last Password Change</p>
+                        <p class="text-sm text-muted-foreground">March 15, 2025</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-medium">Total Login Count</p>
+                        <p class="text-sm text-muted-foreground">124 times</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div>
+          <a href="#" class="text-primary font-['Pacifico'] text-2xl"
+            >Dairy-Lift</a
+          >
+          <p class="mt-4 text-gray-400">
+            Transforming dairy farming into a premium investment opportunity
+            with transparent operations and consistent returns.
+          </p>
+          <div class="mt-6 flex space-x-4">
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-facebook-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-twitter-x-fill"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/dairy_lift/"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-instagram-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-linkedin-fill"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Investment Options</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Performance Reports</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Farm Tours</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Testimonials</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >FAQs</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-map-pin-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400"
+                >123 Dairy Farm Road, Green Valley, CA 94535</span
+              >
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-phone-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">+1 (555) 123-4567</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-mail-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">dairylift@gmail.com</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-time-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">Mon-Fri: 9AM-5PM (PST)</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+          <p class="text-gray-400 mb-4">
+            Subscribe to receive updates on dairy market trends and investment
+            opportunities.
+          </p>
+          <form class="space-y-4">
+            <div>
+              <input
+                type="email"
+                placeholder="Your email address"
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary text-white"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary hover:bg-primary/90 text-white py-2 font-medium !rounded-button whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
+      >
+        <p class="text-gray-400 text-sm">
+          © 2025 Dairy-Lift. All rights reserved.
+        </p>
+        <div class="mt-4 md:mt-0 flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Privacy Policy</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Terms of Service</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Cookie Policy</a
+          >
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast container for notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize authentication UI
+      if (window.DairyLiftAuth) {
+        window.DairyLiftAuth.updateAuthUI();
+
+        // Check if user is logged in, if not redirect to login page
+        if (!window.DairyLiftAuth.isLoggedIn()) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // Populate user data if available
+        const userData = window.DairyLiftAuth.getCurrentUser();
+        if (userData) {
+          // Update profile name and email if elements exist
+          const nameElement = document.querySelector('h1.text-2xl.font-bold');
+          const emailElement = document.querySelector('p.text-muted-foreground');
+
+          if (nameElement && userData.name) {
+            nameElement.textContent = userData.name;
+          }
+
+          if (emailElement && userData.email) {
+            emailElement.textContent = userData.email;
+          }
+        }
+      }
+
+      // Toggle user dropdown menu
+      const userDropdown = document.getElementById('userDropdown');
+      const userMenu = document.getElementById('userMenu');
+
+      userDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+        userMenu.classList.toggle('hidden');
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', () => {
+        if (!userMenu.classList.contains('hidden')) {
+          userMenu.classList.add('hidden');
+        }
+      });
+
+      // Toast notification system
+      const toastContainer = document.getElementById('toastContainer');
+
+      function showToast(title, description, type = 'default', duration = 3000) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+
+        if (type === 'error') {
+          toast.style.borderLeftColor = 'hsl(var(--destructive))';
+          toast.style.borderLeftWidth = '4px';
+        } else if (type === 'success') {
+          toast.style.borderLeftColor = 'hsl(var(--success))';
+          toast.style.borderLeftWidth = '4px';
+        }
+
+        toast.innerHTML = `
+          <div>
+            <div class="toast-title">${title}</div>
+            <div class="toast-description">${description}</div>
+          </div>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.animation = 'slideOut 0.3s ease-out forwards';
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 300);
+        }, duration);
+      }
+
+      // Profile image hover effect
+      const profileImageContainer = document.getElementById('profile-image-container');
+      const cameraButton = profileImageContainer.querySelector('label');
+
+      profileImageContainer.addEventListener('mouseenter', () => {
+        cameraButton.style.opacity = '1';
+      });
+
+      profileImageContainer.addEventListener('mouseleave', () => {
+        cameraButton.style.opacity = '0';
+      });
+
+      // Profile image upload
+      const profileImage = document.getElementById('profile-image');
+      profileImage.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            // Create or update avatar image
+            let avatarImage = profileImageContainer.querySelector('.avatar-image');
+            if (!avatarImage) {
+              const avatarFallback = profileImageContainer.querySelector('.avatar-fallback');
+              if (avatarFallback) {
+                avatarFallback.style.display = 'none';
+              }
+
+              avatarImage = document.createElement('img');
+              avatarImage.className = 'avatar-image';
+              profileImageContainer.querySelector('.avatar').appendChild(avatarImage);
+            }
+
+            avatarImage.src = event.target.result;
+
+            // Also update header avatar
+            const headerAvatar = document.querySelector('#userDropdown .avatar');
+            let headerAvatarImage = headerAvatar.querySelector('.avatar-image');
+            if (!headerAvatarImage) {
+              const headerAvatarFallback = headerAvatar.querySelector('.avatar-fallback');
+              if (headerAvatarFallback) {
+                headerAvatarFallback.style.display = 'none';
+              }
+
+              headerAvatarImage = document.createElement('img');
+              headerAvatarImage.className = 'avatar-image';
+              headerAvatar.appendChild(headerAvatarImage);
+            }
+
+            headerAvatarImage.src = event.target.result;
+
+            showToast('Profile Image Updated', 'Your profile image has been updated successfully.', 'success');
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Tab switching
+      const tabButtons = document.querySelectorAll('.tabs-trigger');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabId = button.getAttribute('data-tab');
+
+          // Update button states
+          tabButtons.forEach(btn => {
+            if (btn.getAttribute('data-tab') === tabId) {
+              btn.setAttribute('data-state', 'active');
+            } else {
+              btn.setAttribute('data-state', 'inactive');
+            }
+          });
+
+          // Update tab panels
+          tabPanels.forEach(panel => {
+            if (panel.id === `${tabId}-tab`) {
+              panel.classList.remove('hidden');
+              panel.setAttribute('data-active', 'true');
+            } else {
+              panel.classList.add('hidden');
+              panel.setAttribute('data-active', 'false');
+            }
+          });
+        });
+      });
+
+      // Toggle password visibility
+      const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+      togglePasswordButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const inputId = button.getAttribute('data-for');
+          const input = document.getElementById(inputId);
+
+          if (input.type === 'password') {
+            input.type = 'text';
+            button.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            `;
+          } else {
+            input.type = 'password';
+            button.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                <line x1="2" x2="22" y1="2" y2="22"/>
+              </svg>
+            `;
+          }
+        });
+      });
+
+      // Toggle switches
+      const switches = document.querySelectorAll('.switch');
+      switches.forEach(switchEl => {
+        switchEl.addEventListener('click', () => {
+          if (switchEl.getAttribute('data-state') === 'checked') {
+            switchEl.setAttribute('data-state', 'unchecked');
+          } else {
+            switchEl.setAttribute('data-state', 'checked');
+          }
+        });
+      });
+
+      // Handle form submissions
+      const personalInfoForm = document.getElementById('personalInfoForm');
+      personalInfoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        showToast('Profile Updated', 'Your profile information has been updated successfully.', 'success');
+      });
+
+      const passwordForm = document.getElementById('passwordForm');
+      if (passwordForm) {
+        passwordForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const newPassword = document.getElementById('newPassword').value;
+          const confirmPassword = document.getElementById('confirmPassword').value;
+
+          if (newPassword !== confirmPassword) {
+            showToast('Error', 'New passwords do not match.', 'error');
+            return;
+          }
+
+          showToast('Password Updated', 'Your password has been updated successfully.', 'success');
+          passwordForm.reset();
+        });
+      }
+
+      // Event handlers for various buttons
+      document.getElementById('notificationBtn').addEventListener('click', () => {
+        showToast('Notifications', 'You have 3 unread notifications');
+      });
+
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        // Use our auth utility to log out
+        if (window.DairyLiftAuth) {
+          window.DairyLiftAuth.logout();
+        }
+
+        showToast('Logged out successfully', 'You have been logged out of your account', 'success');
+
+        // Redirect to home page after a short delay
+        setTimeout(() => {
+          window.location.href = 'home_page.html';
+        }, 1500);
+      });
+
+      document.getElementById('editProfileBtn').addEventListener('click', () => {
+        // Ensure Personal Info tab is active
+        const personalTab = document.querySelector('[data-tab="personal"]');
+        personalTab.click();
+
+        showToast('Edit Profile', 'You can now edit your profile information below.');
+
+        // Scroll to the form
+        document.getElementById('personal').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      document.getElementById('exportPdfBtn').addEventListener('click', () => {
+        showToast('Export PDF', 'Your profile is being exported as PDF');
+      });
+
+      if (document.getElementById('enable2FABtn')) {
+        document.getElementById('enable2FABtn').addEventListener('click', () => {
+          showToast('Two-Factor Authentication', 'Two-factor authentication setup process initiated.');
+        });
+      }
+
+      if (document.getElementById('saveSettingsBtn')) {
+        document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+          showToast('Settings Saved', 'Your notification preferences have been updated.');
+        });
+      }
+
+      if (document.getElementById('resetDefaultsBtn')) {
+        document.getElementById('resetDefaultsBtn').addEventListener('click', () => {
+          const switches = document.querySelectorAll('#notifications-tab .switch');
+          switches.forEach((switchEl, index) => {
+            if (index < 3) {
+              switchEl.setAttribute('data-state', 'checked');
+            } else {
+              switchEl.setAttribute('data-state', 'unchecked');
+            }
+          });
+
+          showToast('Settings Reset', 'Your notification preferences have been reset to default.');
+        });
+      }
+
+      if (document.getElementById('saveSocialBtn')) {
+        document.getElementById('saveSocialBtn').addEventListener('click', () => {
+          showToast('Social Links Updated', 'Your social media links have been updated successfully.');
+        });
+      }
+
+      if (document.getElementById('cancelPersonalBtn')) {
+        document.getElementById('cancelPersonalBtn').addEventListener('click', () => {
+          showToast('Changes Cancelled', 'Your changes have been discarded.');
+        });
+      }
+
+      // Close all the open divs for the content section
+      document.addEventListener('DOMContentLoaded', function() {
+        // Make sure all divs are properly closed
+        const contentDiv = document.querySelector('.relative.min-h-screen.bg-background');
+        if (contentDiv) {
+          // Check if the content structure is correct
+          console.log('Content structure loaded correctly');
+        }
+      });
+
+      // Add animation for mobile menu links
+      document.addEventListener('DOMContentLoaded', function() {
+        // Animate menu items when menu opens
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuToggle && mobileMenu) {
+          const originalOnClick = mobileMenuToggle.onclick;
+
+          mobileMenuToggle.onclick = function() {
+            const result = originalOnClick.apply(this, arguments);
+
+            // If menu is now open, animate the links
+            if (mobileMenu.classList.contains('active')) {
+              const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+              navLinks.forEach((link, index) => {
+                link.style.opacity = '0';
+                link.style.transform = 'translateX(-15px)';
+                link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+
+                setTimeout(() => {
+                  link.style.opacity = '1';
+                  link.style.transform = 'translateX(0)';
+                }, 10);
+              });
+            }
+
+            return result;
+          };
+        }
+
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape') {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const body = document.body;
+
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+              mobileMenuToggle.classList.remove('active');
+              mobileMenu.classList.remove('active');
+              mobileMenuOverlay.classList.remove('active');
+              body.style.overflow = '';
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

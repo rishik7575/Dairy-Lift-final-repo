@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dairy-Lift - Wishlist</title>
+  <meta name="description"
+    content="View and manage your wishlist at Dairy-Lift - premium dairy products." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="js/auth.js"></script>
+  <script>
+    // Function to initialize auth and dispatch events
+    function initializeAuth() {
+      console.log('Initializing auth in watchlist page...');
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+
+        // Force UI update after a short delay
+        setTimeout(function() {
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.updateAuthUI();
+          }
+        }, 500);
+      } else {
+        console.error('Auth script not loaded properly');
+        // Try to load it again
+        var script = document.createElement('script');
+        script.src = 'js/auth.js';
+        script.onload = function() {
+          console.log('Auth script loaded dynamically');
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.initAuth();
+
+            // Force UI update after a short delay
+            setTimeout(function() {
+              if (window.DairyLiftAuth) {
+                window.DairyLiftAuth.updateAuthUI();
+              }
+            }, 500);
+          }
+        };
+        document.head.appendChild(script);
+      }
+    }
+
+    // Call initialization on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', initializeAuth);
+
+    // Also call initialization immediately if document is already loaded
+    if (document.readyState !== 'loading') {
+      initializeAuth();
+    }
+
+    // Call initialization on window load
+    window.addEventListener('load', initializeAuth);
+
+    // Listen for auth.js loaded event
+    document.addEventListener('dairyLiftAuthLoaded', function(event) {
+      console.log('Auth script loaded event received');
+      initializeAuth();
+    });
+
+    // Listen for storage events to sync auth state across tabs
+    window.addEventListener('storage', function(event) {
+      if (event.key === 'dairyLift_auth') {
+        console.log('Auth state changed in another tab, updating UI');
+        if (window.DairyLiftAuth) {
+          window.DairyLiftAuth.updateAuthUI();
+
+          // Force UI update after a short delay
+          setTimeout(function() {
+            if (window.DairyLiftAuth) {
+              window.DairyLiftAuth.updateAuthUI();
+            }
+          }, 300);
+        }
+      }
+    });
+
+    // Set up periodic check for auth state
+    setInterval(function() {
+      if (window.DairyLiftAuth) {
+        const isLoggedIn = window.DairyLiftAuth.isLoggedIn();
+        const profileIcon = document.getElementById('profile-icon-link');
+
+        if (isLoggedIn && !profileIcon) {
+          console.log('Periodic check: User is logged in but profile icon not found, updating UI');
+          window.DairyLiftAuth.updateAuthUI();
+        }
+      }
+    }, 1000);
+
+    // Force an update when the user becomes visible (tab focus)
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden && window.DairyLiftAuth) {
+        console.log('Page became visible, forcing UI update');
+        window.DairyLiftAuth.updateAuthUI();
+      }
+    });
+  </script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --card: #ffffff;
+      --card-foreground: #020617;
+      --secondary: #c9b458;
+      --secondary-foreground: #ffffff;
+      --accent: #f2efd1;
+      --accent-foreground: #020617;
+      --destructive: #ef4444;
+      --destructive-foreground: #ffffff;
+      --input: #e2e8f0;
+      --ring: #ad6ef5;
+      --radius: 0.5rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--foreground);
+      background-color: #f9fafb;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .navbar-link {
+      text-decoration: none;
+      color: var(--foreground);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .navbar-link:hover {
+      color: var(--primary);
+    }
+
+    .navbar-link.active {
+      color: var(--primary);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      padding: 0.5rem 1rem;
+      border: none;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    /* Profile Icon Styles */
+    .profile-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(173, 110, 245, 0.2);
+      color: #ad6ef5;
+      transition: all 0.3s ease;
+    }
+
+    .profile-icon:hover {
+      background-color: rgba(173, 110, 245, 0.3);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .btn-icon {
+      padding: 0.5rem;
+    }
+
+    .cart-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--foreground);
+    }
+
+    .cart-button:hover {
+      color: var(--primary);
+      transform: scale(1.1);
+      transition: transform 0.3s ease;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      font-size: 0.75rem;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+
+    .main {
+      flex-grow: 1;
+      padding: 2rem 0;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      color: var(--muted-foreground);
+    }
+
+    .wishlist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .wishlist-count {
+      font-weight: 500;
+      color: var(--muted-foreground);
+    }
+
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .wishlist-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 0;
+      text-align: center;
+      color: var(--muted-foreground);
+    }
+
+    .wishlist-empty-icon {
+      font-size: 4rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .wishlist-empty h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .product-card {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .product-image-container {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius);
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .product-badge.out-of-stock {
+      background-color: var(--destructive);
+    }
+
+    .product-actions {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--card);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      transition: all 0.2s;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-btn:hover {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .action-btn.active {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .product-content {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .rating-stars {
+      display: flex;
+      color: #f0c04a;
+      margin-right: 0.25rem;
+    }
+
+    .rating-count {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .product-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-description {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-price-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .product-price {
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+
+    .product-stock {
+      font-size: 0.75rem;
+    }
+
+    .in-stock {
+      color: var(--primary);
+    }
+
+    .out-of-stock {
+      color: var(--destructive);
+    }
+
+    .product-footer {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .product-footer .btn {
+      flex: 1;
+    }
+
+    .wishlist-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .wishlist-filter {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .filter-label {
+      font-weight: 500;
+    }
+
+    .wishlist-actions {
+      margin-left: auto;
+    }
+
+    .footer {
+      background-color: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+      margin-top: auto;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .footer-about {
+      max-width: 300px;
+      margin-bottom: 1rem;
+      color: var(--muted-foreground);
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--muted);
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .social-icon:hover {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .footer-title {
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-link {
+      color: var(--muted-foreground);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+    }
+
+    .footer-newsletter p {
+      color: var(--muted-foreground);
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+    }
+
+    .newsletter-input {
+      flex-grow: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-right: none;
+      border-top-left-radius: var(--radius);
+      border-bottom-left-radius: var(--radius);
+      outline: none;
+    }
+
+    .newsletter-btn {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.75rem 1rem;
+      border: none;
+      border-top-right-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .newsletter-btn:hover {
+      background-color: #2d7a34;
+    }
+
+    .copyright {
+      text-align: center;
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
+    }
+
+    /* Quick View Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-container {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      width: 90%;
+      max-width: 900px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.open .modal-container {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: var(--muted-foreground);
+    }
+
+    .close-modal:hover {
+      color: var(--foreground);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .modal-body {
+        flex-direction: row;
+      }
+    }
+
+    .modal-image {
+      flex: 1;
+      max-width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .modal-image {
+        max-width: 50%;
+      }
+    }
+
+    .modal-image img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      object-fit: cover;
+    }
+
+    .modal-content {
+      flex: 1;
+    }
+
+    .modal-product-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-product-price {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .modal-product-description {
+      margin-bottom: 1.5rem;
+      color: var(--muted-foreground);
+    }
+
+    .modal-product-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .meta-label {
+      font-weight: 500;
+      min-width: 120px;
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quantity-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .quantity-btn:first-child {
+      border-top-left-radius: var(--radius);
+      border-bottom-left-radius: var(--radius);
+    }
+
+    .quantity-btn:last-child {
+      border-top-right-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+    }
+
+    .quantity-input {
+      width: 60px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-left: none;
+      border-right: none;
+      text-align: center;
+      outline: none;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .modal-actions .btn {
+      flex: 1;
+    }
+
+    /* Cart Drawer */
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 100%;
+      max-width: 450px;
+      height: 100vh;
+      background-color: var(--card);
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-drawer.open {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .close-cart {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      color: var(--muted-foreground);
+    }
+
+    .close-cart:hover {
+      color: var(--foreground);
+    }
+
+    .cart-body {
+      flex-grow: a;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+
+    .select-dropdown {
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background-color: var(--card);
+      outline: none;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 991px) {
+      .wishlist-controls {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .wishlist-actions {
+        margin-left: 0;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+
+      .wishlist-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+
+      .modal-actions {
+        flex-direction: column;
+      }
+    }
+
+    /* Remix Icons Fix */
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar" style="padding:10px">
+    <div class="container" style="margin:0px">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+          <div class="hamburger-lines">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </div>
+        </button>
+        <a href="home_page.html" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
+        <nav class="desktop-nav">
+          <a href="home_page.html" class="nav-link">Home</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="storenew.html" class="nav-link">Store</a>
+          <a href="admin-dashboard.html" class="nav-link">Admin</a>
+        </nav>
+        <div class="navbar-actions">
+          <a href="watchliststore.html" class="btn btn-icon">
+            <i class="fas fa-heart"></i>
+          </a>
+          <button class="cart-button" id="cart-toggle">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="cart-count">0</span>
+          </button>
+          <a href="login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span style="margin-left: 10px;">Buy Cattle</span>
+      </a>
+      <a href="biogas/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span style="margin-left: 10px;">Bio-Gas</span>
+      </a>
+
+      <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Visit Farm</span>
+      </a>
+      <a href="navhome.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Insurance</span>
+      </a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+          <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+        </svg>
+        <span style="margin-left: 10px;">Register Cattle</span>
+      </a>
+      <a href="#" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Contact-Us</span>
+      </a>
+      <a href="help/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span style="margin-left: 10px;">Support</span>
+      </a>
+      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Login / Register</span>
+      </a>
+    </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <div class="page-header">
+        <h1 class="page-title">My Wishlist</h1>
+        <p class="page-subtitle">Products you've saved for later</p>
+      </div>
+
+      <div class="wishlist-controls">
+        <div class="wishlist-filter">
+          <span class="filter-label">Show:</span>
+          <select class="select-dropdown" id="availability-filter">
+            <option value="all">All Items</option>
+            <option value="in-stock">In Stock Only</option>
+            <option value="out-of-stock">Out of Stock Only</option>
+          </select>
+        </div>
+
+        <div class="wishlist-filter">
+          <span class="filter-label">Sort By:</span>
+          <select class="select-dropdown" id="sort-filter">
+            <option value="date-added">Date Added</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="name">Name</option>
+          </select>
+        </div>
+
+        <div class="wishlist-actions">
+          <button class="btn btn-outline" id="clear-wishlist">Clear Wishlist</button>
+          <button class="btn btn-primary" id="add-all-to-cart">Add All to Cart</button>
+        </div>
+      </div>
+
+      <div class="wishlist-header">
+        <h2>Saved Items</h2>
+        <span class="wishlist-count" id="wishlist-count">0 items</span>
+      </div>
+
+      <div id="wishlist-container">
+        <!-- Wishlist items will be loaded here via JavaScript -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Quick View Modal -->
+  <div class="modal-overlay" id="quick-view-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">Product Quick View</h3>
+        <button class="close-modal" id="close-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="quick-view-content">
+        <!-- Quick view content will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3 class="cart-title">Your Shopping Cart</h3>
+      <button class="close-cart" id="close-cart">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="cart-body" id="cart-body">
+      <!-- Cart items will be loaded here -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-subtotal">
+        <span>Subtotal:</span>
+        <span id="cart-subtotal">$0.00</span>
+      </div>
+      <div class="cart-buttons">
+        <a href="cartstore.html" class="btn btn-primary">View Cart</a>
+        <button class="btn btn-outline" id="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Product Data
+    const productsData = [
+      {
+        id: 'prod-001',
+        name: 'Fresh Whole Milk',
+        description: 'Nutrient-rich whole milk straight from our dairy farm. Pasteurized and non-homogenized.',
+        price: 4.99,
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'milk',
+        featured: true,
+        dateAdded: new Date('2023-06-10')
+      },
+      {
+        id: 'prod-002',
+        name: 'Artisan Cheese',
+        description: 'Handcrafted aged cheese made using traditional methods from our premium milk.',
+        price: 8.50,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1634487359989-3e90c9432133?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'cheese',
+        featured: true,
+        dateAdded: new Date('2023-06-12')
+      },
+      {
+        id: 'prod-003',
+        name: 'Organic Yogurt',
+        description: 'Creamy, probiotic-rich yogurt made with organic milk from grass-fed cows.',
+        price: 3.99,
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1584278433203-2379d0d46c15?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'yogurt',
+        featured: false,
+        dateAdded: new Date('2023-07-05')
+      },
+      {
+        id: 'prod-004',
+        name: 'Salted Butter',
+        description: 'Rich, creamy salted butter made from the freshest cream of our grass-fed cows.',
+        price: 5.99,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'butter',
+        featured: false,
+        dateAdded: new Date('2023-05-20')
+      },
+      {
+        id: 'prod-005',
+        name: 'Chocolate Milk',
+        description: 'Delicious chocolate milk made with real cocoa and our farm-fresh whole milk.',
+        price: 4.50,
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1572472590096-2eb90b472af3?auto=format&fit=crop&w=600&q=80',
+        inStock: false,
+        category: 'milk',
+        featured: false,
+        dateAdded: new Date('2023-07-10')
+      },
+      {
+        id: 'prod-006',
+        name: 'Greek Yogurt',
+        description: 'Thick, strained Greek yogurt with high protein content and tangy flavor.',
+        price: 4.99,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'yogurt',
+        featured: true,
+        dateAdded: new Date('2023-07-01')
+      },
+      {
+        id: 'prod-007',
+        name: 'Cottage Cheese',
+        description: 'Fresh cottage cheese with perfect texture, great for both sweet and savory dishes.',
+        price: 3.99,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'cheese',
+        featured: false,
+        dateAdded: new Date('2023-06-25')
+      },
+      {
+        id: 'prod-008',
+        name: 'Premium Ice Cream',
+        description: 'Premium ice cream made with our rich cream and natural flavors. No additives.',
+        price: 6.99,
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'icecream',
+        featured: true,
+        dateAdded: new Date('2023-07-15')
+      }
+    ];
+
+    // Utility functions
+    function formatPrice(price) {
+      return `$${price.toFixed(2)}`;
+    }
+
+    function renderStars(rating) {
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        stars += `<i class="fa${i <= rating ? 's' : 'r'} fa-star"></i>`;
+      }
+      return stars;
+    }
+
+    // Cart functionality
+    class Cart {
+      constructor() {
+        this.items = [];
+        this.loadFromStorage();
+        this.updateCartCount();
+        this.initCartEvents();
+      }
+
+      loadFromStorage() {
+        const savedCart = localStorage.getItem('dairyvestCart');
+        if (savedCart) {
+          this.items = JSON.parse(savedCart);
+        }
+      }
+
+      saveToStorage() {
+        localStorage.setItem('dairyvestCart', JSON.stringify(this.items));
+      }
+
+      addItem(productId, quantity = 1) {
+        const product = productsData.find(p => p.id === productId);
+        if (!product || !product.inStock) return false;
+
+        const existingItem = this.items.find(item => item.id === productId);
+        if (existingItem) {
+          existingItem.quantity += quantity;
+        } else {
+          this.items.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            imageUrl: product.imageUrl,
+            quantity: quantity
+          });
+        }
+
+        this.saveToStorage();
+        this.updateCartCount();
+        return true;
+      }
+
+      removeItem(productId) {
+        this.items = this.items.filter(item => item.id !== productId);
+        this.saveToStorage();
+        this.updateCartCount();
+      }
+
+      getTotalItems() {
+        return this.items.reduce((total, item) => total + item.quantity, 0);
+      }
+
+      updateCartCount() {
+        const cartCount = document.getElementById('cart-count');
+        if (cartCount) {
+          cartCount.textContent = this.getTotalItems();
+        }
+      }
+
+      initCartEvents() {
+        const cartToggle = document.getElementById('cart-toggle');
+        const closeCart = document.getElementById('close-cart');
+        const cartDrawer = document.getElementById('cart-drawer');
+
+        if (cartToggle && closeCart && cartDrawer) {
+          cartToggle.addEventListener('click', () => {
+            cartDrawer.classList.add('open');
+            this.renderCartDrawer();
+          });
+
+          closeCart.addEventListener('click', () => {
+            cartDrawer.classList.remove('open');
+          });
+        }
+      }
+
+      renderCartDrawer() {
+        const cartBody = document.getElementById('cart-body');
+        const cartSubtotal = document.getElementById('cart-subtotal');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        if (!cartBody || !cartSubtotal || !checkoutBtn) return;
+
+        if (this.items.length === 0) {
+          cartBody.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 300px; text-align: center;">
+              <i class="fas fa-shopping-cart" style="font-size: 3rem; color: var(--muted); margin-bottom: 1rem;"></i>
+              <h3>Your cart is empty</h3>
+              <p>Looks like you haven't added any products to your cart yet.</p>
+              <a href="storenew.html" class="btn btn-primary" style="margin-top: 1rem;">Shop Now</a>
+            </div>
+          `;
+          cartSubtotal.textContent = '$0.00';
+          checkoutBtn.disabled = true;
+        } else {
+          let cartHTML = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+
+          this.items.forEach(item => {
+            cartHTML += `
+              <div style="display: flex; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);">
+                <img src="${item.imageUrl}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--radius);">
+                <div style="flex-grow: 1;">
+                  <h4 style="font-weight: 500; margin-bottom: 0.25rem;">${item.name}</h4>
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>${formatPrice(item.price)} x ${item.quantity}</span>
+                    <span style="font-weight: 600;">${formatPrice(item.price * item.quantity)}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+
+          cartHTML += '</div>';
+          cartBody.innerHTML = cartHTML;
+
+          const total = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+          cartSubtotal.textContent = formatPrice(total);
+          checkoutBtn.disabled = false;
+        }
+      }
+
+      // Show notification when adding to cart
+      showAddToCartNotification(productName) {
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--primary)';
+        notification.style.color = 'white';
+        notification.style.padding = '10px 20px';
+        notification.style.borderRadius = 'var(--radius)';
+        notification.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        notification.style.zIndex = '1000';
+        notification.style.transition = 'all 0.3s ease';
+        notification.style.transform = 'translateY(100px)';
+        notification.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <div style="font-weight: 500;">${productName}</div>
+              <div style="font-size: 0.875rem;">Added to your cart</div>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Show notification
+        setTimeout(() => {
+          notification.style.transform = 'translateY(0)';
+        }, 10);
+
+        // Hide and remove notification
+        setTimeout(() => {
+          notification.style.transform = 'translateY(100px)';
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        }, 3000);
+      }
+    }
+
+    // Wishlist functionality
+    class Wishlist {
+      constructor(cart) {
+        this.cart = cart;
+        this.items = [];
+        this.filteredItems = [];
+        this.availabilityFilter = 'all';
+        this.sortBy = 'date-added';
+        this.loadFromStorage();
+        this.initEventListeners();
+        this.render();
+      }
+
+      loadFromStorage() {
+        const savedWishlist = localStorage.getItem('dairyvestWishlist');
+        if (savedWishlist) {
+          this.items = JSON.parse(savedWishlist);
+        }
+        this.applyFilters();
+      }
+
+      saveToStorage() {
+        localStorage.setItem('dairyvestWishlist', JSON.stringify(this.items));
+      }
+
+      toggleItem(productId) {
+        const index = this.items.indexOf(productId);
+        if (index !== -1) {
+          this.items.splice(index, 1);
+        } else {
+          this.items.push(productId);
+        }
+        this.saveToStorage();
+        this.applyFilters();
+        this.render();
+      }
+
+      removeItem(productId) {
+        const index = this.items.indexOf(productId);
+        if (index !== -1) {
+          this.items.splice(index, 1);
+          this.saveToStorage();
+          this.applyFilters();
+          this.render();
+        }
+      }
+
+      clearWishlist() {
+        this.items = [];
+        this.saveToStorage();
+        this.applyFilters();
+        this.render();
+      }
+
+      addAllToCart() {
+        let addedCount = 0;
+
+        this.filteredItems.forEach(productId => {
+          const product = productsData.find(p => p.id === productId);
+          if (product && product.inStock) {
+            if (this.cart.addItem(productId)) {
+              addedCount++;
+            }
+          }
+        });
+
+        if (addedCount > 0) {
+          this.showNotification(`${addedCount} ${addedCount === 1 ? 'item' : 'items'} added to cart`);
+        } else {
+          this.showNotification('No items could be added to cart', 'error');
+        }
+      }
+
+      showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = type === 'success' ? 'var(--primary)' : 'var(--destructive)';
+        notification.style.color = 'white';
+        notification.style.padding = '10px 20px';
+        notification.style.borderRadius = 'var(--radius)';
+        notification.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        notification.style.zIndex = '1000';
+        notification.style.transition = 'all 0.3s ease';
+        notification.style.transform = 'translateY(100px)';
+        notification.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <div>
+              <div style="font-weight: 500;">${message}</div>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Show notification
+        setTimeout(() => {
+          notification.style.transform = 'translateY(0)';
+        }, 10);
+
+        // Hide and remove notification
+        setTimeout(() => {
+          notification.style.transform = 'translateY(100px)';
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        }, 3000);
+      }
+
+      applyFilters() {
+        // Filter by availability
+        let filtered = [...this.items];
+
+        if (this.availabilityFilter !== 'all') {
+          filtered = filtered.filter(itemId => {
+            const product = productsData.find(p => p.id === itemId);
+            if (!product) return false;
+
+            if (this.availabilityFilter === 'in-stock') {
+              return product.inStock;
+            } else if (this.availabilityFilter === 'out-of-stock') {
+              return !product.inStock;
+            }
+            return true;
+          });
+        }
+
+        // Get full product data
+        const products = filtered.map(id => {
+          const product = productsData.find(p => p.id === id);
+          return { id, ...product };
+        }).filter(p => p);
+
+        // Sort products
+        switch (this.sortBy) {
+          case 'price-low':
+            products.sort((a, b) => a.price - b.price);
+            break;
+          case 'price-high':
+            products.sort((a, b) => b.price - a.price);
+            break;
+          case 'name':
+            products.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+          case 'date-added':
+          default:
+            // Use the original order, which is the order they were added to wishlist
+            break;
+        }
+
+        // Extract IDs back
+        this.filteredItems = products.map(p => p.id);
+      }
+
+      initEventListeners() {
+        // Availability filter
+        const availabilityFilter = document.getElementById('availability-filter');
+        if (availabilityFilter) {
+          availabilityFilter.addEventListener('change', () => {
+            this.availabilityFilter = availabilityFilter.value;
+            this.applyFilters();
+            this.render();
+          });
+        }
+
+        // Sort filter
+        const sortFilter = document.getElementById('sort-filter');
+        if (sortFilter) {
+          sortFilter.addEventListener('change', () => {
+            this.sortBy = sortFilter.value;
+            this.applyFilters();
+            this.render();
+          });
+        }
+
+        // Clear wishlist button
+        const clearWishlistBtn = document.getElementById('clear-wishlist');
+        if (clearWishlistBtn) {
+          clearWishlistBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear your wishlist?')) {
+              this.clearWishlist();
+            }
+          });
+        }
+
+        // Add all to cart button
+        const addAllToCartBtn = document.getElementById('add-all-to-cart');
+        if (addAllToCartBtn) {
+          addAllToCartBtn.addEventListener('click', () => {
+            this.addAllToCart();
+          });
+        }
+      }
+
+      openQuickView(productId) {
+        const product = productsData.find(p => p.id === productId);
+        if (!product) return;
+
+        const modal = document.getElementById('quick-view-modal');
+        const modalContent = document.getElementById('quick-view-content');
+
+        if (!modal || !modalContent) return;
+
+        modalContent.innerHTML = `
+          <div class="modal-image">
+            <img src="${product.imageUrl}" alt="${product.name}">
+          </div>
+          <div class="modal-content">
+            <h2 class="modal-product-title">${product.name}</h2>
+            <div class="product-rating">
+              <div class="rating-stars">
+                ${renderStars(product.rating)}
+              </div>
+              <span class="rating-count">(${product.rating})</span>
+            </div>
+            <p class="modal-product-price">${formatPrice(product.price)}</p>
+            <p class="modal-product-description">${product.description}</p>
+
+            <div class="modal-product-meta">
+              <div class="meta-item">
+                <span class="meta-label">Category:</span>
+                <span>${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Availability:</span>
+                <span class="${product.inStock ? 'in-stock' : 'out-of-stock'}">
+                  ${product.inStock ? 'In Stock' : 'Out of Stock'}
+                </span>
+              </div>
+            </div>
+
+            <div class="quantity-selector">
+              <button class="quantity-btn decrease-quantity">-</button>
+              <input type="number" class="quantity-input" value="1" min="1" max="99" id="quick-view-quantity">
+              <button class="quantity-btn increase-quantity">+</button>
+            </div>
+
+            <div class="modal-actions">
+              <button class="btn btn-primary quick-view-add-to-cart" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+              </button>
+              <button class="btn btn-outline quick-view-remove-from-wishlist" data-id="${product.id}">
+                <i class="fas fa-trash"></i> Remove from Wishlist
+              </button>
+            </div>
+          </div>
+        `;
+
+        modal.classList.add('open');
+
+        // Add event listeners for the quick view modal
+        const closeModal = document.getElementById('close-modal');
+        closeModal.addEventListener('click', () => {
+          modal.classList.remove('open');
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            modal.classList.remove('open');
+          }
+        });
+
+        // Quantity buttons
+        const quantityInput = document.getElementById('quick-view-quantity');
+        const decreaseBtn = document.querySelector('.decrease-quantity');
+        const increaseBtn = document.querySelector('.increase-quantity');
+
+        decreaseBtn.addEventListener('click', () => {
+          let value = parseInt(quantityInput.value);
+          if (value > 1) {
+            quantityInput.value = value - 1;
+          }
+        });
+
+        increaseBtn.addEventListener('click', () => {
+          let value = parseInt(quantityInput.value);
+          quantityInput.value = value + 1;
+        });
+
+        // Add to cart button
+        const addToCartBtn = document.querySelector('.quick-view-add-to-cart');
+        addToCartBtn.addEventListener('click', () => {
+          if (!product.inStock) return;
+
+          const quantity = parseInt(quantityInput.value);
+          if (this.cart.addItem(product.id, quantity)) {
+            this.cart.showAddToCartNotification(product.name);
+            modal.classList.remove('open');
+          }
+        });
+
+        // Remove from wishlist button
+        const removeFromWishlistBtn = document.querySelector('.quick-view-remove-from-wishlist');
+        removeFromWishlistBtn.addEventListener('click', () => {
+          this.removeItem(product.id);
+          modal.classList.remove('open');
+        });
+      }
+
+      render() {
+        const wishlistContainer = document.getElementById('wishlist-container');
+        const wishlistCount = document.getElementById('wishlist-count');
+
+        if (!wishlistContainer || !wishlistCount) return;
+
+        // Update count
+        wishlistCount.textContent = `${this.filteredItems.length} ${this.filteredItems.length === 1 ? 'item' : 'items'}`;
+
+        // Render wishlist items or empty state
+        if (this.filteredItems.length === 0) {
+          wishlistContainer.innerHTML = `
+            <div class="wishlist-empty">
+              <i class="fas fa-heart wishlist-empty-icon"></i>
+              <h3>Your wishlist is empty</h3>
+              <p>Items added to your wishlist will be saved here for easy access.</p>
+              <a href="storenew.html" class="btn btn-primary" style="margin-top: 1.5rem;">
+                Explore Products
+              </a>
+            </div>
+          `;
+        } else {
+          let wishlistHTML = '<div class="wishlist-grid">';
+
+          this.filteredItems.forEach(itemId => {
+            const product = productsData.find(p => p.id === itemId);
+            if (!product) return;
+
+            wishlistHTML += `
+              <div class="product-card" data-id="${product.id}">
+                <div class="product-image-container">
+                  <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                  ${product.inStock ? '' : '<span class="product-badge out-of-stock">Out of Stock</span>'}
+                  <div class="product-actions">
+                    <button class="action-btn quick-view-btn" data-id="${product.id}">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-content">
+                  <div class="product-rating">
+                    <div class="rating-stars">
+                      ${renderStars(product.rating)}
+                    </div>
+                    <span class="rating-count">(${product.rating})</span>
+                  </div>
+                  <h3 class="product-title">${product.name}</h3>
+                  <p class="product-description">${product.description}</p>
+                  <div class="product-price-container">
+                    <div class="product-price">${formatPrice(product.price)}</div>
+                    <div class="product-stock ${product.inStock ? 'in-stock' : 'out-of-stock'}">
+                      ${product.inStock ? 'In Stock' : 'Out of Stock'}
+                    </div>
+                  </div>
+                </div>
+                <div class="product-footer">
+                  <button class="btn btn-primary" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
+                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                  </button>
+                  <button class="btn btn-outline remove-wishlist-item" data-id="${product.id}">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            `;
+          });
+
+          wishlistHTML += '</div>';
+          wishlistContainer.innerHTML = wishlistHTML;
+
+          // Add event listeners to product cards
+          document.querySelectorAll('.product-card .btn-primary').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-id');
+              const product = productsData.find(p => p.id === id);
+              if (product && product.inStock) {
+                if (this.cart.addItem(id)) {
+                  this.cart.showAddToCartNotification(product.name);
+                }
+              }
+            });
+          });
+
+          document.querySelectorAll('.remove-wishlist-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-id');
+              this.removeItem(id);
+            });
+          });
+
+          document.querySelectorAll('.quick-view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-id');
+              this.openQuickView(id);
+            });
+          });
+        }
+      }
+    }
+
+    // Initialize cart and wishlist on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const cart = new Cart();
+      const wishlist = new Wishlist(cart);
+
+      // Mobile Menu Toggle
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (mobileMenuToggle && mobileMenu) {
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const body = document.body;
+
+        // Function to open mobile menu
+        function openMobileMenu() {
+          mobileMenu.classList.add('active');
+          mobileMenuOverlay.classList.add('active');
+          mobileMenuToggle.classList.add('active');
+          body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+
+          // Add a subtle ripple effect on click
+          const ripple = document.createElement('span');
+          ripple.classList.add('menu-toggle-ripple');
+          mobileMenuToggle.appendChild(ripple);
+
+          // Position the ripple where the click happened
+          const rect = mobileMenuToggle.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height) * 2;
+
+          ripple.style.width = ripple.style.height = `${size}px`;
+          ripple.style.left = `${-size/4}px`;
+          ripple.style.top = `${-size/4}px`;
+
+          // Remove the ripple after animation completes
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+
+          // Add entrance animation to each nav link
+          const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+          navLinks.forEach((link, index) => {
+            link.style.opacity = '0';
+            link.style.transform = 'translateX(-10px)';
+            link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+
+            setTimeout(() => {
+              link.style.opacity = '1';
+              link.style.transform = 'translateX(0)';
+            }, 10);
+          });
+        }
+
+        // Function to close mobile menu
+        function closeMobileMenu() {
+          mobileMenu.classList.remove('active');
+          mobileMenuOverlay.classList.remove('active');
+          mobileMenuToggle.classList.remove('active');
+          body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Toggle menu when clicking the hamburger button
+        mobileMenuToggle.addEventListener('click', function(event) {
+          event.stopPropagation();
+          if (mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+          } else {
+            openMobileMenu();
+          }
+        });
+
+        // Close menu when clicking the close button
+        if (mobileMenuClose) {
+          mobileMenuClose.addEventListener('click', closeMobileMenu);
+        }
+
+        // Close menu when clicking the overlay
+        if (mobileMenuOverlay) {
+          mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        }
+
+        // Close mobile menu when clicking on a link
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', closeMobileMenu);
+        });
+
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+          }
+        });
+        }
+      }
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div>
+          <a href="#" class="text-primary font-['Pacifico'] text-2xl">Dairy-Lift</a>
+          <p class="mt-4 text-gray-400">
+            Transforming dairy farming into a premium investment opportunity
+            with transparent operations and consistent returns.
+          </p>
+          <div class="mt-6 flex space-x-4">
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-facebook-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-twitter-x-fill"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/dairy_lift/"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-instagram-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-linkedin-fill"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Investment Options</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Performance Reports</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Farm Tours</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Testimonials</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >FAQs</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-map-pin-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400"
+                >123 Dairy Farm Road, Green Valley, CA 94535</span
+              >
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-phone-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">+1 (555) 123-4567</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-mail-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">dairylift@gmail.com</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-time-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">Mon-Fri: 9AM-5PM (PST)</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+          <p class="text-gray-400 mb-4">
+            Subscribe to receive updates on dairy market trends and investment
+            opportunities.
+          </p>
+          <form class="space-y-4">
+            <div>
+              <input
+                type="email"
+                placeholder="Your email address"
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary text-white"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary hover:bg-primary/90 text-white py-2 font-medium !rounded-button whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
+      >
+        <p class="text-gray-400 text-sm">
+          © 2025 Dairy-Lift. All rights reserved.
+        </p>
+        <div class="mt-4 md:mt-0 flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Privacy Policy</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Terms of Service</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Cookie Policy</a
+          >
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

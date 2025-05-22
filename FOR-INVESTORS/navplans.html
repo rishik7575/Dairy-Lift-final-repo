@@ -1,0 +1,2150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dairy-Lift - Cattle Insurance Plans</title>
+  <meta name="description" content="Comprehensive cattle insurance solutions for farmers and investors. Protect your livestock with confidence." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+  <script src="js/mobile-menu-fix.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* Base Styles */
+    :root {
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --radius: 0.5rem;
+      
+      /* Keep original cattle colors for the insurance plans */
+      --cattle-green: #4D7C0F;
+      --cattle-lightGreen: #84CC16;
+      --cattle-brown: #854D0E;
+      --cattle-lightBrown: #B45309;
+      --cattle-blue: #0891B2;
+    }
+    
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.5;
+    }
+    
+    /* Layout */
+    .container {
+      width: 100%;
+      max-width: 80rem;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .flex {
+      display: flex;
+    }
+    
+    .flex-col {
+      flex-direction: column;
+    }
+    
+    .items-center {
+      align-items: center;
+    }
+    
+    .justify-center {
+      justify-content: center;
+    }
+    
+    .justify-between {
+      justify-content: space-between;
+    }
+    
+    .gap-2 {
+      gap: 0.5rem;
+    }
+    
+    .gap-4 {
+      gap: 1rem;
+    }
+    
+    .gap-6 {
+      gap: 1.5rem;
+    }
+    
+    .gap-8 {
+      gap: 2rem;
+    }
+    
+    .text-center {
+      text-align: center;
+    }
+    
+    .py-4 {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+    
+    .py-8 {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+    
+    .py-16 {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+    
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .py-2 {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    
+    .px-2\.5 {
+      padding-left: 0.625rem;
+      padding-right: 0.625rem;
+    }
+    
+    .py-0\.5 {
+      padding-top: 0.125rem;
+      padding-bottom: 0.125rem;
+    }
+    
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+    
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+    
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+    
+    .mb-8 {
+      margin-bottom: 2rem;
+    }
+    
+    .mb-12 {
+      margin-bottom: 3rem;
+    }
+    
+    .mb-16 {
+      margin-bottom: 4rem;
+    }
+    
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+    
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+    
+    .ml-1 {
+      margin-left: 0.25rem;
+    }
+    
+    .mr-4 {
+      margin-right: 1rem;
+    }
+    
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .space-x-2 > * + * {
+      margin-left: 0.5rem;
+    }
+    
+    .space-x-4 > * + * {
+      margin-left: 1rem;
+    }
+    
+    .space-x-6 > * + * {
+      margin-left: 1.5rem;
+    }
+    
+    .space-y-2 > * + * {
+      margin-top: 0.5rem;
+    }
+    
+    .space-y-3 > * + * {
+      margin-top: 0.75rem;
+    }
+    
+    .space-y-4 > * + * {
+      margin-top: 1rem;
+    }
+    
+    .space-y-6 > * + * {
+      margin-top: 1.5rem;
+    }
+    
+    .space-y-8 > * + * {
+      margin-top: 2rem;
+    }
+    
+    .space-y-10 > * + * {
+      margin-top: 2.5rem;
+    }
+    
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
+    }
+    
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+    
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg) !important;
+      width: 22px !important;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0 !important;
+      transform: translateX(-10px) !important;
+    }
+    
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg) !important;
+      width: 22px !important;
+    }
+    
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+    
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+    
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+    
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+    
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
+    }
+    
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+    
+    /* Remix Icons Fix */
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline-primary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .btn svg {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
+    
+    /* Footer */
+    .footer {
+      background-color: #1F2937;
+      color: white;
+      padding: 3rem 0;
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    
+    .footer-heading {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-link {
+      color: #D1D5DB;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-link:hover {
+      color: white;
+    }
+    
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .footer-social a {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
+    
+    .footer-social a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 2rem;
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    /* Tabs */
+    .tabs {
+      max-width: 62rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .tabs-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background-color: var(--muted);
+      padding: 0.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+    }
+    
+    .tab-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      border-radius: 0.25rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted-foreground);
+    }
+    
+    .tab-trigger[data-state="active"] {
+      background-color: white;
+      color: var(--foreground);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content[data-state="active"] {
+      display: block;
+    }
+    
+    /* Cards */
+    .card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: white;
+    }
+    
+    .card-header {
+      padding: 1.5rem;
+    }
+    
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-description {
+      color: var(--muted-foreground);
+    }
+    
+    .card-content {
+      padding: 0 1.5rem 1.5rem;
+    }
+    
+    /* Switch */
+    .switch-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    
+    .switch-label {
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    
+    .switch-label.active {
+      color: var(--foreground);
+    }
+    
+    .switch-label.inactive {
+      color: var(--muted-foreground);
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 2.75rem;
+      height: 1.5rem;
+      margin: 0 0.5rem;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 1.25rem;
+      width: 1.25rem;
+      left: 0.125rem;
+      bottom: 0.125rem;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .switch-slider {
+      background-color: var(--cattle-green);
+    }
+    
+    input:checked + .switch-slider:before {
+      transform: translateX(1.25rem);
+    }
+    
+    .save-badge {
+      display: inline-block;
+      background-color: #D1FAE5;
+      color: #047857;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+    }
+    
+    /* Plan Cards */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .plan-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .plan-card.popular {
+      border-color: var(--cattle-green);
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    
+    .plan-card.popular:hover {
+      transform: scale(1.05) translateY(-5px);
+    }
+    
+    .plan-header {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .plan-header.basic {
+      background-color: #F3F4F6;
+      color: #1F2937;
+    }
+    
+    .plan-header.standard {
+      background-color: var(--cattle-blue);
+      color: white;
+    }
+    
+    .plan-header.premium {
+      background-color: var(--cattle-brown);
+      color: white;
+    }
+    
+    .plan-header-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .plan-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    
+    .plan-description {
+      font-size: 0.875rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+    }
+    
+    .plan-price {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    
+    .plan-period {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+    
+    .plan-button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+    
+    .plan-button.basic {
+      background-color: var(--cattle-green);
+      color: white;
+    }
+    
+    .plan-button.basic:hover {
+      background-color: var(--cattle-lightGreen);
+    }
+    
+    .plan-button.standard {
+      background-color: white;
+      color: var(--cattle-blue);
+      border: 1px solid var(--cattle-blue);
+    }
+    
+    .plan-button.standard:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .plan-button.premium {
+      background-color: var(--cattle-brown);
+      color: white;
+    }
+    
+    .plan-button.premium:hover {
+      background-color: var(--cattle-lightBrown);
+    }
+    
+    .plan-features {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .plan-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .plan-feature:last-child {
+      margin-bottom: 0;
+    }
+    
+    .feature-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+    }
+    
+    .feature-name {
+      font-size: 0.875rem;
+    }
+    
+    .feature-included {
+      color: #374151;
+    }
+    
+    .feature-excluded {
+      color: #9CA3AF;
+    }
+    
+    .popular-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: #FCD34D;
+      color: #92400E;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+      z-index: 1;
+    }
+    
+    /* Benefits */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .benefit-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      background-color: white;
+      transition: box-shadow 0.2s;
+    }
+    
+    .benefit-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .benefit-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .benefit-icon {
+      width: 3rem;
+      height: 3rem;
+      color: var(--cattle-green);
+    }
+    
+    .benefit-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    
+    .benefit-description {
+      font-size: 1rem;
+      color: var(--muted-foreground);
+    }
+    
+    /* FAQ */
+    .accordion {
+      width: 100%;
+    }
+    
+    .accordion-item {
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .accordion-trigger {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 1rem 0;
+      text-align: left;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--foreground);
+    }
+    
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+    }
+    
+    .accordion-content-inner {
+      padding: 0 0 1rem;
+      color: var(--muted-foreground);
+    }
+    
+    .accordion-item.active .accordion-content {
+      max-height: 200px;
+    }
+    
+    .accordion-icon {
+      transform: rotate(0deg);
+      transition: transform 0.2s;
+    }
+    
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+    
+    /* Stats */
+    .stats-section {
+      padding: 4rem 0;
+      background-color: rgba(77, 124, 15, 0.05);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .stat-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--cattle-green);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: var(--muted-foreground);
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      padding: 4rem 0;
+      background-color: var(--cattle-green);
+      color: white;
+    }
+    
+    .cta-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .cta-content {
+      margin-bottom: 2rem;
+      text-align: center;
+      max-width: 800px;
+    }
+    
+    .cta-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    
+    .cta-description {
+      font-size: 1.125rem;
+      opacity: 0.9;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      font-size: 1.125rem;
+      font-weight: 500;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    
+    .cta-button-white {
+      background-color: white;
+      color: var(--cattle-green);
+    }
+    
+    .cta-button-white:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .cta-button-outline {
+      background-color: transparent;
+      border: 1px solid white;
+      color: white;
+    }
+    
+    .cta-button-outline:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Responsive */
+    @media (min-width: 640px) {
+      .plans-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .cta-buttons {
+        flex-direction: row;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .nav-menu {
+        display: flex;
+      }
+      
+      /* Keep mobile menu visible but positioned off-screen */
+      .mobile-menu {
+        left: -280px;
+      }
+      
+      .plans-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .cta-container {
+        flex-direction: row;
+      }
+      
+      .cta-content {
+        margin-bottom: 0;
+        text-align: left;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .nav-menu {
+        display: none;
+      }
+      
+      .tab-trigger {
+        font-size: 0.875rem;
+        padding: 0.5rem;
+      }
+    }
+    
+    /* Header photo styles */
+    .header-photo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 25px 0 15px;
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+    }
+    
+    .header-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      background-color: white;
+      padding: 2px;
+    }
+    
+    /* Override navbar-content styles */
+    .navbar-content {
+      display: flex !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      height: 4rem !important;
+      position: relative !important;
+      padding: 0.5rem 0 !important;
+    }
+    
+    /* Override logo styles */
+    .logo {
+      font-weight: bold !important;
+      font-size: 1.5rem !important;
+      color: var(--primary) !important;
+      min-width: 220px !important;
+      text-align: left !important;
+      margin-right: auto !important;
+      display: inline-block !important;
+      padding: 0 15px !important;
+    }
+    
+    /* Override navbar-actions styles */
+    .navbar-actions {
+      display: flex !important;
+      align-items: center !important;
+      gap: 1rem !important;
+    }
+    
+    @media (min-width: 768px) {
+      .header-photo-container {
+        width: 80px;
+        height: 80px;
+        margin: 0 30px 0 20px;
+      }
+      
+      .logo {
+        font-size: 1.5rem !important;
+        min-width: 250px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar" style="padding:10px">
+    <div class="container" style="margin:0px">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+          <div class="hamburger-lines">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </div>
+        </button>
+        <div class="header-photo-container">
+          <img src="image/no background.png" alt="Header Photo" class="header-photo">
+        </div>
+        <a href="#" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
+        <nav class="desktop-nav">
+          <a href="navhome.html" class="nav-link">Insurance</a>
+          <a href="navplans.html" class="nav-link">Plans</a>
+          <a href="navregister-cattle.html" class="nav-link">Register Cattle</a>
+          <a href="navclaims.html" class="nav-link">Claims</a>
+          <a href="#" class="nav-link">Support</a>
+        </nav>
+        </div>
+    </div>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <a href="home_page.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span style="margin-left: 10px;">Home</span>
+      </a>
+      
+      <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span style="margin-left: 10px;">Buy Cattle</span>
+      </a>
+      <a href="#" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span style="margin-left: 10px;">Bio-Gas</span>
+      </a>
+      <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Visit Farm</span>
+      </a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+          <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+        </svg>
+        <span style="margin-left: 10px;">Register Cattle</span>
+      </a>
+      <a href="#" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Contact-Us</span>
+      </a>
+      <a href="help/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span style="margin-left: 10px;">Support</span>
+      </a>
+      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Login / Register</span>
+      </a>
+    </div>
+  </header>
+    
+  <main>
+    <div class="py-16 bg-gradient-to-b from-[#F9FAFB] to-white">
+      <div class="container">
+        <div class="max-w-3xl mx-auto text-center mb-12">
+          <h1 class="text-4xl font-bold text-gray-900 mb-4">Cattle Insurance Plans</h1>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Protect your livestock investment with customized coverage options designed for all types of cattle operations.
+          </p>
+        </div>
+
+        <div class="tabs">
+          <div class="tabs-list">
+            <button class="tab-trigger" data-state="active" data-tab="plans">Coverage Plans</button>
+            <button class="tab-trigger" data-tab="benefits">Benefits</button>
+            <button class="tab-trigger" data-tab="faq">FAQ</button>
+          </div>
+          
+          <div class="tab-content" data-tab="plans" data-state="active">
+            <section class="py-8">
+              <div class="container">
+                <div class="switch-container space-x-2">
+                  <label for="billing-cycle" class="switch-label active" id="monthly-label">Monthly</label>
+                  <label class="switch">
+                    <input type="checkbox" id="billing-cycle">
+                    <span class="switch-slider"></span>
+                  </label>
+                  <div class="flex items-center gap-2">
+                    <label for="billing-cycle" class="switch-label inactive" id="annually-label">Annually</label>
+                    <span class="save-badge" id="save-badge" style="display: none;">Save 15%</span>
+                  </div>
+                </div>
+
+                <div class="plans-grid max-w-6xl mx-auto">
+                  <!-- Basic Plan -->
+                  <div class="plan-card">
+                    <div class="plan-header basic">
+                      <div class="plan-header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                        </svg>
+                        <span class="plan-name">Basic</span>
+                      </div>
+                      <p class="plan-description">Essential coverage for small-scale farmers.</p>
+                      <div class="flex items-baseline">
+                        <span class="plan-price">$9.99</span>
+                        <span class="plan-period ml-1">/month/cattle</span>
+                      </div>
+                    </div>
+                    <div class="p-6">
+                      <a href="#" class="plan-button basic">Select Plan</a>
+                    </div>
+                    <div class="plan-features">
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4D7C0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Death coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4D7C0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Disease coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span class="feature-name feature-excluded">Theft coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span class="feature-name feature-excluded">Veterinary expenses</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span class="feature-name feature-excluded">Natural disaster coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span class="feature-name feature-excluded">24/7 Support</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Standard Plan -->
+                  <div class="plan-card popular">
+                    <span class="popular-badge">Most Popular</span>
+                    <div class="plan-header standard">
+                      <div class="plan-header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                        </svg>
+                        <span class="plan-name">Standard</span>
+                      </div>
+                      <p class="pldairylift@gmail.complete protection for most farmers.</p>
+                      <div class="flex items-baseline">
+                        <span class="plan-price">$19.99</span>
+                        <span class="plan-period ml-1">/month/cattle</span>
+                      </div>
+                    </div>
+                    <div class="p-6">
+                      <a href="#" class="plan-button standard">Select Plan</a>
+                    </div>
+                    <div class="plan-features">
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Death coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Disease coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Theft coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Veterinary expenses</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span class="feature-name feature-excluded">Natural disaster coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">24/7 Support</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Premium Plan -->
+                  <div class="plan-card">
+                    <div class="plan-header premium">
+                      <div class="plan-header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                        </svg>
+                        <span class="plan-name">Premium</span>
+                      </div>
+                      <p class="plan-description">Maximum protection for valuable livestock.</p>
+                      <div class="flex items-baseline">
+                        <span class="plan-price">$29.99</span>
+                        <span class="plan-period ml-1">/month/cattle</span>
+                      </div>
+                    </div>
+                    <div class="p-6">
+                      <a href="#" class="plan-button premium">Select Plan</a>
+                    </div>
+                    <div class="plan-features">
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Death coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Disease coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Theft coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Veterinary expenses</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">Natural disaster coverage</span>
+                      </div>
+                      <div class="plan-feature">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854D0E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span class="feature-name feature-included">24/7 Support</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          
+          <div class="tab-content" data-tab="benefits">
+            <div class="benefits-grid mb-8">
+              <div class="benefit-card">
+                <div class="benefit-header">
+                  <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                  </svg>
+                  <h3 class=dairylift@gmail.comprehensive Protection</h3>
+                </div>
+                <p class="benefit-description">
+                  Full coverage against disease, accidents, natural disasters, and theft depending on your selected plan.
+                </p>
+              </div>
+              
+              <div class="benefit-card">
+                <div class="benefit-header">
+                  <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                  </svg>
+                  <h3 class="benefit-title">Simple Documentation</h3>
+                </div>
+                <p class="benefit-description">
+                  Minimal paperwork with our streamlined digital application process.
+                </p>
+              </div>
+              
+              <div class="benefit-card">
+                <div class="benefit-header">
+                  <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                    <path d="m9 16 2 2 4-4"></path>
+                  </svg>
+                  <h3 class="benefit-title">Quick Claims Processing</h3>
+                </div>
+                <p class="benefit-description">
+                  Fast claim settlements with our efficient 5-7 day processing timeline.
+                </p>
+              </div>
+              
+              <div class="benefit-card">
+                <div class="benefit-header">
+                  <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                  <h3 class="benefit-title">24/7 Veterinary Support</h3>
+                </div>
+                <p class="benefit-description">
+                  Access to our network of veterinary professionals for emergency consultations.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="tab-content" data-tab="faq">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Frequently Asked Questions</h2>
+                <p class="card-description">
+                  dairylift@gmail.common questions about our cattle insurance plans.
+                </p>
+              </div>
+              <div class="card-content">
+                <div class="accordion">
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      How does cattle insurance work?
+                      <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-content-inner">
+                        Our cattle insurance protects your livestock investment against death, disease, and accidents. You pay a monthly premium per animal, and in case of a codairylift@gmail.compensate you based on your policy terms.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      What are the waiting periods for new policies?
+                      <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-content-inner">
+                        Basic plans have a 14-day waiting period, Standard plans have a 7-day waiting period, and Premium plans offer coverage starting 48 hours after policy activation.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      How do I file a claim?
+                      <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-content-inner">
+                        You can file a claim through our online portal by submitting the required documentation, including veterinary reports and proof of loss. Our claims team typically processes submissions within 5-7 business days.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      Can I insure multiple cattle under one policy?
+                      <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-content-inner">
+                        Yes, we offer multi-animal discounts with rates that decrease based on the number of cattle insured under a single policy.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      What factors affect my premium rates?
+                      <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-content-inner">
+                        Premium rates are calculated based on cattle breed, age, health condition, location, previous medical history, and the coverage plan you select.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="stats-section">
+      <div class="container">
+        <div class="max-w-3xl mx-auto text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Why Choose Our Cattle Insurance?
+          </h2>
+          <p class="text-gray-600 mb-8">
+            With decades of experience in the agricultural sector, we understand the unique challenges faced by livestock farmers.
+          </p>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">98%</div>
+              <p class="stat-label">Claims Satisfaction Rate</p>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">24/7</div>
+              <p class="stat-label">Customer Support</p>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">5-7</div>
+              <p class="stat-label">Days Average Claim Processing</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-container">
+          <div class="cta-content">
+            <h2 class="cta-title">Ready to Protect Your Livestock?</h2>
+            <p class="cta-description">
+              Join thousands of farmers who trust Agri-Lift for their cattle insurance needs. Get started today!
+            </p>
+          </div>
+          <div class="cta-buttons">
+            <a href="register-cattle.html" class="cta-button cta-button-white">Get Started</a>
+            <a href="#" class="cta-button cta-button-outline">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div>
+          <a href="#" class="text-primary font-['Pacifico'] text-2xl">Dairy-Lift</a>
+          <p class="mt-4 text-gray-400">
+            Transforming dairy farming into a premium investment opportunity
+            with transparent operations and consistent returns.
+          </p>
+          <div class="mt-6 flex space-x-4">
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-facebook-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-twitter-x-fill"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/dairy_lift/"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-instagram-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-linkedin-fill"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Investment Options</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Performance Reports</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Farm Tours</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Testimonials</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >FAQs</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-map-pin-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400"
+                >123 Dairy Farm Road, Green Valley, CA 94535</span
+              >
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-phone-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">+1 (555) 123-4567</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-mail-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">dairylift@gmail.com</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-time-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">Mon-Fri: 9AM-5PM (PST)</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+          <p class="text-gray-400 mb-4">
+            Subscribe to receive updates on dairy market trends and investment
+            opportunities.
+          </p>
+          <form class="space-y-4">
+            <div>
+              <input
+                type="email"
+                placeholder="Your email address"
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary text-white"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary hover:bg-primary/90 text-white py-2 font-medium !rounded-button whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
+      >
+        <p class="text-gray-400 text-sm">
+          © 2025 Dairy-Lift. All rights reserved.
+        </p>
+        <div class="mt-4 md:mt-0 flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Privacy Policy</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Terms of Service</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Cookie Policy</a
+          >
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/mobile-menu-fix.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // Tab switching
+      const tabTriggers = document.querySelectorAll('.tab-trigger');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabTriggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          // Remove active state from all triggers
+          tabTriggers.forEach(t => t.setAttribute('data-state', 'inactive'));
+          
+          // Set this trigger as active
+          trigger.setAttribute('data-state', 'active');
+          
+          // Hide all tab contents
+          tabContents.forEach(content => content.setAttribute('data-state', 'inactive'));
+          
+          // Show the selected tab content
+          const tabId = trigger.getAttribute('data-tab');
+          const activeContent = document.querySelector(`.tab-content[data-tab="${tabId}"]`);
+          activeContent.setAttribute('data-state', 'active');
+        });
+      });
+      
+      // Accordion functionality
+      const accordionItems = document.querySelectorAll('.accordion-item');
+      
+      accordionItems.forEach(item => {
+        const trigger = item.querySelector('.accordion-trigger');
+        const content = item.querySelector('.accordion-content');
+        
+        trigger.addEventListener('click', () => {
+          // Toggle active class
+          const isActive = item.classList.contains('active');
+          
+          // Close all items
+          accordionItems.forEach(accItem => {
+            accItem.classList.remove('active');
+            accItem.querySelector('.accordion-content').style.maxHeight = null;
+          });
+          
+          // If it wasn't active, open it
+          if (!isActive) {
+            item.classList.add('active');
+            content.style.maxHeight = content.scrollHeight + "px";
+          }
+        });
+      });
+      
+      // Billing cycle toggle
+      const billingCycleToggle = document.getElementById('billing-cycle');
+      const monthlyLabel = document.getElementById('monthly-label');
+      const annuallyLabel = document.getElementById('annually-label');
+      const saveBadge = document.getElementById('save-badge');
+      const planPrices = document.querySelectorAll('.plan-price');
+      const planPeriods = document.querySelectorAll('.plan-period');
+      
+      // Store original prices for monthly billing
+      const originalPrices = ['$9.99', '$19.99', '$29.99'];
+      const annualPrices = ['$99.99', '$199.99', '$299.99'];
+      const monthlyPeriods = ['/month/cattle', '/month/cattle', '/month/cattle'];
+      const annualPeriods = ['/year/cattle', '/year/cattle', '/year/cattle'];
+      
+      if (billingCycleToggle) {
+        billingCycleToggle.addEventListener('change', () => {
+          if (billingCycleToggle.checked) {
+            // Annually
+            monthlyLabel.classList.remove('active');
+            monthlyLabel.classList.add('inactive');
+            annuallyLabel.classList.remove('inactive');
+            annuallyLabel.classList.add('active');
+            saveBadge.style.display = 'inline-block';
+            
+            // Update prices
+            planPrices.forEach((price, index) => {
+              price.textContent = annualPrices[index];
+            });
+            
+            // Update periods
+            planPeriods.forEach((period, index) => {
+              period.textContent = annualPeriods[index];
+            });
+          } else {
+            // Monthly
+            monthlyLabel.classList.remove('inactive');
+            monthlyLabel.classList.add('active');
+            annuallyLabel.classList.remove('active');
+            annuallyLabel.classList.add('inactive');
+            saveBadge.style.display = 'none';
+            
+            // Update prices
+            planPrices.forEach((price, index) => {
+              price.textContent = originalPrices[index];
+            });
+            
+            // Update periods
+            planPeriods.forEach((period, index) => {
+              period.textContent = monthlyPeriods[index];
+            });
+          }
+        });
+      }
+      
+
+    });
+  </script>
+  <script>
+    // Direct inline script to ensure the mobile menu toggle works
+    document.addEventListener("DOMContentLoaded", function() {
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuClose = document.getElementById('mobile-menu-close');
+      const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+      
+      if (mobileMenuToggle && mobileMenu && mobileMenuClose && mobileMenuOverlay) {
+        console.log("Mobile menu elements found in inline script");
+        
+        // Function to open mobile menu
+        function openMobileMenu() {
+          console.log("Opening mobile menu from inline script");
+          mobileMenu.classList.add('active');
+          mobileMenuOverlay.classList.add('active');
+          mobileMenuToggle.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+        
+        // Function to close mobile menu
+        function closeMobileMenu() {
+          console.log("Closing mobile menu from inline script");
+          mobileMenu.classList.remove('active');
+          mobileMenuOverlay.classList.remove('active');
+          mobileMenuToggle.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+        
+        // Add click event directly to the toggle button
+        mobileMenuToggle.onclick = function(event) {
+          console.log("Mobile menu toggle clicked from inline script");
+          event.stopPropagation();
+          if (mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+          } else {
+            openMobileMenu();
+          }
+        };
+        
+        // Close menu when clicking the close button
+        mobileMenuClose.onclick = closeMobileMenu;
+        
+        // Close menu when clicking the overlay
+        mobileMenuOverlay.onclick = closeMobileMenu;
+      } else {
+        console.error("Mobile menu elements not found in inline script:", {
+          mobileMenuToggle,
+          mobileMenu,
+          mobileMenuClose,
+          mobileMenuOverlay
+        });
+      }
+    });
+  </script>
+</body>
+</html>

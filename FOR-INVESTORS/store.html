@@ -1,0 +1,3823 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dairy-Lift - Store</title>
+  <meta name="description"
+    content="Shop premium dairy products from Dairy-Lift - fresh milk, cheese, and more." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="../js/auth.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --card: #ffffff;
+      --card-foreground: #020617;
+      --secondary: #c9b458;
+      --secondary-foreground: #ffffff;
+      --accent: #f2efd1;
+      --accent-foreground: #020617;
+      --destructive: #ef4444;
+      --destructive-foreground: #ffffff;
+      --input: #e2e8f0;
+      --ring: #ad6ef5;
+      --radius: 0.5rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--foreground);
+      background-color: #f9fafb;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-in {
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+
+    .navbar-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .navbar-link {
+      text-decoration: none;
+      color: var(--foreground);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .navbar-link {
+      position: relative;
+      padding: 0.5rem 0;
+      transition: color 0.3s;
+    }
+
+    .navbar-link:hover {
+      color: var(--primary);
+    }
+
+    .navbar-link.active {
+      color: var(--primary);
+    }
+
+    .navbar-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary);
+      transition: width 0.3s;
+    }
+
+    .navbar-link:hover::after {
+      width: 100%;
+    }
+
+    .navbar-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .button, .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .button:hover, .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .button:active, .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 0.875rem;
+    }
+
+    .btn-icon {
+      padding: 10px;
+      border-radius: 50%;
+    }
+
+    .cart-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--foreground);
+    }
+
+    .cart-button:hover {
+      color: var(--primary);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      font-size: 0.75rem;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+
+    .main {
+      flex-grow: 1;
+      padding: 2rem 0;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      color: var(--muted-foreground);
+    }
+
+    .store-layout {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .store-sidebar {
+      width: 300px;
+      flex-shrink: 0;
+    }
+
+    .store-main {
+      flex-grow: 1;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      padding: 1.5rem;
+      margin: 1rem 0;
+      transition: transform 0.3s ease;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .filter-card {
+      position: sticky;
+      top: 90px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .filter-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-section-title {
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .checkbox {
+      margin-right: 0.5rem;
+    }
+
+    .range-slider {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .search-bar {
+      display: flex;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--ring);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted-foreground);
+    }
+
+    .category-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .category-tag {
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .category-tag:hover {
+      background-color: var(--muted);
+    }
+
+    .category-tag.active {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      border-color: var(--primary);
+    }
+
+    .sort-select {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      outline: none;
+      font-size: 0.875rem;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      background-color: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      padding: 1.5rem;
+      margin: 1rem 0;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .product-image-container {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.08);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      animation: floating 3s ease-in-out infinite alternate;
+    }
+
+    .product-badge.out-of-stock {
+      background-color: var(--destructive);
+    }
+
+    .product-actions {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--card);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-btn:hover {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(173, 110, 245, 0.3);
+    }
+
+    .action-btn.active {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    /* Wishlist specific styles */
+    .wishlist-btn.active {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .wishlist-btn.active i {
+      color: white;
+    }
+
+    .wishlist-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .wishlist-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      animation: pulse-wishlist 0.3s ease;
+    }
+
+    @keyframes pulse-wishlist {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* Performance optimizations */
+    .product-image {
+      will-change: transform;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card {
+      will-change: transform;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px) translateZ(0);
+    }
+
+    /* Loading states */
+    .loading-skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .product-content {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .rating-stars {
+      display: flex;
+      color: #f0c04a;
+      margin-right: 0.25rem;
+    }
+
+    .rating-count {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .product-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-description {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-price-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .product-price {
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+
+    .product-stock {
+      font-size: 0.75rem;
+    }
+
+    .in-stock {
+      color: var(--primary);
+    }
+
+    .out-of-stock {
+      color: var(--destructive);
+    }
+
+    .product-footer {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+    }
+
+    .add-to-cart-btn {
+      flex: 1;
+    }
+
+    .view-cart-btn {
+      white-space: nowrap;
+    }
+
+
+
+    /* Quick View Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    @keyframes floating {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.4;
+      }
+      50% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0.4;
+      }
+    }
+
+    .modal-overlay.open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-container {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      width: 90%;
+      max-width: 900px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.open .modal-container {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: var(--muted-foreground);
+    }
+
+    .close-modal:hover {
+      color: var(--foreground);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .modal-body {
+        flex-direction: row;
+      }
+    }
+
+    .modal-image {
+      flex: 1;
+      max-width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .modal-image {
+        max-width: 50%;
+      }
+    }
+
+    .modal-image img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      object-fit: cover;
+    }
+
+    .modal-content {
+      flex: 1;
+    }
+
+    .modal-product-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-product-price {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .modal-product-description {
+      margin-bottom: 1.5rem;
+      color: var(--muted-foreground);
+    }
+
+    .modal-product-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .meta-label {
+      font-weight: 500;
+      min-width: 120px;
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quantity-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .quantity-btn:first-child {
+      border-top-left-radius: var(--radius);
+      border-bottom-left-radius: var(--radius);
+    }
+
+    .quantity-btn:last-child {
+      border-top-right-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+    }
+
+    .quantity-input {
+      width: 60px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-left: none;
+      border-right: none;
+      text-align: center;
+      outline: none;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .modal-actions .btn {
+      flex: 1;
+    }
+
+    /* Cart Drawer */
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 100%;
+      max-width: 450px;
+      height: 100vh;
+      background-color: var(--card);
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-drawer.open {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .close-cart {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      color: var(--muted-foreground);
+    }
+
+    .close-cart:hover {
+      color: var(--foreground);
+    }
+
+    .cart-body {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+
+    .empty-cart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      color: var(--muted-foreground);
+    }
+
+    .empty-cart-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--muted);
+    }
+
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-item-image {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .cart-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cart-item-content {
+      flex-grow: 1;
+    }
+
+    .cart-item-title {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .cart-item-price {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cart-quantity-btn {
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: var(--radius);
+      font-size: 0.75rem;
+    }
+
+    .cart-quantity-value {
+      width: 24px;
+      text-align: center;
+      font-size: 0.875rem;
+    }
+
+    .cart-item-remove {
+      color: var(--destructive);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      margin-left: auto;
+    }
+
+    .cart-item-subtotal {
+      margin-left: auto;
+      font-weight: 600;
+      align-self: flex-start;
+    }
+
+    .cart-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+    }
+
+    .cart-subtotal {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .cart-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 991px) {
+      .store-layout {
+        flex-direction: column;
+      }
+
+      .store-sidebar {
+        width: 100%;
+      }
+
+      .filter-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav a {
+        display: block;
+        margin: 0.5rem 0;
+      }
+
+      .button, .btn {
+        width: 100%;
+        margin-top: 1rem;
+      }
+
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+      }
+
+      .navbar-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+
+      .modal-actions {
+        flex-direction: column;
+      }
+    }
+
+    /* Utility classes */
+    .mobile-filter-toggle {
+      display: none;
+    }
+
+    @media (max-width: 991px) {
+      .mobile-filter-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .store-sidebar {
+        display: none;
+      }
+
+      .store-sidebar.open {
+        display: block;
+      }
+    }
+
+    /* Remix Icons Fix */
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+
+    /* Header photo styles */
+    .header-photo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 25px 0 15px;
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+    }
+
+    .header-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      background-color: white;
+      padding: 2px;
+    }
+
+    /* Override navbar-content styles */
+    .navbar-content {
+      display: flex !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      height: 4rem !important;
+      position: relative !important;
+      padding: 0.5rem 0 !important;
+    }
+
+    /* Override logo styles */
+    .logo {
+      font-weight: bold !important;
+      font-size: 1.5rem !important;
+      color: var(--primary) !important;
+      min-width: 220px !important;
+      text-align: left !important;
+      margin-right: auto !important;
+      display: inline-block !important;
+      padding: 0 15px !important;
+    }
+
+    @media (min-width: 768px) {
+      .header-photo-container {
+        width: 80px;
+        height: 80px;
+        margin: 0 30px 0 20px;
+      }
+
+      .logo {
+        font-size: 1.5rem !important;
+        min-width: 250px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar" style="padding:10px">
+    <div class="container" style="margin:0px">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+          <div class="hamburger-lines">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </div>
+        </button>
+        <div class="header-photo-container">
+          <img src="../image/no background.png" alt="Header Photo" class="header-photo">
+        </div>
+        <a href="#" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
+        <nav class="desktop-nav">
+          <a href="home_page.html" class="nav-link">Home</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="YourCattle.html" class="nav-link">All Cattle</a>
+          <a href="store.html" class="nav-link">Store</a>
+          <a href="../admin-dashboard.html" class="nav-link">Admin</a>
+        </nav>
+        <div class="navbar-actions">
+          <a href="watchliststore.html" class="btn btn-icon">
+            <i class="fas fa-heart"></i>
+          </a>
+          <button class="cart-button" id="cart-toggle">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="cart-count">0</span>
+          </button>
+          <a href="login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+          <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+          <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span style="margin-left: 10px;">Buy Cattle</span>
+        </a>
+        <a href="../biogas/home.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span style="margin-left: 10px;">Bio-Gas</span>
+        </a>
+
+      <a href="visit-farm.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span style="margin-left: 10px;">Visit Farm</span>
+        </a>
+        <a href="../navhome.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <span style="margin-left: 10px;">Insurance</span>
+        </a>
+        <a href="../admin-dashboard.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+            <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+          </svg>
+          <span style="margin-left: 10px;">Register Cattle</span>
+        </a>
+        <a href="#" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+          </svg>
+          <span style="margin-left: 10px;">Contact-Us</span>
+        </a>
+        <a href="../help/home.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span style="margin-left: 10px;">Support</span>
+        </a>
+        <a href="../login.html" class="mobile-nav-link mobile-nav-link-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg>
+          <span style="margin-left: 10px;">Login / Register</span>
+        </a>
+      </div>
+      </div>
+    </header>
+
+  <main class="main">
+    <div class="container">
+      <div class="page-header">
+        <h1 class="page-title">Dairy Products Store</h1>
+        <p class="page-subtitle">Fresh, high-quality dairy products straight from our farm</p>
+      </div>
+
+      <button class="btn btn-outline mobile-filter-toggle" id="mobile-filter-toggle">
+        <i class="fas fa-filter"></i> Filter Products
+      </button>
+
+      <div class="store-layout">
+        <aside class="store-sidebar" id="store-sidebar">
+          <div class="card filter-card">
+            <h3 class="card-title">Filter Products</h3>
+
+            <div class="filter-section">
+              <h4 class="filter-section-title">Categories</h4>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="all" checked> All Products
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="milk" checked> Milk
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="cheese" checked> Cheese
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="yogurt" checked> Yogurt
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="butter" checked> Butter
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox category-filter" value="icecream" checked> Ice Cream
+                </label>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <h4 class="filter-section-title">Price Range</h4>
+              <input type="range" min="0" max="20" value="20" class="range-slider" id="price-range">
+              <div class="range-labels">
+                <span>$0</span>
+                <span id="price-range-value">$20</span>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <h4 class="filter-section-title">Availability</h4>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox availability-filter" value="in-stock" checked> In Stock
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox availability-filter" value="out-of-stock"> Out of Stock
+                </label>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <h4 class="filter-section-title">Rating</h4>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox rating-filter" value="5" checked>
+                  <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox rating-filter" value="4" checked>
+                  <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </div>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" class="checkbox rating-filter" value="3" checked>
+                  <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="apply-filters">Apply Filters</button>
+          </div>
+        </aside>
+
+        <div class="store-main">
+          <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="search" class="search-input" id="search-products" placeholder="Search products...">
+          </div>
+
+          <div class="toolbar">
+            <div class="category-tags">
+              <span class="category-tag active" data-category="all">All Products</span>
+              <span class="category-tag" data-category="milk">Milk</span>
+              <span class="category-tag" data-category="cheese">Cheese</span>
+              <span class="category-tag" data-category="yogurt">Yogurt</span>
+              <span class="category-tag" data-category="butter">Butter</span>
+              <span class="category-tag" data-category="icecream">Ice Cream</span>
+            </div>
+
+            <select class="sort-select" id="sort-products">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+              <option value="newest">Newest</option>
+            </select>
+          </div>
+
+          <div class="product-grid" id="product-grid">
+            <!-- Products will be loaded here via JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+  <!-- Quick View Modal -->
+  <div class="modal-overlay" id="quick-view-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">Product Quick View</h3>
+        <button class="close-modal" id="close-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="quick-view-content">
+        <!-- Quick view content will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3 class="cart-title">Your Shopping Cart</h3>
+      <button class="close-cart" id="close-cart">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="cart-body" id="cart-body">
+      <!-- Cart items will be loaded here -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-subtotal">
+        <span>Subtotal:</span>
+        <span id="cart-subtotal">$0.00</span>
+      </div>
+      <div class="cart-buttons">
+        <a href="cartstore.html" class="btn btn-primary">View Cart</a>
+        <button class="btn btn-outline" id="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase Integration -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-products.js"></script>
+
+  <script>
+    // Product data management with Supabase integration
+    let productsData = [];
+    let supabaseInitialized = false;
+    let wishlistItems = new Set();
+    let cartItems = new Map();
+
+    // Performance optimizations
+    const performanceOptimizations = {
+      debounceTimers: new Map(),
+      throttleTimers: new Map(),
+
+      debounce(key, func, delay = 300) {
+        if (this.debounceTimers.has(key)) {
+          clearTimeout(this.debounceTimers.get(key));
+        }
+
+        const timer = setTimeout(() => {
+          func();
+          this.debounceTimers.delete(key);
+        }, delay);
+
+        this.debounceTimers.set(key, timer);
+      },
+
+      throttle(key, func, delay = 100) {
+        if (this.throttleTimers.has(key)) {
+          return;
+        }
+
+        const timer = setTimeout(() => {
+          this.throttleTimers.delete(key);
+        }, delay);
+
+        this.throttleTimers.set(key, timer);
+        func();
+      }
+    };
+
+    // Initialize Supabase and load products
+    async function initializeSupabase() {
+      try {
+        console.log('🔄 Initializing Supabase Products Manager...');
+
+        const initialized = await window.supabaseProductsManager.initialize();
+        if (initialized) {
+          supabaseInitialized = true;
+          console.log('✅ Supabase Products Manager initialized successfully');
+          await loadProductsFromDatabase();
+        } else {
+          throw new Error('Failed to initialize Supabase Products Manager');
+        }
+      } catch (error) {
+        console.error('❌ Failed to initialize Supabase:', error);
+        supabaseInitialized = false;
+        loadFallbackProducts();
+      }
+    }
+
+    // Wishlist Management
+    const wishlistManager = {
+      init() {
+        this.loadWishlist();
+        this.updateWishlistUI();
+      },
+
+      loadWishlist() {
+        try {
+          const saved = localStorage.getItem('dairyLift_investor_wishlist');
+          if (saved) {
+            wishlistItems = new Set(JSON.parse(saved));
+          }
+        } catch (error) {
+          console.error('Error loading wishlist:', error);
+          wishlistItems = new Set();
+        }
+      },
+
+      saveWishlist() {
+        try {
+          localStorage.setItem('dairyLift_investor_wishlist', JSON.stringify([...wishlistItems]));
+        } catch (error) {
+          console.error('Error saving wishlist:', error);
+        }
+      },
+
+      addToWishlist(productId) {
+        wishlistItems.add(productId);
+        this.saveWishlist();
+        this.updateWishlistUI();
+        this.showNotification('Added to wishlist!', 'success');
+      },
+
+      removeFromWishlist(productId) {
+        wishlistItems.delete(productId);
+        this.saveWishlist();
+        this.updateWishlistUI();
+        this.showNotification('Removed from wishlist!', 'info');
+      },
+
+      toggleWishlist(productId) {
+        if (wishlistItems.has(productId)) {
+          this.removeFromWishlist(productId);
+        } else {
+          this.addToWishlist(productId);
+        }
+      },
+
+      isInWishlist(productId) {
+        return wishlistItems.has(productId);
+      },
+
+      updateWishlistUI() {
+        // Update wishlist buttons
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+          const productId = btn.dataset.productId;
+          if (this.isInWishlist(productId)) {
+            btn.classList.add('active');
+            btn.innerHTML = '<i class="fas fa-heart"></i>';
+          } else {
+            btn.classList.remove('active');
+            btn.innerHTML = '<i class="far fa-heart"></i>';
+          }
+        });
+
+        // Update wishlist count in navbar
+        const wishlistLink = document.querySelector('a[href="watchliststore.html"]');
+        if (wishlistLink) {
+          const count = wishlistItems.size;
+          let badge = wishlistLink.querySelector('.wishlist-count');
+          if (count > 0) {
+            if (!badge) {
+              badge = document.createElement('span');
+              badge.className = 'wishlist-count';
+              badge.style.cssText = `
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background-color: var(--primary);
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 500;
+              `;
+              wishlistLink.style.position = 'relative';
+              wishlistLink.appendChild(badge);
+            }
+            badge.textContent = count;
+          } else if (badge) {
+            badge.remove();
+          }
+        }
+      },
+
+      showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: ${type === 'success' ? '#10b981' : '#3b82f6'};
+          color: white;
+          padding: 12px 20px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          z-index: 1000;
+          font-weight: 500;
+          transform: translateX(100%);
+          transition: transform 0.3s ease;
+        `;
+        notification.textContent = message;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+          notification.style.transform = 'translateX(0)';
+        }, 100);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+          notification.style.transform = 'translateX(100%)';
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
+            }
+          }, 300);
+        }, 3000);
+      }
+    };
+
+    // Load products from Supabase database with performance optimization
+    async function loadProductsFromDatabase() {
+      try {
+        console.log('Loading products from database...');
+
+        // Show loading indicator
+        showLoadingIndicator(true);
+
+        const dbProducts = await window.supabaseProductsManager.getAllProducts();
+
+        // Convert database format to store format with performance optimization
+        productsData = dbProducts.map(product => ({
+          id: product.id.toString(),
+          name: product.name,
+          description: product.description || (product.category.charAt(0).toUpperCase() + product.category.slice(1) + ' product from our dairy farm.'),
+          price: parseFloat(product.price),
+          rating: Math.floor(Math.random() * 2) + 4, // Random rating between 4-5
+          imageUrl: product.image_url || 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80',
+          inStock: product.status !== 'out-of-stock',
+          category: product.category,
+          featured: Math.random() > 0.7, // Randomly set some products as featured
+          nutritionInfo: {
+            calories: '150 per serving',
+            fat: '8g',
+            protein: '8g',
+            calcium: '30% DV'
+          }
+        }));
+
+        console.log(`✅ Loaded ${productsData.length} products from database`);
+
+        // Update the product listing with debouncing
+        performanceOptimizations.debounce('update-product-listing', () => {
+          if (window.productListing) {
+            window.productListing.products = [...productsData];
+            window.productListing.filteredProducts = [...productsData];
+            window.productListing.render();
+          } else {
+            initializeProductListing();
+          }
+
+          // Initialize wishlist after products are loaded
+          wishlistManager.init();
+
+          // Hide loading indicator
+          showLoadingIndicator(false);
+        }, 100);
+
+      } catch (error) {
+        console.error('Error loading products from database:', error);
+        showLoadingIndicator(false);
+        loadFallbackProducts();
+      }
+    }
+
+    // Show/hide loading indicator
+    function showLoadingIndicator(show) {
+      let indicator = document.getElementById('loading-indicator');
+
+      if (show && !indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'loading-indicator';
+        indicator.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(2px);
+          ">
+            <div style="
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 16px;
+            ">
+              <div style="
+                width: 40px;
+                height: 40px;
+                border: 4px solid #e2e8f0;
+                border-top: 4px solid var(--primary);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+              "></div>
+              <p style="color: var(--muted-foreground); font-weight: 500;">Loading products...</p>
+            </div>
+          </div>
+          <style>
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          </style>
+        `;
+        document.body.appendChild(indicator);
+      } else if (!show && indicator) {
+        indicator.remove();
+      }
+    }
+
+    // Load fallback products when database is unavailable
+    function loadFallbackProducts() {
+      console.log('Loading fallback products...');
+
+      // Try to load products from localStorage first
+      const storedProducts = localStorage.getItem('dairyvestProducts');
+
+      if (storedProducts) {
+        // Convert the stored products to the format expected by the store page
+        const managedProducts = JSON.parse(storedProducts);
+
+        productsData = managedProducts.map(product => {
+          return {
+            id: product.id.toString(),
+            name: product.name,
+            description: product.category.charAt(0).toUpperCase() + product.category.slice(1) + ' product from our dairy farm.',
+            price: product.price,
+            rating: Math.floor(Math.random() * 2) + 4, // Random rating between 4-5
+            imageUrl: product.imageUrl || 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80',
+            inStock: product.status !== 'out-of-stock',
+            category: product.category,
+            featured: Math.random() > 0.7, // Randomly set some products as featured
+            nutritionInfo: {
+              calories: '150 per serving',
+              fat: '8g',
+              protein: '8g',
+              calcium: '30% DV'
+            }
+          };
+        });
+      }
+
+      // If no products were found in localStorage or the array is empty, use default products
+      if (productsData.length === 0) {
+      productsData = [
+      {
+        id: 'prod-001',
+        name: 'Fresh Whole Milk',
+        description: 'Nutrient-rich whole milk straight from our dairy farm. Pasteurized and non-homogenized.',
+        price: 4.99,
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'milk',
+        featured: true,
+        nutritionInfo: {
+          calories: '150 per cup',
+          fat: '8g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-001',
+        name: 'Full Cream Milk',
+        description: 'Full cream milk is rich, whole milk with a high fat content (typically around 3.5%), offering a creamy texture and full nutritional benefits.',
+        price: 4.99,
+        rating: 5,
+        imageUrl: 'https://media.istockphoto.com/id/1404644967/photo/whole-cream-taking-from-a-glass-of-milk.webp?a=1&b=1&s=612x612&w=0&k=20&c=CTkG8aMqgVNxDwj7jX5bCQMi6fKRUVvr5I-Wju67Qi8=',
+        inStock: true,
+        category: 'milk',
+        featured: true,
+        nutritionInfo: {
+          calories: '150 per cup',
+          fat: '8g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+       {
+        id: 'prod-001',
+        name: 'Toned Milk',
+        description: 'Toned milk is milk with reduced fat content (around 3%), made by diluting whole milk with skim milk or water while retaining its nutritional value.',
+        price: 4.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VKBO1u-GP_UGYO4l56Ski-jlyQfuCiosNg0LU1g5k0ZKrj09lcWWji_ckHU_znnhFM3M9FeJQqaQv0ysGWc9zpSkjmg958r11mnvVNTBmxNWu6MR_qpiabOT7jinOvFBYUw5MpX9ZKdwKW7xH0k6IhlqqFGiGJV1GL4YfG-2M6HWdMI2Q=s1024',
+        inStock: true,
+        category: 'milk',
+        featured: true,
+        nutritionInfo: {
+          calories: '150 per cup',
+          fat: '8g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-001',
+        name: 'Flavored Milk',
+        description: 'Flavored milk is sweetened milk infused with flavors like chocolate, vanilla, or strawberry, offering a tasty and nutritious beverage option.',
+        price: 4.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VJpFmz6FqyliQR2aXiykoY1GOCAdNXL3qGAf0K5GlpQyAqv6yZfIpJIyAtHBllHkXwJN8n6tPrDlWcVtV1DPf5uvwHXcEYSovFGEMfFBnmj-lUeGN6KmuQhv9m_pYVKV34EH_-kuzXvz3S45-gaVmAcGTOaakr5CT-t1xp-a6orO95FRw',
+        inStock: true,
+        category: 'milk',
+        featured: true,
+        nutritionInfo: {
+          calories: '150 per cup',
+          fat: '8g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-001',
+        name: 'Organic Milk',
+        description: 'Organic milk is milk from cows raised without synthetic hormones, antibiotics, or pesticides, following organic farming standards for natural and sustainable production.',
+        price: 4.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VKGM3BV9X5Ui4xRGY4p693FkzY8tJ61L1TRvh_33ZZmaQTYwgy8XWrpw3euKq8RP4QXDSRZtU9aNg7zt3J_W8VvDXKtSTPW2jyO9tStjNs18PtKlp33xJwVwWaLBb_xzXtMyC8V-lNvsGePAZf_oUp6VaZysOfAvsJ0YNCdKMy2DBI5sw',
+        inStock: true,
+        category: 'milk',
+        featured: true,
+        nutritionInfo: {
+          calories: '150 per cup',
+          fat: '8g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-002',
+        name: 'Artisan Cheese',
+        description: 'Artisan cheese is handcrafted cheese made in small batches using traditional methods, often with high-quality, locally sourced ingredients for unique flavors and textures.',
+        price: 8.50,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1634487359989-3e90c9432133?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'cheese',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per serving',
+          fat: '10g',
+          protein: '7g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-003',
+        name: 'Organic Yogurt',
+        description: 'Creamy, probiotic-rich yogurt made with organic milk from grass-fed cows.',
+        price: 3.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VKWa00vo9rWjrpLVBzL_NP6RXARNxt6X-oobcgwc1-2dQ0omv_DESqq5k6y7UfcxCAcYqdUb87JebcBRHoFCQGEkJlVpHErAEE2RTto6hkGpnKG6gJOaWsBx-QfmYNO_k-soK5yF6RXYdEBhUN3eT6Dzs3YbWkgy0QDDoP98ISyqUQ-',
+        inStock: true,
+        category: 'yogurt',
+        featured: false,
+        nutritionInfo: {
+          calories: '130 per cup',
+          fat: '4g',
+          protein: '10g',
+          calcium: '25% DV'
+        }
+      },
+      {
+        id: 'prod-002',
+        name: 'Mozzarella Cheese.',
+        description: 'Handcrafted aged cheese made using traditional methods from our premium milk.',
+        price: 8.50,
+        rating: 4,
+        imageUrl: 'data:image/jpeg;base64,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',
+        inStock: true,
+        category: 'cheese',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per serving',
+          fat: '10g',
+          protein: '7g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-002',
+        name: 'Cottage Cheese',
+        description: 'Handcrafted aged cheese made using traditional methods from our premium milk.',
+        price: 8.50,
+        rating: 4,
+        imageUrl: 'data:image/jpeg;base64,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',
+        inStock: true,
+        category: 'cheese',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per serving',
+          fat: '10g',
+          protein: '7g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-002',
+        name: 'Hard Cheeses',
+        description: 'Hard cheeses are aged cheeses with a firm texture and low moisture content, such as Parmesan, Cheddar, and Gouda, known for their rich flavors and long shelf life.',
+        price: 8.50,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8TW96emFyZWxsYSUyMENoZWVzZS58ZW58MHx8MHx8fDA%3D',
+        inStock: true,
+        category: 'cheese',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per serving',
+          fat: '10g',
+          protein: '7g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-002',
+        name: 'Soft-Ripened Cheeses',
+        description: 'Soft-ripened cheeses have a creamy texture and a bloomy, edible rind, such as Brie and Camembert, developing rich flavors as they mature.',
+        price: 8.50,
+        rating: 4,
+        imageUrl: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhATEhIVFRUVEhUQFRYVFRUVFRUVFRUWFhUSFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUtLS0tLS8tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIANEA8QMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAADBAIFBgABBwj/xAA+EAABAwIDBgMFBgQFBQAAAAABAAIDBBEFITEGEkFRYYEicZETMqGx0RVCUsHh8AdicpIjM2OCohQWJFPx/8QAGgEAAgMBAQAAAAAAAAAAAAAAAgMAAQQFBv/EACkRAAICAQQCAQQDAAMAAAAAAAABAhEDBBIhMUFRExQiMmEFgdFxoeH/2gAMAwEAAhEDEQA/AKGiBICtIoOapqSsVrFPdcOSkdlKCVoac0WsFOkps8wupRcq2p90KsbcWKyyTR7HRi2iHUYO13BWUOaPZdzBLdHk5OXh8GGxPZppvksZiuCviJLbr7RJGCqTFsNDgclc8aYWPK0fKKLGHsNitBS7QNOoVTtBhPs33AVTm1Z+uDTSkrPpOHYrHwcFbR4k3KxXyFlYQthsPSuqX6ndB5q1b4oXKCSs+l4fXFwyCt443uR8JwprGhXDIwFrjhSXJgnO3wUZwwu1Qjs2w6haQhRac0xQj6FNsombNxj7oU/sCP8ACFobhLyvCtJeiNUUT9n4vwj0S0mzsX4R6K8fKl3ypyxp9oXZQzbOx8gqyo2cbwWolmSE1Qlz0uJ9oNNmZ+wwDmmG4G0jRPzVKE2vssj0mKL6GpCbsCZ+ELhhDBwCZqq+wus1iOPuFwNVTjCPFDo4rRZ1lPGwEmyyNbN7R9mDIFTkrHvB33JKWrDRZqFteBsMVFxNOxrbacwNLqlrMTaNFV1VcSqyaUlX8oXwotvtVcqHNcp8jL+JG1ip7K7oGIUdNfJW1NS2C405uT4OjxFUCfIW6KLKt1wuqXZ2S05sMkmTqRcVaNRh1VcJ8yLJYROb2WjaTZdnBluJzs2KpDBehSnIqFyk8RrQ1pzWixKiZDbCyxkwVxjdf7V5toFV7qwzncjrYMP2ciLoVuP4ZYk2F5Y7K5uFlxGpxsIIIyI4qRzNOwsmmUlR+lMOq2uAzT5kAXxnZLaKUABxvbjxW+pcYDxYmy6OLUQmuTiZdNKEqL+avaNSk5cWYPvBUGI4IZ82zOb5FUVZsTVH3ahx8/0RSzuP4xsLHpscvynX9G3bjbD94IzasO0K+YO2Nrme6+/+4q6wqCviAD2b3UFTFqm3U40Hn0WOMbhNM2MkqUmnSsRmIzjK8kpJjowrdvic7Y0wc9Uq6euTrsEqHcLKLdkpXe86yVOfobCK8lPLWDiUmKh0jt2MErYQbFR6vJKs/s6KnYSxoyCztOXYzcl0Y2owwxx78hztosFW1YLnWC0e1OMySvczRoyWadCFz82e3UTp6fT1G5CUs5KUkBKsXxoDwk72aNiK18SA+NWEgSsgRKQLgK7q8Rd1eo9wOw+pRx9E6w3Fl48XyCYp4TwCyx08mwJZkJGiuUw3DeisoqR3HJMWa3UrTDQ3zQl6orabDt03srG7WjNVuJ4/FECS4DusHjW2xdcRZ9TotKwxxrkXvlkfBssYxuOMG5CwGLY46YkA2b81RT1T5Dd7iUSFh5JGXJfCNuDT1ywllwRmREohpDyWWzduS8gmogCKyjNlDcIQMOOSLL/ZrVbyiYDZYLZn3lvqE6LXp+jlav8ANl1SRK0hYeaQoyrWArfGJz5SCMY5FbGeilGjtR0BYIRHkFIRnojBSCqyAhGV3skcqKqyUCMYVVjptG7yVw5UW0zrRO8ka6B8o+LYhJeR/wDUUo4os4u9/wDUV57NeenJ7melgltQpIl3tVg6JAfGomy3RXvYl3sVg9iXkYnxFSYpuLkbcXqOgLPrTHxM5IU20UEermjuvkE+M1D9XnslDHI/W5XSeohHpHMWlnLtn0zE/wCIMTbhl3HosniW2tRJcN8I+KposMefup+n2fkcs2TW/s0w0cV2VMsz5Ddzi4nv8E/Q4HUSuDWRPJPQgepWo2cwERTMke3eAOhX2fDPYvaHMaNEvDOOZtJhZZvCuEfIMN/hhVvsXFrfUrVYf/Cuw8cp7ABfS2uACm2patf08PJjlqskvJg6X+HELDdxLvM/RWg2TpRazB6K+qJ7oTESxwSpIW8kn2xGn2bpwP8ALb6KA2UpN6/sWf2hWrXojXq9kfRW6Xspo9mKcOO7GB5AJ1uBxNFrZq0icAOqEXDnmrUIrpFObfkUbh7QjMgIRoSATcZqe8TqiBIsKO0oF2jMnPkkqmdzjlko2RIuApBUsFU5upurCCta7XIqiDpUF6HLxUWzxyzm1r7RO8itE4rNbVM32EdlcnUWyoq5o+NkZnzKmAryswMjNqqJYS02IsuK4ndhO+gTggyMR3FBe9DVDLE5WJZ7E7I5KyFMUkA0L7q9Xq9Rb0VsZbwbPsGqehwtg4KzYLrnRrmynJ+QlSAx0rBwR2NA4KBUS5Jkwx6KxVhhlY6I65KmpXneVmwXQ/M8clKPDFzgnwzY0eJNkGZTjViYSW6K8w7E+Dl3dL/IxyfbPhnNy6Zx5iXj7WXsEeXVQie1wu03TMQDRn2C6admRqjhCoELxzy48l6IuF9VCEmEBGBGu6hktaMszzQZJuqlkoO0Wub3JQpHniUMPKC4ElU2XRJxUd9EbTu1tkolrR1PRQhAoLwmTIBwHdTFWeDQOyso8p55G6XI6/VWdPMHi4VVJI+S4zsNbZBHoW7g114Kyiwe4ALPYo7eKalqiSR2ScwWfJkTVIbjxtO2U1ZM1g8SzeKVMLgbWTm2ZsxYqMLG0qNsPZ7UGxNknJIVZAc1ZfYQkZcarLKD8GuOZdMypeoOKdrsOfGTcZJAoUh6p8o8XLy65WSjdsFkdoup+zuoDJZBXZ6YUB8Nk/HmpPiQyRFIrIveCt4xokHwZiyt6WmJCRLFKXKJKaQSAXXoYpSR2U6eMkjzVLjhi++QlO9zCMzclXVPiQOTteaRqmi2WdxZJBxt8F0cWqlge1cozyxKfLNNDmb3FhxRHPbqBnawJ+ioKaryyNnfBPUtaHa5Hhy6rrYdZjydMyTwyiOBnMqRj5LsiF6xpWoURsRwUxMRoBdEEfMr1jGjXMqygD3OdqvHGw0Tp3QLm3TqlJnb2XD5/QKyrAsbvaC6KbNF3Zng3h3XjpDa2g5DJKSOud1uvwHmoTsnLUOI/IZBTpqVxzJz1/YRaCkIGoLj94iwHkFZUtO0H3t48TwHko+iLsoK4br3BLOmTOMP/wAV/Q2+CpamewJ5Lny/Lg2x6M5tlUbxDQs2xiexKQukJd2S1kuchsFwRstRhgLWBZ6igL3AcFqYmWACWRnVNOyQWIWUxfZ+1yxa9wS8pVOn2FGTj0fPfs5/Jctzut5Bch2ob87B0NUHgWKaLLrG4dWljhyWxpXh7QQVhaofJURZkmmOuvNwFebtlTB7JOhuj0MxjuDmoxm2qKWIU2naBavhhamsYQM7FWmDAOZvc1nammDlGCqliAa0+EKvkjv3NFPFcaTLuqjLXG3FCYbIrZ2ubrd2pCiLFBOCT+0BP2DKI6M23mnJcWL3dOYS05RL4YzT11ss+Gf5q0pq8EX+IVCDey9cS3TT9ldLT/yM4flyhGTApdGoiffO4tzP5cSvZH8vUhUFFWWIsbH0+asHV1xl8PK/muzh1WPKrizHPDKLGjzJ7qDpbdeyV9vfQ38rL2GBz/CMye4A5lPUvQvaegyTG0YAHF5yFunNCIbG4Na7eN7Hw3PmBe3qVaRYI82L5M7cBbsE7HhEYtqSCDc65HQdFVl7SNNSlwFwW+ZBc7z5DoE6yMC1uCkVxVXZaikYfaGTdqJR1B9QFRV09hfkblW22ptUk82ArJ7S1vs4APvPWaEN2RodKW2CKbEKn20hc2w4WXkNKSQD3VXh8Di9u75rb0VCGtF9TqsmbA8U73XY/Fk3roWoYAzRWkbgoiGyg5yVuYzagz0vIVzpLIZkBRKQNEFy9uFyuyj5/G/Qq+wXEjGbH3T8FkKGqt4SriErPlx1wb00z6HGQQCMwjhoIWWwHFNw7jz4DoeS07Xbp6HMFZuuAJKmRe22qJG6yMLHIpeRpaenyUaKTvgZLbqDo75cV5C+2R7Jk5oasnQj7OxyyKJHWDR+R4HgUV7L5HsUtNACLFAm4ceC2lIsqSTK+t8k+KezD1CydAXwyNBzi3s/5f0WtbiEcocI3g2yyR4aad/0KyRcWIFpFjzXu9cLqh1rNdlbTvwRZ4gACND8vqkOElbX9ku+xR7UOR7hnc8rjjyJ5nqmJY930ul3PG64HX1H6JW5xfLphVZF2IuA4LX7F1Bkie42v7QgAahoA1739FjZaEhrSXA7x4EEC/zWy2HYBTkf6r7nmuv/ABufPPM45HxX+GbPGCjaXk0N14vVG67pjOco8CvUGplDGSOJyaC70F1aKZ8+2xN6sC+Xs2k9ACVgsbqWzykh12t8IT20mJyPa6Qmzpz/AGxj3Wjtb1WdoaYlwHUE+SOGNRbYDk5JGiwCg3SXLQRBK0A3bBWO5xC5WfJvm2bscdsaIWQJWpglCkSexojIlnOTkrUhMxCEjvaLkHNcq5LpHzIq5wyrv4TqqcqdyMxqtM47lRoSNQ0rSbP4qDaKQ/0uPyKx1DVh46jVNsdY/vJc/JDmgqtH0nTI9ijCzhbj81Q4FiokHspD4gPCfxAfmroC2V/I/kUqxLQNzQ3LgfgixutkTccD+RUsnZFK3LTukZcuY5hAwlyP2ByKg6PgexQ4ZLWB7H8k2MwpV9g9CrouBS3sDG4OGXUcOh5hWNuB0UCLZHMIXGnaCUvArV4w8C7mB4t93J3nbQpqgqN5hOZaRcHlfgUo+mA93T1t+i6GV8eTbFv4NAR/KUbyvI6yP/h/7+gXBJfaWVT49xwzy3SB00v3SkzPW9v0XsMwPucPeacnNPIheSyXPx7rNmg1+X/jBi/Qo7NwA4+G2Q8Xmt7shCWQkH8d/UD99l8/mbnfnqvoOx5/8ZtzexPxz/Nbv4bb8suOa7/QnVXtRdFRUiouXozCRLrLD7cY7mylac5jZ1uDBm/4Zd1bbXbRRUkTnvd0a0e848mhfIdn6qatrpJ5fCNwtY3XdadQOZyCLfCHb5FuMprjoHtTNeYMGjGgW4C/7CscGoCG7xz435pbHaBoqQTfPd142yWgosgG8Fkz6uMoVFmjHhadslGxOQP4FSMVku9c3lG7hoLJkVAlREu8LIJktqjsBo9lKRkTL3pOplsqbIgdui5A/wCrC5DuDpnzYhEIUHIrNFrZqj2AjmLHBwWgpZw8Bw7rPyjNGpagxuB4HUIMuPeuOylwzSRvIIsSOIPEFbXAMTEzSx/vj/kPxDqsJHKCARmE1TzljgWmxGbT+RXPlEtrcj6KbjXXgea59nixyPDmDzSOEYg2dnUZOHIpstPf5/UJYqqYNryDZw19D16FMRS28JOR0P5eai5lxnx72PI8wUs02u1378/qqaovstbqJFsjp+80rFNumxzB0PPp5o7HXy9OfmFLBqjjkR+7oU8dhfh8vopuPA/p5jl5KG8W5j6j0QuISYvPTb1nMcQ4aOabEdDzHTRLuxHdynFv9Ro8P+9urfMZeSZORu3Lm3l1ClI0PGYUjJpU+V68ElFMC/QEG4IuCMwQeRGq3mxjr044EeE3vqCc/j8F89hp/Zb5is0uscwS24N94C+RWkwnaiZoIMTHvyBcHuYMuO7Y/Na9D8WHI5XVroRmxzlGkbtxAzOQVPiWNAAti8buerR3GvZUk1XJNnI64/C3Jo7ce90aKQWstuTWSlxDj9+RCwJd8mVxnBXTu9pM4vI58ByHRAhpRCWuAtbLsVsnAFU+I0l7jgUlSfYxK1RmtrcP9pJD7I3eW+6OXADuT6JumgewWkbZ4A3gqoxTQ1DX+I2INwL6aK4bUSPkklkObyLC1t1oHzWdWu3/AKG1XgaZNkoTW1CBI7PLPoF6yGQ6DXnkicwowb6FppfVLvqgfNNz0Q4u87LoaBmXhvyvmh+Q0R08n3wV7ZiTYAlM/ZcjxmLeavIKcNzNr8kKqqDoMylyzN8IOOljfLKL7Bd+MLk/vS8lyHfP2P8Ap8Z8bc7RSgfceSC05L2HIrstcGJPlBJivCbhdNooxhUugr5GcPq9w7p90/BXrXrMOTuG1tvA7sUnNi3fciJ0aTD698Tw5pz48nN4g9f/AKt1h9c2ZgIPlzHNpXzUSfv8wrHCsUdC++o+8ODhz81hnDygpLcfQt49+XAqLow4a6aHiObTzCUoa5so8Jvlcc/Ipgv4jXiOaUJ5QLe3TZw8PH+U8CDy6phkpBA7jqOfmhSWeOR4FKh274SbjUcx1ahD7Ldj76obnWyOhSkdQOefz6hHc8EZ5hEB0yRy17HiouZxHr9eqH7W2RzCgZd09FOC+QzbX8X769E1Cd0/mkw+6M1riMgfkmRpAtNjrZuRUxUJRkLhbeNvj6ooiGt+/PsieaKDWCTGWVCkS52RCVLiNF4Ksi+SU8z8DFpPbJvoHcfguZh7fw3/AKioiu80KXETwBv+qW5ybHx09eDpXi5a0AC9iQPgECebdBHHj06KUjt0dfldLxRbxudB8UxDaSIQxFxv6fVWUcO6LlSY0NFyhOLn9B+9VTlZXLPHuJ0QCANNeaFX4pDC078jW98z2WWxDbJmkbSeugVrHKXSLjXlmnuf2V6vn/8A3bJ/6x6lcj+mn6Gb4e/+mY9hXoOaEx2akTouy0cdS4GTooxhegrwfoljX2c4ZoMoTWqFKxXFlyjaHKCt3xY+8Pj1T3tP06LOtBBuNRmFb0tSHgc9ClZcaXKAhJ9M0OF1LgQQS1w5LV0NeXi516ZFYehdnr5fRaOik43seIXLzxp8GtRUuy+a8HMG3MFdNTucP1+ISwk4jPmnaab0Wb5GM+nj2hNsLibEW5HJOU8UgO6QPO4Rp49Cowz38JNnDQo1K0T6eLQ03DXHVwF+Wal9mtbk4l3wRqap4HVGJB17KOTQKwxQAsEebQLc9SES+9nfyQXO3TY8dOqE5pbm3McuIUGqC8BnPI979F41vFpt04IYqWuFioviy8Jt8lV0HtDOmcMi3uM0N1Q3qEO8gPA+RStZiccX+a5rehcL+mqnb4LUUhszt5n0KASSb2d3yCqKna2ID/DY5/bcb8c/gqit2ondkN1g6DePqfomRxyZfCNk1u8czYaknL4paXHaaK+9IHW0azxHLyyXz6prZH++9zvMm3poljItCw+xbNViW3Jv/hxeRefyCoK/aWplBBlIHJnhHwVdLmlXmy0QxRXSETYRz76m565pZ7rHoukchGRaFEW5BPahcl7Bci2orfITuiO0S10Vj8loaMEZeBiN2SkXIMb1LeQNDVLgZa7QqbwgRuRScktrkdF8AWtzXu6Wneb3HNc3VGBVtkUU0WlBUh4y7jiOyv6Gc/ULENFnXBseYyP6q1psWe2283eto5uTu40PwWPPp7/EdinXZu6eX0OvROxG3ksnRbRwn3nFvMPBFu4yV/RYpC7ISsIOlntXMyYZx7RujOL6ZcxyfopVEFxcapGKoaMt8bp0IIKYfXMbk+Vg5EvaPzS42gmg0E28LHJw0PNGiqHX3XZfJUtfjdGB/nNLhwYS+/Zt1WTbYMsQyFz7aOcfZjz4n4J6xykuEVcTcOsRY5j5JeZ+4N4nw89Lea+eS7V1Tsg9sY/kALv7nX+SQnlLz/iPc86gvcXel9OyJaaS7YKa8G4rdo6Qff3z/pAuN/6h4R3Ko6ja2S9oo7DnKQT/AGt+qzz23yXl75cQnRwwX7LbfRY1GO1MmT5XDozwD/jn8VXezAO9xOfU+Z4oTj6r1svNOUa6F2vIwya/ReF6XcF4JFNhN/hk5HJdzyESR6VkkTYxFTkEc9Ce9BfIgPkTowESyBJHpZ8q5z0B6fGJlnP0E9qVyX3lyPahPyP2cOCmxcuVsBdhGIgXLkDHR6CQow0K9XJcux0OgI1RguXKpBwIM1TPNcuQyGQIBJT6rlyKHYE+iDVOL3guXJjKXRe0uiI/RcuXPf5HRX4g36I79AvFyp+AV5JcQgD3ivVyqIU/B49AdqvVyZETMKhPXLlESQJ6WlXLk6InIDKCVy5ORnkCKG5cuTUIkDXLlyMUf//Z',
+        inStock: true,
+        category: 'cheese',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per serving',
+          fat: '10g',
+          protein: '7g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-002',
+        name: 'Feta Cheese',
+        description: 'Feta cheese is a brined, crumbly white cheese made from milk, known for its tangy flavor and use in Mediterranean cuisine.',
+        price: 8.50,
+        rating: 4,
+        imageUrl: 'data:image/jpeg;base64,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',
+        inStock: true,
+        category: 'cheese',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per serving',
+          fat: '10g',
+          protein: '7g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-004',
+        name: 'Salted Butter',
+        description: 'Rich, creamy salted butter made from the freshest cream of our grass-fed cows.',
+        price: 5.99,
+        rating: 4,
+        imageUrl: 'data:image/jpeg;base64,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',
+        inStock: true,
+        category: 'butter',
+        featured: false,
+        nutritionInfo: {
+          calories: '100 per tbsp',
+          fat: '11g',
+          protein: '0g',
+          calcium: '0% DV'
+        }
+      },
+      {
+        id: 'prod-004',
+        name: 'Sweet Cream Butter',
+        description: 'Sweet cream butter is made from fresh pasteurized cream, offering a smooth, creamy texture and a mildly sweet flavor, commonly used in cooking and baking.',
+        price: 5.99,
+        rating: 4,
+        imageUrl: 'https://plus.unsplash.com/premium_photo-1700440538975-c9586205ef59?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8U3dlZXQlMjBDcmVhbSUyMEJ1dHRlcnxlbnwwfHwwfHx8MA%3D%3D',
+        inStock: true,
+        category: 'butter',
+        featured: false,
+        nutritionInfo: {
+          calories: '100 per tbsp',
+          fat: '11g',
+          protein: '0g',
+          calcium: '0% DV'
+        }
+      },
+      {
+        id: 'prod-004',
+        name: 'UnSalted Butter',
+        description: 'Unsalted butter is pure butter made from cream without added salt, offering a neutral flavor ideal for baking and precise cooking.',
+        price: 5.99,
+        rating: 4,
+        imageUrl: 'https://plus.unsplash.com/premium_photo-1700612685421-7e95b4a857dd?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8VW5TYWx0ZWQlMjBCdXR0ZXJ8ZW58MHx8MHx8fDA%3D',
+        inStock: true,
+        category: 'butter',
+        featured: false,
+        nutritionInfo: {
+          calories: '100 per tbsp',
+          fat: '11g',
+          protein: '0g',
+          calcium: '0% DV'
+        }
+      },
+      {
+        id: 'prod-004',
+        name: 'Clarified Butter (Ghee)',
+        description: 'Clarified butter, or ghee, is butter that has been slow-cooked to remove water and milk solids, resulting in a rich, nutty-flavored fat with a high smoke point.',
+        price: 5.99,
+        rating: 4,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VIyFn0XBKUd-r4WI1ULaS452zqcr_1GtdsbIX_IUBDijf554pImUCeefdWiwEHkuM9KTHMPsk9opZlF-u5DdAHCRk2oo8CAYV6t4OFdCw63kqtd1iKkHx0YEZfGzUg8b8impmEip_XUJXPLHkrjFSQF1OlEU6ut2g-O_mKbRUYJmZxqGg',
+        inStock: true,
+        category: 'butter',
+        featured: false,
+        nutritionInfo: {
+          calories: '100 per tbsp',
+          fat: '11g',
+          protein: '0g',
+          calcium: '0% DV'
+        }
+      },
+      {
+        id: 'prod-004',
+        name: 'Organic Butter',
+        description: 'Made from cows that are not given antibiotics or growth hormones.',
+        price: 5.99,
+        rating: 4,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VIfpswf8AYSYHbF8qraEZx05LbNdITNOmY-Gd37M2LCiU3-YRvSMMb289ZrP6Wi4KoB8HaH0hDSEMNnkZ4yOG1t3G-9ixipoIU_13DwPwbEzalUwbZYoT2Rw30d7kFfp-xoSxXf_kjs_VLfx5nA91PSM15aGb-BHlmbzU183sGW4u70',
+        inStock: true,
+        category: 'butter',
+        featured: false,
+        nutritionInfo: {
+          calories: '100 per tbsp',
+          fat: '11g',
+          protein: '0g',
+          calcium: '0% DV'
+        }
+      },
+      {
+        id: 'prod-005',
+        name: 'Chocolate Milk',
+        description: 'Delicious chocolate milk made with real cocoa and our farm-fresh whole milk.',
+        price: 4.50,
+        rating: 5,
+        imageUrl: 'data:image/jpeg;base64,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',
+        inStock: false,
+        category: 'milk',
+        featured: false,
+        nutritionInfo: {
+          calories: '170 per cup',
+          fat: '8g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-006',
+        name: 'Greek Yogurt',
+        description: 'Thick, strained Greek yogurt with high protein content and tangy flavor.',
+        price: 4.99,
+        rating: 4,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VLpQj50t7CwkM-SD2k96w4MwJqJbNbI7k1SzWdTMPS9FPMixrj1N3ookLQmiXqG7LnU3O8u2iMQLScdYH1xiGywUYnYx2YYnC8DjQmx8DvjdYDei_M4o_FB13mciSZoo3_eSG62b_Qlk-aIAwMsdrR8HwpbQqdHzybDBAdvefHLBDnE3Q',
+        inStock: true,
+        category: 'yogurt',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per cup',
+          fat: '0g',
+          protein: '22g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-006',
+        name: 'Plain Yogurt',
+        description: 'Plain yogurt is a creamy, tangy dairy product made by fermenting milk with live bacteria cultures, rich in probiotics and nutrients.',
+        price: 4.99,
+        rating: 4,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VKUCg_VARq0jFlEBcRb-uDoSx-oIQ7QIpQ9icEr4b9k8z7K8TFB-LTCq1TM3LCFr3_Uld8_f2uLy2HMiJzU92fNgzjWfMb9n7KQlf_RybY9NEwLaugbWo7vymjW_T6pIoy-SwJewqIycQmveuN7J__h7qzkz9gpi4Qlh9c6nCNWuvMFXA=s1024',
+        inStock: true,
+        category: 'yogurt',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per cup',
+          fat: '0g',
+          protein: '22g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-006',
+        name: 'Almond Yogurt',
+        description: 'Almond yogurt is a dairy-free yogurt alternative made from almond milk, offering a creamy texture, nutty flavor, and probiotic benefits.',
+        price: 4.99,
+        rating: 4,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VIBLZCYyVWbpV4tItgD8bB2zEranOyYguIKxKsUdeN4OAssVgoEPrVeKGVSL13qmMtIoCzdN3Krq4A_7L_tpNEE2qln5VH2K9ABI5I23ndXNPWzju8vzleEicfttl7K37qkkgKcXZvmQn4RaX1nbuILbjhAVPJvr2OwLv3B9n_e8-ms',
+        inStock: true,
+        category: 'yogurt',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per cup',
+          fat: '0g',
+          protein: '22g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-006',
+        name: 'Cashew Yogurt',
+        description: 'Cashew yogurt is a dairy-free yogurt alternative made from blended cashews, offering a rich, creamy texture with a mild, slightly nutty flavor.',
+        price: 4.99,
+        rating: 4,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VK4TwZQr_HyieGpisgeATl492OZRmcUAK6CDtS4qjKAvQBbyPJkHDyNVdMBQo-D8gPcwx6S1GkOj0BfkM5RORKKhnvUTbcmpXAocyqofgG-HS16DezBR8lk5jikkSyrpbJnp85yPt4Adr_1lvoCAcCWe56DaHg-LhKNHJV28_MAQDeQvQ',
+        inStock: true,
+        category: 'yogurt',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per cup',
+          fat: '0g',
+          protein: '22g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-006',
+        name: 'Soy Yogurt',
+        description: 'Soy yogurt is a dairy-free yogurt made from soy milk and live cultures, offering a smooth texture, mild flavor, and plant-based probiotics.',
+        price: 4.99,
+        rating: 4,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VKXRxV4E0LBU2vq0FMA9idAGNFZ4O6eL0Te6jIn3uPP_wodP878YccCMvBJ8HTZghH4HlvIjM7x91VFphbZJA_EW5CGax81AON1EiTm45y6lGj7HnAhqOdL6uKGV-TNMjIMhTEvyY8KL702UMZOdual2QBnmpFzlJ2e0KXWMHHLw9FTNw',
+        inStock: true,
+        category: 'yogurt',
+        featured: true,
+        nutritionInfo: {
+          calories: '120 per cup',
+          fat: '0g',
+          protein: '22g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-007',
+        name: 'Cottage Cheese',
+        description: 'Fresh cottage cheese with perfect texture, great for both sweet and savory dishes.',
+        price: 3.99,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'cheese',
+        featured: false,
+        nutritionInfo: {
+          calories: '90 per 1/2 cup',
+          fat: '2g',
+          protein: '12g',
+          calcium: '10% DV'
+        }
+      },
+      {
+        id: 'prod-008',
+        name: 'Premium Ice Cream',
+        description: 'Premium ice cream made with our rich cream and natural flavors. No additives.',
+        price: 6.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VJf0d72OxWtEqqExSi26xJ8LoZIAz6ZWL9HSvVLz_QyYyhWDN4bydt1B0JQw35BFzaKoJFwy_c16G6KbYKY16VqwT9Ltb8YlZ1JweQb8LmkkSxOoOAG4mbpr-563eDlwOAyJLHPnTml7X-Qslrr4qV29F3zzim1vf5K7v3XWwfmSmYo8g',
+        inStock: true,
+        category: 'icecream',
+        featured: true,
+        nutritionInfo: {
+          calories: '250 per 1/2 cup',
+          fat: '16g',
+          protein: '4g',
+          calcium: '15% DV'
+        }
+      },
+      {
+        id: 'prod-008',
+        name: 'Soft serve Ice Cream',
+        description: 'Soft serve ice cream is a light, creamy frozen dessert with a smooth texture, served at a slightly warmer temperature than regular ice cream for a softer consistency.',
+        price: 6.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VJjyXF9Cw0TElf2OYl2faap2T7BMKwNC15K1pGYhrFp5k09YfOcEa4-9R42anV9MSrExmSIFZinFfxn7eZY0CZxPcJD2HNTcFOKmtwx00i55QhB7_W35VNN0ZS0AQb0iKRD4nJK8oes5grk3zaLxmU8LQZjfA3eUoK_uQDbaL6CUyvSnQ',
+        inStock: true,
+        category: 'icecream',
+        featured: true,
+        nutritionInfo: {
+          calories: '250 per 1/2 cup',
+          fat: '16g',
+          protein: '4g',
+          calcium: '15% DV'
+        }
+      },
+      {
+        id: 'prod-008',
+        name: 'Kulfi',
+        description: 'Kulfi is a dense, creamy Indian frozen dessert made from slow-cooked milk, sugar, and flavors like cardamom, saffron, or pistachios, known for its rich texture and intense taste.',
+        price: 6.99,
+        rating: 5,
+        imageUrl: 'https://media.istockphoto.com/id/657073780/photo/rajwari-or-rajwadi-sweet-kesar-badam-pista-kulfi-or-ice-cream-candy.webp?a=1&b=1&s=612x612&w=0&k=20&c=D4gZyAdK340jjnX8KGhXaflZISqBkmdd9Od0wTmQi1U=',
+        inStock: true,
+        category: 'icecream',
+        featured: true,
+        nutritionInfo: {
+          calories: '250 per 1/2 cup',
+          fat: '16g',
+          protein: '4g',
+          calcium: '15% DV'
+        }
+      },
+      {
+        id: 'prod-008',
+        name: 'Vanila Ice Cream',
+        description: 'Vanilla is a popular flavor derived from vanilla beans, known for its sweet, aromatic taste, widely used in desserts, beverages, and fragrances.',
+        price: 6.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VIzkprh8nqFW2psFonWT2MKxvi_F8-AvTpABSUhq1IIXjIQ_PlxKz02mAfoQeJ6QBfVreTsiHejw03NUH0DqQOzjdnXr2ObD0FYbdCiXUgvG0rOaODTa5U2sVibU2a5w07ZA9u8urP4xVQv9bnttNoSswU-mBZwXtik3Cp5C_GEzx2y',
+        inStock: true,
+        category: 'icecream',
+        featured: true,
+        nutritionInfo: {
+          calories: '250 per 1/2 cup',
+          fat: '16g',
+          protein: '4g',
+          calcium: '15% DV'
+        }
+      },
+      {
+        id: 'prod-008',
+        name: 'Strawberry Ice Cream',
+        description: 'Strawberry ice cream is a creamy, sweet frozen dessert made with real strawberries or strawberry flavoring, offering a fruity and refreshing taste.',
+        price: 6.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VIAdlAoUkZnjkXH23E0ZF7mwNCvgqrEYM_qVEJ9fy4H0s7jSCQAT-c9YWTuyxuSduxaAbajUKD8A2seJ3VF_5gqXoFGGAN2LnTpVrKKHxuBAHe4u0bl05rZbggCiR1yFMBu3pkYsqHjPRfrHlEWxi0t5msoQwzlkwOO_ZRn49et63lWBA',
+        category: 'icecream',
+        featured: true,
+        nutritionInfo: {
+          calories: '250 per 1/2 cup',
+          fat: '16g',
+          protein: '4g',
+          calcium: '15% DV'
+        }
+      },
+      {
+        id: 'prod-008',
+        name: 'Mango Ice Cream',
+        description: 'Mango ice cream is a rich, creamy frozen dessert made with mango puree or flavoring, offering a sweet, tropical taste.',
+        price: 6.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VKVpagqcH_GRAxJHcmSWfaTyfGL5AH4GGk-HbJE1Z8fMZTUE5bpEegIfL8TjefUidYc93Uq8xjuPj8wuTxzP3WtoSMpYrXZ9SK5HpVmPcLeOGFoGlhQ7vnqr7rTVEBraRtyL_P63Bglz6ogZ0594XjWm9S8oPOPSkz-M86GhE4bJz0c2w',
+        inStock: true,
+        category: 'icecream',
+        featured: true,
+        nutritionInfo: {
+          calories: '250 per 1/2 cup',
+          fat: '16g',
+          protein: '4g',
+          calcium: '15% DV'
+        }
+      },
+
+      {
+        id: 'prod-008',
+        name: 'ButterScotch',
+        description: 'Butterscotch is a sweet, caramel-like flavor made from brown sugar and butter, commonly used in desserts, candies, and ice creams..',
+        price: 6.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VJilkIuzvAh0hahP04K_nl7ZHTGoEn0i5JLRSoahUpCxM_o8VzsatdPgcoJa6Jl92O7mX57vCAt5kuB__HDedwhaD-MbOfOuDWAU5YOg31L_JsJHdoSS8OkeiprOXD-fNs8jRIlblOpSqoRoJ6r2NWTnJiUfo4xhbp-d3bZUBiNIESA0Q',
+        inStock: true,
+        category: 'icecream',
+        featured: true,
+        nutritionInfo: {
+          calories: '250 per 1/2 cup',
+          fat: '16g',
+          protein: '4g',
+          calcium: '15% DV'
+        }
+      },
+      {
+        id: 'prod-009',
+        name: 'Skim Milk',
+        description: 'Fat-free milk that retains all the essential nutrients of whole milk.',
+        price: 3.99,
+        rating: 4,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VJnJSWYfK_yjOQDjwJLecmueYsYNHfm6stn3ydjEdMEaloEKZKtX2fTxCeOiqxq1xlX18wDqXXFqQg4KxY4Z0buElrLLbfWvI_IQZoFS-wRKhv9rPrQkCYQk2E4MG4CwVQ84umuRc7My0t2EA6fEWjriP--8TKP6AAKnyxZj6epRF9t6w',
+        inStock: true,
+        category: 'milk',
+        featured: false,
+        nutritionInfo: {
+          calories: '90 per cup',
+          fat: '0g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-009',
+        name: 'Cow Milk',
+        description: 'Fat-free milk that retains all the essential nutrients of whole milk.',
+        price: 3.99,
+        rating: 4,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VKcexJl_sxvk3pW76IsRSiFBnp2SLtpK3BSa_nhTHoQx_GzuG8iooQdLUziVYBVCEPn_rpNd7u4PByQ5MZCn3T9wyvqJEiTREXkqLYi6Re32BANtsB1ue2xnDZ-s5EpmZ0UQXI7Hf5R9MDOiyBTlXkt3OLBvGpEt9K1I0A47X4c_HHt',
+        inStock: true,
+        category: 'milk',
+        featured: false,
+        nutritionInfo: {
+          calories: '90 per cup',
+          fat: '0g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-009',
+        name: 'Buffulo Milk',
+        description: 'Fat-free milk that retains all the essential nutrients of whole milk.',
+        price: 3.99,
+        rating: 4,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VIU0kBeSrda29kMlqjpGVqfxbD61_GPb1-53KqmzUSFx76zpSkZy2tEkbFb1CTesOaRXRasBz2IqOBlgt9CLrwMuMgUVe3q3WyZim2K7cKsQ1pFMs6_r-ciD3QL3SFwGXn5IpY0Wasne9gkXRX3Vogidh52-adzjc_rgtVqw1JvOSmWVA',
+        inStock: true,
+        category: 'milk',
+        featured: false,
+        nutritionInfo: {
+          calories: '90 per cup',
+          fat: '0g',
+          protein: '8g',
+          calcium: '30% DV'
+        }
+      },
+      {
+        id: 'prod-010',
+        name: 'Blue Cheese',
+        description: 'Aged blue cheese with distinctive flavor and creamy texture.',
+        price: 9.99,
+        rating: 3,
+        imageUrl: 'https://images.unsplash.com/photo-1452195100486-9d262538b5a9?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'cheese',
+        featured: false,
+        nutritionInfo: {
+          calories: '150 per serving',
+          fat: '12g',
+          protein: '6g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-011',
+        name: 'Flavored Yogurt Pack',
+        description: 'Pack of 4 different flavored yogurts: strawberry, blueberry, peach, and vanilla.',
+        price: 7.99,
+        rating: 5,
+        imageUrl: 'https://lh3.googleusercontent.com/gg-dl/AA8i_VL6XUQz6qJP5mSiwojBof2_z9SfpSgIKPPmhbFavRHEQyxE22HSOjoL3pAoYXiRK6X1ocg3EEBfEpLH8zepkRp6_NcEp9Zchc3ioUiEPUqVGUjZs7kor07807dJAnv02yCYlGbeq2uc-72KwWZJELbs9_CiXfsLL7GnrPJNykD5kg_y9A',
+        inStock: true,
+        category: 'yogurt',
+        featured: false,
+        nutritionInfo: {
+          calories: '130 per cup',
+          fat: '3g',
+          protein: '8g',
+          calcium: '20% DV'
+        }
+      },
+      {
+        id: 'prod-012',
+        name: 'Whipped Butter',
+        description: 'Light and fluffy whipped butter, perfect for spreading on bread or toast.',
+        price: 4.99,
+        rating: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1531257243018-c547a2e35767?auto=format&fit=crop&w=600&q=80',
+        inStock: true,
+        category: 'butter',
+        featured: false,
+        nutritionInfo: {
+          calories: '70 per tbsp',
+          fat: '8g',
+          protein: '0g',
+          calcium: '0% DV'
+        }
+      }
+    ];
+      }
+
+      console.log(`✅ Loaded ${productsData.length} fallback products`);
+
+      // Initialize the product listing after loading data
+      if (window.productListing) {
+        window.productListing.products = [...productsData];
+        window.productListing.filteredProducts = [...productsData];
+        window.productListing.render();
+      }
+    }
+
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', async function() {
+      console.log('🚀 Store page initializing...');
+
+      // Initialize Supabase first
+      await initializeSupabase();
+
+      // Initialize other components
+      const cart = new Cart();
+      const wishlist = new Wishlist();
+      window.productListing = new ProductListing(cart, wishlist);
+
+      console.log('✅ Store page initialization complete');
+    });
+
+    // Utility functions
+    function formatPrice(price) {
+      return `$${price.toFixed(2)}`;
+    }
+
+    function renderStars(rating) {
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        stars += `<i class="fa${i <= rating ? 's' : 'r'} fa-star"></i>`;
+      }
+      return stars;
+    }
+
+    // Cart functionality
+    class Cart {
+      constructor() {
+        this.items = [];
+        this.loadFromStorage();
+        this.syncWithUpdatedProducts(); // Sync cart with any updated products
+        this.initEventListeners();
+        this.updateCartDisplay();
+      }
+
+      loadFromStorage() {
+        const savedCart = localStorage.getItem('Dairy-LiftCart');
+        if (savedCart) {
+          this.items = JSON.parse(savedCart);
+        }
+      }
+
+      // Sync cart with updated products from manage_store.html
+      syncWithUpdatedProducts() {
+        // Remove any cart items that no longer exist in the products list
+        this.items = this.items.filter(item => {
+          return productsData.some(product => product.id === item.id);
+        });
+
+        // Update product details in cart items
+        this.items.forEach(item => {
+          const product = productsData.find(p => p.id === item.id);
+          if (product) {
+            item.name = product.name;
+            item.price = product.price;
+            item.imageUrl = product.imageUrl;
+            // If product is now out of stock, remove it from cart
+            if (!product.inStock) {
+              this.items = this.items.filter(i => i.id !== item.id);
+            }
+          }
+        });
+
+        // Save the updated cart
+        this.saveToStorage();
+      }
+
+      saveToStorage() {
+        localStorage.setItem('Dairy-LiftCart', JSON.stringify(this.items));
+      }
+
+      addItem(productId, quantity = 1) {
+        const product = productsData.find(p => p.id === productId);
+        if (!product || !product.inStock) return;
+
+        const existingItem = this.items.find(item => item.id === productId);
+        if (existingItem) {
+          existingItem.quantity += quantity;
+        } else {
+          this.items.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            imageUrl: product.imageUrl,
+            quantity: quantity
+          });
+        }
+
+        this.saveToStorage();
+        this.updateCartDisplay();
+        this.showAddToCartNotification(product.name);
+
+        // Show the View Cart button on the product card
+        const productCard = document.querySelector(`.product-card[data-id="${productId}"]`);
+        if (productCard) {
+          const viewCartBtn = productCard.querySelector('.view-cart-btn');
+          if (viewCartBtn) {
+            viewCartBtn.style.display = 'inline-flex';
+          }
+        }
+      }
+
+      removeItem(productId) {
+        this.items = this.items.filter(item => item.id !== productId);
+        this.saveToStorage();
+        this.updateCartDisplay();
+      }
+
+      updateQuantity(productId, newQuantity) {
+        const item = this.items.find(item => item.id === productId);
+        if (item) {
+          if (newQuantity <= 0) {
+            this.removeItem(productId);
+          } else {
+            item.quantity = newQuantity;
+            this.saveToStorage();
+            this.updateCartDisplay();
+          }
+        }
+      }
+
+      getTotal() {
+        return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+      }
+
+      getTotalItems() {
+        return this.items.reduce((total, item) => total + item.quantity, 0);
+      }
+
+      clearCart() {
+        this.items = [];
+        this.saveToStorage();
+        this.updateCartDisplay();
+      }
+
+      updateCartDisplay() {
+        // Update cart count
+        const cartCount = document.getElementById('cart-count');
+        cartCount.textContent = this.getTotalItems();
+
+        // Update cart items in drawer
+        const cartBody = document.getElementById('cart-body');
+        const subtotalEl = document.getElementById('cart-subtotal');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        if (this.items.length === 0) {
+          cartBody.innerHTML = `
+            <div class="empty-cart">
+              <i class="fas fa-shopping-cart empty-cart-icon"></i>
+              <h3>Your cart is empty</h3>
+              <p>Looks like you haven't added any products to your cart yet.</p>
+            </div>
+          `;
+          subtotalEl.textContent = formatPrice(0);
+          checkoutBtn.disabled = true;
+        } else {
+          let cartItemsHTML = '<div class="cart-items">';
+
+          this.items.forEach(item => {
+            cartItemsHTML += `
+              <div class="cart-item" data-id="${item.id}">
+                <div class="cart-item-image">
+                  <img src="${item.imageUrl}" alt="${item.name}">
+                </div>
+                <div class="cart-item-content">
+                  <h4 class="cart-item-title">${item.name}</h4>
+                  <p class="cart-item-price">${formatPrice(item.price)} each</p>
+                  <div class="cart-item-quantity">
+                    <button class="cart-quantity-btn decrease-qty" data-id="${item.id}">-</button>
+                    <span class="cart-quantity-value">${item.quantity}</span>
+                    <button class="cart-quantity-btn increase-qty" data-id="${item.id}">+</button>
+                    <button class="cart-item-remove" data-id="${item.id}">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="cart-item-subtotal">
+                  ${formatPrice(item.price * item.quantity)}
+                </div>
+              </div>
+            `;
+          });
+
+          cartItemsHTML += '</div>';
+          cartBody.innerHTML = cartItemsHTML;
+          subtotalEl.textContent = formatPrice(this.getTotal());
+          checkoutBtn.disabled = false;
+
+          // Add event listeners to cart items
+          document.querySelectorAll('.decrease-qty').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-id');
+              const item = this.items.find(item => item.id === id);
+              if (item) this.updateQuantity(id, item.quantity - 1);
+            });
+          });
+
+          document.querySelectorAll('.increase-qty').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-id');
+              const item = this.items.find(item => item.id === id);
+              if (item) this.updateQuantity(id, item.quantity + 1);
+            });
+          });
+
+          document.querySelectorAll('.cart-item-remove').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-id');
+              this.removeItem(id);
+            });
+          });
+        }
+      }
+
+      showAddToCartNotification(productName) {
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--primary)';
+        notification.style.color = 'white';
+        notification.style.padding = '10px 20px';
+        notification.style.borderRadius = 'var(--radius)';
+        notification.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        notification.style.zIndex = '1000';
+        notification.style.transition = 'all 0.3s ease';
+        notification.style.transform = 'translateY(100px)';
+        notification.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <div style="font-weight: 500;">${productName}</div>
+              <div style="font-size: 0.875rem;">Added to your cart</div>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Show notification
+        setTimeout(() => {
+          notification.style.transform = 'translateY(0)';
+        }, 10);
+
+        // Hide and remove notification
+        setTimeout(() => {
+          notification.style.transform = 'translateY(100px)';
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        }, 3000);
+      }
+
+      initEventListeners() {
+        const cartToggle = document.getElementById('cart-toggle');
+        const closeCart = document.getElementById('close-cart');
+        const cartDrawer = document.getElementById('cart-drawer');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        cartToggle.addEventListener('click', () => {
+          cartDrawer.classList.add('open');
+        });
+
+        closeCart.addEventListener('click', () => {
+          cartDrawer.classList.remove('open');
+        });
+
+        checkoutBtn.addEventListener('click', () => {
+          window.location.href = 'cartstore.html';
+        });
+
+        // Close cart when clicking outside
+        document.addEventListener('click', (event) => {
+          if (cartDrawer.classList.contains('open') &&
+              !cartDrawer.contains(event.target) &&
+              !cartToggle.contains(event.target)) {
+            cartDrawer.classList.remove('open');
+          }
+        });
+      }
+    }
+
+    // Wishlist functionality
+    class Wishlist {
+      constructor() {
+        this.items = [];
+        this.loadFromStorage();
+      }
+
+      loadFromStorage() {
+        const savedWishlist = localStorage.getItem('Dairy-LiftWishlist');
+        if (savedWishlist) {
+          this.items = JSON.parse(savedWishlist);
+        }
+      }
+
+      saveToStorage() {
+        localStorage.setItem('Dairy-LiftWishlist', JSON.stringify(this.items));
+      }
+
+      addItem(productId) {
+        if (!this.items.includes(productId)) {
+          this.items.push(productId);
+          this.saveToStorage();
+        }
+      }
+
+      removeItem(productId) {
+        this.items = this.items.filter(id => id !== productId);
+        this.saveToStorage();
+      }
+
+      toggleItem(productId) {
+        if (this.isInWishlist(productId)) {
+          this.removeItem(productId);
+          return false;
+        } else {
+          this.addItem(productId);
+          return true;
+        }
+      }
+
+      isInWishlist(productId) {
+        return this.items.includes(productId);
+      }
+    }
+
+    // Product listing functionality
+    class ProductListing {
+      constructor(cart, wishlist) {
+        this.cart = cart;
+        this.wishlist = wishlist;
+        this.products = [...productsData];
+        this.filteredProducts = [...this.products];
+        this.sortOrder = 'featured';
+        this.filterCategory = 'all';
+        this.priceRange = 20;
+        this.showInStock = true;
+        this.showOutOfStock = false;
+        this.ratings = [3, 4, 5];
+        this.searchQuery = '';
+
+        this.initEventListeners();
+        this.render();
+      }
+
+      initEventListeners() {
+        // Mobile filter toggle
+        const mobileFilterToggle = document.getElementById('mobile-filter-toggle');
+        const sidebar = document.getElementById('store-sidebar');
+        mobileFilterToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('open');
+        });
+
+        // Category tag filtering
+        document.querySelectorAll('.category-tag').forEach(tag => {
+          tag.addEventListener('click', () => {
+            document.querySelectorAll('.category-tag').forEach(t => t.classList.remove('active'));
+            tag.classList.add('active');
+            this.filterCategory = tag.getAttribute('data-category');
+            this.applyFilters();
+          });
+        });
+
+        // Sort products
+        const sortSelect = document.getElementById('sort-products');
+        sortSelect.addEventListener('change', () => {
+          this.sortOrder = sortSelect.value;
+          this.applyFilters();
+        });
+
+        // Price range
+        const priceRange = document.getElementById('price-range');
+        const priceRangeValue = document.getElementById('price-range-value');
+        priceRange.addEventListener('input', () => {
+          this.priceRange = parseInt(priceRange.value);
+          priceRangeValue.textContent = `$${this.priceRange}`;
+          this.applyFilters();
+        });
+
+        // Apply filters button
+        document.getElementById('apply-filters').addEventListener('click', () => {
+          this.applyFilters();
+          if (sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+          }
+        });
+
+        // Availability filters
+        document.querySelectorAll('.availability-filter').forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+            if (checkbox.value === 'in-stock') {
+              this.showInStock = checkbox.checked;
+            } else if (checkbox.value === 'out-of-stock') {
+              this.showOutOfStock = checkbox.checked;
+            }
+          });
+        });
+
+        // Rating filters
+        document.querySelectorAll('.rating-filter').forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+            const rating = parseInt(checkbox.value);
+            if (checkbox.checked) {
+              if (!this.ratings.includes(rating)) {
+                this.ratings.push(rating);
+              }
+            } else {
+              this.ratings = this.ratings.filter(r => r !== rating);
+            }
+          });
+        });
+
+        // Category filters
+        document.querySelectorAll('.category-filter').forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+            if (checkbox.value === 'all') {
+              // If 'All Products' is checked/unchecked, update all other checkboxes
+              const checked = checkbox.checked;
+              document.querySelectorAll('.category-filter').forEach(cb => {
+                cb.checked = checked;
+              });
+            }
+          });
+        });
+
+        // Search products
+        const searchInput = document.getElementById('search-products');
+        searchInput.addEventListener('input', () => {
+          this.searchQuery = searchInput.value.toLowerCase();
+          this.applyFilters();
+        });
+      }
+
+      applyFilters() {
+        let filtered = [...this.products];
+
+        // Apply category filter
+        if (this.filterCategory !== 'all') {
+          filtered = filtered.filter(product => product.category === this.filterCategory);
+        }
+
+        // Apply price filter
+        filtered = filtered.filter(product => product.price <= this.priceRange);
+
+        // Apply availability filter
+        filtered = filtered.filter(product => {
+          if (product.inStock && this.showInStock) return true;
+          if (!product.inStock && this.showOutOfStock) return true;
+          return false;
+        });
+
+        // Apply rating filter
+        if (this.ratings.length > 0) {
+          filtered = filtered.filter(product => this.ratings.includes(product.rating));
+        }
+
+        // Apply search filter
+        if (this.searchQuery) {
+          filtered = filtered.filter(product =>
+            product.name.toLowerCase().includes(this.searchQuery) ||
+            product.description.toLowerCase().includes(this.searchQuery) ||
+            product.category.toLowerCase().includes(this.searchQuery)
+          );
+        }
+
+        // Apply sorting
+        switch (this.sortOrder) {
+          case 'price-low':
+            filtered.sort((a, b) => a.price - b.price);
+            break;
+          case 'price-high':
+            filtered.sort((a, b) => b.price - a.price);
+            break;
+          case 'rating':
+            filtered.sort((a, b) => b.rating - a.rating);
+            break;
+          case 'newest':
+            // Assuming the products array is already sorted by newest, we don't need to sort
+            break;
+          case 'featured':
+          default:
+            filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+            break;
+        }
+
+        this.filteredProducts = filtered;
+        this.render();
+      }
+
+      render() {
+        const productGrid = document.getElementById('product-grid');
+
+        if (this.filteredProducts.length === 0) {
+          productGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 0;">
+              <i class="fas fa-search" style="font-size: 3rem; color: var(--muted); margin-bottom: 1rem;"></i>
+              <h3>No products found</h3>
+              <p>Try adjusting your search or filter criteria</p>
+            </div>
+          `;
+          return;
+        }
+
+        let productsHTML = '';
+
+        this.filteredProducts.forEach(product => {
+          const isInWishlist = wishlistManager.isInWishlist(product.id);
+
+          productsHTML += `
+            <div class="card product-card" data-id="${product.id}">
+              <div class="product-image-container">
+                <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
+                ${product.inStock ?
+                  (product.featured ? '<span class="product-badge">Featured</span>' : '') :
+                  '<span class="product-badge out-of-stock">Out of Stock</span>'
+                }
+                <div class="product-actions">
+                  <button class="action-btn wishlist-btn ${isInWishlist ? 'active' : ''}" data-product-id="${product.id}">
+                    <i class="fa${isInWishlist ? 's' : 'r'} fa-heart"></i>
+                  </button>
+                  <button class="action-btn quick-view-btn" data-id="${product.id}">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="product-content">
+                <div class="product-rating">
+                  <div class="rating-stars">
+                    ${renderStars(product.rating)}
+                  </div>
+                  <span class="rating-count">(${product.rating})</span>
+                </div>
+                <h3 class="product-title">${product.name}</h3>
+                <p class="product-description">${product.description}</p>
+                <div class="product-price-container">
+                  <div class="product-price">${formatPrice(product.price)}</div>
+                  <div class="product-stock ${product.inStock ? 'in-stock' : 'out-of-stock'}">
+                    ${product.inStock ? 'In Stock' : 'Out of Stock'}
+                  </div>
+                </div>
+              </div>
+              <div class="product-footer">
+                <button class="btn btn-primary add-to-cart-btn" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
+                  <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+                <a href="cartstore.html" class="btn btn-outline view-cart-btn" style="margin-left: 8px; display: none;">
+                  <i class="fas fa-eye"></i> View Cart
+                </a>
+              </div>
+            </div>
+          `;
+        });
+
+        productGrid.innerHTML = productsHTML;
+
+        // Add event listeners to product cards
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+          btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const id = btn.getAttribute('data-id');
+            this.cart.addItem(id);
+          });
+        });
+
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+          btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const id = btn.getAttribute('data-product-id');
+            wishlistManager.toggleWishlist(id);
+          });
+        });
+
+        document.querySelectorAll('.quick-view-btn').forEach(btn => {
+          btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const id = btn.getAttribute('data-id');
+            this.openQuickView(id);
+          });
+        });
+      }
+
+      openQuickView(productId) {
+        const product = this.products.find(p => p.id === productId);
+        if (!product) return;
+
+        const isInWishlist = wishlistManager.isInWishlist(productId);
+        const modal = document.getElementById('quick-view-modal');
+        const modalContent = document.getElementById('quick-view-content');
+
+        modalContent.innerHTML = `
+          <div class="modal-image">
+            <img src="${product.imageUrl}" alt="${product.name}">
+          </div>
+          <div class="modal-content">
+            <h2 class="modal-product-title">${product.name}</h2>
+            <div class="product-rating">
+              <div class="rating-stars">
+                ${renderStars(product.rating)}
+              </div>
+              <span class="rating-count">(${product.rating})</span>
+            </div>
+            <p class="modal-product-price">${formatPrice(product.price)}</p>
+            <p class="modal-product-description">${product.description}</p>
+
+            <div class="modal-product-meta">
+              <div class="meta-item">
+                <span class="meta-label">Category:</span>
+                <span>${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Availability:</span>
+                <span class="${product.inStock ? 'in-stock' : 'out-of-stock'}">
+                  ${product.inStock ? 'In Stock' : 'Out of Stock'}
+                </span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Nutrition Info:</span>
+              </div>
+              <div style="margin-left: 120px;">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; font-size: 0.875rem;">
+                  <div>Calories: ${product.nutritionInfo.calories}</div>
+                  <div>Fat: ${product.nutritionInfo.fat}</div>
+                  <div>Protein: ${product.nutritionInfo.protein}</div>
+                  <div>Calcium: ${product.nutritionInfo.calcium}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quantity-selector">
+              <button class="quantity-btn decrease-quantity">-</button>
+              <input type="number" class="quantity-input" value="1" min="1" max="99" id="quick-view-quantity">
+              <button class="quantity-btn increase-quantity">+</button>
+            </div>
+
+            <div class="modal-actions">
+              <button class="btn btn-primary quick-view-add-to-cart" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+              </button>
+              <button class="btn btn-outline quick-view-add-to-wishlist" data-id="${product.id}">
+                <i class="fa${isInWishlist ? 's' : 'r'} fa-heart"></i> ${isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+              </button>
+            </div>
+          </div>
+        `;
+
+        modal.classList.add('open');
+
+        // Add event listeners for the quick view modal
+        const closeModal = document.getElementById('close-modal');
+        closeModal.addEventListener('click', () => {
+          modal.classList.remove('open');
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            modal.classList.remove('open');
+          }
+        });
+
+        // Quantity buttons
+        const quantityInput = document.getElementById('quick-view-quantity');
+        const decreaseBtn = document.querySelector('.decrease-quantity');
+        const increaseBtn = document.querySelector('.increase-quantity');
+
+        decreaseBtn.addEventListener('click', () => {
+          let value = parseInt(quantityInput.value);
+          if (value > 1) {
+            quantityInput.value = value - 1;
+          }
+        });
+
+        increaseBtn.addEventListener('click', () => {
+          let value = parseInt(quantityInput.value);
+          quantityInput.value = value + 1;
+        });
+
+        // Add to cart button
+        const addToCartBtn = document.querySelector('.quick-view-add-to-cart');
+        addToCartBtn.addEventListener('click', () => {
+          if (!product.inStock) return;
+
+          const quantity = parseInt(quantityInput.value);
+          this.cart.addItem(product.id, quantity);
+          modal.classList.remove('open');
+        });
+
+        // Add to wishlist button
+        const addToWishlistBtn = document.querySelector('.quick-view-add-to-wishlist');
+        addToWishlistBtn.addEventListener('click', () => {
+          wishlistManager.toggleWishlist(product.id);
+          const isNowInWishlist = wishlistManager.isInWishlist(product.id);
+          addToWishlistBtn.innerHTML = `
+            <i class="fa${isNowInWishlist ? 's' : 'r'} fa-heart"></i>
+            ${isNowInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+          `;
+        });
+      }
+    }
+
+    // Initialize product listing
+    function initializeProductListing() {
+      if (typeof ProductListing !== 'undefined') {
+        const cart = new ShoppingCart();
+        const wishlist = new Wishlist();
+        window.productListing = new ProductListing(cart, wishlist);
+      } else {
+        console.error('ProductListing class not found');
+      }
+    }
+
+    // Main initialization function with performance optimization
+    async function initializeStore() {
+      try {
+        console.log('🚀 Initializing Dairy-Lift Investor Store...');
+
+        // Initialize Supabase
+        await initializeSupabase();
+
+        // Initialize product listing
+        initializeProductListing();
+
+        // Set up search and filter functionality with debouncing
+        const searchInput = document.getElementById('search-products');
+        if (searchInput) {
+          searchInput.addEventListener('input', (e) => {
+            performanceOptimizations.debounce('search-products', () => {
+              if (window.productListing) {
+                window.productListing.searchQuery = e.target.value.toLowerCase();
+                window.productListing.applyFilters();
+              }
+            }, 300);
+          });
+        }
+
+        // Set up category filters
+        document.querySelectorAll('.category-tag').forEach(tag => {
+          tag.addEventListener('click', (e) => {
+            performanceOptimizations.throttle('category-filter', () => {
+              document.querySelectorAll('.category-tag').forEach(t => t.classList.remove('active'));
+              e.target.classList.add('active');
+
+              if (window.productListing) {
+                window.productListing.filterCategory = e.target.dataset.category;
+                window.productListing.applyFilters();
+              }
+            }, 100);
+          });
+        });
+
+        // Set up sort functionality
+        const sortSelect = document.getElementById('sort-products');
+        if (sortSelect) {
+          sortSelect.addEventListener('change', (e) => {
+            if (window.productListing) {
+              window.productListing.sortOrder = e.target.value;
+              window.productListing.applyFilters();
+            }
+          });
+        }
+
+        console.log('✅ Investor Store initialized successfully');
+      } catch (error) {
+        console.error('❌ Failed to initialize store:', error);
+      }
+    }
+
+    // Mobile Menu Toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize store
+      initializeStore();
+
+      // Mobile Menu Toggle
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (mobileMenuToggle && mobileMenu) {
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const body = document.body;
+
+        // Function to open mobile menu
+        function openMobileMenu() {
+          mobileMenu.classList.add('active');
+          mobileMenuOverlay.classList.add('active');
+          mobileMenuToggle.classList.add('active');
+          body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+
+          // Add a subtle ripple effect on click
+          const ripple = document.createElement('span');
+          ripple.classList.add('menu-toggle-ripple');
+          mobileMenuToggle.appendChild(ripple);
+
+          // Position the ripple where the click happened
+          const rect = mobileMenuToggle.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height) * 2;
+
+          ripple.style.width = ripple.style.height = `${size}px`;
+          ripple.style.left = `${-size/4}px`;
+          ripple.style.top = `${-size/4}px`;
+
+          // Remove the ripple after animation completes
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+
+          // Add entrance animation to each nav link
+          const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+          navLinks.forEach((link, index) => {
+            link.style.opacity = '0';
+            link.style.transform = 'translateX(-10px)';
+            link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+
+            setTimeout(() => {
+              link.style.opacity = '1';
+              link.style.transform = 'translateX(0)';
+            }, 10);
+          });
+        }
+
+        // Function to close mobile menu
+        function closeMobileMenu() {
+          mobileMenu.classList.remove('active');
+          mobileMenuOverlay.classList.remove('active');
+          mobileMenuToggle.classList.remove('active');
+          body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Toggle menu when clicking the hamburger button
+        mobileMenuToggle.addEventListener('click', function(event) {
+          event.stopPropagation();
+          if (mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+          } else {
+            openMobileMenu();
+          }
+        });
+
+        // Close menu when clicking the close button
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+
+        // Close menu when clicking the overlay
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+        // Close mobile menu when clicking on a link
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', closeMobileMenu);
+        });
+
+        // Close mobile menu when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+          }
+        });
+      }
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div>
+          <a href="#" class="text-primary font-['Pacifico'] text-2xl"
+            >Dairy-Lift</a
+          >
+          <p class="mt-4 text-gray-400">
+            Transforming dairy farming into a premium investment opportunity
+            with transparent operations and consistent returns.
+          </p>
+          <div class="mt-6 flex space-x-4">
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-facebook-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-twitter-x-fill"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/dairy_lift/"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-instagram-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-linkedin-fill"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Investment Options</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Performance Reports</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Farm Tours</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Testimonials</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >FAQs</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-map-pin-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400"
+                >123 Dairy Farm Road, Green Valley, CA 94535</span
+              >
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-phone-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">+1 (555) 123-4567</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-mail-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">dairylift@gmail.com</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-time-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">Mon-Fri: 9AM-5PM (PST)</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+          <p class="text-gray-400 mb-4">
+            Subscribe to receive updates on dairy market trends and investment
+            opportunities.
+          </p>
+          <form class="space-y-4">
+            <div>
+              <input
+                type="email"
+                placeholder="Your email address"
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary text-white"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary hover:bg-primary/90 text-white py-2 font-medium !rounded-button whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
+      >
+        <p class="text-gray-400 text-sm">
+          © 2025 Dairy-Lift. All rights reserved.
+        </p>
+        <div class="mt-4 md:mt-0 flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Privacy Policy</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Terms of Service</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Cookie Policy</a
+          >
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Authentication Initialization -->
+  <script>
+    // Initialize authentication when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+      } else {
+        console.log('Auth script not loaded, trying to initialize...');
+        // Try to initialize auth after a short delay
+        setTimeout(function() {
+          if (typeof initAuth === 'function') {
+            initAuth();
+          } else {
+            console.error('Auth initialization function not found');
+          }
+        }, 500);
+      }
+    });
+
+    // Also try to initialize on window load
+    window.addEventListener('load', function() {
+      if (typeof initAuth === 'function') {
+        initAuth();
+      }
+    });
+  </script>
+</body>
+</html>

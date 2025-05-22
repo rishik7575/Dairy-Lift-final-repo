@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQs - Supportia</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <style>
+    /* Base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #333;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container-custom {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    /* Header styles */
+    header {
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      background-color: white;
+      z-index: 30;
+    }
+    
+    .header-container {
+      display: flex;
+      height: 4rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #2563eb;
+      text-decoration: none;
+    }
+    
+    .nav-desktop {
+      display: none;
+    }
+    
+    @media (min-width: 768px) {
+      .nav-desktop {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+    }
+    
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      color: #64748b;
+      text-decoration: none;
+    }
+    
+    .nav-link:hover {
+      color: #2563eb;
+    }
+    
+    .nav-link.active {
+      color: #2563eb;
+    }
+    
+    .right-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    /* Button styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1;
+      border-radius: 0.375rem;
+      border: 1px solid transparent;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+      text-decoration: none;
+    }
+    
+    .btn-primary {
+      background-color: #2563eb;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+    
+    .btn-outline {
+      background-color: white;
+      color: #64748b;
+      border-color: #e2e8f0;
+    }
+    
+    .btn-outline:hover {
+      background-color: #f8fafc;
+    }
+    
+    .btn-icon {
+      padding: 0.5rem;
+      border-radius: 9999px;
+    }
+    
+    .mobile-menu-btn {
+      display: block;
+    }
+    
+    @media (min-width: 768px) {
+      .mobile-menu-btn {
+        display: none;
+      }
+      
+      .btn-desktop {
+        display: flex;
+      }
+    }
+    
+    .btn-desktop {
+      display: none;
+    }
+    
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset-x: 0;
+      top: 4rem;
+      z-index: 20;
+      background-color: white;
+      border-bottom: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .mobile-menu.open {
+      display: block;
+    }
+    
+    .mobile-nav {
+      padding: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      color: #64748b;
+      text-decoration: none;
+    }
+    
+    .mobile-nav-link:hover {
+      background-color: #f0f7ff;
+      color: #2563eb;
+    }
+    
+    .mobile-nav-link.active {
+      color: #2563eb;
+      background-color: #f0f7ff;
+    }
+    
+    /* Page header */
+    .page-header {
+      max-width: 48rem;
+      margin: 0 auto;
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    
+    .page-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    @media (min-width: 768px) {
+      .page-title {
+        font-size: 2.5rem;
+      }
+    }
+    
+    .page-desc {
+      font-size: 1.125rem;
+      color: #4b5563;
+    }
+
+    /* FAQ specific styles */
+    .search-container {
+      max-width: 48rem;
+      margin: 0 auto;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.375rem;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .categories {
+      max-width: 48rem;
+      margin: 0 auto;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      white-space: nowrap;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .categories::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tabs-list {
+      display: flex;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 1px;
+    }
+
+    .tab-trigger {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #64748b;
+      border: none;
+      background-color: transparent;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      text-transform: capitalize;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .tab-trigger.active {
+      color: #2563eb;
+      border-bottom: 2px solid #2563eb;
+    }
+
+    .tab-trigger:hover:not(.active) {
+      color: #334155;
+    }
+
+    .faq-list {
+      max-width: 48rem;
+      margin: 0 auto;
+      margin-bottom: 2rem;
+    }
+
+    .faq-item {
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 1rem;
+      background-color: white;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.2s;
+      user-select: none;
+    }
+
+    .faq-question:hover {
+      background-color: #f8fafc;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, padding 0.3s ease;
+      background-color: #f8fafc;
+      padding: 0 1rem;
+    }
+
+    .faq-answer.active {
+      max-height: 500px;
+      padding: 1rem;
+    }
+
+    .chevron {
+      transition: transform 0.3s;
+    }
+
+    .rotate-180 {
+      transform: rotate(180deg);
+    }
+
+    .help-container {
+      max-width: 48rem;
+      margin: 0 auto;
+      background-color: #f0f7ff;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .help-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .help-desc {
+      color: #4b5563;
+      margin-bottom: 1rem;
+    }
+
+    .help-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .help-link {
+      color: #2563eb;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .help-link:hover {
+      text-decoration: underline;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 0;
+    }
+
+    .empty-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .empty-desc {
+      color: #64748b;
+    }
+
+    .loading {
+      margin-bottom: 0.5rem;
+    }
+
+    .loading-item {
+      height: 3rem;
+      background-color: #f1f5f9;
+      border-radius: 0.375rem;
+      margin-bottom: 0.5rem;
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .loading-content {
+      height: 5rem;
+      background-color: #f8fafc;
+      border-radius: 0.375rem;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: .5;
+      }
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid #e2e8f0;
+      padding: 1.5rem 0;
+      background-color: white;
+      margin-top: auto;
+    }
+    
+    .footer-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    @media (min-width: 768px) {
+      .footer-container {
+        flex-direction: row;
+      }
+    }
+    
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #2563eb;
+      margin-bottom: 1rem;
+    }
+    
+    @media (min-width: 768px) {
+      .footer-logo {
+        margin-bottom: 0;
+      }
+    }
+    
+    .copyright {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+
+    /* Icons */
+    .icon {
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      stroke-width: 0;
+      stroke: currentColor;
+      fill: currentColor;
+    }
+
+    .icon-large {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .icon-small {
+      width: 1rem;
+      height: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container-custom header-container">
+      <div class="flex items-center gap-2">
+        <a href="home.html" class="logo">
+          <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+          <span>Supportia</span>
+        </a>
+      </div>
+      <nav class="nav-desktop">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="livechat.html" class="nav-link">Live Chat</a>
+        <a href="faqs.html" class="nav-link active">FAQs</a>
+        <a href="helparticles.html" class="nav-link">Help Articles</a>
+        <a href="submitticket.html" class="nav-link">Submit Ticket</a>
+        <a href="supportstatus.html" class="nav-link">Support Status</a>
+      </nav>
+      <div class="right-nav">
+        <button class="btn btn-outline btn-icon btn-desktop" aria-label="Search">
+          <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <a href="contact.html" class="btn btn-primary btn-desktop">Contact Support</a>
+        <button class="btn btn-outline btn-icon mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+          <svg class="icon-small" id="menuIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <svg class="icon-small" id="closeIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <nav class="container-custom mobile-nav">
+      <a href="home.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Home
+      </a>
+      <a href="livechat.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        Live Chat
+      </a>
+      <a href="faqs.html" class="mobile-nav-link active">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        FAQs
+      </a>
+      <a href="helparticles.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+        Help Articles
+      </a>
+      <a href="submitticket.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6"></path><path d="M18 8v4H6V8"></path><path d="M22 4H2"></path><path d="M12 2v2"></path><path d="M12 12v6"></path><path d="M10 18h4"></path></svg>
+        Submit Ticket
+      </a>
+      <a href="supportstatus.html" class="mobile-nav-link">
+        <svg class="icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+        Support Status
+      </a>
+      <a href="contact.html" class="btn btn-primary">Contact Support</a>
+    </nav>
+  </div>
+
+  <main>
+    <div class="container-custom py-12">
+      <div class="page-header">
+        <h1 class="page-title">Frequently Asked Questions</h1>
+        <p class="page-desc">
+          Find answers to the most common questions about our services and features.
+        </p>
+      </div>
+
+      <div class="search-container">
+        <svg class="icon-small search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search for answers..." 
+          id="searchInput"
+          aria-label="Search FAQs"
+        />
+      </div>
+
+      <div class="categories">
+        <div class="tabs-list" role="tablist" id="categoryTabs">
+          <button class="tab-trigger active" data-category="all" role="tab" aria-selected="true">All</button>
+          <button class="tab-trigger" data-category="account" role="tab" aria-selected="false">Account</button>
+          <button class="tab-trigger" data-category="payments" role="tab" aria-selected="false">Payments</button>
+          <button class="tab-trigger" data-category="products" role="tab" aria-selected="false">Products</button>
+          <button class="tab-trigger" data-category="shipping" role="tab" aria-selected="false">Shipping</button>
+          <button class="tab-trigger" data-category="returns" role="tab" aria-selected="false">Returns</button>
+        </div>
+      </div>
+
+      <div class="faq-list" id="faqList">
+        <!-- Loading state will be replaced with actual FAQs -->
+        <div class="loading">
+          <div class="loading-item"></div>
+          <div class="loading-content"></div>
+        </div>
+        <div class="loading">
+          <div class="loading-item"></div>
+          <div class="loading-content"></div>
+        </div>
+        <div class="loading">
+          <div class="loading-item"></div>
+          <div class="loading-content"></div>
+        </div>
+      </div>
+
+      <div class="help-container">
+        <h3 class="help-title">Still need help?</h3>
+        <p class="help-desc">
+          Can't find what you're looking for? Our support team is ready to assist you.
+        </p>
+        <div class="help-links">
+          <a href="contact.html" class="help-link">Contact Support</a>
+          <a href="livechat.html" class="help-link">Start Live Chat</a>
+          <a href="submitticket.html" class="help-link">Submit a Ticket</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container-custom footer-container">
+      <div class="footer-logo">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+        <span>Supportia</span>
+      </div>
+      <div class="copyright">
+        &copy; <span id="currentYear"></span> Supportia. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuIcon = document.getElementById('menuIcon');
+    const closeIcon = document.getElementById('closeIcon');
+    let isMenuOpen = false;
+
+    mobileMenuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      mobileMenu.classList.toggle('open', isMenuOpen);
+      menuIcon.style.display = isMenuOpen ? 'none' : 'block';
+      closeIcon.style.display = isMenuOpen ? 'block' : 'none';
+    });
+
+    // Close mobile menu when window is resized to desktop size
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768 && isMenuOpen) {
+        isMenuOpen = false;
+        mobileMenu.classList.remove('open');
+        menuIcon.style.display = 'block';
+        closeIcon.style.display = 'none';
+      }
+    });
+
+    // FAQ functionality
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('searchInput');
+      const categoryTabs = document.getElementById('categoryTabs');
+      const faqList = document.getElementById('faqList');
+      
+      // Mock FAQ data
+      const faqs = [
+        {
+          id: '1',
+          question: 'How do I create an account?',
+          answer: 'To create an account, click on the "Sign Up" button in the top right corner of the homepage. Fill out the required information and click "Create Account". You\'ll receive a confirmation email to verify your account.',
+          category: 'account'
+        },
+        {
+          id: '2',
+          question: 'How can I reset my password?',
+          answer: 'Click on the "Login" button and then select "Forgot Password". Enter your email address and you\'ll receive instructions on how to reset your password. Make sure to check your spam folder if you don\'t see the email in your inbox.',
+          category: 'account'
+        },
+        {
+          id: '3',
+          question: 'What payment methods do you accept?',
+          answer: 'We accept Visa, MasterCard, American Express, Discover, PayPal, and Apple Pay. All transactions are secure and encrypted to ensure your payment information is protected.',
+          category: 'payments'
+        },
+        {
+          id: '4',
+          question: 'When will my credit card be charged?',
+          answer: 'Your credit card will be charged immediately upon placing your order. If there\'s any issue with your payment, we\'ll notify you via email.',
+          category: 'payments'
+        },
+        {
+          id: '5',
+          question: 'How do I check my order status?',
+          answer: 'You can check your order status by logging into your account and going to the "Order History" section. There you\'ll see all your past and current orders with their status.',
+          category: 'products'
+        },
+        {
+          id: '6',
+          question: 'How long does shipping take?',
+          answer: 'Standard shipping typically takes 3-5 business days within the continental US. Express shipping options are available at checkout for 1-2 day delivery. International shipping can take 7-14 business days depending on the destination.',
+          category: 'shipping'
+        },
+        {
+          id: '7',
+          question: 'What is your return policy?',
+          answer: 'We offer a 30-day return policy for most items. Products must be unused, in their original packaging, and in resellable condition. Some products may have specific return policies - please check the product page for details.',
+          category: 'returns'
+        },
+        {
+          id: '8',
+          question: 'How do I request a refund?',
+          answer: 'To request a refund, go to your account\'s "Order History", find the relevant order, and click "Request Return". Follow the instructions to complete your return request. Once we receive and inspect the returned item, we\'ll process your refund.',
+          category: 'returns'
+        }
+      ];
+      
+      let activeCategory = 'all';
+      let searchQuery = '';
+
+      // Filter FAQs based on category and search query
+      function filterFAQs() {
+        const filteredFAQs = faqs.filter(faq => {
+          const matchesCategory = activeCategory === 'all' || faq.category === activeCategory;
+          const matchesSearch = 
+            searchQuery === '' || 
+            faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
+          
+          return matchesCategory && matchesSearch;
+        });
+
+        renderFAQs(filteredFAQs);
+      }
+
+      // Render FAQs to the DOM
+      function renderFAQs(filteredFAQs) {
+        faqList.innerHTML = '';
+        
+        if (filteredFAQs.length === 0) {
+          faqList.innerHTML = `
+            <div class="empty-state">
+              <h3 class="empty-title">No FAQs found</h3>
+              <p class="empty-desc">Try adjusting your search or category filter.</p>
+            </div>
+          `;
+          return;
+        }
+        
+        filteredFAQs.forEach(faq => {
+          const faqItem = document.createElement('div');
+          faqItem.className = 'faq-item';
+          faqItem.innerHTML = `
+            <div class="faq-question" data-faq-id="${faq.id}">
+              <h3>${faq.question}</h3>
+              <svg class="icon-small chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="faq-answer" id="answer-${faq.id}">
+              <div class="prose">
+                <p>${faq.answer}</p>
+              </div>
+            </div>
+          `;
+          faqList.appendChild(faqItem);
+          
+          // Add click event to toggle answer visibility
+          const question = faqItem.querySelector('.faq-question');
+          question.addEventListener('click', () => {
+            const answerId = question.getAttribute('data-faq-id');
+            const answer = document.getElementById(`answer-${answerId}`);
+            const chevron = question.querySelector('.chevron');
+            
+            answer.classList.toggle('active');
+            chevron.classList.toggle('rotate-180');
+          });
+        });
+      }
+
+      // Handle category tab clicks
+      categoryTabs.addEventListener('click', (e) => {
+        if (e.target.classList.contains('tab-trigger')) {
+          const category = e.target.getAttribute('data-category');
+          
+          // Update active tab
+          document.querySelectorAll('.tab-trigger').forEach(tab => {
+            tab.classList.remove('active');
+            tab.setAttribute('aria-selected', 'false');
+          });
+          e.target.classList.add('active');
+          e.target.setAttribute('aria-selected', 'true');
+          
+          activeCategory = category;
+          filterFAQs();
+        }
+      });
+
+      // Handle search input
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim();
+        filterFAQs();
+      });
+
+      // Initial render (simulate loading delay)
+      setTimeout(() => {
+        filterFAQs();
+      }, 500);
+    });
+  </script>
+</body>
+</html>

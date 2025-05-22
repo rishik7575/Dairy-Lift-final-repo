@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Authentication Sync - FOR-INVESTORS</title>
+  <script src="js/auth.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .test-section {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .navbar {
+      background: #f5f5f5;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: #ad6ef5;
+      color: white;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+    .status.logged-in {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status.logged-out {
+      background: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <h1>FOR-INVESTORS Authentication Sync Test</h1>
+
+  <div class="test-section">
+    <h2>Current Status</h2>
+    <div id="auth-status" class="status">Checking...</div>
+  </div>
+
+  <div class="test-section">
+    <h2>Test Navigation Bar</h2>
+    <div class="navbar">
+      <div class="navbar-actions">
+        <a href="login.html" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          Login
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>Test Controls</h2>
+    <button id="simulate-login" class="btn btn-primary">Simulate Login</button>
+    <button id="simulate-logout" class="btn btn-secondary">Simulate Logout</button>
+    <button id="force-update" class="btn btn-secondary">Force UI Update</button>
+  </div>
+
+  <div class="test-section">
+    <h2>Profile Icon Test</h2>
+    <p>Profile icon should appear here when logged in:</p>
+    <div id="profile-test-area" style="min-height: 50px; border: 1px dashed #ccc; padding: 10px;">
+      <!-- Profile icon will be inserted here -->
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>Cross-Tab Sync Test</h2>
+    <p>Open this page in multiple tabs and test login/logout synchronization.</p>
+    <p>Also test with main website tabs to ensure independent authentication states.</p>
+
+    <h3>Test Links:</h3>
+    <ul>
+      <li><a href="home_page.html" target="_blank">FOR-INVESTORS Home Page</a></li>
+      <li><a href="dashboard.html" target="_blank">FOR-INVESTORS Dashboard</a></li>
+      <li><a href="YourCattle.html" target="_blank">FOR-INVESTORS Your Cattle</a></li>
+      <li><a href="profile.html" target="_blank">FOR-INVESTORS Profile</a></li>
+      <li><a href="filesforbuycattle/dist/index.html" target="_blank">Buy Cattle Page (React App)</a></li>
+      <li><a href="../home_page.html" target="_blank">Main Website (should be independent)</a></li>
+    </ul>
+
+    <p><strong>Expected Behavior:</strong></p>
+    <ul>
+      <li>Login/logout in any FOR-INVESTORS page should sync across all FOR-INVESTORS pages</li>
+      <li>Buy Cattle page should sync with FOR-INVESTORS authentication</li>
+      <li>Main website should remain independent (separate auth state)</li>
+    </ul>
+  </div>
+
+  <script>
+    function updateStatus() {
+      const statusEl = document.getElementById('auth-status');
+      const isLoggedIn = window.isLoggedIn ? window.isLoggedIn() : false;
+
+      if (isLoggedIn) {
+        statusEl.textContent = 'User is logged in (FOR-INVESTORS)';
+        statusEl.className = 'status logged-in';
+      } else {
+        statusEl.textContent = 'User is not logged in (FOR-INVESTORS)';
+        statusEl.className = 'status logged-out';
+      }
+    }
+
+    function testProfileIcon() {
+      const testArea = document.getElementById('profile-test-area');
+      const existingIcon = testArea.querySelector('#profile-icon-link');
+
+      if (existingIcon) {
+        testArea.removeChild(existingIcon);
+      }
+
+      if (window.isLoggedIn && window.isLoggedIn()) {
+        // Create a test profile icon
+        const profileLink = document.createElement('a');
+        profileLink.href = 'profile.html';
+        profileLink.id = 'profile-icon-link';
+        profileLink.style.display = 'flex';
+        profileLink.style.alignItems = 'center';
+        profileLink.style.justifyContent = 'center';
+        profileLink.style.width = '40px';
+        profileLink.style.height = '40px';
+        profileLink.style.borderRadius = '50%';
+        profileLink.style.backgroundColor = 'rgba(173, 110, 245, 0.2)';
+        profileLink.style.border = '2px solid rgba(173, 110, 245, 0.3)';
+        profileLink.style.overflow = 'hidden';
+
+        const profileImage = document.createElement('img');
+        profileImage.src = 'image/profileicone.png';
+        profileImage.alt = 'Profile';
+        profileImage.style.width = '100%';
+        profileImage.style.height = '100%';
+        profileImage.style.objectFit = 'cover';
+        profileImage.style.borderRadius = '50%';
+
+        profileImage.onerror = function() {
+          // Fallback to SVG if image fails to load
+          profileLink.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="#ad6ef5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          `;
+        };
+
+        profileLink.appendChild(profileImage);
+        testArea.appendChild(profileLink);
+      }
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('FOR-INVESTORS test page loaded');
+
+      // Initialize auth
+      if (window.initAuth) {
+        window.initAuth();
+      }
+
+      updateStatus();
+      testProfileIcon();
+
+      // Set up event listeners
+      document.getElementById('simulate-login').addEventListener('click', function() {
+        // Simulate login by setting auth data
+        localStorage.setItem('dairyLift_auth', JSON.stringify({
+          name: 'Investor User',
+          email: 'investor@example.com',
+          timestamp: Date.now(),
+          role: 'investor'
+        }));
+
+        updateStatus();
+        testProfileIcon();
+
+        // Force UI update
+        if (window.updateAuthUI) {
+          window.updateAuthUI();
+        }
+      });
+
+      document.getElementById('simulate-logout').addEventListener('click', function() {
+        // Simulate logout
+        localStorage.removeItem('dairyLift_auth');
+
+        updateStatus();
+        testProfileIcon();
+
+        // Force UI update
+        if (window.updateAuthUI) {
+          window.updateAuthUI();
+        }
+      });
+
+      document.getElementById('force-update').addEventListener('click', function() {
+        if (window.updateAuthUI) {
+          window.updateAuthUI();
+        }
+        updateStatus();
+        testProfileIcon();
+      });
+    });
+
+    // Listen for auth changes
+    window.addEventListener('storage', function(event) {
+      if (event.key === 'dairyLift_auth') {
+        updateStatus();
+        testProfileIcon();
+      }
+    });
+  </script>
+</body>
+</html>

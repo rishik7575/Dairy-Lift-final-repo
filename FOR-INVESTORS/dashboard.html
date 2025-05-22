@@ -1,0 +1,2939 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dairy-Lift - Dashboard</title>
+  <meta name="description"
+    content="Invest in cattle, earn from milk production, and make a positive impact with Dairy-Lift." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --radius: 0.5rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--foreground);
+      background-color: var(--background);
+      line-height: 1.5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        padding: 0 2rem;
+      }
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+
+    /* Remix Icons Fix */
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline-primary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .btn svg {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Dashboard specific styles */
+    .dashboard-card {
+      background-color: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .dashboard-card:hover {
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      text-transform: capitalize;
+    }
+
+    .trend-up {
+      color: #10B981;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    .trend-down {
+      color: #EF4444;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    /* Enhanced metric cards */
+    .dashboard-card.border-l-4 {
+      border-left-width: 4px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dashboard-card.border-l-4:hover {
+      border-left-width: 6px;
+    }
+
+    .health-excellent {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: rgb(21, 128, 61);
+    }
+
+    .health-good {
+      background-color: rgba(59, 130, 246, 0.1);
+      color: rgb(29, 78, 216);
+    }
+
+    .health-fair {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: rgb(180, 83, 9);
+    }
+
+    .health-poor {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: rgb(185, 28, 28);
+    }
+
+    .cart-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--foreground);
+    }
+
+    .cart-button:hover {
+      color: var(--primary);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      font-size: 0.75rem;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+
+    .btn-icon {
+      padding: 0.5rem;
+    }
+
+    .footer {
+      background-color: #F9FAFB;
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+
+    .progress-bar {
+      height: 0.5rem;
+      background-color: #F3F4F6;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      background-color: var(--primary);
+      transition: width 1s ease-in-out;
+    }
+
+    /* Animation classes */
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: .7;
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+    }
+    .navbar {
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+    }
+
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(139, 92, 246, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    /* .mobile-menu {
+      display: none;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    } */
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(139, 92, 246, 0.15);
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+
+    .cart-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--foreground);
+    }
+
+    .cart-button:hover {
+      color: var(--primary);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      font-size: 0.75rem;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline-primary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .btn svg {
+      margin-left: 0.5rem;
+    }
+
+    .btn-icon {
+      padding: 0.5rem;
+    }
+
+    .footer {
+      background-color: #F9FAFB;
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+
+    .progress-bar {
+      height: 0.5rem;
+      background-color: #F3F4F6;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      background-color: var(--primary);
+      transition: width 1s ease-in-out;
+    }
+
+    /* Animation classes */
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: .7;
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 80%;
+      max-width: 800px;
+      animation: modalOpen 0.3s ease-out;
+    }
+
+    @keyframes modalOpen {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+
+    .close {
+      color: var(--muted);
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: var(--foreground);
+      text-decoration: none;
+    }
+
+    /* Custom iframe styling */
+    .no-scroll-iframe {
+      overflow: hidden;
+      width: 100%;
+      border: none;
+    }
+
+    .content-iframe {
+      width: 100%;
+      border: none;
+      height: 500px;
+      min-height: 500px;
+      max-height: 500px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      background-color: white;
+      overflow: auto;
+    }
+
+    /* Grid container improvements */
+    .dashboard-grid {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .dashboard-grid > div {
+      display: flex;
+      flex-direction: column;
+      height: 500px;
+    }
+
+    .dashboard-grid iframe {
+      flex: 1;
+      height: 100%;
+    }
+
+    /* Responsive iframe heights for better content visibility */
+    @media (max-width: 768px) {
+      .content-iframe {
+        height: 450px;
+        min-height: 450px;
+        max-height: 450px;
+      }
+
+      .dashboard-grid > div {
+        height: 450px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .content-iframe {
+        height: 550px;
+        min-height: 550px;
+        max-height: 550px;
+      }
+
+      .dashboard-grid > div {
+        height: 550px;
+      }
+    }
+
+    /* Tall iframe for content-heavy cards */
+    .content-iframe-tall {
+      height: 600px !important;
+      min-height: 600px !important;
+      max-height: 600px !important;
+    }
+
+    .dashboard-grid .tall-card {
+      height: 600px !important;
+    }
+
+    /* Extra tall iframe for ProfitForecast */
+    .content-iframe-extra-tall {
+      height: 700px !important;
+      min-height: 700px !important;
+      max-height: 700px !important;
+    }
+
+    .dashboard-grid .extra-tall-card {
+      height: 700px !important;
+    }
+
+    @media (max-width: 768px) {
+      .content-iframe-tall {
+        height: 500px !important;
+        min-height: 500px !important;
+        max-height: 500px !important;
+      }
+
+      .dashboard-grid .tall-card {
+        height: 500px !important;
+      }
+
+      .content-iframe-extra-tall {
+        height: 550px !important;
+        min-height: 550px !important;
+        max-height: 550px !important;
+      }
+
+      .dashboard-grid .extra-tall-card {
+        height: 550px !important;
+      }
+    }
+
+    /* Chart container styling */
+    .chart-container {
+      position: relative;
+      height: 300px;
+      max-height: 300px;
+      width: 100%;
+    }
+
+    /* Hide scrollbars but allow scrolling */
+    .custom-scrollbar {
+      overflow-y: auto;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 50;
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast.info {
+      background-color: #EFF6FF;
+      border-left: 4px solid #3B82F6;
+      color: #1E3A8A;
+    }
+
+    .toast.success {
+      background-color: #ECFDF5;
+      border-left: 4px solid #10B981;
+      color: #065F46;
+    }
+
+    .toast.error {
+      background-color: #FEF2F2;
+      border-left: 4px solid #EF4444;
+      color: #991B1B;
+    }
+
+    /* Additional header styles from home_page.html */
+    /* Override navbar-content styles */
+    .navbar-content {
+      display: flex !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      height: 4rem !important;
+      position: relative !important;
+      padding: 0.5rem 0 !important;
+    }
+
+    .header-photo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 25px 0 15px;
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+    }
+
+    .header-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      background-color: white;
+      padding: 2px;
+    }
+
+    /* Override navbar-actions styles */
+    .navbar-actions {
+      display: flex !important;
+      align-items: center !important;
+      gap: 1rem !important;
+    }
+
+    /* Override logo styles */
+    .logo {
+      font-weight: bold !important;
+      font-size: 1.5rem !important;
+      color: var(--primary) !important;
+      min-width: 220px !important;
+      text-align: left !important;
+      margin-right: auto !important;
+      display: inline-block !important;
+      padding: 0 15px !important;
+    }
+
+    /* Override mobile-menu-toggle styles */
+    .mobile-menu-toggle {
+      display: block !important;
+    }
+
+    @media (min-width: 768px) {
+      .header-photo-container {
+        width: 80px;
+        height: 80px;
+        margin: 0 30px 0 20px;
+      }
+
+      .logo {
+        font-size: 1.5rem !important;
+        min-width: 250px !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <header class="navbar" style="padding:10px">
+    <div class="container" style="margin:0px">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+          <div class="hamburger-lines">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </div>
+        </button>
+        <div class="header-photo-container">
+          <img src="image/no background.png" alt="Header Photo" class="header-photo">
+        </div>
+        <a href="#" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
+        <nav class="desktop-nav">
+          <a href="home_page.html" class="nav-link">Home</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="YourCattle.html" class="nav-link">All Cattle</a>
+          <a href="storenew.html" class="nav-link">Store</a>
+          <a href="visit-farm.html" class="nav-link">Visit Farm</a>
+          <a href="admin-dashboard.html" class="nav-link">Admin</a>
+        </nav>
+        <div class="navbar-actions">
+          <a href="watchliststore.html" class="btn btn-icon">
+            <i class="fas fa-heart"></i>
+          </a>
+          <a href="login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span style="margin-left: 10px;">Buy Cattle</span>
+      </a>
+      <a href="biogas/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span style="margin-left: 10px;">Bio-Gas</span>
+      </a>
+
+      <a href="visit-farm.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Visit Farm</span>
+      </a>
+      <a href="YourCattle.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 11.08V8l-6-6H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2v-3.08c.58-.21 1-.76 1-1.42V12.5c0-.66-.42-1.21-1-1.42z"></path>
+          <path d="M14 3v5h5M12 18v-6M9 15h6"></path>
+        </svg>
+        <span style="margin-left: 10px;">All Cattle</span>
+      </a>
+      <a href="navhome.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Insurance</span>
+      </a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+          <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+        </svg>
+        <span style="margin-left: 10px;">Register Cattle</span>
+      </a>
+      <a href="#" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Contact-Us</span>
+      </a>
+      <a href="help/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span style="margin-left: 10px;">Support</span>
+      </a>
+      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Login / Register</span>
+      </a>
+    </div>
+    </div>
+  </header>
+
+  <div class="flex-grow bg-gray-50 py-6">
+    <div class="container mx-auto px-4">
+      <!-- Dashboard Header -->
+      <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 class="text-3xl font-bold">Welcome back, John</h1>
+          <p class="text-gray-500">
+            Here's the latest updates on your dairy farm investments
+          </p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div class="dropdown relative">
+            <button id="exportBtn" class="hidden sm:flex items-center px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 transition-colors">
+              <i class="fas fa-download mr-2 text-sm"></i>
+              Export Data
+              <i class="fas fa-chevron-down ml-2 text-sm"></i>
+            </button>
+            <div id="exportDropdown" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-10">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="exportData('csv')">Export as CSV</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="exportData('xlsx')">Export as Excel</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="exportData('pdf')">Export as PDF</a>
+            </div>
+          </div>
+
+          <button id="liveFeedBtn" class="flex items-center px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
+            <i class="fas fa-external-link-alt mr-2 text-sm"></i>
+            Live Feed
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Investment Card -->
+        <div class="dashboard-card p-5 hover:shadow-lg transition-all duration-300 border-l-4 border-green-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="stat-label mb-1 text-gray-500 font-medium">Total Investment</p>
+              <p class="stat-value text-2xl font-bold text-gray-800">₹10,500</p>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center shadow-sm">
+              <i class="fas fa-coins text-green-600 text-xl"></i>
+            </div>
+          </div>
+          <div class="flex items-center mt-3 bg-green-50 rounded-md px-2 py-1 w-fit">
+            <p class="trend-up text-xs font-medium text-green-600 flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>
+              <span>5% from last month</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Monthly Yield Card -->
+        <div class="dashboard-card p-5 hover:shadow-lg transition-all duration-300 border-l-4 border-emerald-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="stat-label mb-1 text-gray-500 font-medium">Monthly Yield</p>
+              <p class="stat-value text-2xl font-bold text-gray-800">₹620</p>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-emerald-100 flex items-center justify-center shadow-sm">
+              <i class="fas fa-seedling text-emerald-600 text-xl"></i>
+            </div>
+          </div>
+          <div class="flex items-center mt-3 bg-emerald-50 rounded-md px-2 py-1 w-fit">
+            <p class="trend-up text-xs font-medium text-emerald-600 flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>
+              <span>12% from last month</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Total Earnings Card -->
+        <div class="dashboard-card p-5 hover:shadow-lg transition-all duration-300 border-l-4 border-blue-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="stat-label mb-1 text-gray-500 font-medium">Total Earnings</p>
+              <p class="stat-value text-2xl font-bold text-gray-800">₹4,250</p>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center shadow-sm">
+              <i class="fas fa-wallet text-blue-600 text-xl"></i>
+            </div>
+          </div>
+          <div class="flex items-center mt-3 bg-blue-50 rounded-md px-2 py-1 w-fit">
+            <p class="trend-up text-xs font-medium text-blue-600 flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>
+              <span>8% from last month</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Avg. Milk Production Card -->
+        <div class="dashboard-card p-5 hover:shadow-lg transition-all duration-300 border-l-4 border-indigo-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="stat-label mb-1 text-gray-500 font-medium">Avg. Milk Production</p>
+              <p class="stat-value text-2xl font-bold text-gray-800">29 L/day</p>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center shadow-sm">
+              <i class="fas fa-droplet text-indigo-600 text-xl"></i>
+            </div>
+          </div>
+          <div class="flex items-center mt-3 bg-indigo-50 rounded-md px-2 py-1 w-fit">
+            <p class="trend-up text-xs font-medium text-indigo-600 flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>
+              <span>3% from last month</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Chart -->
+      <div class="mb-8">
+        <div class="dashboard-card">
+          <div class="p-4 pb-2">
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="text-lg font-semibold">Milk Production Trend</h3>
+                <p class="text-sm text-gray-500">Total milk production over the last 12 months</p>
+              </div>
+              <div class="flex items-center">
+                <div class="w-3 h-3 rounded-full bg-purple-600 mr-2"></div>
+                <span class="text-sm">Production (Liters)</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="h-80">
+              <canvas id="milkProductionChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 1 - ProfitForecast and MilkingEfficiency -->
+      <div class="dashboard-grid grid-cols-1 lg:grid-cols-3">
+        <div class="lg:col-span-2 extra-tall-card">
+          <iframe src="ProfitForecast.html" frameborder="0" class="content-iframe content-iframe-extra-tall" id="profit-forecast-frame"></iframe>
+        </div>
+        <div>
+          <iframe src="MilkingEfficiencyCard.html" frameborder="0" class="content-iframe" id="milking-efficiency-frame"></iframe>
+        </div>
+      </div>
+
+      <!-- Row 2 - Farm Stats and Expense Breakdown -->
+      <div class="dashboard-grid grid-cols-1 md:grid-cols-2">
+        <div>
+          <iframe src="FarmStats.html" frameborder="0" class="content-iframe" id="farm-stats-frame"></iframe>
+        </div>
+        <div>
+          <iframe src="ExpenseBreakdownChart.html" frameborder="0" class="content-iframe" id="expense-breakdown-frame"></iframe>
+        </div>
+      </div>
+
+      <!-- Row 3 - Milk Wastage and Cattle Lifecycle -->
+      <div class="dashboard-grid grid-cols-1 md:grid-cols-2">
+        <div>
+          <iframe src="MilkWastageTracker.html" frameborder="0" class="content-iframe" id="milk-wastage-frame"></iframe>
+        </div>
+        <div class="tall-card">
+          <iframe src="CattleLifecycleTracker.html" frameborder="0" class="content-iframe content-iframe-tall" id="cattle-lifecycle-frame"></iframe>
+        </div>
+      </div>
+
+      <!-- Row 4 - Weather, Waste to Profit, Investor Trust -->
+      <div class="dashboard-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div>
+          <iframe src="WeatherImpactAnalytics.html" frameborder="0" class="content-iframe" id="weather-impact-frame"></iframe>
+        </div>
+        <div>
+          <iframe src="WastetoProfitTracker.html" frameborder="0" class="content-iframe" id="waste-to-profit-frame"></iframe>
+        </div>
+        <div>
+          <iframe src="InvestorTrust.html" frameborder="0" class="content-iframe" id="investor-trust-frame"></iframe>
+        </div>
+      </div>
+
+      <!-- Cattle Section Removed - Now Available as a Separate Page via "All Cattle" Button -->
+
+      <!-- Recent Updates & Upcoming Events -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Recent Updates -->
+        <div class="lg:col-span-2 space-y-4">
+          <h3 class="text-xl font-semibold">Recent Updates</h3>
+
+          <div class="dashboard-card p-4 animate-fade-in">
+            <div class="flex items-start space-x-3">
+              <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-500">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between">
+                  <h4 class="font-medium">Health Check Completed</h4>
+                  <span class="text-sm text-gray-500">Today, 10:30 AM</span>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">All your cattle have passed their monthly health check with excellent results.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-card p-4 animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="flex items-start space-x-3">
+              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
+                <i class="fas fa-money-bill-wave"></i>
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between">
+                  <h4 class="font-medium">Dividend Payment Processed</h4>
+                  <span class="text-sm text-gray-500">Yesterday, 3:45 PM</span>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">Your monthly dividend of ₹620 has been processed and will arrive in your account in 2-3 business days.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-card p-4 animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="flex items-start space-x-3">
+              <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-500">
+                <i class="fas fa-bell"></i>
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between">
+                  <h4 class="font-medium">New Milking Record</h4>
+                  <span class="text-sm text-gray-500">May 3, 2023, 8:20 AM</span>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">Bella has set a new personal record with 35 liters of milk production yesterday.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="space-y-4">
+          <h3 class="text-xl font-semibold">Upcoming Events</h3>
+
+          <div class="dashboard-card p-4 border-l-4 border-purple-600">
+            <h4 class="font-medium">Quarterly Health Check</h4>
+            <p class="text-sm text-gray-600 mt-1">Comprehensive health examination for all cattle</p>
+            <p class="text-sm text-gray-500 mt-2">May 20, 2023</p>
+          </div>
+
+          <div class="dashboard-card p-4 border-l-4 border-yellow-500">
+            <h4 class="font-medium">Farm Visit Day</h4>
+            <p class="text-sm text-gray-600 mt-1">Open day for investors to visit the farm and see their cattle</p>
+            <p class="text-sm text-gray-500 mt-2">June 15, 2023</p>
+          </div>
+
+          <div class="dashboard-card p-4 border-l-4 border-blue-500">
+            <h4 class="font-medium">Investor Webinar</h4>
+            <p class="text-sm text-gray-600 mt-1">Online presentation on farm performance and market trends</p>
+            <p class="text-sm text-gray-500 mt-2">June 28, 2023</p>
+          </div>
+
+          <div class="dashboard-card p-4 border-l-4 border-purple-400">
+            <h4 class="font-medium">Dividend Payment</h4>
+            <p class="text-sm text-gray-600 mt-1">Next monthly dividend payment date</p>
+            <p class="text-sm text-gray-500 mt-2">July 5, 2023</p>
+          </div>
+
+          <!-- Motivational Quote -->
+          <div class="dashboard-card p-4 bg-gradient-to-r from-purple-50 to-blue-50">
+            <p class="italic text-gray-700">"The best time to plant a tree was 20 years ago. The second best time is now."</p>
+            <p class="text-right text-sm text-gray-500 mt-2">— Chinese Proverb</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer mt-auto">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-2xl font-bold text-purple-600">DairyVest</h3>
+          <p class="text-gray-500">
+            Invest in cattle, earn from dairy products, and monitor your investment with real-time updates.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h4 class="font-semibold text-lg">Quick Links</h4>
+          <ul class="space-y-2">
+            <li>
+              <a href="home_page.html" class="text-gray-500 hover:text-purple-600 transition-colors">Home</a>
+            </li>
+            <li>
+              <a href="dashboard.html" class="text-gray-500 hover:text-purple-600 transition-colors">Dashboard</a>
+            </li>
+            <li>
+              <a href="storenew.html" class="text-gray-500 hover:text-purple-600 transition-colors">Store</a>
+            </li>
+            <li>
+              <a href="login.html" class="text-gray-500 hover:text-purple-600 transition-colors">Login</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="space-y-4">
+          <h4 class="font-semibold text-lg">Resources</h4>
+          <ul class="space-y-2">
+            <li>
+              <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">How It Works</a>
+            </li>
+            <li>
+              <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">FAQs</a>
+            </li>
+            <li>
+              <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">Blog</a>
+            </li>
+            <li>
+              <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors">Terms & Conditions</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="space-y-4">
+          <h4 class="font-semibold text-lg">Contact Us</h4>
+          <ul class="space-y-2">
+            <li class="flex items-center space-x-2">
+              <i class="fas fa-envelope text-purple-600"></i>
+              <span class="text-gray-500">info@dairyvest.com</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <i class="fas fa-phone text-purple-600"></i>
+              <span class="text-gray-500">+1 (234) 567-8901</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <i class="fas fa-map-marker-alt text-purple-600 mt-1"></i>
+              <span class="text-gray-500">123 Dairy Farm Road, Cattle County, CA 90210</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-200 mt-12 py-6 text-center text-gray-500">
+        <p>&copy; 2025 DairyVest. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cattle Details Modal -->
+  <div id="cattleDetailsModal" class="modal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center mb-4">
+        <h2 id="modalCattleName" class="text-xl font-semibold"></h2>
+        <span class="close" id="closeCattleModal">&times;</span>
+      </div>
+
+      <div id="modalCattleImage" class="aspect-video w-full overflow-hidden rounded-md mb-4">
+        <!-- Cattle image will be displayed here -->
+      </div>
+
+      <div class="tab-list">
+        <div class="tab active" data-tab="overview">Overview</div>
+        <div class="tab" data-tab="production">Milk Production</div>
+        <div class="tab" data-tab="health">Health Records</div>
+        <div class="tab" data-tab="fertility">Fertility</div>
+      </div>
+
+      <div class="tab-content active" id="overview">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div class="info-card">
+            <h3 class="font-semibold mb-2">Current Status</h3>
+            <div class="info-grid">
+              <p class="info-label">Health:</p>
+              <p id="modalHealth" class="info-value"></p>
+
+              <p class="info-label">Lactation:</p>
+              <p id="modalLactation" class="info-value"></p>
+
+              <p class="info-label">Daily Production:</p>
+              <p id="modalProduction" class="info-value"></p>
+
+              <p class="info-label">Age:</p>
+              <p id="modalAge" class="info-value"></p>
+
+              <p class="info-label">Breed:</p>
+              <p id="modalBreed" class="info-value"></p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3 class="font-semibold mb-2">Daily Feed Consumption</h3>
+            <div class="chart-container">
+              <canvas id="feedChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3 class="font-semibold mb-2">Health Metrics</h3>
+          <div class="mb-3">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium">Temperature</span>
+              <span class="text-sm text-muted-foreground">38.5°C (Normal: 39°C)</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 98.7%"></div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium">Heart Rate</span>
+              <span class="text-sm text-muted-foreground">72 BPM (Normal: 75 BPM)</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 96%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium">Respiration</span>
+              <span class="text-sm text-muted-foreground">26 BPM (Normal: 30 BPM)</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 86.7%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="production">
+        <div class="info-card">
+          <h3 class="font-semibold mb-2">Milk Production History</h3>
+          <div class="chart-container">
+            <canvas id="milkProductionChart2"></canvas>
+          </div>
+
+          <div class="grid grid-cols-3 gap-4 mt-4">
+            <div class="text-center p-3 bg-gray-100 rounded-md">
+              <p class="text-sm text-gray-500">Daily Average</p>
+              <p class="text-lg font-bold">29.8 L</p>
+            </div>
+            <div class="text-center p-3 bg-gray-100 rounded-md">
+              <p class="text-sm text-gray-500">Weekly Total</p>
+              <p class="text-lg font-bold">209 L</p>
+            </div>
+            <div class="text-center p-3 bg-gray-100 rounded-md">
+              <p class="text-sm text-gray-500">Peak Production</p>
+              <p class="text-lg font-bold">32 L</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="health">
+        <div class="info-card">
+          <h3 class="font-semibold mb-2">Health Records</h3>
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b">
+                <th class="text-left py-2 px-4">Date</th>
+                <th class="text-left py-2 px-4">Procedure</th>
+                <th class="text-left py-2 px-4">Performed By</th>
+                <th class="text-left py-2 px-4">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b">
+                <td class="py-2 px-4">2023-04-15</td>
+                <td class="py-2 px-4">Health Check</td>
+                <td class="py-2 px-4">Dr. Smith</td>
+                <td class="py-2 px-4">All vitals normal</td>
+              </tr>
+              <tr class="border-b">
+                <td class="py-2 px-4">2023-03-12</td>
+                <td class="py-2 px-4">Vaccination</td>
+                <td class="py-2 px-4">Dr. Patel</td>
+                <td class="py-2 px-4">FMD vaccine administered</td>
+              </tr>
+              <tr class="border-b">
+                <td class="py-2 px-4">2023-02-23</td>
+                <td class="py-2 px-4">Deworming</td>
+                <td class="py-2 px-4">Farm Staff</td>
+                <td class="py-2 px-4">Scheduled treatment</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-4">2023-01-10</td>
+                <td class="py-2 px-4">Health Check</td>
+                <td class="py-2 px-4">Dr. Smith</td>
+                <td class="py-2 px-4">Slight fever treated</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-content" id="fertility">
+        <div class="info-card">
+          <h3 class="font-semibold mb-2">Fertility & Reproduction</h3>
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b">
+                <th class="text-left py-2 px-4">Date</th>
+                <th class="text-left py-2 px-4">Event</th>
+                <th class="text-left py-2 px-4">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b">
+                <td class="py-2 px-4">2022-06-15</td>
+                <td class="py-2 px-4">Heat Detection</td>
+                <td class="py-2 px-4">Normal cycle observed</td>
+              </tr>
+              <tr class="border-b">
+                <td class="py-2 px-4">2022-07-10</td>
+                <td class="py-2 px-4">Insemination</td>
+                <td class="py-2 px-4">Artificial insemination performed</td>
+              </tr>
+              <tr class="border-b">
+                <td class="py-2 px-4">2022-07-31</td>
+                <td class="py-2 px-4">Pregnancy Check</td>
+                <td class="py-2 px-4">Confirmed pregnant</td>
+              </tr>
+              <tr class="border-b">
+                <td class="py-2 px-4">2023-04-15</td>
+                <td class="py-2 px-4">Calving</td>
+                <td class="py-2 px-4">Healthy female calf delivered</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-4">2023-05-20</td>
+                <td class="py-2 px-4">First Heat Post-Calving</td>
+                <td class="py-2 px-4">Normal cycle returned</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="flex justify-end space-x-2 mt-6">
+        <button id="nextSectionBtn" class="btn-outline">Next Section</button>
+        <button id="closeDetailsBtn" class="btn-outline">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Feed Modal -->
+  <div id="liveFeedModal" class="modal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Live Farm Data Feed</h2>
+        <span class="close" id="closeLiveFeed">&times;</span>
+      </div>
+      <p class="text-gray-500 mb-4">Real-time data from farm operations and cattle monitoring.</p>
+
+      <div class="flex justify-between items-center mb-4">
+        <div class="flex gap-3">
+          <div class="flex items-center gap-1">
+            <span class="text-blue-500">🥛</span>
+            <span class="text-xs">Milk</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="text-green-500">🩺</span>
+            <span class="text-xs">Health</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="text-yellow-500">🌾</span>
+            <span class="text-xs">Feed</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="text-purple-500">⚙️</span>
+            <span class="text-xs">System</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-gray-500">Auto-refresh</span>
+          <button id="autoRefreshBtn" class="px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700">
+            On
+          </button>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <div id="liveFeedContent" class="h-[400px] overflow-y-auto custom-scrollbar pr-2 space-y-2">
+        <div class="animate-pulse flex justify-center items-center h-full">
+          <div class="flex items-center">
+            <i class="fas fa-sync-alt fa-spin mr-2 text-gray-500"></i>
+            <span>Loading feed data...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 text-right">
+        <button id="closeFeedBtn" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">Close Feed</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Charts
+    window.onload = function() {
+      // Set iframe heights to match content without scrollbars
+      const frameIds = [
+        'profit-forecast-frame',
+        'milking-efficiency-frame',
+        'farm-stats-frame',
+        'expense-breakdown-frame',
+        'milk-wastage-frame',
+        'cattle-lifecycle-frame',
+        'weather-impact-frame',
+        'waste-to-profit-frame',
+        'investor-trust-frame'
+      ];
+
+      frameIds.forEach(id => {
+        const iframe = document.getElementById(id);
+        if (iframe) {
+          iframe.classList.add('no-scroll-iframe');
+          // Heights are now controlled via CSS classes for better content visibility
+        }
+      });
+
+      // Listen for cattle details messages only
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'openCattleDetails') {
+          // Handle cattle details message from YourCattle.html
+          const cattle = event.data.cattle;
+          openCattleDetailsModal(cattle);
+        }
+        // Removed dynamic iframe height adjustment to prevent cards from growing
+      });
+
+      // Cattle filter and sort functionality removed - now on separate page
+
+      // Cattle details modal event listeners
+      const cattleDetailsModal = document.getElementById('cattleDetailsModal');
+      const closeCattleModal = document.getElementById('closeCattleModal');
+      const closeDetailsBtn = document.getElementById('closeDetailsBtn');
+      const nextSectionBtn = document.getElementById('nextSectionBtn');
+
+      // Close modal functions
+      function closeCattleDetailsFn() {
+        cattleDetailsModal.style.display = 'none';
+      }
+
+      closeCattleModal.addEventListener('click', closeCattleDetailsFn);
+      closeDetailsBtn.addEventListener('click', closeCattleDetailsFn);
+
+      // Close modal when clicking outside
+      window.addEventListener('click', function(event) {
+        if (event.target === cattleDetailsModal) {
+          closeCattleDetailsFn();
+        }
+      });
+
+      // Tab switching for cattle details
+      document.querySelectorAll('#cattleDetailsModal .tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabName = this.getAttribute('data-tab');
+          setActiveTab(tabName);
+        });
+      });
+
+      // Next section button
+      nextSectionBtn.addEventListener('click', function() {
+        const tabs = ['overview', 'production', 'health', 'fertility'];
+        const activeTab = document.querySelector('#cattleDetailsModal .tab.active').getAttribute('data-tab');
+        const currentIndex = tabs.indexOf(activeTab);
+        const nextIndex = (currentIndex + 1) % tabs.length;
+        setActiveTab(tabs[nextIndex]);
+      });
+
+      // Milk Production Chart
+      const milkProductionCtx = document.getElementById('milkProductionChart').getContext('2d');
+      const milkProductionData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+          label: 'Production (Liters)',
+          data: [420, 380, 450, 470, 520, 540, 560, 590, 610, 640, 630, 650],
+          backgroundColor: 'rgba(139, 92, 246, 0.2)',
+          borderColor: '#8B5CF6',
+          borderWidth: 2,
+          pointBackgroundColor: '#8B5CF6',
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          tension: 0.4
+        }]
+      };
+
+      const milkProductionChart = new Chart(milkProductionCtx, {
+        type: 'line',
+        data: milkProductionData,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: false,
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              },
+              ticks: {
+                callback: function(value) {
+                  return value + 'L';
+                }
+              }
+            },
+            x: {
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.raw + ' liters';
+                }
+              }
+            }
+          },
+          interaction: {
+            mode: 'index',
+            intersect: false
+          }
+        }
+      });
+
+      // Export dropdown functionality
+      const exportBtn = document.getElementById('exportBtn');
+      const exportDropdown = document.getElementById('exportDropdown');
+
+      exportBtn.addEventListener('click', function() {
+        exportDropdown.classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', function(event) {
+        if (!exportBtn.contains(event.target) && !exportDropdown.contains(event.target)) {
+          exportDropdown.classList.add('hidden');
+        }
+      });
+
+      // Live Feed functionality
+      const liveFeedBtn = document.getElementById('liveFeedBtn');
+      const liveFeedModal = document.getElementById('liveFeedModal');
+      const closeLiveFeed = document.getElementById('closeLiveFeed');
+      const closeFeedBtn = document.getElementById('closeFeedBtn');
+      const liveFeedContent = document.getElementById('liveFeedContent');
+      const autoRefreshBtn = document.getElementById('autoRefreshBtn');
+      let autoRefresh = true;
+      let autoRefreshInterval;
+
+      liveFeedBtn.addEventListener('click', function() {
+        liveFeedModal.style.display = 'block';
+        generateLiveFeedEvents();
+
+        if (autoRefresh) {
+          startAutoRefresh();
+        }
+      });
+
+      closeLiveFeed.addEventListener('click', function() {
+        liveFeedModal.style.display = 'none';
+        clearInterval(autoRefreshInterval);
+      });
+
+      closeFeedBtn.addEventListener('click', function() {
+        liveFeedModal.style.display = 'none';
+        clearInterval(autoRefreshInterval);
+      });
+
+      autoRefreshBtn.addEventListener('click', function() {
+        autoRefresh = !autoRefresh;
+        autoRefreshBtn.textContent = autoRefresh ? 'On' : 'Off';
+
+        if (autoRefresh) {
+          autoRefreshBtn.classList.remove('bg-gray-200');
+          autoRefreshBtn.classList.add('bg-purple-600');
+          startAutoRefresh();
+        } else {
+          autoRefreshBtn.classList.remove('bg-purple-600');
+          autoRefreshBtn.classList.add('bg-gray-200');
+          clearInterval(autoRefreshInterval);
+        }
+      });
+
+      function startAutoRefresh() {
+        autoRefreshInterval = setInterval(function() {
+          addNewEvent();
+          showToast("New data received in live feed");
+        }, 15000);
+      }
+
+      function generateLiveFeedEvents() {
+        const eventTypes = ['milk', 'health', 'feed', 'system'];
+        const messages = {
+          milk: [
+            'Bella produced 12.5 liters in morning session',
+            'Daisy produced 10.8 liters in morning session',
+            'Rosie produced 11.2 liters in morning session',
+            'Mabel produced 9.9 liters in morning session',
+            'Total morning collection: 44.4 liters',
+            'Tank temperature: 4°C (optimal)'
+          ],
+          health: [
+            'Bella\'s temperature: 38.5°C (normal)',
+            'Daisy\'s temperature: 39.0°C (normal)',
+            'Rosie requires deworming next week',
+            'Mabel\'s vaccination completed',
+            'All cattle clearing morning health checks'
+          ],
+          feed: [
+            'Morning feed dispensed: 240kg',
+            'Feed quality check passed',
+            'Water consumption: 380 liters',
+            'Silage stock check: 75% remaining',
+            'Mineral supplement added to feed'
+          ],
+          system: [
+            'Milking system sanitization complete',
+            'Cooling system operating at optimal temperature',
+            'Barn humidity: 65% (acceptable range)',
+            'Barn temperature: 22°C (optimal)',
+            'Farm manager logged maintenance check'
+          ]
+        };
+
+        liveFeedContent.innerHTML = '';
+
+        // Create 20 random events
+        for (let i = 0; i < 20; i++) {
+          const type = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+          const messageList = messages[type];
+          const message = messageList[Math.floor(Math.random() * messageList.length)];
+
+          // Events in the last 30 minutes
+          const now = new Date();
+          const timestamp = new Date(now.getTime() - Math.random() * 30 * 60 * 1000);
+
+          addEventToFeed({
+            id: `event-${i}`,
+            type,
+            message,
+            timestamp
+          });
+        }
+      }
+
+      function getEventIcon(type) {
+        switch(type) {
+          case 'milk':
+            return '<span class="text-blue-500">🥛</span>';
+          case 'health':
+            return '<span class="text-green-500">🩺</span>';
+          case 'feed':
+            return '<span class="text-yellow-500">🌾</span>';
+          case 'system':
+            return '<span class="text-purple-500">⚙️</span>';
+          default:
+            return '<span>📊</span>';
+        }
+      }
+
+      function formatTime(date) {
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      }
+
+      function addEventToFeed(event) {
+        const eventElement = document.createElement('div');
+        eventElement.className = 'flex items-start gap-2 p-2 hover:bg-gray-100 rounded-md';
+        eventElement.innerHTML = `
+          <div class="mt-0.5">
+            ${getEventIcon(event.type)}
+          </div>
+          <div class="flex-1">
+            <p class="text-sm">${event.message}</p>
+            <p class="text-xs text-gray-500">${formatTime(event.timestamp)}</p>
+          </div>
+        `;
+
+        liveFeedContent.insertBefore(eventElement, liveFeedContent.firstChild);
+      }
+
+      function addNewEvent() {
+        const eventTypes = ['milk', 'health', 'feed', 'system'];
+        const type = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+
+        const messages = {
+          milk: ['Milk production updated', 'New milk collection recorded', 'Milk quality check completed'],
+          health: ['Health status updated', 'Medication administered', 'Animal wellness check completed'],
+          feed: ['Feed consumption measured', 'New feed batch prepared', 'Feed inventory updated'],
+          system: ['System check complete', 'Sensors calibrated', 'Maintenance task completed']
+        };
+
+        const message = messages[type][Math.floor(Math.random() * messages[type].length)];
+
+        const newEvent = {
+          id: `event-${Date.now()}`,
+          type,
+          message: message,
+          timestamp: new Date()
+        };
+
+        addEventToFeed(newEvent);
+      }
+
+      function exportData(format) {
+        showToast(`Exporting data as ${format.toUpperCase()}...`);
+
+        // Simulate export delay
+        setTimeout(() => {
+          showToast(`Dashboard data has been exported as ${format.toUpperCase()} successfully`, 'success');
+        }, 1500);
+
+        exportDropdown.classList.add('hidden');
+      }
+
+      // Function to open cattle details modal
+      function openCattleDetailsModal(cattle) {
+        const modal = document.getElementById('cattleDetailsModal');
+
+        // Get health color class
+        function getHealthColor(health) {
+          switch (health) {
+            case 'Excellent': return 'health-excellent';
+            case 'Good': return 'health-good';
+            case 'Fair': return 'health-fair';
+            case 'Poor': return 'health-poor';
+            default: return '';
+          }
+        }
+
+        // Populate modal with cattle details
+        document.getElementById('modalCattleName').textContent = cattle.name;
+        document.getElementById('modalCattleName').className = `text-xl font-semibold ${getHealthColor(cattle.health)}`;
+        document.getElementById('modalCattleImage').innerHTML = `
+          <img
+            src="${cattle.image}"
+            alt="Cattle ${cattle.name}"
+            class="w-full h-full object-cover rounded-md"
+          />
+        `;
+        document.getElementById('modalHealth').textContent = cattle.health;
+        document.getElementById('modalHealth').className = `info-value ${getHealthColor(cattle.health)}`;
+        document.getElementById('modalLactation').textContent = cattle.lactationStatus;
+        document.getElementById('modalProduction').textContent = cattle.dailyProduction;
+        document.getElementById('modalAge').textContent = cattle.age;
+        document.getElementById('modalBreed').textContent = cattle.breed;
+
+        // Show the modal
+        modal.style.display = 'block';
+
+        // Initialize charts
+        initFeedChart();
+        initMilkProductionChart2();
+
+        // Set active tab
+        setActiveTab('overview');
+      }
+
+      // Tab functionality for cattle details modal
+      function setActiveTab(tabName) {
+        // Remove active class from all tabs and contents
+        document.querySelectorAll('#cattleDetailsModal .tab').forEach(tab => {
+          tab.classList.remove('active');
+        });
+        document.querySelectorAll('#cattleDetailsModal .tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+
+        // Add active class to the selected tab and content
+        document.querySelector(`#cattleDetailsModal .tab[data-tab="${tabName}"]`).classList.add('active');
+        document.getElementById(tabName).classList.add('active');
+      }
+
+      // Charts initialization for cattle details
+      function initFeedChart() {
+        const feedData = {
+          labels: ['Grass', 'Hay', 'Silage', 'Supplements'],
+          datasets: [{
+            data: [40, 30, 20, 10],
+            backgroundColor: [
+              'rgba(139, 92, 246, 0.7)',
+              'rgba(139, 92, 246, 0.5)',
+              'rgba(139, 92, 246, 0.3)',
+              'rgba(139, 92, 246, 0.2)'
+            ],
+            borderWidth: 0,
+            borderRadius: 4
+          }]
+        };
+
+        const feedCtx = document.getElementById('feedChart').getContext('2d');
+        if (window.feedChart) {
+          window.feedChart.destroy();
+        }
+
+        window.feedChart = new Chart(feedCtx, {
+          type: 'bar',
+          data: feedData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  font: {
+                    size: 10
+                  }
+                }
+              },
+              x: {
+                ticks: {
+                  font: {
+                    size: 10
+                  }
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            animation: {
+              duration: 1500,
+              easing: 'easeOutQuart'
+            }
+          }
+        });
+      }
+
+      function initMilkProductionChart2() {
+        const milkData = {
+          labels: ['Apr 1', 'Apr 2', 'Apr 3', 'Apr 4', 'Apr 5', 'Apr 6', 'Apr 7'],
+          datasets: [{
+            label: 'Milk Production (Liters)',
+            data: [28, 29, 30, 31, 32, 30, 29],
+            fill: false,
+            borderColor: 'rgb(139, 92, 246)',
+            tension: 0.4,
+            pointBackgroundColor: 'rgb(139, 92, 246)',
+            pointRadius: 4
+          }]
+        };
+
+        const milkCtx = document.getElementById('milkProductionChart2').getContext('2d');
+        if (window.milkChart2) {
+          window.milkChart2.destroy();
+        }
+
+        window.milkChart2 = new Chart(milkCtx, {
+          type: 'line',
+          data: milkData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+              y: {
+                beginAtZero: false,
+                min: 25
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            animation: {
+              duration: 1500,
+              easing: 'easeOutQuart'
+            }
+          }
+        });
+      }
+
+      function showToast(message, type = 'info') {
+        // Remove existing toasts
+        const existingToasts = document.querySelectorAll('.toast');
+        existingToasts.forEach(toast => {
+          document.body.removeChild(toast);
+        });
+
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+
+        const iconClass = type === 'success' ? 'fa-check-circle' :
+                         type === 'error' ? 'fa-exclamation-circle' :
+                         'fa-info-circle';
+
+        toast.innerHTML = `
+          <i class="fas ${iconClass} mr-2"></i>
+          <span>${message}</span>
+        `;
+
+        document.body.appendChild(toast);
+
+        // Show the toast with animation
+        setTimeout(() => {
+          toast.classList.add('show');
+        }, 10);
+
+        // Hide and remove after delay
+        setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => {
+            if (document.body.contains(toast)) {
+              document.body.removeChild(toast);
+            }
+          }, 300);
+        }, 3000);
+      }
+
+      // Close modal when clicking outside
+      window.onclick = function(event) {
+        if (event.target == liveFeedModal) {
+          liveFeedModal.style.display = "none";
+          clearInterval(autoRefreshInterval);
+        }
+      };
+
+      // Mobile Menu Toggle
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuClose = document.getElementById('mobile-menu-close');
+      const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+      const body = document.body;
+
+      if (mobileMenuToggle && mobileMenu) {
+        // Function to open mobile menu
+        function openMobileMenu() {
+          mobileMenu.classList.add('active');
+          mobileMenuOverlay.classList.add('active');
+          mobileMenuToggle.classList.add('active');
+          body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+
+          // Add a subtle ripple effect on click
+          const ripple = document.createElement('span');
+          ripple.classList.add('menu-toggle-ripple');
+          mobileMenuToggle.appendChild(ripple);
+
+          // Position the ripple where the click happened
+          const rect = mobileMenuToggle.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height) * 2;
+
+          ripple.style.width = ripple.style.height = `${size}px`;
+          ripple.style.left = `${-size/4}px`;
+          ripple.style.top = `${-size/4}px`;
+
+          // Remove the ripple after animation completes
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+
+          // Add entrance animation to each nav link
+          const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+          navLinks.forEach((link, index) => {
+            link.style.opacity = '0';
+            link.style.transform = 'translateX(-10px)';
+            link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+
+            setTimeout(() => {
+              link.style.opacity = '1';
+              link.style.transform = 'translateX(0)';
+            }, 10);
+          });
+        }
+
+        // Function to close mobile menu
+        function closeMobileMenu() {
+          mobileMenu.classList.remove('active');
+          mobileMenuOverlay.classList.remove('active');
+          mobileMenuToggle.classList.remove('active');
+          body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Toggle menu when clicking the hamburger button
+        mobileMenuToggle.addEventListener('click', function(event) {
+          event.stopPropagation();
+          if (mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+          } else {
+            openMobileMenu();
+          }
+        });
+
+        // Close menu when clicking the close button
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+
+        // Close menu when clicking the overlay
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+        // Close mobile menu when clicking on a link
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', closeMobileMenu);
+        });
+
+        // Close mobile menu when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+          }
+        });
+      }
+    };
+
+    // Cattle iframe height adjustment code removed - now on separate page
+  </script>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div>
+          <a href="#" class="text-primary font-['Pacifico'] text-2xl"
+            >Dairy-Lift</a
+          >
+          <p class="mt-4 text-gray-400">
+            Transforming dairy farming into a premium investment opportunity
+            with transparent operations and consistent returns.
+          </p>
+          <div class="mt-6 flex space-x-4">
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-facebook-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-twitter-x-fill"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/dairy_lift/"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-instagram-fill"></i>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+            >
+              <i class="ri-linkedin-fill"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Investment Options</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Performance Reports</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Farm Tours</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >Testimonials</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                >FAQs</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-map-pin-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400"
+                >123 Dairy Farm Road, Green Valley, CA 94535</span
+              >
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-phone-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">+1 (555) 123-4567</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-mail-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">dairylift@gmail.com</span>
+            </li>
+            <li class="flex items-start">
+              <div
+                class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+              >
+                <i class="ri-time-line"></i>
+              </div>
+              <span class="ml-3 text-gray-400">Mon-Fri: 9AM-5PM (PST)</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+          <p class="text-gray-400 mb-4">
+            Subscribe to receive updates on dairy market trends and investment
+            opportunities.
+          </p>
+          <form class="space-y-4">
+            <div>
+              <input
+                type="email"
+                placeholder="Your email address"
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary text-white"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary hover:bg-primary/90 text-white py-2 font-medium !rounded-button whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
+      >
+        <p class="text-gray-400 text-sm">
+          © 2025 Dairy-Lift. All rights reserved.
+        </p>
+        <div class="mt-4 md:mt-0 flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Privacy Policy</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Terms of Service</a
+          >
+          <a href="#" class="text-gray-400 hover:text-white text-sm"
+            >Cookie Policy</a
+          >
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Authentication Initialization -->
+  <script>
+    // Initialize authentication when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+      } else {
+        console.log('Auth script not loaded, trying to initialize...');
+        // Try to initialize auth after a short delay
+        setTimeout(function() {
+          if (typeof initAuth === 'function') {
+            initAuth();
+          } else {
+            console.error('Auth initialization function not found');
+          }
+        }, 500);
+      }
+    });
+
+    // Also try to initialize on window load
+    window.addEventListener('load', function() {
+      if (typeof initAuth === 'function') {
+        initAuth();
+      }
+    });
+  </script>
+</body>
+</html>

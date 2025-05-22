@@ -1,0 +1,2477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dairy-Lift - Invest in Dairy Cattle</title>
+  <meta name="description"
+    content="Invest in cattle, earn from milk production, and make a positive impact with Dairy-Lift." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Function to initialize auth and dispatch events
+    function initializeAuth() {
+      console.log('Initializing auth in home page...');
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+
+        // Force UI update after a short delay
+        setTimeout(function() {
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.updateAuthUI();
+          }
+        }, 500);
+      } else {
+        console.error('Auth script not loaded properly');
+        // Try to load it again
+        var script = document.createElement('script');
+        script.src = 'js/auth.js';
+        script.onload = function() {
+          console.log('Auth script loaded dynamically');
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.initAuth();
+
+            // Force UI update after a short delay
+            setTimeout(function() {
+              if (window.DairyLiftAuth) {
+                window.DairyLiftAuth.updateAuthUI();
+              }
+            }, 500);
+          }
+        };
+        document.head.appendChild(script);
+      }
+    }
+
+    // Call initialization on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', initializeAuth);
+
+    // Also call initialization immediately if document is already loaded
+    if (document.readyState !== 'loading') {
+      initializeAuth();
+    }
+
+    // Call initialization on window load
+    window.addEventListener('load', initializeAuth);
+
+    // Listen for auth.js loaded event
+    document.addEventListener('dairyLiftAuthLoaded', function(event) {
+      console.log('Auth script loaded event received');
+      initializeAuth();
+    });
+
+    // Listen for storage events to sync auth state across tabs
+    window.addEventListener('storage', function(event) {
+      if (event.key === 'dairyLift_auth') {
+        console.log('Auth state changed in another tab, updating UI');
+        if (window.DairyLiftAuth) {
+          window.DairyLiftAuth.updateAuthUI();
+
+          // Force UI update after a short delay
+          setTimeout(function() {
+            if (window.DairyLiftAuth) {
+              window.DairyLiftAuth.updateAuthUI();
+            }
+          }, 300);
+        }
+      }
+    });
+
+    // Set up periodic check for auth state
+    setInterval(function() {
+      if (window.DairyLiftAuth) {
+        const isLoggedIn = window.DairyLiftAuth.isLoggedIn();
+        const profileIcon = document.getElementById('profile-icon-link');
+
+        if (isLoggedIn && !profileIcon) {
+          console.log('Periodic check: User is logged in but profile icon not found, updating UI');
+          window.DairyLiftAuth.updateAuthUI();
+        }
+      }
+    }, 1000);
+
+    // Force an update when the user becomes visible (tab focus)
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden && window.DairyLiftAuth) {
+        console.log('Page became visible, forcing UI update');
+        window.DairyLiftAuth.updateAuthUI();
+      }
+    });
+  </script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --radius: 0.5rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--foreground);
+      background-color: var(--background);
+      line-height: 1.5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        padding: 0 2rem;
+      }
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--background);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 4rem;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .header-photo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 25px 0 15px;
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+    }
+
+    .header-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      background-color: white;
+      padding: 2px;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary);
+      min-width: 220px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+      padding: 0 15px;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
+      margin-left: 5px;
+      flex-shrink: 0;
+    }
+
+    .mobile-menu-toggle:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--background);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: var(--muted);
+      transform: translateX(5px);
+    }
+
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-close:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .header-photo-container {
+        width: 80px;
+        height: 80px;
+        margin: 0 30px 0 20px;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        min-width: 250px;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: var(--foreground);
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: var(--primary);
+      }
+    }
+
+    /* Remix Icons Fix */
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: #9b55e0;
+      box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--muted);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--muted);
+    }
+
+    /* Profile Icon Styles */
+    .profile-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .profile-icon:hover {
+      background-color: var(--primary-light);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .btn-outline-primary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .btn svg {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
+
+      .hero-section {
+  position: relative;
+  width: 100%;
+  height: 650px; /* just enough to cover the top area */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0.; /* adjust to make lighter or darker */
+}
+.hero-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-left: 5%;
+  color: #fff;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.6); /* Makes text pop more */
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  animation: fadeUp 1s ease-out forwards;
+}
+
+.content-wrapper h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.content-wrapper p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.9s;
+  opacity: 0;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn.purple {
+  background-color: #a259ff;
+  color: white;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 2px solid #a259ff;
+  color: #a259ff;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.overlay {
+  position: relative;
+  z-index: 2;
+  color: #000; /* or white if needed */
+  padding: 2rem;
+}
+
+      @keyframes gradientPulse {
+      0% {
+      opacity: 0.9;
+      }
+      50% {
+      opacity: 0.95;
+      }
+      100% {
+      opacity: 0.9;
+      }
+      }
+
+
+      @keyframes milkSplash {
+      0% {
+      transform: scale(1);
+      filter: brightness(1);
+      }
+      25% {
+      transform: scale(1.02);
+      filter: brightness(1.1);
+      }
+      50% {
+      transform: scale(1);
+      filter: brightness(1);
+      }
+      75% {
+      transform: scale(1.02);
+      filter: brightness(1.1);
+      }
+      100% {
+      transform: scale(1);
+      filter: brightness(1);
+      }
+      }
+      .milk-splash {
+      position: absolute;
+      right: 10%;
+      top: 20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.9), rgba(255,255,255,0));
+      animation: splash 3s infinite;
+      pointer-events: none;
+      }
+      @keyframes splash {
+      0% {
+      transform: scale(0.8) translateY(0);
+      opacity: 0;
+      }
+      50% {
+      transform: scale(1.2) translateY(-20px);
+      opacity: 0.8;
+      }
+      100% {
+      transform: scale(0.8) translateY(0);
+      opacity: 0;
+      }
+      }
+      .text-reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: revealText 0.8s ease forwards;
+      }
+      .text-reveal-delay-1 {
+      animation-delay: 0.2s;
+      }
+      .text-reveal-delay-2 {
+      animation-delay: 0.4s;
+      }
+      @keyframes revealText {
+      0% {
+      opacity: 0;
+      transform: translateY(20px);
+      }
+      100% {
+      opacity: 1;
+      transform: translateY(0);
+      }
+      }
+      .stat-card {
+      transition: transform 0.3s ease;
+      }
+      .stat-card:hover {
+      transform: translateY(-5px);
+      }
+      .investment-card {
+      transition: all 0.3s ease;
+      }
+      .investment-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      .feature-card {
+      transition: all 0.3s ease;
+      }
+      .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .testimonial-card {
+      transition: all 0.3s ease;
+      }
+      .testimonial-card:hover {
+      transform: scale(1.02);
+      }
+      .faq-item {
+      transition: all 0.3s ease;
+      }
+      input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: #e2e8f0;
+      outline: none;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ad6ef5;
+      cursor: pointer;
+      }
+      input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ad6ef5;
+      cursor: pointer;
+      border: none;
+      }
+      .custom-checkbox {
+      display: inline-block;
+      position: relative;
+      padding-left: 30px;
+      cursor: pointer;
+      user-select: none;
+      }
+      .custom-checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+      }
+      .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: #fff;
+      border: 2px solid #e2e8f0;
+      border-radius: 4px;
+      }
+      .custom-checkbox:hover input ~ .checkmark {
+      border-color: #ad6ef5;
+      }
+      .custom-checkbox input:checked ~ .checkmark {
+      background-color: #ad6ef5;
+      border-color: #ad6ef5;
+      }
+      .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+      }
+      .custom-checkbox input:checked ~ .checkmark:after {
+      display: block;
+      }
+      .custom-checkbox .checkmark:after {
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      }
+      .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+      }
+      .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      }
+      .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e2e8f0;
+      transition: .4s;
+      border-radius: 34px;
+      }
+      .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+      }
+      input:checked + .slider {
+      background-color: #ad6ef5;
+      }
+      input:checked + .slider:before {
+      transform: translateX(26px);
+      }
+      .custom-radio {
+      display: inline-block;
+      position: relative;
+      padding-left: 30px;
+      cursor: pointer;
+      user-select: none;
+      }
+      .custom-radio input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+      }
+      .radio-mark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: #fff;
+      border: 2px solid #e2e8f0;
+      border-radius: 50%;
+      }
+      .custom-radio:hover input ~ .radio-mark {
+      border-color: #ad6ef5;
+      }
+      .custom-radio input:checked ~ .radio-mark {
+      border-color: #ad6ef5;
+      }
+      .radio-mark:after {
+      content: "";
+      position: absolute;
+      display: none;
+      }
+      .custom-radio input:checked ~ .radio-mark:after {
+      display: block;
+      }
+      .custom-radio .radio-mark:after {
+      top: 4px;
+      left: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ad6ef5;
+      }
+    </style>
+  </head>
+  <body>
+  <!-- Navbar -->
+  <header class="navbar" style="padding:10px">
+    <div class="container" style="margin:0px">
+      <div class="navbar-content">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+          <div class="hamburger-lines">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </div>
+        </button>
+        <div class="header-photo-container">
+          <img src="image/no background.png" alt="Header Photo" class="header-photo">
+        </div>
+        <a href="#" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
+        <nav class="desktop-nav">
+          <a href="./index.html" class="nav-link">Home</a>
+          <a href="./dashboard.html" class="nav-link">Dashboard</a>
+          <a href="YourCattle.html" class="nav-link">All Cattle</a>
+          <a href="./store.html" class="nav-link">Store</a>
+          <a href="visit-farm.html" class="nav-link">Visit Farm</a>
+          <a href="./admin-dashboard.html" class="nav-link">Admin</a>
+        </nav>
+        <div class="navbar-actions">
+          <a href="watchliststore.html" class="btn btn-icon">
+            <i class="fas fa-heart"></i>
+          </a>
+          <a href="login.html" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span style="margin-left: 10px;">Buy Cattle</span>
+      </a>
+      <a href="./biogas/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span style="margin-left: 10px;">Bio-Gas</span>
+      </a>
+
+      <a href="visit-farm.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Visit Farm</span>
+      </a>
+      <a href="navhome.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Insurance</span>
+      </a>
+      <a href="admin-dashboard.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+          <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+        </svg>
+        <span style="margin-left: 10px;">Register Cattle</span>
+      </a>
+      <a href="#" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        </svg>
+        <span style="margin-left: 10px;">Contact-Us</span>
+      </a>
+      <a href="help/home.html" class="mobile-nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span style="margin-left: 10px;">Support</span>
+      </a>
+      <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        <span style="margin-left: 10px;">Login / Register</span>
+      </a>
+    </div>
+    </div>
+  </header>
+    <!-- Hero Section -->
+    <video autoplay muted loop playsinline class="background-video">
+      <source src="video/daackground.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <section class="hero-section pt-24 pb-16 md:pt-32 md:pb-24">
+      <div class="animated-bg">
+        <div class="milk-droplet"></div>
+        <div class="milk-droplet"></div>
+        <div class="milk-droplet"></div>
+        <div class="milk-droplet"></div>
+        <div class="cow cow-1"></div>
+        <div class="cow cow-2"></div>
+        <div class="cow cow-3"></div>
+      </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+        <div class="floating-cow"></div>
+        <div class="milk-drops">
+          <div class="milk-drop"></div>
+          <div class="milk-drop"></div>
+          <div class="milk-drop"></div>
+          <div class="milk-drop"></div>
+        </div>
+        <section class="hero-section">
+          <video autoplay muted loop playsinline class="background-video">
+            <source src="your-video.mp4" type="video/mp4" />
+          </video>
+
+          <div class="content-wrapper">
+            <h1>Invest in Premium Dairy Cattle</h1>
+            <p>
+              Secure your financial future with stable returns from agricultural investments.
+              Earn up to 15% annual ROI with our professionally managed dairy operations.
+            </p>
+            <div class="buttons">
+              <button class="btn purple">Explore Opportunities</button>
+              <button class="btn outline">🎥 Watch Demo</button>
+            </div>
+          </div>
+        </section>
+
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4 hero-buttons">
+            <button
+              class="bg-primary hover:bg-primary/90 text-white px-6 py-3 font-medium !rounded-button whitespace-nowrap"
+            >
+              Explore Opportunities
+            </button>
+            <button
+              class="bg-white border-2 border-primary text-primary hover:bg-gray-50 px-6 py-3 font-medium !rounded-button flex items-center whitespace-nowrap"
+            >
+              <span class="w-5 h-5 flex items-center justify-center mr-2">
+                <i class="ri-play-circle-line"></i>
+              </span>
+              Watch Demo
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Stats Section -->
+    <section class="py-12 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div
+            class="stat-card bg-white p-6 rounded-lg shadow-md border border-gray-100"
+          >
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-user-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-900">5,200+</h3>
+            <p class="text-gray-600 mt-1">Active Investors</p>
+          </div>
+          <div
+            class="stat-card bg-white p-6 rounded-lg shadow-md border border-gray-100"
+          >
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-line-chart-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-900">12-15%</</h3>
+            <p class="text-gray-600 mt-1">Annual ROI</p>
+          </div>
+          <div
+            class="stat-card bg-white p-6 rounded-lg shadow-md border border-gray-100"
+          >
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-cow-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-900">3,750</h3>
+            <p class="text-gray-600 mt-1">Cattle Managed</p>
+          </div>
+          <div
+            class="stat-card bg-white p-6 rounded-lg shadow-md border border-gray-100"
+          >
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-drop-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-900">42M</h3>
+            <p class="text-gray-600 mt-1">Liters Produced Annually</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Investment Options -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">Investment Options</h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Choose the investment plan that suits your financial goals and risk
+            appetite
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Single Calf Investment -->
+          <div
+            class="investment-card bg-white rounded-xl shadow-md overflow-hidden"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=young%20healthy%20dairy%20calf%2C%20premium%20quality%2C%20clean%20environment%2C%20professional%20agricultural%20setting%2C%20bright%20natural%20lighting%2C%20standing%20in%20a%20modern%20dairy%20farm%2C%20clean%20background%2C%20high%20resolution&width=600&height=400&seq=2&orientation=landscape"
+                alt="Single Calf Investment"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900">
+                Single Calf Investment
+              </h3>
+              <div class="mt-4 flex items-baseline">
+                <span class="text-3xl font-bold text-gray-900">$1,500</span>
+                <span class="ml-2 text-gray-600">initial investment</span>
+              </div>
+              <p class="mt-2 text-gray-600">Projected annual return: 12%</p>
+              <div class="mt-6 space-y-3">
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">
+                    Ownership of a single dairy calf
+                  </p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Monthly performance reports</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Quarterly dividend payments</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">2-year investment term</p>
+                </div>
+              </div>
+              <button
+                class="mt-8 w-full bg-primary hover:bg-primary/90 text-white py-3 font-medium !rounded-button whitespace-nowrap"
+              >
+                Invest Now
+              </button>
+            </div>
+          </div>
+          <!-- Milking Cow Investment -->
+          <div
+            class="investment-card bg-white rounded-xl shadow-lg overflow-hidden transform scale-105 border-2 border-primary"
+          >
+            <div class="bg-primary text-white py-2 text-center">
+              <span class="font-medium">Most Popular</span>
+            </div>
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=healthy%20mature%20dairy%20cow%2C%20premium%20quality%2C%20clean%20environment%2C%20professional%20agricultural%20setting%2C%20bright%20natural%20lighting%2C%20standing%20in%20a%20modern%20dairy%20farm%2C%20clean%20background%2C%20high%20resolution&width=600&height=400&seq=3&orientation=landscape"
+                alt="Milking Cow Investment"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900">
+                Milking Cow Investment
+              </h3>
+              <div class="mt-4 flex items-baseline">
+                <span class="text-3xl font-bold text-gray-900">$5,000</span>
+                <span class="ml-2 text-gray-600">initial investment</span>
+              </div>
+              <p class="mt-2 text-gray-600">Projected annual return: 14%</p>
+              <div class="mt-6 space-y-3">
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">
+                    Ownership of a producing dairy cow
+                  </p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Weekly performance updates</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Monthly dividend payments</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">3-year investment term</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">
+                    Premium dairy products access
+                  </p>
+                </div>
+              </div>
+              <button
+                class="mt-8 w-full bg-primary hover:bg-primary/90 text-white py-3 font-medium !rounded-button whitespace-nowrap"
+              >
+                Invest Now
+              </button>
+            </div>
+          </div>
+          <!-- Dairy Herd Investment -->
+          <div
+            class="investment-card bg-white rounded-xl shadow-md overflow-hidden"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=multiple%20dairy%20cows%20in%20a%20herd%2C%20premium%20quality%2C%20clean%20environment%2C%20professional%20agricultural%20setting%2C%20bright%20natural%20lighting%2C%20grazing%20in%20a%20modern%20dairy%20farm%2C%20clean%20background%2C%20high%20resolution&width=600&height=400&seq=4&orientation=landscape"
+                alt="Dairy Herd Investment"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900">
+                Dairy Herd Investment
+              </h3>
+              <div class="mt-4 flex items-baseline">
+                <span class="text-3xl font-bold text-gray-900">$25,000</span>
+                <span class="ml-2 text-gray-600">initial investment</span>
+              </div>
+              <p class="mt-2 text-gray-600">Projected annual return: 15%</p>
+              <div class="mt-6 space-y-3">
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">
+                    Ownership share in a dairy herd
+                  </p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Daily performance dashboard</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Bi-weekly dividend payments</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">5-year investment term</p>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="w-5 h-5 flex items-center justify-center text-primary mt-0.5"
+                  >
+                    <i class="ri-check-line"></i>
+                  </div>
+                  <p class="ml-3 text-gray-600">Farm visits and VIP events</p>
+                </div>
+              </div>
+              <button
+                class="mt-8 w-full bg-primary hover:bg-primary/90 text-white py-3 font-medium !rounded-button whitespace-nowrap"
+              >
+                Invest Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Performance Chart Section -->
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">
+            Milk Production Performance
+          </h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Track our consistent milk production growth and investment returns
+          </p>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex flex-wrap justify-center gap-4 mb-6">
+            <div class="inline-flex rounded-full bg-gray-100 p-1">
+              <button
+                class="px-4 py-2 rounded-full bg-primary text-white text-sm font-medium"
+              >
+                Monthly
+              </button>
+              <button
+                class="px-4 py-2 rounded-full text-gray-700 hover:text-primary text-sm font-medium"
+              >
+                Quarterly
+              </button>
+              <button
+                class="px-4 py-2 rounded-full text-gray-700 hover:text-primary text-sm font-medium"
+              >
+                Yearly
+              </button>
+            </div>
+          </div>
+          <div id="performance-chart" class="w-full h-80"></div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center">
+                <div
+                  class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full"
+                >
+                  <i class="ri-drop-line text-primary ri-lg"></i>
+                </div>
+                <div class="ml-3">
+                  <p class="text-gray-600 text-sm">Average Daily Production</p>
+                  <p class="text-xl font-bold text-gray-900">28.5 L per cow</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center">
+                <div
+                  class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full"
+                >
+                  <i class="ri-line-chart-line text-primary ri-lg"></i>
+                </div>
+                <div class="ml-3">
+                  <p class="text-gray-600 text-sm">Year-over-Year Growth</p>
+                  <p class="text-xl font-bold text-gray-900">+12.8%</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center">
+                <div
+                  class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full"
+                >
+                  <i class="ri-money-dollar-circle-line text-primary ri-lg"></i>
+                </div>
+                <div class="ml-3">
+                  <p class="text-gray-600 text-sm">Dividend Yield</p>
+                  <p class="text-xl font-bold text-gray-900">14.2% annually</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- How It Works -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">How It Works</h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Four simple steps to start your dairy investment journey
+          </p>
+        </div>
+        <div class="relative">
+          <!-- Desktop Process Line -->
+          <div
+            class="hidden md:block absolute top-24 left-0 right-0 h-1 bg-gray-200"
+          >
+            <div
+              class="absolute top-0 left-0 h-full bg-primary"
+              style="width: 75%;"
+            ></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Step 1 -->
+            <div class="relative">
+              <div class="flex justify-center mb-6">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full text-xl font-bold z-10"
+                >
+                  1
+                </div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 mx-auto flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-user-add-line text-primary ri-2x"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Create Account</h3>
+                <p class="mt-2 text-gray-600">
+                  Sign up and complete your investor profile with verification
+                </p>
+              </div>
+            </div>
+            <!-- Step 2 -->
+            <div class="relative">
+              <div class="flex justify-center mb-6">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full text-xl font-bold z-10"
+                >
+                  2
+                </div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 mx-auto flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-search-line text-primary ri-2x"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">
+                  Choose Investment
+                </h3>
+                <p class="mt-2 text-gray-600">
+                  Select your preferred investment option based on your budget
+                </p>
+              </div>
+            </div>
+            <!-- Step 3 -->
+            <div class="relative">
+              <div class="flex justify-center mb-6">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full text-xl font-bold z-10"
+                >
+                  3
+                </div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 mx-auto flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-secure-payment-line text-primary ri-2x"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Make Payment</h3>
+                <p class="mt-2 text-gray-600">
+                  Complete your investment with our secure payment system
+                </p>
+              </div>
+            </div>
+            <!-- Step 4 -->
+            <div class="relative">
+              <div class="flex justify-center mb-6">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full text-xl font-bold z-10"
+                >
+                  4
+                </div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="w-16 h-16 mx-auto flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-funds-line text-primary ri-2x"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Track & Earn</h3>
+                <p class="mt-2 text-gray-600">
+                  Monitor your investment and receive regular dividend payments
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">Platform Features</h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Our platform provides everything you need to manage your dairy
+            investments
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Feature 1 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-eye-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">
+              Real-time Monitoring
+            </h3>
+            <p class="mt-2 text-gray-600">
+              Track your investment performance in real-time with our intuitive
+              dashboard
+            </p>
+          </div>
+          <!-- Feature 2 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-shield-check-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">
+              Transparent Operations
+            </h3>
+            <p class="mt-2 text-gray-600">
+              Full transparency with regular updates, reports and farm visit
+              opportunities
+            </p>
+          </div>
+          <!-- Feature 3 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-user-star-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Expert Management</h3>
+            <p class="mt-2 text-gray-600">
+              Our team of experienced dairy professionals ensures optimal cattle
+              care
+            </p>
+          </div>
+          <!-- Feature 4 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-gift-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">
+              Premium Products Access
+            </h3>
+            <p class="mt-2 text-gray-600">
+              Exclusive access to our premium dairy products at preferential
+              rates
+            </p>
+          </div>
+          <!-- Feature 5 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-file-chart-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Detailed Reporting</h3>
+            <p class="mt-2 text-gray-600">
+              Comprehensive reports on milk production, health metrics and
+              financial returns
+            </p>
+          </div>
+          <!-- Feature 6 -->
+          <div
+            class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100"
+          >
+            <div
+              class="w-14 h-14 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+            >
+              <i class="ri-map-pin-time-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Live Tracking</h3>
+            <p class="mt-2 text-gray-600">
+              Track your cattle's location, health status and production metrics
+              in real-time
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Testimonials -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">
+            What Our Investors Say
+          </h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Hear from our community of satisfied investors
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Testimonial 1 -->
+          <div class="testimonial-card bg-white p-6 rounded-xl shadow-md">
+            <div class="flex items-center mb-4">
+              <div class="text-primary">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+              </div>
+            </div>
+            <p class="text-gray-700 mb-6">
+              "I've been investing with Dairy-Lift for over 2 years now. The
+              returns have been consistent and above market average. Their
+              transparency and regular updates give me peace of mind about my
+              investment."
+            </p>
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
+                <img
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20middle-aged%20businessman%20with%20glasses%2C%20neutral%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=5&orientation=squarish"
+                  alt="Michael Thompson"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="ml-4">
+                <h4 class="font-bold text-gray-900">Michael Thompson</h4>
+                <p class="text-gray-600 text-sm">Investor since 2023</p>
+              </div>
+            </div>
+          </div>
+          <!-- Testimonial 2 -->
+          <div class="testimonial-card bg-white p-6 rounded-xl shadow-md">
+            <div class="flex items-center mb-4">
+              <div class="text-primary">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+              </div>
+            </div>
+            <p class="text-gray-700 mb-6">
+              "As someone looking for alternative investments, Dairy-Lift has
+              exceeded my expectations. The platform is intuitive, the team is
+              responsive, and the returns are impressive. I've already
+              recommended it to several friends."
+            </p>
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
+                <img
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20young%20Asian%20businesswoman%20smiling%2C%20neutral%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=6&orientation=squarish"
+                  alt="Jennifer Chen"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="ml-4">
+                <h4 class="font-bold text-gray-900">Jennifer Chen</h4>
+                <p class="text-gray-600 text-sm">Investor since 2024</p>
+              </div>
+            </div>
+          </div>
+          <!-- Testimonial 3 -->
+          <div class="testimonial-card bg-white p-6 rounded-xl shadow-md">
+            <div class="flex items-center mb-4">
+              <div class="text-primary">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-half-fill"></i>
+              </div>
+            </div>
+            <p class="text-gray-700 mb-6">
+              "I started with a single calf investment and have since expanded
+              to a herd share. The regular dividend payments have been a
+              reliable source of passive income. The farm visit was an
+              eye-opener to how professionally they operate."
+            </p>
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
+                <img
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20an%20African%20American%20man%20in%20his%2040s%2C%20neutral%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=7&orientation=squarish"
+                  alt="Robert Johnson"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="ml-4">
+                <h4 class="font-bold text-gray-900">Robert Johnson</h4>
+                <p class="text-gray-600 text-sm">Investor since 2022</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- FAQ Section -->
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">
+            Frequently Asked Questions
+          </h2>
+          <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+            Find answers to common questions about dairy investments
+          </p>
+        </div>
+        <div class="max-w-3xl mx-auto">
+          <div class="space-y-4">
+            <!-- FAQ Item 1 -->
+            <div
+              class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50"
+              >
+                <span class="text-lg font-medium text-gray-900"
+                  >How does dairy cattle investment work?</span
+                >
+                <span
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </span>
+              </button>
+              <div class="faq-content hidden p-4 pt-0 bg-white">
+                <p class="text-gray-700">
+                  Dairy cattle investment works by allowing investors to
+                  purchase ownership in dairy cattle. Your investment funds the
+                  acquisition, care, and management of the cattle. As the cattle
+                  produce milk, the revenue generated is shared with investors
+                  as dividends. Our team of professionals handles all aspects of
+                  cattle management, allowing you to enjoy passive income
+                  without the complexities of farm operations.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 2 -->
+            <div
+              class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50"
+              >
+                <span class="text-lg font-medium text-gray-900"
+                  >What returns can I expect from my investment?</span
+                >
+                <span
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </span>
+              </button>
+              <div class="faq-content hidden p-4 pt-0 bg-white">
+                <p class="text-gray-700">
+                  Our dairy investments typically yield between 12-15% annual
+                  returns, depending on the investment tier chosen. Single calf
+                  investments average 12%, milking cow investments 14%, and
+                  dairy herd investments 15%. Returns are paid as regular
+                  dividends based on milk production, and the exact amount can
+                  vary based on market conditions and production efficiency.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 3 -->
+            <div
+              class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50"
+              >
+                <span class="text-lg font-medium text-gray-900"
+                  >How is my investment secured?</span
+                >
+                <span
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </span>
+              </button>
+              <div class="faq-content hidden p-4 pt-0 bg-white">
+                <p class="text-gray-700">
+                  Your investment is secured by the physical asset (the cattle)
+                  and comprehensive insurance policies that protect against
+                  livestock loss. Additionally, we maintain a reserve fund to
+                  ensure consistent dividend payments even during temporary
+                  production fluctuations. All investments are documented with
+                  legal contracts specifying your ownership rights and
+                  entitlements.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 4 -->
+            <div
+              class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50"
+              >
+                <span class="text-lg font-medium text-gray-900"
+                  >Can I visit the farm and see my investment?</span
+                >
+                <span
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </span>
+              </button>
+              <div class="faq-content hidden p-4 pt-0 bg-white">
+                <p class="text-gray-700">
+                  Yes! We organize quarterly farm visits for our investors.
+                  During these visits, you can see the facilities, meet the
+                  management team, and even see your specific cattle (for single
+                  cow investors). Herd investors can tour the entire operation.
+                  We also host annual VIP events for larger investors, providing
+                  a more in-depth experience of the dairy operations.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 5 -->
+            <div
+              class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50"
+              >
+                <span class="text-lg font-medium text-gray-900"
+                  >What happens at the end of the investment term?</span
+                >
+                <span
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </span>
+              </button>
+              <div class="faq-content hidden p-4 pt-0 bg-white">
+                <p class="text-gray-700">
+                  At the end of your investment term, you have several options:
+                  1) Renew your investment for another term, 2) Upgrade to a
+                  higher investment tier, 3) Liquidate your investment and
+                  receive the principal plus any appreciation in the cattle's
+                  value. We provide a 30-day notice before term completion to
+                  discuss your preferences and process your chosen option.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- CTA Section -->
+    <section class="py-16 bg-primary">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-white">
+          Ready to Start Your Dairy Investment Journey?
+        </h2>
+        <p class="mt-4 text-xl text-white/90 max-w-2xl mx-auto">
+          Join thousands of investors who are already benefiting from stable
+          returns with Dairy-Lift
+        </p>
+        <div class="mt-8">
+          <button
+            class="bg-white text-primary hover:bg-gray-100 px-8 py-3 font-medium !rounded-button text-lg whitespace-nowrap"
+          >
+            Start Investing Today
+          </button>
+        </div>
+        <div class="mt-8 flex flex-wrap justify-center gap-6">
+          <div class="flex items-center text-white/90">
+            <div class="w-6 h-6 flex items-center justify-center mr-2">
+              <i class="ri-shield-check-line"></i>
+            </div>
+            <span>Fully Insured</span>
+          </div>
+          <div class="flex items-center text-white/90">
+            <div class="w-6 h-6 flex items-center justify-center mr-2">
+              <i class="ri-lock-line"></i>
+            </div>
+            <span>Secure Investment</span>
+          </div>
+          <div class="flex items-center text-white/90">
+            <div class="w-6 h-6 flex items-center justify-center mr-2">
+              <i class="ri-customer-service-2-line"></i>
+            </div>
+            <span>24/7 Support</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div>
+            <a href="#" class="text-primary font-['Pacifico'] text-2xl"
+              >Dairy-Lift</a
+            >
+            <p class="mt-4 text-gray-400">
+              Transforming dairy farming into a premium investment opportunity
+              with transparent operations and consistent returns.
+            </p>
+            <div class="mt-6 flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+              >
+                <i class="ri-facebook-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+              >
+                <i class="ri-twitter-x-fill"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/dairy_lift/"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+              >
+                <i class="ri-instagram-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors"
+              >
+                <i class="ri-linkedin-fill"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Investment Options</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Performance Reports</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Farm Tours</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >Testimonials</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                  >FAQs</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+                >
+                  <i class="ri-map-pin-line"></i>
+                </div>
+                <span class="ml-3 text-gray-400"
+                  >123 Dairy Farm Road, Green Valley, CA 94535</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+                >
+                  <i class="ri-phone-line"></i>
+                </div>
+                <span class="ml-3 text-gray-400">+1 (555) 123-4567</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+                >
+                  <i class="ri-mail-line"></i>
+                </div>
+                <span class="ml-3 text-gray-400">dairylift@gmail.com</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5"
+                >
+                  <i class="ri-time-line"></i>
+                </div>
+                <span class="ml-3 text-gray-400">Mon-Fri: 9AM-5PM (PST)</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+            <p class="text-gray-400 mb-4">
+              Subscribe to receive updates on dairy market trends and investment
+              opportunities.
+            </p>
+            <form class="space-y-4">
+              <div>
+                <input
+                  type="email"
+                  placeholder="Your email address"
+                  class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary text-white"
+                />
+              </div>
+              <button
+                type="submit"
+                class="w-full bg-primary hover:bg-primary/90 text-white py-2 font-medium !rounded-button whitespace-nowrap"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+        <div
+          class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p class="text-gray-400 text-sm">
+            © 2025 Dairy-Lift. All rights reserved.
+          </p>
+          <div class="mt-4 md:mt-0 flex space-x-6">
+            <a href="#" class="text-gray-400 hover:text-white text-sm"
+              >Privacy Policy</a
+            >
+            <a href="#" class="text-gray-400 hover:text-white text-sm"
+              >Terms of Service</a
+            >
+            <a href="#" class="text-gray-400 hover:text-white text-sm"
+              >Cookie Policy</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize authentication UI
+        if (window.DairyLiftAuth) {
+          window.DairyLiftAuth.updateAuthUI();
+
+          // If user is logged in, update any user-specific elements
+          if (window.DairyLiftAuth.isLoggedIn()) {
+            const userData = window.DairyLiftAuth.getCurrentUser();
+            // You can update user-specific elements here if needed
+            console.log("User is logged in:", userData);
+          }
+        }
+
+        // Performance Chart
+        const chartDom = document.getElementById("performance-chart");
+        const myChart = echarts.init(chartDom);
+        const option = {
+          animation: false,
+          tooltip: {
+            trigger: "axis",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            borderColor: "#f0f0f0",
+            textStyle: {
+              color: "#1f2937",
+            },
+          },
+          grid: {
+            left: "3%",
+            right: "4%",
+            bottom: "3%",
+            top: "3%",
+            containLabel: true,
+          },
+          xAxis: {
+            type: "category",
+            boundaryGap: false,
+            data: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            axisLine: {
+              lineStyle: {
+                color: "#e2e8f0",
+              },
+            },
+            axisLabel: {
+              color: "#1f2937",
+            },
+          },
+          yAxis: {
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                color: "#e2e8f0",
+              },
+            },
+            axisLabel: {
+              color: "#1f2937",
+              formatter: "{value} L",
+            },
+            splitLine: {
+              lineStyle: {
+                color: "#f0f0f0",
+              },
+            },
+          },
+          series: [
+            {
+              name: "Average Milk Production",
+              type: "line",
+              smooth: true,
+              lineStyle: {
+                width: 3,
+                color: "rgba(87, 181, 231, 1)",
+              },
+              symbol: "none",
+              areaStyle: {
+                color: {
+                  type: "linear",
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "rgba(87, 181, 231, 0.2)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(87, 181, 231, 0.01)",
+                    },
+                  ],
+                },
+              },
+              data: [
+                820, 840, 910, 934, 990, 1030, 1100, 1170, 1250, 1330, 1400, 1480,
+              ],
+            },
+            {
+              name: "Industry Average",
+              type: "line",
+              smooth: true,
+              lineStyle: {
+                width: 3,
+                color: "rgba(141, 211, 199, 1)",
+                type: "dashed",
+              },
+              symbol: "none",
+              data: [720, 732, 751, 784, 790, 830, 850, 880, 910, 930, 950, 980],
+            },
+          ],
+          color: ["rgba(87, 181, 231, 1)", "rgba(141, 211, 199, 1)"],
+        };
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+          myChart.resize();
+        });
+        // FAQ Accordion
+        const faqToggles = document.querySelectorAll(".faq-toggle");
+        faqToggles.forEach((toggle) => {
+          toggle.addEventListener("click", () => {
+            const content = toggle.nextElementSibling;
+            const iconPlus = toggle.querySelector(".faq-icon-plus");
+            const iconMinus = toggle.querySelector(".faq-icon-minus");
+            // Toggle the current item
+            content.classList.toggle("hidden");
+            iconPlus.classList.toggle("hidden");
+            iconMinus.classList.toggle("hidden");
+            // Close other items
+            faqToggles.forEach((otherToggle) => {
+              if (otherToggle !== toggle) {
+                const otherContent = otherToggle.nextElementSibling;
+                const otherIconPlus = otherToggle.querySelector(".faq-icon-plus");
+                const otherIconMinus = otherToggle.querySelector(".faq-icon-minus");
+                otherContent.classList.add("hidden");
+                otherIconPlus.classList.remove("hidden");
+                otherIconMinus.classList.add("hidden");
+              }
+            });
+          });
+        });
+      });
+
+      // Mobile Menu Toggle
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuClose = document.getElementById('mobile-menu-close');
+      const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+      const body = document.body;
+
+      // Function to open mobile menu
+      function openMobileMenu() {
+        mobileMenu.classList.add('active');
+        mobileMenuOverlay.classList.add('active');
+        mobileMenuToggle.classList.add('active');
+        body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+
+        // Add a subtle ripple effect on click
+        const ripple = document.createElement('span');
+        ripple.classList.add('menu-toggle-ripple');
+        mobileMenuToggle.appendChild(ripple);
+
+        // Position the ripple where the click happened
+        const rect = mobileMenuToggle.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height) * 2;
+
+        ripple.style.width = ripple.style.height = `${size}px`;
+        ripple.style.left = `${-size/4}px`;
+        ripple.style.top = `${-size/4}px`;
+
+        // Remove the ripple after animation completes
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+
+        // Add entrance animation to each nav link
+        const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+        navLinks.forEach((link, index) => {
+          link.style.opacity = '0';
+          link.style.transform = 'translateX(-10px)';
+          link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+          link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+
+          setTimeout(() => {
+            link.style.opacity = '1';
+            link.style.transform = 'translateX(0)';
+          }, 10);
+        });
+      }
+
+      // Function to close mobile menu
+      function closeMobileMenu() {
+        mobileMenu.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        mobileMenuToggle.classList.remove('active');
+        body.style.overflow = ''; // Restore scrolling
+      }
+
+      // Toggle menu when clicking the hamburger button
+      mobileMenuToggle.addEventListener('click', function(event) {
+        event.stopPropagation();
+        if (mobileMenu.classList.contains('active')) {
+          closeMobileMenu();
+        } else {
+          openMobileMenu();
+        }
+      });
+
+      // Close menu when clicking the close button
+      mobileMenuClose.addEventListener('click', closeMobileMenu);
+
+      // Close menu when clicking the overlay
+      mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+      // Close mobile menu when clicking on a link
+      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      // Close mobile menu when pressing Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+          closeMobileMenu();
+        }
+      });
+    </script>
+  </body>
+</html>

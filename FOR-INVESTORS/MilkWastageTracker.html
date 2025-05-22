@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Milk Wastage Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #8B5CF6;
+      --primary-light: rgba(139, 92, 246, 0.1);
+      --green: #22C55E;
+      --red: #EF4444;
+      --yellow: #F59E0B;
+      --border: #E5E7EB;
+      --foreground: #111827;
+      --muted: #6B7280;
+      --muted-foreground: #9CA3AF;
+      --radius: 0.5rem;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: transparent;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    
+    .card {
+      background-color: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    .card-header {
+      padding: 1rem 1.5rem 0.5rem 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .header-icon {
+      color: var(--muted);
+      margin-right: 0.5rem;
+    }
+    
+    .card-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--foreground);
+      margin: 0;
+    }
+    
+    .card-content {
+      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+    }
+    
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .wastage-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .wastage-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .wastage-label {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+    
+    .wastage-value {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 0.5rem;
+      background-color: #F3F4F6;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 1s ease;
+    }
+    
+    .progress-fill-primary {
+      background-color: var(--primary);
+    }
+    
+    .progress-fill-red {
+      background-color: var(--red);
+    }
+    
+    .progress-fill-yellow {
+      background-color: var(--yellow);
+    }
+    
+    .progress-fill-green {
+      background-color: var(--green);
+    }
+    
+    .trend-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 0.25rem;
+      font-size: 0.75rem;
+    }
+    
+    .trend-up {
+      color: var(--red);
+      display: flex;
+      align-items: center;
+    }
+    
+    .trend-down {
+      color: var(--green);
+      display: flex;
+      align-items: center;
+    }
+    
+    .trend-icon {
+      margin-right: 0.25rem;
+      font-size: 0.75rem;
+    }
+    
+    .border-top {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .suggestion-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    
+    .suggestion-icon-wrapper {
+      padding: 0.25rem;
+      border-radius: 9999px;
+      background-color: var(--primary-light);
+      margin-top: 0.125rem;
+    }
+    
+    .suggestion-icon {
+      font-size: 0.75rem;
+      color: var(--primary);
+    }
+    
+    .suggestion-content h4 {
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin: 0 0 0.25rem 0;
+    }
+    
+    .suggestion-content p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin: 0;
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <i class="fas fa-chart-pie header-icon"></i>
+      <h2 class="card-title">Milk Wastage Tracker</h2>
+    </div>
+    <div class="card-content">
+      <div class="grid-container">
+        <div class="wastage-item animate-fade-in">
+          <div class="wastage-header">
+            <span class="wastage-label">Daily Milk Wasted</span>
+            <span class="wastage-value">18 liters</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill progress-fill-primary" style="width: 0%"></div>
+          </div>
+        </div>
+        
+        <div class="wastage-item animate-fade-in delay-100">
+          <div class="wastage-header">
+            <span class="wastage-label">Wastage Percentage</span>
+            <div class="flex items-center">
+              <span class="wastage-value">2.8%</span>
+              <div class="trend-down ml-2">
+                <i class="fas fa-arrow-down trend-icon"></i>
+                <span>0.5%</span>
+              </div>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill progress-fill-green" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-top animate-fade-in delay-200">
+        <div class="suggestion-container">
+          <div class="suggestion-icon-wrapper">
+            <i class="fas fa-arrow-down suggestion-icon"></i>
+          </div>
+          <div class="suggestion-content">
+            <h4>Suggestion to Improve Handling</h4>
+            <p id="suggestion">Improve cold storage facilities to reduce spoilage</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Wastage data
+    const wastageData = {
+      dailyWasted: 18, // liters
+      totalProduction: 640, // liters
+      wastagePercentage: 2.8, // %
+      trend: -0.5, // % change from last period (negative is good)
+      suggestions: [
+        "Improve cold storage facilities to reduce spoilage",
+        "Implement faster collection schedules during summer",
+        "Upgrade milk containers to better insulated models"
+      ]
+    };
+    
+    // Animate progress bars on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        const dailyWastedProgress = document.querySelectorAll('.progress-fill')[0];
+        const wastagePercentProgress = document.querySelectorAll('.progress-fill')[1];
+        
+        dailyWastedProgress.style.width = (wastageData.dailyWasted / wastageData.totalProduction * 100) + '%';
+        wastagePercentProgress.style.width = wastageData.wastagePercentage + '%';
+        
+        // Randomly select a suggestion
+        const suggestionEl = document.getElementById('suggestion');
+        const randomIndex = Math.floor(Math.random() * wastageData.suggestions.length);
+        suggestionEl.textContent = wastageData.suggestions[randomIndex];
+      }, 500);
+    });
+    
+    // Change suggestion every few seconds
+    setInterval(() => {
+      const suggestionEl = document.getElementById('suggestion');
+      const currentIndex = wastageData.suggestions.indexOf(suggestionEl.textContent);
+      const nextIndex = (currentIndex + 1) % wastageData.suggestions.length;
+      
+      suggestionEl.style.opacity = '0';
+      suggestionEl.style.transform = 'translateY(5px)';
+      suggestionEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      
+      setTimeout(() => {
+        suggestionEl.textContent = wastageData.suggestions[nextIndex];
+        suggestionEl.style.opacity = '1';
+        suggestionEl.style.transform = 'translateY(0)';
+      }, 300);
+    }, 8000);
+  </script>
+</body>
+</html>

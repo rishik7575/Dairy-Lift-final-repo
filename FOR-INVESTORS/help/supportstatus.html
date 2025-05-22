@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support Status - Supportia</title>
+  <style>
+    /* Base styles */
+    :root {
+      --supportBlue-50: #e6f0ff;
+      --supportBlue-100: #cce0ff;
+      --supportBlue-500: #3b82f6;
+      --supportBlue-600: #2563eb;
+      --supportBlue-700: #1d4ed8;
+      --background: #ffffff;
+      --foreground: #0f172a;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --input: #e2e8f0;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--foreground);
+      background-color: var(--background);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    
+    /* Layout */
+    .min-h-screen {
+      min-height: 100vh;
+    }
+    
+    .flex {
+      display: flex;
+    }
+    
+    .flex-1 {
+      flex: 1 1 0%;
+    }
+    
+    .flex-col {
+      flex-direction: column;
+    }
+    
+    .flex-row {
+      flex-direction: row;
+    }
+    
+    .items-center {
+      align-items: center;
+    }
+    
+    .items-start {
+      align-items: flex-start;
+    }
+    
+    .items-end {
+      align-items: flex-end;
+    }
+    
+    .justify-between {
+      justify-content: space-between;
+    }
+    
+    .justify-center {
+      justify-content: center;
+    }
+    
+    .gap-1 {
+      gap: 0.25rem;
+    }
+    
+    .gap-2 {
+      gap: 0.5rem;
+    }
+    
+    .gap-4 {
+      gap: 1rem;
+    }
+    
+    .gap-6 {
+      gap: 1.5rem;
+    }
+    
+    .gap-8 {
+      gap: 2rem;
+    }
+    
+    /* Text */
+    .text-center {
+      text-align: center;
+    }
+    
+    .text-sm {
+      font-size: 0.875rem;
+    }
+    
+    .text-lg {
+      font-size: 1.125rem;
+    }
+    
+    .text-xl {
+      font-size: 1.25rem;
+    }
+    
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+    
+    .text-3xl {
+      font-size: 1.875rem;
+    }
+    
+    .text-4xl {
+      font-size: 2.25rem;
+    }
+    
+    .font-medium {
+      font-weight: 500;
+    }
+    
+    .font-semibold {
+      font-weight: 600;
+    }
+    
+    .font-bold {
+      font-weight: 700;
+    }
+    
+    /* Spacing */
+    .p-1 {
+      padding: 0.25rem;
+    }
+    
+    .p-2 {
+      padding: 0.5rem;
+    }
+    
+    .p-3 {
+      padding: 0.75rem;
+    }
+    
+    .p-4 {
+      padding: 1rem;
+    }
+    
+    .p-6 {
+      padding: 1.5rem;
+    }
+    
+    .px-3 {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+    
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .py-2 {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    
+    .py-4 {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+    
+    .py-6 {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+    
+    .py-10 {
+      padding-top: 2.5rem;
+      padding-bottom: 2.5rem;
+    }
+    
+    .py-12 {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+    
+    .pb-4 {
+      padding-bottom: 1rem;
+    }
+    
+    .pt-2 {
+      padding-top: 0.5rem;
+    }
+    
+    .mb-1 {
+      margin-bottom: 0.25rem;
+    }
+    
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+    
+    .mb-3 {
+      margin-bottom: 0.75rem;
+    }
+    
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+    
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+    
+    .mb-8 {
+      margin-bottom: 2rem;
+    }
+    
+    .mb-10 {
+      margin-bottom: 2.5rem;
+    }
+    
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+    
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+    
+    .mt-3 {
+      margin-top: 0.75rem;
+    }
+    
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .space-y-2 > * + * {
+      margin-top: 0.5rem;
+    }
+    
+    .space-y-4 > * + * {
+      margin-top: 1rem;
+    }
+    
+    /* Colors */
+    .bg-white {
+      background-color: white;
+    }
+    
+    .bg-background {
+      background-color: var(--background);
+    }
+    
+    .bg-gray-50 {
+      background-color: #f9fafb;
+    }
+    
+    .bg-gray-100 {
+      background-color: #f3f4f6;
+    }
+    
+    .bg-blue-100 {
+      background-color: #dbeafe;
+    }
+    
+    .bg-orange-100 {
+      background-color: #ffedd5;
+    }
+    
+    .bg-red-100 {
+      background-color: #fee2e2;
+    }
+    
+    .bg-green-100 {
+      background-color: #dcfce7;
+    }
+    
+    .bg-supportBlue-50 {
+      background-color: var(--supportBlue-50);
+    }
+    
+    .text-gray-500 {
+      color: #6b7280;
+    }
+    
+    .text-gray-600 {
+      color: #4b5563;
+    }
+    
+    .text-blue-500 {
+      color: #3b82f6;
+    }
+    
+    .text-blue-700 {
+      color: #1d4ed8;
+    }
+    
+    .text-orange-500 {
+      color: #f97316;
+    }
+    
+    .text-orange-700 {
+      color: #c2410c;
+    }
+    
+    .text-red-700 {
+      color: #b91c1c;
+    }
+    
+    .text-green-500 {
+      color: #22c55e;
+    }
+    
+    .text-green-600 {
+      color: #16a34a;
+    }
+    
+    .text-supportBlue-500 {
+      color: var(--supportBlue-500);
+    }
+    
+    .text-supportBlue-600 {
+      color: var(--supportBlue-600);
+    }
+    
+    .text-supportBlue-700 {
+      color: var(--supportBlue-700);
+    }
+    
+    .border-blue-200 {
+      border-color: #bfdbfe;
+    }
+    
+    .border-orange-200 {
+      border-color: #fed7aa;
+    }
+    
+    .border-red-200 {
+      border-color: #fecaca;
+    }
+    
+    /* Components */
+    .container-custom {
+      width: 100%;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.125rem 0.5rem;
+      line-height: 1;
+    }
+    
+    .progress {
+      overflow: hidden;
+      width: 100%;
+      border-radius: 9999px;
+      background-color: var(--muted);
+      height: 0.5rem;
+    }
+    
+    .progress-value {
+      height: 100%;
+      border-radius: 9999px;
+      background-color: var(--supportBlue-500);
+    }
+    
+    .tab-list {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    
+    .tab {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .tab:hover {
+      color: var(--foreground);
+    }
+    
+    .tab.active {
+      color: var(--supportBlue-700);
+      border-bottom-color: var(--supportBlue-500);
+    }
+
+    .grid {
+      display: grid;
+    }
+    
+    .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    
+    .border {
+      border: 1px solid var(--border);
+    }
+    
+    .border-b {
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .border-t {
+      border-top: 1px solid var(--border);
+    }
+    
+    .rounded-lg {
+      border-radius: 0.5rem;
+    }
+    
+    .rounded-md {
+      border-radius: 0.375rem;
+    }
+    
+    .rounded-full {
+      border-radius: 9999px;
+    }
+    
+    .shadow-sm {
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+    
+    .transition-colors {
+      transition-property: color, background-color, border-color;
+      transition-duration: 150ms;
+    }
+    
+    .hover\:bg-gray-50:hover {
+      background-color: #f9fafb;
+    }
+    
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .hidden {
+      display: none;
+    }
+
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+    
+    /* Header & Footer */
+    header {
+      background-color: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+    
+    footer {
+      background-color: white;
+      border-top: 1px solid var(--border);
+    }
+    
+    /* Navigation */
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .nav-link:hover {
+      color: var(--supportBlue-600);
+    }
+    
+    .nav-link.active {
+      color: var(--supportBlue-700);
+    }
+    
+    /* Buttons */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.5;
+      transition: all 0.2s;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+    
+    .button-default {
+      background-color: var(--supportBlue-600);
+      color: white;
+    }
+    
+    .button-default:hover {
+      background-color: var(--supportBlue-700);
+    }
+    
+    .button-outline {
+      background-color: transparent;
+      border: 1px solid var(--border);
+    }
+    
+    .button-outline:hover {
+      background-color: var(--muted);
+    }
+    
+    .button-icon {
+      padding: 0.5rem;
+      border-radius: 9999px;
+    }
+    
+    .button-ghost {
+      background-color: transparent;
+    }
+    
+    .button-ghost:hover {
+      background-color: var(--muted);
+    }
+
+    /* Mobile styles */
+    @media (min-width: 768px) {
+      .md\:text-4xl {
+        font-size: 2.25rem;
+      }
+      
+      .md\:text-xl {
+        font-size: 1.25rem;
+      }
+      
+      .md\:flex {
+        display: flex;
+      }
+      
+      .md\:hidden {
+        display: none;
+      }
+      
+      .md\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      
+      .md\:flex-row {
+        flex-direction: row;
+      }
+      
+      .md\:mb-0 {
+        margin-bottom: 0;
+      }
+
+      .md\:col-span-2 {
+        grid-column: span 2 / span 2;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .lg\:grid-cols-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      
+      .lg\:col-span-2 {
+        grid-column: span 2 / span 2;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .xs\:flex-row {
+        flex-direction: row;
+      }
+      
+      .xs\:items-center {
+        align-items: center;
+      }
+      
+      .xs\:gap-2 {
+        gap: 0.5rem;
+      }
+      
+      .xs\:inline {
+        display: inline;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen flex flex-col bg-background">
+    <!-- Header -->
+    <header class="border-b sticky top-0 bg-white z-30">
+      <div class="container-custom flex h-16 items-center justify-between">
+        <div class="flex items-center gap-2">
+          <a href="/" class="flex items-center gap-2 font-bold text-xl text-supportBlue-700">
+            <!-- LifeBuoy icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="4"></circle>
+              <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+              <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line>
+              <line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line>
+              <line x1="14.83" y1="9.17" x2="18.36" y2="5.64"></line>
+              <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+            </svg>
+            <span>Supportia</span>
+          </a>
+        </div>
+        <div class="hidden md:flex items-center gap-6">
+          <a href="home.html" class="text-sm font-medium transition-colors flex items-center gap-1 text-muted-foreground hover:text-supportBlue-600">Home</a>
+          <a href="livechat.html" class="text-sm font-medium transition-colors flex items-center gap-1 text-muted-foreground hover:text-supportBlue-600">Live Chat</a>
+          <a href="faqs.html" class="text-sm font-medium transition-colors flex items-center gap-1 text-muted-foreground hover:text-supportBlue-600">FAQs</a>
+          <a href="helparticles.html" class="text-sm font-medium transition-colors flex items-center gap-1 text-muted-foreground hover:text-supportBlue-600">Help Articles</a>
+          <a href="submitticket.html" class="text-sm font-medium transition-colors flex items-center gap-1 text-muted-foreground hover:text-supportBlue-600">Submit Ticket</a>
+          <a href="supportstatus.html" class="text-sm font-medium transition-colors flex items-center gap-1 text-supportBlue-700">Support Status</a>
+        </div>
+        <div class="flex items-center gap-4">
+          <button class="button button-outline button-icon rounded-full hidden md:flex">
+            <!-- Search icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span class="sr-only">Search</span>
+          </button>
+          <button class="button button-default hidden md:flex">Contact Support</button>
+          <button class="button button-ghost button-icon md:hidden" id="mobile-menu-button">
+            <!-- Menu icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <line x1="4" y1="6" x2="20" y2="6"></line>
+              <line x1="4" y1="18" x2="20" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile menu (hidden by default) -->
+    <div class="md:hidden fixed inset-x-0 top-16 z-20 bg-white border-b shadow-lg hidden" id="mobile-menu">
+      <nav class="container-custom py-4 flex flex-col space-y-3">
+        <a href="/" class="text-sm font-medium transition-colors flex items-center gap-2 p-2 rounded-md text-muted-foreground hover:text-supportBlue-600 hover:bg-supportBlue-50">
+          <!-- Home icon SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          Home
+        </a>
+        <a href="/chat" class="text-sm font-medium transition-colors flex items-center gap-2 p-2 rounded-md text-muted-foreground hover:text-supportBlue-600 hover:bg-supportBlue-50">
+          <!-- MessageSquare icon SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Live Chat
+        </a>
+        <a href="/faqs" class="text-sm font-medium transition-colors flex items-center gap-2 p-2 rounded-md text-muted-foreground hover:text-supportBlue-600 hover:bg-supportBlue-50">
+          <!-- FileQuestion icon SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+            <path d="M10 10.3c.2-.4.5-.8.9-1a2.1 2.1 0 0 1 2.6.4c.3.4.5.8.5 1.3 0 1.3-2 2-2 2"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+          FAQs
+        </a>
+        <a href="/articles" class="text-sm font-medium transition-colors flex items-center gap-2 p-2 rounded-md text-muted-foreground hover:text-supportBlue-600 hover:bg-supportBlue-50">
+          <!-- LifeBuoy icon SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="4"></circle>
+            <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+            <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line>
+            <line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line>
+            <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+          </svg>
+          Help Articles
+        </a>
+        <a href="/tickets/new" class="text-sm font-medium transition-colors flex items-center gap-2 p-2 rounded-md text-muted-foreground hover:text-supportBlue-600 hover:bg-supportBlue-50">
+          <!-- Ticket icon SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+            <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
+            <path d="M13 5v2"></path>
+            <path d="M13 17v2"></path>
+            <path d="M13 11v2"></path>
+          </svg>
+          Submit Ticket
+        </a>
+        <a href="/status" class="text-sm font-medium transition-colors flex items-center gap-2 p-2 rounded-md text-supportBlue-700 bg-supportBlue-50">
+          <!-- LineChart icon SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+            <path d="M3 3v18h18"></path>
+            <path d="m19 9-5 5-4-4-3 3"></path>
+          </svg>
+          Support Status
+        </a>
+        <button class="button button-default mt-2 w-full">Contact Support</button>
+      </nav>
+    </div>
+
+    <!-- Main content -->
+    <main class="flex-1">
+      <div class="container-custom py-12">
+        <div class="max-w-4xl mx-auto mb-10 text-center">
+          <h1 class="text-3xl md:text-4xl font-bold mb-4">Support Status</h1>
+          <p class="text-lg text-gray-600">
+            Track the current state of our support services and your support requests.
+          </p>
+        </div>
+
+        <!-- Status metrics -->
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="status-metrics">
+          <!-- Loading state (will be replaced by JS) -->
+          <div class="animate-pulse">
+            <div class="h-32 bg-gray-100 rounded-lg"></div>
+          </div>
+          <div class="animate-pulse">
+            <div class="h-32 bg-gray-100 rounded-lg"></div>
+          </div>
+          <div class="animate-pulse">
+            <div class="h-32 bg-gray-100 rounded-lg"></div>
+          </div>
+          <div class="animate-pulse">
+            <div class="h-32 bg-gray-100 rounded-lg"></div>
+          </div>
+        </div>
+        
+        <!-- Tickets section -->
+        <div class="max-w-4xl mx-auto" id="tickets-section">
+          <div class="card">
+            <div class="p-6 border-b">
+              <div class="flex items-center gap-2">
+                <!-- LineChart icon SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-supportBlue-600">
+                  <path d="M3 3v18h18"></path>
+                  <path d="m19 9-5 5-4-4-3 3"></path>
+                </svg>
+                <h2 class="text-xl font-semibold">Your Support Tickets</h2>
+              </div>
+            </div>
+            <div class="p-6">
+              <div class="tab-list" id="tab-list">
+                <button class="tab active" data-tab="open">Open (0)</button>
+                <button class="tab" data-tab="resolved">Resolved (0)</button>
+              </div>
+              
+              <div class="tab-content active" id="tab-open">
+                <!-- Will be populated by JS -->
+                <div class="animate-pulse">
+                  <div class="h-24 bg-gray-100 rounded-lg mb-4"></div>
+                  <div class="h-24 bg-gray-100 rounded-lg mb-4"></div>
+                </div>
+              </div>
+              
+              <div class="tab-content hidden" id="tab-resolved">
+                <!-- Will be populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t py-6 bg-white">
+      <div class="container-custom">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="flex items-center gap-2 mb-4 md:mb-0">
+            <!-- LifeBuoy icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-supportBlue-600">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="4"></circle>
+              <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+              <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line>
+              <line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line>
+              <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+            </svg>
+            <span class="font-semibold text-supportBlue-700">Supportia</span>
+          </div>
+          <div class="text-sm text-gray-500">
+            &copy; <span id="current-year"></span> Supportia. All rights reserved.
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+      const menuVisible = mobileMenu.classList.contains('hidden');
+      if (menuVisible) {
+        mobileMenu.classList.remove('hidden');
+      } else {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+
+    // Tab system
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        
+        // Hide all tab content
+        tabContents.forEach(content => content.classList.add('hidden'));
+        // Show content for active tab
+        const target = tab.dataset.tab;
+        document.getElementById(`tab-${target}`).classList.remove('hidden');
+      });
+    });
+
+    // Mock data
+    const mockSupportStatus = {
+      openTickets: 5,
+      resolvedToday: 12,
+      avgResponseTime: "1.5h",
+      satisfaction: 96
+    };
+
+    const mockTickets = [
+      {
+        id: "T-1234",
+        subject: "Account access issues after password reset",
+        description: "I'm unable to log in after resetting my password. The system says my credentials are invalid even though I'm using the new password.",
+        status: "open",
+        priority: "high",
+        category: "Account Access",
+        createdAt: "2023-06-15T14:32:00Z",
+        updatedAt: "2023-06-15T16:45:00Z"
+      },
+      {
+        id: "T-1235",
+        subject: "Feature request: Dark mode support",
+        description: "Would it be possible to add dark mode support to the dashboard? It would be easier on the eyes for night time usage.",
+        status: "in_progress",
+        priority: "medium",
+        category: "Feature Request",
+        createdAt: "2023-06-14T09:12:00Z",
+        updatedAt: "2023-06-14T11:30:00Z"
+      },
+      {
+        id: "T-1232",
+        subject: "Billing discrepancy on recent invoice",
+        description: "The invoice for June shows charges for services I didn't use. Can someone from the billing department review this?",
+        status: "resolved",
+        priority: "high",
+        category: "Billing",
+        createdAt: "2023-06-10T13:26:00Z",
+        updatedAt: "2023-06-12T14:15:00Z"
+      },
+      {
+        id: "T-1230",
+        subject: "Data export functionality not working",
+        description: "When trying to export my data as CSV, the download starts but the file is corrupted or empty.",
+        status: "closed",
+        priority: "medium",
+        category: "Technical Issue",
+        createdAt: "2023-06-08T16:05:00Z",
+        updatedAt: "2023-06-09T10:30:00Z"
+      }
+    ];
+
+    // Helper functions
+    function getStatusIcon(status) {
+      switch (status) {
+        case 'open':
+          return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-orange-500">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>`;
+        case 'in_progress':
+          return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-blue-500">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>`;
+        case 'resolved':
+          return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-green-500">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>`;
+        case 'closed':
+          return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-500">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>`;
+        default:
+          return '';
+      }
+    }
+
+    function getPriorityBadge(priority) {
+      switch (priority) {
+        case 'low':
+          return '<span class="badge bg-gray-100">Low</span>';
+        case 'medium':
+          return '<span class="badge bg-blue-100 text-blue-700 border-blue-200">Medium</span>';
+        case 'high':
+          return '<span class="badge bg-orange-100 text-orange-700 border-orange-200">High</span>';
+        case 'urgent':
+          return '<span class="badge bg-red-100 text-red-700 border-red-200">Urgent</span>';
+        default:
+          return '';
+      }
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
+      }).format(date);
+    }
+
+    // Display metrics
+    function displayMetrics(metrics) {
+      const metricsContainer = document.getElementById('status-metrics');
+      
+      metricsContainer.innerHTML = `
+        <div class="card">
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-sm font-medium text-gray-500">Open Tickets</h3>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-orange-500">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <div class="text-3xl font-bold">${metrics.openTickets}</div>
+            <p class="text-sm text-gray-500 mt-1">Currently being processed</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-sm font-medium text-gray-500">Resolved Today</h3>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-green-500">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <div class="text-3xl font-bold">${metrics.resolvedToday}</div>
+            <p class="text-sm text-gray-500 mt-1">Issues fixed today</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-sm font-medium text-gray-500">Avg Response Time</h3>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-blue-500">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="text-3xl font-bold">${metrics.avgResponseTime}</div>
+            <p class="text-sm text-gray-500 mt-1">First response average</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-sm font-medium text-gray-500">Satisfaction</h3>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-supportBlue-500">
+                <path d="M7 10l5 5 5-5"></path>
+                <path d="M2 20h20"></path>
+              </svg>
+            </div>
+            <div class="flex items-end gap-1">
+              <span class="text-3xl font-bold">${metrics.satisfaction}%</span>
+            </div>
+            <div class="mt-2">
+              <div class="progress">
+                <div class="progress-value" style="width: ${metrics.satisfaction}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Display tickets
+    function displayTickets(tickets) {
+      const openTickets = tickets.filter(ticket => ticket.status === 'open' || ticket.status === 'in_progress');
+      const resolvedTickets = tickets.filter(ticket => ticket.status === 'resolved' || ticket.status === 'closed');
+      
+      // Update tab counts
+      document.querySelector('.tab[data-tab="open"]').textContent = `Open (${openTickets.length})`;
+      document.querySelector('.tab[data-tab="resolved"]').textContent = `Resolved (${resolvedTickets.length})`;
+      
+      // Display open tickets
+      const openTabContent = document.getElementById('tab-open');
+      if (openTickets.length === 0) {
+        openTabContent.innerHTML = `
+          <div class="text-center py-10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-green-500 mx-auto mb-3">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <h3 class="text-lg font-medium mb-1">No open tickets</h3>
+            <p class="text-gray-500">
+              You currently don't have any open support requests.
+            </p>
+          </div>
+        `;
+      } else {
+        openTabContent.innerHTML = `<div class="space-y-4">` +
+          openTickets.map(ticket => `
+            <div class="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+              <div class="flex justify-between items-start">
+                <div>
+                  <div class="flex items-center gap-2">
+                    ${getStatusIcon(ticket.status)}
+                    <h3 class="font-medium">${ticket.subject}</h3>
+                  </div>
+                  <p class="text-sm text-gray-600 mt-1 mb-3 line-clamp-2">
+                    ${ticket.description}
+                  </p>
+                </div>
+                ${getPriorityBadge(ticket.priority)}
+              </div>
+              <div class="flex items-center justify-between text-xs text-gray-500">
+                <div class="flex flex-col xs:flex-row xs:items-center gap-1 xs:gap-2">
+                  <span>Ticket #${ticket.id}</span>
+                  <span class="hidden xs:inline">•</span>
+                  <span>${ticket.category}</span>
+                </div>
+                <span>Created: ${formatDate(ticket.createdAt)}</span>
+              </div>
+            </div>
+          `).join('') + `</div>`;
+      }
+      
+      // Display resolved tickets
+      const resolvedTabContent = document.getElementById('tab-resolved');
+      if (resolvedTickets.length === 0) {
+        resolvedTabContent.innerHTML = `
+          <div class="text-center py-10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-orange-500 mx-auto mb-3">
+              <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <h3 class="text-lg font-medium mb-1">No resolved tickets</h3>
+            <p class="text-gray-500">
+              You don't have any resolved support requests yet.
+            </p>
+          </div>
+        `;
+      } else {
+        resolvedTabContent.innerHTML = `<div class="space-y-4">` +
+          resolvedTickets.map(ticket => `
+            <div class="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+              <div class="flex justify-between items-start">
+                <div>
+                  <div class="flex items-center gap-2">
+                    ${getStatusIcon(ticket.status)}
+                    <h3 class="font-medium">${ticket.subject}</h3>
+                  </div>
+                  <p class="text-sm text-gray-600 mt-1 mb-3 line-clamp-2">
+                    ${ticket.description}
+                  </p>
+                </div>
+                ${getPriorityBadge(ticket.priority)}
+              </div>
+              <div class="flex items-center justify-between text-xs text-gray-500">
+                <div class="flex flex-col xs:flex-row xs:items-center gap-1 xs:gap-2">
+                  <span>Ticket #${ticket.id}</span>
+                  <span class="hidden xs:inline">•</span>
+                  <span>${ticket.category}</span>
+                </div>
+                <span>Resolved: ${formatDate(ticket.updatedAt)}</span>
+              </div>
+            </div>
+          `).join('') + `</div>`;
+      }
+    }
+
+    // Simulate loading data (in real app, this would be a fetch request)
+    setTimeout(() => {
+      displayMetrics(mockSupportStatus);
+      displayTickets(mockTickets);
+    }, 1000);
+  </script>
+</body>
+</html>
