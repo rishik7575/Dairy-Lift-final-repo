@@ -77,7 +77,7 @@
 </head>
 <body>
     <h1>Admin Dashboard Debug Version</h1>
-    
+
     <div class="container">
         <h2>Database Connection Status</h2>
         <div id="connection-status">
@@ -113,7 +113,7 @@
     <script>
         // Debug logging
         let debugLogs = [];
-        
+
         function log(message, type = 'info') {
             const timestamp = new Date().toLocaleTimeString();
             const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
@@ -121,25 +121,25 @@
             console.log(logEntry);
             updateDebugDisplay();
         }
-        
+
         function updateDebugDisplay() {
             document.getElementById('debug-logs').textContent = debugLogs.slice(-50).join('\n');
         }
-        
+
         function clearLogs() {
             debugLogs = [];
             updateDebugDisplay();
         }
-        
+
         function showStatus(elementId, message, type = 'info') {
             const element = document.getElementById(elementId);
             element.innerHTML = `<div class="status ${type}">${message}</div>`;
         }
 
         // Supabase configuration
-        const supabaseUrl = 'https://avaakcvenjjydbxopwti.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2YWFrY3ZlbmpqeWRieG9wd3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTQzMjIsImV4cCI6MjA2MzQ3MDMyMn0.qeN6jRNwhhvkwpEZ-aTyQipLPA2KyUmW9prJ_-t4tOs';
-        
+        const supabaseUrl = 'https://eseynihfxxojisyqmigk.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZXluaWhmeHhvamlzeXFtaWdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MTEzODksImV4cCI6MjA2MzQ4NzM4OX0.1nU7McnxI_Cx2zK2UMpxc5t1ZK0VJnx2sz_xFS0Np08';
+
         let supabaseClient;
         let pendingActivities = [];
         let recentActivities = [];
@@ -148,24 +148,24 @@
             try {
                 log('Testing Supabase connection...');
                 showStatus('connection-status', 'Testing connection...', 'info');
-                
+
                 if (typeof supabase === 'undefined') {
                     throw new Error('Supabase library not loaded');
                 }
-                
+
                 supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 log('Supabase client created');
-                
+
                 // Test basic connection
                 const { error } = await supabaseClient
                     .from('farm_visit_requests')
                     .select('count', { count: 'exact', head: true });
-                
+
                 if (error) throw error;
-                
+
                 log('✅ Connection successful');
                 showStatus('connection-status', '✅ Connected to Supabase successfully', 'success');
-                
+
             } catch (error) {
                 log(`❌ Connection failed: ${error.message}`, 'error');
                 showStatus('connection-status', `❌ Connection failed: ${error.message}`, 'error');
@@ -175,11 +175,11 @@
         async function loadData() {
             try {
                 log('Loading data from database...');
-                
+
                 if (!supabaseClient) {
                     throw new Error('Supabase client not initialized');
                 }
-                
+
                 // Load pending notifications
                 log('Fetching pending notifications...');
                 const { data: pendingData, error: pendingError } = await supabaseClient
@@ -211,7 +211,7 @@
                     log(`Pending query error: ${pendingError.message}`, 'error');
                     throw pendingError;
                 }
-                
+
                 log(`Found ${pendingData.length} pending notifications`);
                 pendingActivities = pendingData;
                 renderPendingActivities();
@@ -250,13 +250,13 @@
                     log(`Recent query error: ${recentError.message}`, 'error');
                     throw recentError;
                 }
-                
+
                 log(`Found ${recentData.length} recent activities`);
                 recentActivities = recentData;
                 renderRecentActivities();
-                
+
                 log('✅ Data loaded successfully');
-                
+
             } catch (error) {
                 log(`❌ Error loading data: ${error.message}`, 'error');
                 showStatus('pending-activities', `❌ Error loading data: ${error.message}`, 'error');
@@ -266,16 +266,16 @@
 
         function renderPendingActivities() {
             const container = document.getElementById('pending-activities');
-            
+
             if (pendingActivities.length === 0) {
                 container.innerHTML = '<div class="status info">No pending activities</div>';
                 return;
             }
-            
+
             const html = pendingActivities.map(activity => {
                 const visitData = activity.farm_visit_requests;
                 const visitDate = visitData?.visit_date ? new Date(visitData.visit_date).toLocaleDateString() : 'Unknown date';
-                
+
                 return `
                     <div class="activity-item">
                         <h4>${activity.title || 'New Farm Visit Request'}</h4>
@@ -292,23 +292,23 @@
                     </div>
                 `;
             }).join('');
-            
+
             container.innerHTML = html;
         }
 
         function renderRecentActivities() {
             const container = document.getElementById('recent-activities');
-            
+
             if (recentActivities.length === 0) {
                 container.innerHTML = '<div class="status info">No recent activities</div>';
                 return;
             }
-            
+
             const html = recentActivities.map(activity => {
                 const visitData = activity.farm_visit_requests;
                 const visitDate = visitData?.visit_date ? new Date(visitData.visit_date).toLocaleDateString() : 'Unknown date';
                 const actionClass = activity.action_taken === 'accepted' ? 'success' : 'error';
-                
+
                 return `
                     <div class="activity-item">
                         <h4>${activity.title || 'Farm Visit Request Processed'}</h4>
@@ -320,18 +320,18 @@
                     </div>
                 `;
             }).join('');
-            
+
             container.innerHTML = html;
         }
 
         async function acceptActivity(notificationId, requestId) {
             try {
                 log(`Accepting activity ${notificationId} for request ${requestId}`);
-                
+
                 // Update farm visit request
                 const { error: requestError } = await supabaseClient
                     .from('farm_visit_requests')
-                    .update({ 
+                    .update({
                         status: 'accepted',
                         updated_at: new Date().toISOString()
                     })
@@ -354,7 +354,7 @@
 
                 log('✅ Activity accepted successfully');
                 await loadData(); // Reload data
-                
+
             } catch (error) {
                 log(`❌ Error accepting activity: ${error.message}`, 'error');
                 alert(`Error accepting activity: ${error.message}`);
@@ -364,11 +364,11 @@
         async function rejectActivity(notificationId, requestId) {
             try {
                 log(`Rejecting activity ${notificationId} for request ${requestId}`);
-                
+
                 // Update farm visit request
                 const { error: requestError } = await supabaseClient
                     .from('farm_visit_requests')
-                    .update({ 
+                    .update({
                         status: 'rejected',
                         updated_at: new Date().toISOString()
                     })
@@ -391,7 +391,7 @@
 
                 log('✅ Activity rejected successfully');
                 await loadData(); // Reload data
-                
+
             } catch (error) {
                 log(`❌ Error rejecting activity: ${error.message}`, 'error');
                 alert(`Error rejecting activity: ${error.message}`);

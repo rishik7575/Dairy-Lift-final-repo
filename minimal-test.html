@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Supabase Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .result {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .success { background-color: #d4edda; border-left-color: #28a745; }
+        .error { background-color: #f8d7da; border-left-color: #dc3545; }
+        .info { background-color: #d1ecf1; border-left-color: #17a2b8; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Minimal Supabase Test</h1>
+    <p>This is the simplest possible test to check if Supabase is working.</p>
+    
+    <button onclick="runTest()">Run Test</button>
+    <button onclick="clearResults()">Clear Results</button>
+    
+    <div id="results"></div>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        const SUPABASE_URL = 'https://eseynihfxxojisyqmigk.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZXluaWhmeHhvamlzeXFtaWdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MTEzODksImV4cCI6MjA2MzQ4NzM4OX0.1nU7McnxI_Cx2zK2UMpxc5t1ZK0VJnx2sz_xFS0Np08';
+        
+        function addResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `result ${type}`;
+            resultDiv.innerHTML = message;
+            resultsDiv.appendChild(resultDiv);
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        async function runTest() {
+            clearResults();
+            addResult('🚀 Starting Supabase test...', 'info');
+            
+            // Step 1: Check if Supabase library is loaded
+            try {
+                if (typeof window.supabase === 'undefined') {
+                    throw new Error('Supabase library not found');
+                }
+                addResult('✅ Step 1: Supabase library loaded successfully', 'success');
+            } catch (error) {
+                addResult(`❌ Step 1 Failed: ${error.message}`, 'error');
+                return;
+            }
+            
+            // Step 2: Create Supabase client
+            let client;
+            try {
+                client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                addResult('✅ Step 2: Supabase client created successfully', 'success');
+            } catch (error) {
+                addResult(`❌ Step 2 Failed: ${error.message}`, 'error');
+                return;
+            }
+            
+            // Step 3: Test basic connection
+            try {
+                addResult('🔄 Step 3: Testing connection...', 'info');
+                const { data, error } = await client
+                    .from('products')
+                    .select('count', { count: 'exact', head: true });
+                
+                if (error) {
+                    throw error;
+                }
+                
+                addResult('✅ Step 3: Database connection successful', 'success');
+            } catch (error) {
+                addResult(`❌ Step 3 Failed: ${error.message}`, 'error');
+                addResult(`<strong>Error Details:</strong><br>
+                    Code: ${error.code || 'N/A'}<br>
+                    Message: ${error.message}<br>
+                    Hint: ${error.hint || 'N/A'}`, 'error');
+                
+                if (error.message.includes('relation "products" does not exist')) {
+                    addResult(`<strong>🔧 Fix Required:</strong> The products table doesn't exist. 
+                        Please create it by running this SQL in your Supabase dashboard:<br>
+                        <pre>CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    image_url TEXT,
+    status VARCHAR(50) DEFAULT 'in-stock',
+    stock INTEGER DEFAULT 0,
+    active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow read access" ON products FOR SELECT USING (true);</pre>`, 'info');
+                }
+                return;
+            }
+            
+            // Step 4: Try to fetch data
+            try {
+                addResult('🔄 Step 4: Fetching products...', 'info');
+                const { data, error } = await client
+                    .from('products')
+                    .select('*')
+                    .limit(5);
+                
+                if (error) {
+                    throw error;
+                }
+                
+                addResult(`✅ Step 4: Successfully fetched ${data.length} products`, 'success');
+                
+                if (data.length > 0) {
+                    addResult(`<strong>Sample Product:</strong><br><pre>${JSON.stringify(data[0], null, 2)}</pre>`, 'info');
+                } else {
+                    addResult('ℹ️ No products found in database. You may need to add some sample data.', 'info');
+                }
+                
+            } catch (error) {
+                addResult(`❌ Step 4 Failed: ${error.message}`, 'error');
+                return;
+            }
+            
+            // Step 5: Test insert (if possible)
+            try {
+                addResult('🔄 Step 5: Testing insert capability...', 'info');
+                const testProduct = {
+                    name: 'Test Product',
+                    description: 'This is a test product',
+                    price: 9.99,
+                    category: 'test',
+                    status: 'in-stock',
+                    stock: 1,
+                    active: true
+                };
+                
+                const { data, error } = await client
+                    .from('products')
+                    .insert([testProduct])
+                    .select()
+                    .single();
+                
+                if (error) {
+                    throw error;
+                }
+                
+                addResult('✅ Step 5: Insert test successful', 'success');
+                
+                // Clean up test product
+                await client.from('products').delete().eq('id', data.id);
+                addResult('🧹 Test product cleaned up', 'info');
+                
+            } catch (error) {
+                addResult(`⚠️ Step 5 Warning: Insert failed - ${error.message}`, 'error');
+                addResult('This might be due to RLS policies. Your database is readable but not writable.', 'info');
+            }
+            
+            addResult('🎉 Test completed! Check results above.', 'success');
+        }
+        
+        // Auto-run test on page load
+        window.addEventListener('load', function() {
+            setTimeout(runTest, 500);
+        });
+    </script>
+</body>
+</html>

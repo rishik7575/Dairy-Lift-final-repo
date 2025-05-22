@@ -25,7 +25,7 @@
       --destructive-foreground: #f9fafb;
       --secondary: #f1f5f9;
       --secondary-foreground: #0f172a;
-      
+
       --sidebar-background: #fafafa;
       --sidebar-foreground: #404040;
       --sidebar-primary: #1a1a1a;
@@ -79,15 +79,15 @@
     .space-x-4 > * + * {
       margin-left: 1rem;
     }
-    
+
     .space-x-2 > * + * {
       margin-left: 0.5rem;
     }
-    
+
     .space-y-2 > * + * {
       margin-top: 0.5rem;
     }
-    
+
     .space-y-1 > * + * {
       margin-top: 0.25rem;
     }
@@ -103,15 +103,15 @@
     .gap-6 {
       gap: 1.5rem;
     }
-    
+
     .gap-4 {
       gap: 1rem;
     }
-    
+
     .gap-2 {
       gap: 0.5rem;
     }
-    
+
     .gap-1 {
       gap: 0.25rem;
     }
@@ -294,11 +294,11 @@
     .text-blue-500 {
       color: #3b82f6;
     }
-    
+
     .text-orange-500 {
       color: #f97316;
     }
-    
+
     .text-purple-500 {
       color: #a855f7;
     }
@@ -306,11 +306,11 @@
     .bg-orange-100 {
       background-color: #ffedd5;
     }
-    
+
     .bg-blue-100 {
       background-color: #dbeafe;
     }
-    
+
     .bg-purple-100 {
       background-color: #f3e8ff;
     }
@@ -550,19 +550,19 @@
       .md\:grid-cols-3 {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-      
+
       .md\:flex-row {
         flex-direction: row;
       }
-      
+
       .md\:items-center {
         align-items: center;
       }
-      
+
       .md\:w-auto {
         width: auto;
       }
-      
+
       .md\:w-\[250px\] {
         width: 250px;
       }
@@ -594,7 +594,7 @@
     .mr-2 {
       margin-right: 0.5rem;
     }
-    
+
     .mt-1 {
       margin-top: 0.25rem;
     }
@@ -602,23 +602,23 @@
     .justify-between {
       justify-content: space-between;
     }
-    
+
     .h-12 {
       height: 3rem;
     }
-    
+
     .w-12 {
       width: 3rem;
     }
-    
+
     .h-2 {
       height: 0.5rem;
     }
-    
+
     .font-medium {
       font-weight: 500;
     }
-    
+
     .text-sm {
       font-size: 0.875rem;
     }
@@ -637,7 +637,7 @@
           <span class="ml-1 text-xs bg-primary text-white px-1 rounded">Admin</span>
         </a>
       </div>
-      
+
       <div class="flex items-center space-x-4">
         <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
         <div class="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center">
@@ -667,7 +667,7 @@
           <i class="lucide-bar-chart-3"></i>
           <span>Financial Reports</span>
         </a>
-        <a href="store.html" class="nav-item">
+        <a href="storenew.html" class="nav-item">
           <i class="lucide-shopping-cart"></i>
           <span>Store</span>
         </a>
@@ -696,7 +696,7 @@
             Add Product
           </button>
         </div>
-        
+
         <!-- Store Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="card">
@@ -712,7 +712,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="card">
             <div class="card-content">
               <div class="flex justify-between">
@@ -726,7 +726,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="card">
             <div class="card-content">
               <div class="flex justify-between">
@@ -741,7 +741,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Product Inventory -->
         <div class="card">
           <div class="card-header">
@@ -795,48 +795,48 @@
 
   <!-- Load Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+
   <!-- Required Lovable script tag -->
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-  
+
   <script>
     // Initialize Lucide icons
     lucide.createIcons();
-    
+
     // Sidebar toggle functionality
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
-    
+
     sidebarToggle.addEventListener('click', toggleSidebar);
     sidebarOverlay.addEventListener('click', toggleSidebar);
-    
+
     function toggleSidebar() {
       sidebar.classList.toggle('sidebar-hidden');
       sidebarOverlay.classList.toggle('show');
     }
-    
+
     // Toast functionality
     function showToast(title, description, duration = 3000) {
       const toastContainer = document.getElementById('toast-container');
-      
+
       const toast = document.createElement('div');
       toast.className = 'toast';
       toast.innerHTML = `
         <div class="toast-title">${title}</div>
         <div class="toast-description">${description}</div>
       `;
-      
+
       toastContainer.appendChild(toast);
-      
+
       // Force reflow to enable transition
       toast.offsetHeight;
-      
+
       // Show toast
       setTimeout(() => {
         toast.classList.add('show');
       }, 10);
-      
+
       // Remove toast after duration
       setTimeout(() => {
         toast.classList.remove('show');
@@ -845,13 +845,13 @@
         }, 300);
       }, duration);
     }
-    
+
     // Logout functionality
     document.getElementById('logout-btn').addEventListener('click', () => {
       showToast('Logged out successfully', 'You have been logged out of your account');
       // In a real app, perform actual logout logic here
     });
-    
+
     // Add Product button
     document.getElementById('add-product-btn').addEventListener('click', () => {
       showToast('Feature in development', "The 'Add Product' feature is coming soon!");
@@ -864,7 +864,7 @@
     function filterProducts() {
       const searchTerm = searchInput.value.toLowerCase();
       const rows = document.querySelectorAll('#products-table-body tr');
-      
+
       rows.forEach(row => {
         const text = row.textContent.toLowerCase();
         const match = text.includes(searchTerm);
@@ -874,45 +874,45 @@
 
     // Product data
     const productsData = [
-      { 
-        id: 'P001', 
-        name: 'Fresh Milk (1L)', 
+      {
+        id: 'P001',
+        name: 'Fresh Milk (1L)',
         category: 'Dairy',
         price: 3.99,
         stock: 120,
         lastRestock: '2023-09-20',
         status: 'In Stock'
       },
-      { 
-        id: 'P002', 
-        name: 'Organic Yogurt (500g)', 
+      {
+        id: 'P002',
+        name: 'Organic Yogurt (500g)',
         category: 'Dairy',
         price: 4.50,
         stock: 85,
         lastRestock: '2023-09-18',
         status: 'In Stock'
       },
-      { 
-        id: 'P003', 
-        name: 'Artisan Cheese (250g)', 
+      {
+        id: 'P003',
+        name: 'Artisan Cheese (250g)',
         category: 'Dairy',
         price: 8.99,
         stock: 10,
         lastRestock: '2023-09-15',
         status: 'Low Stock'
       },
-      { 
-        id: 'P004', 
-        name: 'Butter (200g)', 
+      {
+        id: 'P004',
+        name: 'Butter (200g)',
         category: 'Dairy',
         price: 3.75,
         stock: 0,
         lastRestock: '2023-09-10',
         status: 'Out of Stock'
       },
-      { 
-        id: 'P005', 
-        name: 'Premium Cream (500ml)', 
+      {
+        id: 'P005',
+        name: 'Premium Cream (500ml)',
         category: 'Dairy',
         price: 5.25,
         stock: 45,
@@ -924,14 +924,14 @@
     // Load product data
     function loadProductData() {
       const tableBody = document.getElementById('products-table-body');
-      
+
       productsData.forEach(product => {
         const row = document.createElement('tr');
-        
+
         // Determine badge class based on status
         let badgeClass;
         let progressValue;
-        
+
         switch(product.status) {
           case 'In Stock':
             badgeClass = 'badge-default';
@@ -946,7 +946,7 @@
             progressValue = 0;
             break;
         }
-        
+
         row.innerHTML = `
           <td>${product.id}</td>
           <td class="font-medium">${product.name}</td>
@@ -980,16 +980,16 @@
             </div>
           </td>
         `;
-        
+
         tableBody.appendChild(row);
       });
-      
+
       // Add event listeners to action buttons
       document.querySelectorAll('.product-action').forEach(button => {
         button.addEventListener('click', () => {
           const action = button.getAttribute('data-action');
           const id = button.getAttribute('data-id');
-          
+
           showToast('Action triggered', `${action} on product ${id}`);
         });
       });

@@ -15,7 +15,10 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@dairyvest" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    
+
+    <!-- Authentication Script -->
+    <script src="js/auth.js"></script>
+
     <style>
       /* Tailwind-like CSS */
       :root {
@@ -173,7 +176,7 @@
       .w-5 {
         width: 1.25rem;
       }
-      
+
       .w-6 {
         width: 1.5rem;
       }
@@ -1184,7 +1187,7 @@
                 3
               </span>
             </button>
-            
+
             <div class="relative">
               <button class="relative h-8 w-8 rounded-full" id="user-menu-button">
                 <div class="avatar">
@@ -1234,7 +1237,7 @@
                   View and manage your personal information and account settings
                 </p>
               </div>
-              
+
               <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <!-- Profile Header -->
                 <div class="md:col-span-3">
@@ -1243,9 +1246,9 @@
                       <div class="avatar h-24 w-24 rounded-full border-4 border-white shadow-md">
                         <div class="avatar-fallback bg-primary text-2xl">A</div>
                       </div>
-                      
-                      <label 
-                        for="profile-image" 
+
+                      <label
+                        for="profile-image"
                         class="absolute bottom-0 right-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm transition-opacity opacity-0"
                         id="camera-button"
                       >
@@ -1253,20 +1256,20 @@
                           <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
                           <circle cx="12" cy="13" r="3"></circle>
                         </svg>
-                        <input 
-                          type="file" 
-                          id="profile-image" 
-                          class="hidden" 
+                        <input
+                          type="file"
+                          id="profile-image"
+                          class="hidden"
                           accept="image/*"
                         />
                       </label>
                     </div>
-                    
+
                     <div class="mt-4 text-center md:ml-6 md:text-left">
                       <h1 class="text-2xl font-bold">Admin User</h1>
                       <p class="text-muted-foreground">admin@dairy-lift.com</p>
                       <p class="mt-1 text-sm">Farm Manager</p>
-                      
+
                       <div class="mt-3 flex gap-2 justify-center md:justify-start">
                         <button class="button button-outline button-sm" id="edit-profile-button">Edit Profile</button>
                         <button class="button button-outline button-sm" id="export-pdf-button">Export PDF</button>
@@ -1274,7 +1277,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Profile Stats -->
                 <div class="md:col-span-3">
                   <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -1293,7 +1296,7 @@
                         <p class="text-sm text-muted-foreground">Cattle Managed</p>
                       </div>
                     </div>
-                    
+
                     <div class="card">
                       <div class="card-content flex flex-col items-center p-6">
                         <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -1308,7 +1311,7 @@
                         <p class="text-sm text-muted-foreground">Investors</p>
                       </div>
                     </div>
-                    
+
                     <div class="card">
                       <div class="card-content flex flex-col items-center p-6">
                         <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -1323,7 +1326,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Tabs and Main Content -->
                 <div class="md:col-span-2 space-y-6">
                   <!-- Tabs -->
@@ -1334,7 +1337,7 @@
                       <button class="tabs-trigger" data-tab="notifications" data-state="inactive">Notifications</button>
                       <button class="tabs-trigger" data-tab="social" data-state="inactive">Social Links</button>
                     </div>
-                    
+
                     <!-- Personal Info Tab -->
                     <div class="tabs-content" data-tab="personal" data-state="active" id="personal">
                       <div class="card mb-8">
@@ -1352,79 +1355,79 @@
                             <div class="grid gap-6 md:grid-cols-2">
                               <div class="space-y-2">
                                 <label for="firstName" class="text-sm font-medium">First Name</label>
-                                <input 
+                                <input
                                   class="input"
-                                  id="firstName" 
-                                  value="Admin" 
+                                  id="firstName"
+                                  value="Admin"
                                 />
                               </div>
-                              
+
                               <div class="space-y-2">
                                 <label for="lastName" class="text-sm font-medium">Last Name</label>
-                                <input 
+                                <input
                                   class="input"
-                                  id="lastName" 
-                                  value="User" 
+                                  id="lastName"
+                                  value="User"
                                 />
                               </div>
-                              
+
                               <div class="space-y-2">
                                 <label for="email" class="text-sm font-medium">Email Address</label>
-                                <input 
+                                <input
                                   class="input"
-                                  id="email" 
-                                  type="email" 
-                                  value="admin@dairy-lift.com" 
+                                  id="email"
+                                  type="email"
+                                  value="admin@dairy-lift.com"
                                 />
                               </div>
-                              
+
                               <div class="space-y-2">
                                 <label for="phone" class="text-sm font-medium">Phone Number</label>
-                                <input 
+                                <input
                                   class="input"
-                                  id="phone" 
-                                  value="+91 9876543210" 
+                                  id="phone"
+                                  value="+91 9876543210"
                                 />
                               </div>
-                              
+
                               <div class="space-y-2">
                                 <label for="role" class="text-sm font-medium">Role</label>
-                                <input 
+                                <input
                                   class="input"
-                                  id="role" 
-                                  value="Farm Manager" 
+                                  id="role"
+                                  value="Farm Manager"
                                 />
                               </div>
-                              
+
                               <div class="space-y-2">
                                 <label for="joined" class="text-sm font-medium">Date Joined</label>
-                                <input 
+                                <input
                                   class="input bg-muted"
-                                  id="joined" 
-                                  value="January 15, 2023" 
-                                  readonly 
+                                  id="joined"
+                                  value="January 15, 2023"
+                                  readonly
                                 />
                               </div>
                             </div>
-                            
+
                             <div class="mt-6 space-y-2">
                               <label for="address" class="text-sm font-medium">Address</label>
-                              <input 
+                              <input
                                 class="input"
-                                id="address" 
-                                value="123 Dairy Lane, Milk County, 560001" 
+                                id="address"
+                                value="123 Dairy Lane, Milk County, 560001"
                               />
                             </div>
-                            
+
                             <div class="mt-6 space-y-2">
                               <label for="bio" class="text-sm font-medium">Bio</label>
-                              <textarea 
+                              <textarea
                                 class="textarea"
-                                id="bio" 
-                                rows="4" 
+                                id="bio"
+                                rows="4"
                               >Experienced farm manager with over 5 years in dairy farm operations and management. Specializing in cattle health, milk production optimization, and investor relations.</textarea>
                             </div>
-                            
+
                             <div class="mt-6 flex justify-end gap-2">
                               <button type="button" class="button button-outline" id="cancel-personal-button">Cancel</button>
                               <button type="submit" class="button button-primary" id="save-personal-button">Save Changes</button>
@@ -1433,7 +1436,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <!-- Security Tab -->
                     <div class="tabs-content" data-tab="security" data-state="inactive">
                       <div class="card mb-8">
@@ -1452,13 +1455,13 @@
                               <div class="space-y-2">
                                 <label for="currentPassword" class="text-sm font-medium">Current Password</label>
                                 <div class="relative">
-                                  <input 
+                                  <input
                                     class="input"
-                                    id="currentPassword" 
-                                    type="password" 
-                                    value="" 
+                                    id="currentPassword"
+                                    type="password"
+                                    value=""
                                   />
-                                  <button 
+                                  <button
                                     type="button"
                                     class="absolute right-3 top-1/2 -translate-y-1/2 toggle-password"
                                     data-for="currentPassword"
@@ -1470,17 +1473,17 @@
                                   </button>
                                 </div>
                               </div>
-                              
+
                               <div class="space-y-2">
                                 <label for="newPassword" class="text-sm font-medium">New Password</label>
                                 <div class="relative">
-                                  <input 
+                                  <input
                                     class="input"
-                                    id="newPassword" 
-                                    type="password" 
-                                    value="" 
+                                    id="newPassword"
+                                    type="password"
+                                    value=""
                                   />
-                                  <button 
+                                  <button
                                     type="button"
                                     class="absolute right-3 top-1/2 -translate-y-1/2 toggle-password"
                                     data-for="newPassword"
@@ -1492,17 +1495,17 @@
                                   </button>
                                 </div>
                               </div>
-                              
+
                               <div class="space-y-2">
                                 <label for="confirmPassword" class="text-sm font-medium">Confirm New Password</label>
                                 <div class="relative">
-                                  <input 
+                                  <input
                                     class="input"
-                                    id="confirmPassword" 
-                                    type="password" 
-                                    value="" 
+                                    id="confirmPassword"
+                                    type="password"
+                                    value=""
                                   />
-                                  <button 
+                                  <button
                                     type="button"
                                     class="absolute right-3 top-1/2 -translate-y-1/2 toggle-password"
                                     data-for="confirmPassword"
@@ -1515,7 +1518,7 @@
                                 </div>
                               </div>
                             </div>
-                            
+
                             <div class="mt-6 flex justify-end gap-2">
                               <button type="button" class="button button-outline">Cancel</button>
                               <button type="button" class="button button-primary" id="update-password-button">Update Password</button>
@@ -1541,7 +1544,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <!-- Notifications Tab -->
                     <div class="tabs-content" data-tab="notifications" data-state="inactive">
                       <div class="card mb-8">
@@ -1565,7 +1568,7 @@
                                 <div class="switch-thumb"></div>
                               </div>
                             </div>
-                            
+
                             <div class="flex items-center justify-between">
                               <div>
                                 <h4 class="font-medium">SMS Notifications</h4>
@@ -1575,7 +1578,7 @@
                                 <div class="switch-thumb"></div>
                               </div>
                             </div>
-                            
+
                             <div class="flex items-center justify-between">
                               <div>
                                 <h4 class="font-medium">Push Notifications</h4>
@@ -1585,7 +1588,7 @@
                                 <div class="switch-thumb"></div>
                               </div>
                             </div>
-                            
+
                             <div class="flex items-center justify-between">
                               <div>
                                 <h4 class="font-medium">Marketing Emails</h4>
@@ -1596,7 +1599,7 @@
                               </div>
                             </div>
                           </div>
-                          
+
                           <div class="mt-6 flex justify-between">
                             <button class="button button-outline" id="reset-notifications-button">Reset to Default</button>
                             <button class="button button-primary" id="save-notifications-button">Save Settings</button>
@@ -1604,7 +1607,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <!-- Social Links Tab -->
                     <div class="tabs-content" data-tab="social" data-state="inactive">
                       <div class="card mb-8">
@@ -1621,45 +1624,45 @@
                           <div class="space-y-6">
                             <div class="space-y-2">
                               <label for="linkedin" class="text-sm font-medium">LinkedIn</label>
-                              <input 
+                              <input
                                 class="input"
-                                id="linkedin" 
-                                placeholder="https://linkedin.com/in/username" 
-                                value="https://linkedin.com/in/adminuser" 
+                                id="linkedin"
+                                placeholder="https://linkedin.com/in/username"
+                                value="https://linkedin.com/in/adminuser"
                               />
                             </div>
-                            
+
                             <div class="space-y-2">
                               <label for="twitter" class="text-sm font-medium">Twitter</label>
-                              <input 
+                              <input
                                 class="input"
-                                id="twitter" 
-                                placeholder="https://twitter.com/username" 
-                                value="" 
+                                id="twitter"
+                                placeholder="https://twitter.com/username"
+                                value=""
                               />
                             </div>
-                            
+
                             <div class="space-y-2">
                               <label for="facebook" class="text-sm font-medium">Facebook</label>
-                              <input 
+                              <input
                                 class="input"
-                                id="facebook" 
-                                placeholder="https://facebook.com/username" 
-                                value="https://facebook.com/adminuser" 
+                                id="facebook"
+                                placeholder="https://facebook.com/username"
+                                value="https://facebook.com/adminuser"
                               />
                             </div>
-                            
+
                             <div class="space-y-2">
                               <label for="instagram" class="text-sm font-medium">Instagram</label>
-                              <input 
+                              <input
                                 class="input"
-                                id="instagram" 
-                                placeholder="https://instagram.com/username" 
-                                value="" 
+                                id="instagram"
+                                placeholder="https://instagram.com/username"
+                                value=""
                               />
                             </div>
                           </div>
-                          
+
                           <div class="mt-6 flex justify-end">
                             <button class="button button-primary" id="save-social-links-button">Save Links</button>
                           </div>
@@ -1668,7 +1671,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Right Sidebar -->
                 <div class="space-y-6">
                   <!-- Profile Completion -->
@@ -1684,7 +1687,7 @@
                       <div class="progress h-2 mb-6">
                         <div class="progress-indicator" style="width: 60%"></div>
                       </div>
-                      
+
                       <div class="space-y-3">
                         <div class="flex items-center text-sm">
                           <svg class="mr-2 h-4 w-4 text-success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1722,7 +1725,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <!-- Investor Summary -->
                   <div class="card mb-8">
                     <div class="card-header card-gradient-header">
@@ -1745,7 +1748,7 @@
                             <p class="text-xl font-semibold">₹2,50,000</p>
                           </div>
                         </div>
-                        
+
                         <div class="flex items-center gap-4">
                           <div class="flex h-12 w-12 items-center justify-center rounded-full bg-success/10">
                             <svg class="h-6 w-6 text-success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1758,7 +1761,7 @@
                             <p class="text-xl font-semibold">₹32,125</p>
                           </div>
                         </div>
-                        
+
                         <div class="flex items-center gap-4">
                           <div class="flex h-12 w-12 items-center justify-center rounded-full bg-warning/10">
                             <svg class="h-6 w-6 text-warning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1771,7 +1774,7 @@
                             <p class="text-xl font-semibold">5</p>
                           </div>
                         </div>
-                        
+
                         <div class="flex items-center gap-4">
                           <div class="flex h-12 w-12 items-center justify-center rounded-full bg-info/10">
                             <svg class="h-6 w-6 text-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1786,7 +1789,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <!-- Quick Links -->
                   <div class="card mb-8">
                     <div class="card-header card-gradient-header">
@@ -1801,7 +1804,7 @@
                           </svg>
                           Manage Cattle
                         </a>
-                        
+
                         <a href="/reports" class="button button-outline w-full justify-start">
                           <svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -1812,7 +1815,7 @@
                           </svg>
                           View Reports
                         </a>
-                        
+
                         <a href="/store" class="button button-outline w-full justify-start">
                           <svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path>
@@ -1827,7 +1830,7 @@
                           </svg>
                           View Store
                         </a>
-                        
+
                         <a href="/support" class="button button-outline w-full justify-start">
                           <svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -1838,7 +1841,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Activity Log -->
                 <div class="md:col-span-2">
                   <div class="card mb-8">
@@ -1943,7 +1946,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Login Stats -->
                 <div>
                   <div class="card mb-8">
@@ -1964,7 +1967,7 @@
                             <p class="text-sm text-muted-foreground">Bengaluru, Karnataka</p>
                           </div>
                         </div>
-                        
+
                         <div class="flex items-start gap-3">
                           <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                             <svg class="h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1978,7 +1981,7 @@
                             <p class="text-sm text-muted-foreground">Chrome on Windows, iPhone App</p>
                           </div>
                         </div>
-                        
+
                         <div class="flex items-start gap-3">
                           <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                             <svg class="h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1993,7 +1996,7 @@
                             <p class="text-sm text-muted-foreground">March 15, 2025</p>
                           </div>
                         </div>
-                        
+
                         <div class="flex items-start gap-3">
                           <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
                             <svg class="h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2026,12 +2029,12 @@
         // Avatar hover effect
         const avatarContainer = document.getElementById('avatar-container');
         const cameraButton = document.getElementById('camera-button');
-        
+
         avatarContainer.addEventListener('mouseenter', function() {
           cameraButton.classList.remove('opacity-0');
           cameraButton.classList.add('opacity-100');
         });
-        
+
         avatarContainer.addEventListener('mouseleave', function() {
           cameraButton.classList.remove('opacity-100');
           cameraButton.classList.add('opacity-0');
@@ -2056,36 +2059,36 @@
                 const avatarImage = avatarContainer.querySelector('.avatar-image');
                 avatarImage.src = e.target.result;
               }
-              
+
               showToast('Profile Image Updated', 'Your profile image has been updated successfully.');
-              
+
               // Update profile completion
               const profileImageItem = document.querySelector('.space-y-3 div:nth-child(2) svg');
               profileImageItem.classList.remove('text-muted-foreground');
               profileImageItem.classList.add('text-success');
               profileImageItem.innerHTML = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
-              
+
               // Update progress
               updateProfileCompletion(80);
             };
             reader.readAsDataURL(file);
           }
         });
-        
+
         // Tab functionality
         const tabTriggers = document.querySelectorAll('.tabs-trigger');
         const tabContents = document.querySelectorAll('.tabs-content');
-        
+
         tabTriggers.forEach(trigger => {
           trigger.addEventListener('click', () => {
             const tab = trigger.getAttribute('data-tab');
-            
+
             // Update trigger states
             tabTriggers.forEach(t => {
               t.setAttribute('data-state', 'inactive');
             });
             trigger.setAttribute('data-state', 'active');
-            
+
             // Update content states
             tabContents.forEach(content => {
               content.setAttribute('data-state', 'inactive');
@@ -2093,14 +2096,14 @@
             document.querySelector(`.tabs-content[data-tab="${tab}"]`).setAttribute('data-state', 'active');
           });
         });
-        
+
         // Toggle password visibility
         const toggleButtons = document.querySelectorAll('.toggle-password');
         toggleButtons.forEach(button => {
           button.addEventListener('click', () => {
             const inputId = button.getAttribute('data-for');
             const input = document.getElementById(inputId);
-            
+
             if (input.type === 'password') {
               input.type = 'text';
               button.innerHTML = `<svg class="h-4 w-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2118,7 +2121,7 @@
             }
           });
         });
-        
+
         // Switch components
         const switches = document.querySelectorAll('.switch');
         switches.forEach(switchElem => {
@@ -2131,22 +2134,22 @@
             }
           });
         });
-        
+
         // User dropdown
         const userMenuButton = document.getElementById('user-menu-button');
         const userDropdown = document.getElementById('user-dropdown');
-        
+
         userMenuButton.addEventListener('click', () => {
           userDropdown.classList.toggle('hidden');
         });
-        
+
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
           if (!userMenuButton.contains(event.target) && !userDropdown.contains(event.target)) {
             userDropdown.classList.add('hidden');
           }
         });
-        
+
         // Toast functionality
         window.showToast = function(title, message) {
           const toastContainer = document.getElementById('toast-container');
@@ -2156,42 +2159,42 @@
             <div class="toast-title">${title}</div>
             <div class="toast-description">${message}</div>
           `;
-          
+
           toastContainer.appendChild(toast);
-          
+
           // Remove toast after 3 seconds
           setTimeout(() => {
             toast.style.opacity = '0';
             toast.style.transform = 'translateX(100%)';
             toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            
+
             setTimeout(() => {
               toastContainer.removeChild(toast);
             }, 300);
           }, 3000);
         };
-        
+
         // Form functionality
         const personalInfoForm = document.getElementById('personal-info-form');
         let originalFormData = {};
-        
+
         // Save initial form data
         const formInputs = personalInfoForm.querySelectorAll('input, textarea');
         formInputs.forEach(input => {
           originalFormData[input.id] = input.value;
         });
-        
+
         personalInfoForm.addEventListener('submit', function(e) {
           e.preventDefault();
-          
+
           // Update original data
           formInputs.forEach(input => {
             originalFormData[input.id] = input.value;
           });
-          
+
           showToast('Profile Updated', 'Your profile information has been updated successfully.');
         });
-        
+
         // Cancel button functionality
         const cancelPersonalButton = document.getElementById('cancel-personal-button');
         cancelPersonalButton.addEventListener('click', function() {
@@ -2199,105 +2202,128 @@
           formInputs.forEach(input => {
             input.value = originalFormData[input.id];
           });
-          
+
           showToast('Changes Cancelled', 'Your changes have been discarded.');
         });
-        
+
         // Form action button handlers
         document.getElementById('edit-profile-button').addEventListener('click', function() {
           // Activate personal tab
           tabTriggers.forEach(t => {
             t.setAttribute('data-state', t.getAttribute('data-tab') === 'personal' ? 'active' : 'inactive');
           });
-          
+
           tabContents.forEach(content => {
             content.setAttribute('data-state', content.getAttribute('data-tab') === 'personal' ? 'active' : 'inactive');
           });
-          
+
           // Scroll to personal info form
           document.getElementById('personal').scrollIntoView({ behavior: 'smooth' });
-          
+
           showToast('Edit Profile', 'You can now edit your profile information below.');
         });
-        
+
         document.getElementById('export-pdf-button').addEventListener('click', function() {
           showToast('Export PDF', 'Your profile data is being exported to PDF.');
           window.print();
         });
-        
+
         document.getElementById('update-password-button').addEventListener('click', function() {
           const currentPassword = document.getElementById('currentPassword').value;
           const newPassword = document.getElementById('newPassword').value;
           const confirmPassword = document.getElementById('confirmPassword').value;
-          
+
           if (!currentPassword || !newPassword || !confirmPassword) {
             showToast('Error', 'Please fill in all password fields.');
             return;
           }
-          
+
           if (newPassword !== confirmPassword) {
             showToast('Error', 'New passwords do not match.');
             return;
           }
-          
+
           showToast('Password Updated', 'Your password has been updated successfully.');
-          
+
           // Clear form fields
           document.getElementById('currentPassword').value = '';
           document.getElementById('newPassword').value = '';
           document.getElementById('confirmPassword').value = '';
         });
-        
+
         document.getElementById('enable-2fa-button').addEventListener('click', function() {
           showToast('Two-Factor Authentication', 'Two-factor authentication setup process initiated.');
         });
-        
+
         document.getElementById('save-notifications-button').addEventListener('click', function() {
           showToast('Settings Saved', 'Your notification preferences have been updated.');
         });
-        
+
         document.getElementById('reset-notifications-button').addEventListener('click', function() {
           // Reset switches to default values
           document.getElementById('email-switch').setAttribute('data-state', 'checked');
           document.getElementById('sms-switch').setAttribute('data-state', 'checked');
           document.getElementById('push-switch').setAttribute('data-state', 'checked');
           document.getElementById('marketing-switch').setAttribute('data-state', 'unchecked');
-          
+
           showToast('Settings Reset', 'Your notification preferences have been reset to default.');
         });
-        
+
         document.getElementById('save-social-links-button').addEventListener('click', function() {
           showToast('Social Links Updated', 'Your social media links have been updated successfully.');
-          
+
           // Update social links in profile completion
           const socialLinksItem = document.querySelector('.space-y-3 div:nth-child(5) svg');
           socialLinksItem.classList.remove('text-muted-foreground');
           socialLinksItem.classList.add('text-success');
           socialLinksItem.innerHTML = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
-          
+
           // Update progress
           updateProfileCompletion(100);
         });
-        
+
         // Notification button
         document.getElementById('notification-button').addEventListener('click', function() {
           showToast('Notifications', 'You have 3 unread notifications');
         });
-        
+
         // Logout button
         document.getElementById('logout-button').addEventListener('click', function() {
           showToast('Logged out successfully', 'You have been logged out of your account');
         });
-        
+
         // Function to update profile completion percentage
         function updateProfileCompletion(percentage) {
           const progressIndicator = document.querySelector('.progress-indicator');
           const percentageTexts = document.querySelectorAll('.profile-completion .font-medium');
-          
+
           progressIndicator.style.width = `${percentage}%`;
           percentageTexts.forEach(text => {
             text.textContent = text.textContent.replace(/\d+%/, `${percentage}%`);
           });
+        }
+      });
+
+      // Initialize authentication when DOM is loaded
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+      } else {
+        console.log('Auth script not loaded, trying to initialize...');
+        // Try to initialize auth after a short delay
+        setTimeout(function() {
+          if (typeof initAuth === 'function') {
+            initAuth();
+          } else {
+            console.error('Auth initialization function not found');
+          }
+        }, 500);
+      }
+
+      // Also try to initialize on window load
+      window.addEventListener('load', function() {
+        if (typeof initAuth === 'function') {
+          initAuth();
         }
       });
     </script>

@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cattle Inventory - DairyVest</title>
   <meta name="description" content="View and manage your cattle inventory">
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <!-- Required scripts -->
+  <script src="js/auth.js"></script>
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-  
+
   <script>
     tailwind.config = {
       theme: {
@@ -43,7 +44,7 @@
       margin: 0;
       padding: 0;
     }
-    
+
     /* Toast notifications */
     .toast-container {
       position: fixed;
@@ -51,7 +52,7 @@
       right: 1rem;
       z-index: 9999;
     }
-    
+
     .toast {
       background-color: white;
       border: 1px solid #e2e8f0;
@@ -68,18 +69,18 @@
     .toast.destructive {
       border-left: 4px solid #ef4444;
     }
-    
+
     @keyframes slideInFromRight {
       from { transform: translateX(100%); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
     }
-    
+
     .toast-title {
       font-weight: 600;
       font-size: 0.875rem;
       color: #1e293b;
     }
-    
+
     .toast-description {
       font-size: 0.75rem;
       color: #64748b;
@@ -103,7 +104,7 @@
           <span class="text-dairyvest-600 font-bold text-2xl">DairyVest</span>
         </a>
       </div>
-      
+
       <nav class="hidden md:flex items-center gap-8">
         <a href="add_new_cattle.html" class="text-slate-600 font-medium hover:text-dairyvest-600 transition duration-150 text-sm">
           Dashboard
@@ -118,7 +119,7 @@
           Settings
         </a>
       </nav>
-      
+
       <div class="flex items-center gap-4">
         <a href="addcattle.html" class="hidden md:flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-dairyvest-600 rounded-md hover:bg-dairyvest-700 transition-all hover:scale-105">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
@@ -148,7 +149,7 @@
         </button>
       </a>
     </div>
-    
+
     <!-- Filters -->
     <div class="bg-white p-4 border border-slate-200 rounded-lg shadow-sm mb-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -178,7 +179,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Cattle List Table -->
     <div class="bg-white shadow rounded-lg border border-slate-200">
       <div class="p-6 border-b border-slate-200">
@@ -212,7 +213,7 @@
   </main>
 
   <div id="toast-container" class="toast-container"></div>
-  
+
   <!-- Confirmation Dialog -->
   <div id="confirmDialog" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
@@ -233,29 +234,29 @@
     // Store cattle data
     let cattleData = [];
     let filteredCattleData = [];
-    
+
     // DOM ready event
     document.addEventListener('DOMContentLoaded', function() {
       loadCattleData();
-      
+
       // Set up filters
       const breedFilter = document.getElementById('breed-filter');
       const genderFilter = document.getElementById('gender-filter');
       const searchFilter = document.getElementById('search-filter');
-      
+
       breedFilter.addEventListener('change', applyFilters);
       genderFilter.addEventListener('change', applyFilters);
       searchFilter.addEventListener('input', applyFilters);
-      
+
       // Set up confirmation dialog
       const confirmDialog = document.getElementById('confirmDialog');
       const cancelButton = document.getElementById('cancelButton');
-      
+
       cancelButton.addEventListener('click', function() {
         confirmDialog.classList.add('hidden');
       });
     });
-    
+
     // Load cattle data from localStorage
     function loadCattleData() {
       try {
@@ -324,9 +325,9 @@
         } else {
           cattleData = JSON.parse(savedCattle);
         }
-        
+
         filteredCattleData = [...cattleData];
-        
+
         // Render cattle table
         renderCattleTable();
       } catch (error) {
@@ -334,80 +335,80 @@
         showToast("Error", "Failed to load cattle data", "error");
       }
     }
-    
+
     // Apply filters to cattle data
     function applyFilters() {
       const breedFilter = document.getElementById('breed-filter').value;
       const genderFilter = document.getElementById('gender-filter').value;
       const searchFilter = document.getElementById('search-filter').value.toLowerCase();
-      
+
       filteredCattleData = cattleData.filter(cattle => {
         // Apply breed filter
         if (breedFilter && cattle.breed !== breedFilter) {
           return false;
         }
-        
+
         // Apply gender filter
         if (genderFilter && cattle.gender !== genderFilter) {
           return false;
         }
-        
+
         // Apply search filter
         if (searchFilter && !cattle.tagId.toLowerCase().includes(searchFilter)) {
           return false;
         }
-        
+
         return true;
       });
-      
+
       renderCattleTable();
     }
-    
+
     // Render cattle table
     function renderCattleTable() {
       const tableBody = document.getElementById('cattleTableBody');
-      
+
       // Clear existing rows
       tableBody.innerHTML = '';
-      
+
       if (filteredCattleData.length === 0) {
         // Show empty state
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
           <td colspan="8" class="px-4 py-8 text-center text-sm text-gray-500">
-            ${cattleData.length === 0 ? 
-              'No cattle records found. Add your first cattle by clicking the "Add Cattle" button.' : 
+            ${cattleData.length === 0 ?
+              'No cattle records found. Add your first cattle by clicking the "Add Cattle" button.' :
               'No cattle records match the selected filters.'}
           </td>
         `;
         tableBody.appendChild(emptyRow);
         return;
       }
-      
+
       // Add rows for each cattle
       filteredCattleData.forEach(cattle => {
         const row = document.createElement('tr');
-        
+
         // Format breed name
         const breedName = cattle.breed.charAt(0).toUpperCase() + cattle.breed.slice(1).replace('_', ' ');
-        
+
         // Format gender
         const gender = cattle.gender.charAt(0).toUpperCase() + cattle.gender.slice(1);
-        
+
         // Determine health status class
         const healthClass = cattle.healthStatus === 'excellent' ? 'bg-green-100 text-green-800' :
                            cattle.healthStatus === 'good' ? 'bg-blue-100 text-blue-800' :
                            cattle.healthStatus === 'fair' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800';
-        
+
         // Format health status
         const healthStatus = cattle.healthStatus.charAt(0).toUpperCase() + cattle.healthStatus.slice(1);
-        
+
         // Format milk production
         const milkProduction = cattle.gender === 'female' ? `${cattle.expectedMilkProduction} L/day` : 'N/A';
-        
+
         // Format purchase date
         const purchaseDate = new Date(cattle.purchaseDate).toLocaleDateString();
-        
+
         row.innerHTML = `
           <td class="px-4 py-3 whitespace-nowrap">
             <div class="flex items-center">
@@ -453,7 +454,7 @@
           </td>
           <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
             <div class="flex space-x-2">
-              <button 
+              <button
                 class="text-blue-600 hover:text-blue-700 inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-3"
                 onclick="navigateToEdit('${cattle.id}')"
               >
@@ -462,7 +463,7 @@
                   <path d="m15 5 4 4"></path>
                 </svg>
               </button>
-              <button 
+              <button
                 class="text-red-600 hover:text-red-700 inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-3"
                 onclick="confirmDeleteCattle('${cattle.id}', '${cattle.tagId}')"
               >
@@ -477,49 +478,49 @@
             </div>
           </td>
         `;
-        
+
         tableBody.appendChild(row);
       });
     }
-    
+
     // Navigate to edit page
     function navigateToEdit(id) {
       window.location.href = `addcattle.html?edit=${id}`;
     }
-    
+
     // Show confirmation dialog for deleting cattle
     function confirmDeleteCattle(id, tagId) {
       const confirmDialog = document.getElementById('confirmDialog');
       const confirmTitle = document.getElementById('confirmTitle');
       const confirmMessage = document.getElementById('confirmMessage');
       const confirmButton = document.getElementById('confirmButton');
-      
+
       // Set dialog content
       confirmTitle.textContent = 'Delete Cattle';
       confirmMessage.textContent = `Are you sure you want to delete cattle with tag ${tagId}?`;
-      
+
       // Show dialog
       confirmDialog.classList.remove('hidden');
-      
+
       // Set up confirm button
       confirmButton.onclick = function() {
         deleteCattle(id, tagId);
         confirmDialog.classList.add('hidden');
       };
     }
-    
+
     // Delete cattle
     function deleteCattle(id, tagId) {
       try {
         // Filter out the cattle to be deleted
         cattleData = cattleData.filter(c => c.id !== id);
-        
+
         // Update localStorage
         localStorage.setItem('cattle', JSON.stringify(cattleData));
-        
+
         // Apply filters again
         applyFilters();
-        
+
         // Show success message
         showToast("Cattle Deleted", `Cattle with tag ${tagId} has been removed from your inventory.`, "destructive");
       } catch (error) {
@@ -527,14 +528,14 @@
         showToast("Error", "Failed to delete cattle", "error");
       }
     }
-    
+
     // Show toast notification
     function showToast(title, message, type = 'success') {
       const toastContainer = document.getElementById('toast-container');
-      
+
       const toast = document.createElement('div');
       toast.className = `toast ${type === 'destructive' || type === 'error' ? 'destructive' : ''}`;
-      
+
       toast.innerHTML = `
         <div>
           <div class="toast-title">${title}</div>
@@ -546,9 +547,9 @@
           </svg>
         </button>
       `;
-      
+
       toastContainer.appendChild(toast);
-      
+
       // Auto-remove toast after 5 seconds
       setTimeout(() => {
         if (toast.parentNode === toastContainer) {
@@ -556,6 +557,29 @@
         }
       }, 5000);
     }
+
+    // Initialize authentication when DOM is loaded
+    if (window.DairyLiftAuth) {
+      console.log('Auth script loaded, initializing...');
+      window.DairyLiftAuth.initAuth();
+    } else {
+      console.log('Auth script not loaded, trying to initialize...');
+      // Try to initialize auth after a short delay
+      setTimeout(function() {
+        if (typeof initAuth === 'function') {
+          initAuth();
+        } else {
+          console.error('Auth initialization function not found');
+        }
+      }, 500);
+    }
+
+    // Also try to initialize on window load
+    window.addEventListener('load', function() {
+      if (typeof initAuth === 'function') {
+        initAuth();
+      }
+    });
   </script>
 </body>
 </html>

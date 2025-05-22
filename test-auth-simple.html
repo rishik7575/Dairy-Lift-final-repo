@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Auth Test</title>
+  <script src="js/auth.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .navbar {
+      background: #f5f5f5;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: #ad6ef5;
+      color: white;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+      background: #e9ecef;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple Authentication Test</h1>
+  
+  <div class="status" id="status">
+    Checking authentication status...
+  </div>
+
+  <div class="navbar">
+    <div>
+      <h3>Test Navbar</h3>
+    </div>
+    <div class="navbar-actions">
+      <a href="login.html" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        Login
+      </a>
+    </div>
+  </div>
+
+  <div>
+    <h3>Test Controls</h3>
+    <button id="login-btn" class="btn btn-primary">Simulate Login</button>
+    <button id="logout-btn" class="btn btn-secondary">Simulate Logout</button>
+    <button id="check-btn" class="btn btn-secondary">Check Status</button>
+    <button id="force-update-btn" class="btn btn-secondary">Force UI Update</button>
+  </div>
+
+  <div>
+    <h3>Debug Info</h3>
+    <div id="debug-info" style="background: #f8f9fa; padding: 10px; border-radius: 4px; font-family: monospace; white-space: pre-wrap;"></div>
+  </div>
+
+  <script>
+    function updateStatus() {
+      const statusEl = document.getElementById('status');
+      const debugEl = document.getElementById('debug-info');
+      
+      let debugInfo = '';
+      
+      try {
+        // Check if auth functions are available
+        debugInfo += 'Auth functions available:\n';
+        debugInfo += `- window.isLoggedIn: ${typeof window.isLoggedIn}\n`;
+        debugInfo += `- window.DairyLiftAuth: ${typeof window.DairyLiftAuth}\n`;
+        debugInfo += `- window.initAuth: ${typeof window.initAuth}\n`;
+        debugInfo += `- window.updateAuthUI: ${typeof window.updateAuthUI}\n\n`;
+        
+        // Check localStorage
+        const authData = localStorage.getItem('dairyLift_auth');
+        debugInfo += `localStorage dairyLift_auth: ${authData}\n\n`;
+        
+        // Check login status
+        const isLoggedIn = window.isLoggedIn ? window.isLoggedIn() : false;
+        debugInfo += `isLoggedIn(): ${isLoggedIn}\n\n`;
+        
+        // Check for profile icon
+        const profileIcon = document.getElementById('profile-icon-link');
+        debugInfo += `Profile icon exists: ${!!profileIcon}\n`;
+        if (profileIcon) {
+          debugInfo += `Profile icon href: ${profileIcon.href}\n`;
+        }
+        
+        // Check for login buttons
+        const loginButtons = document.querySelectorAll('a[href="login.html"]');
+        debugInfo += `Login buttons found: ${loginButtons.length}\n\n`;
+        
+        if (isLoggedIn) {
+          statusEl.textContent = 'User is logged in';
+          statusEl.style.background = '#d4edda';
+          statusEl.style.color = '#155724';
+        } else {
+          statusEl.textContent = 'User is not logged in';
+          statusEl.style.background = '#f8d7da';
+          statusEl.style.color = '#721c24';
+        }
+        
+      } catch (error) {
+        debugInfo += `Error: ${error.message}\n`;
+        statusEl.textContent = 'Error checking status';
+        statusEl.style.background = '#f8d7da';
+        statusEl.style.color = '#721c24';
+      }
+      
+      debugEl.textContent = debugInfo;
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded, setting up test page');
+      
+      // Wait a bit for auth.js to initialize
+      setTimeout(function() {
+        updateStatus();
+        
+        // Set up event listeners
+        document.getElementById('login-btn').addEventListener('click', function() {
+          console.log('Simulating login...');
+          
+          // Simulate login
+          const userData = {
+            name: 'Test User',
+            email: 'test@example.com',
+            timestamp: Date.now(),
+            role: 'user'
+          };
+          
+          if (window.setLoggedIn) {
+            window.setLoggedIn(userData);
+          } else {
+            localStorage.setItem('dairyLift_auth', JSON.stringify(userData));
+          }
+          
+          setTimeout(updateStatus, 500);
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', function() {
+          console.log('Simulating logout...');
+          
+          if (window.logout) {
+            // Prevent redirect for testing
+            const originalLocation = window.location;
+            window.location = { href: originalLocation.href };
+            window.logout();
+            window.location = originalLocation;
+          } else {
+            localStorage.removeItem('dairyLift_auth');
+          }
+          
+          setTimeout(updateStatus, 500);
+        });
+
+        document.getElementById('check-btn').addEventListener('click', function() {
+          updateStatus();
+        });
+
+        document.getElementById('force-update-btn').addEventListener('click', function() {
+          console.log('Forcing UI update...');
+          if (window.updateAuthUI) {
+            window.updateAuthUI();
+          }
+          setTimeout(updateStatus, 500);
+        });
+        
+      }, 1000);
+    });
+
+    // Listen for auth changes
+    window.addEventListener('storage', function(event) {
+      if (event.key === 'dairyLift_auth') {
+        console.log('Storage event detected');
+        setTimeout(updateStatus, 100);
+      }
+    });
+
+    // Listen for custom auth events
+    document.addEventListener('dairyLiftAuthChanged', function(event) {
+      console.log('Auth changed event detected', event.detail);
+      setTimeout(updateStatus, 100);
+    });
+  </script>
+</body>
+</html>

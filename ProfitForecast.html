@@ -5,16 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profit Forecast</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     :root {
       --primary: #8B5CF6;
+      --primary-light: rgba(139, 92, 246, 0.1);
+      --secondary: #3B82F6;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
       --border: #E5E7EB;
       --foreground: #111827;
       --muted: #6B7280;
+      --muted-foreground: #9CA3AF;
+      --background: #F9FAFB;
       --radius: 0.5rem;
     }
-    
+
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       background-color: transparent;
@@ -22,138 +30,518 @@
       padding: 0;
       height: 100vh;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
     }
-    
+
     .card {
       background-color: white;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: 0 1px 3px rgba(0,0,0,0.12);
       height: 100%;
-      flex: 1;
       display: flex;
       flex-direction: column;
     }
-    
+
     .card-header {
-      padding: 1rem 1.5rem 0.5rem 1.5rem;
+      padding: 1rem 1.5rem;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     }
-    
+
     .card-title {
       font-weight: 600;
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       color: var(--foreground);
       margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    
+
     .card-content {
-      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+      padding: 1rem 1.5rem;
       flex: 1;
       display: flex;
       flex-direction: column;
+      min-height: 0;
     }
-    
+
+    .controls-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .select-input {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background-color: white;
+      color: var(--foreground);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      height: 2.5rem;
+    }
+
+    .select-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    .select-input:hover {
+      border-color: var(--primary);
+    }
+
+    .btn {
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      min-width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--background);
+      color: var(--foreground);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
     .chart-container {
       position: relative;
-      height: 300px;
+      height: 260px;
       width: 100%;
-      flex: 1;
+      margin-bottom: 1rem;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .chart-container canvas {
+      border-radius: 0.5rem;
     }
 
     /* Remove scrollbars */
     ::-webkit-scrollbar {
       display: none;
     }
-    
+
     * {
       scrollbar-width: none;
       -ms-overflow-style: none;
+    }
+    .metric-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.875rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .metric-card:hover {
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .metric-card:hover::before {
+      opacity: 1;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.375rem;
+      line-height: 1.2;
+    }
+
+    .metric-change {
+      font-size: 0.7rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      padding: 0.125rem 0.5rem;
+      border-radius: 1rem;
+      background-color: rgba(16, 185, 129, 0.1);
+    }
+
+    .positive { color: var(--success); }
+    .negative { color: var(--danger); }
+    .neutral { color: var(--muted); }
+
+    .scenario-tabs {
+      display: flex;
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+      border-radius: 0.75rem;
+      padding: 0.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .scenario-tab {
+      flex: 1;
+      padding: 0.5rem 0.75rem;
+      text-align: center;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scenario-tab.active {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .scenario-tab:not(.active) {
+      color: var(--muted);
+      background-color: transparent;
+    }
+
+    .scenario-tab:not(.active):hover {
+      color: var(--foreground);
+      background-color: rgba(255, 255, 255, 0.8);
+      transform: translateY(-1px);
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 0.75rem;
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+    }
+
+    .loading.show {
+      display: block;
+    }
+
+    .loading i {
+      color: var(--primary);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+
+    @media (max-width: 768px) {
+      .controls-section {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .control-group {
+        justify-content: space-between;
+      }
+
+      .metric-value {
+        font-size: 1.25rem;
+      }
+
+      .chart-container {
+        height: 250px;
+      }
+    }
+
+    /* Ensure chart renders properly */
+    canvas {
+      max-width: 100% !important;
+      height: auto !important;
     }
   </style>
 </head>
 <body>
   <div class="card">
+    <!-- Header Section -->
     <div class="card-header">
-      <h2 class="card-title">Profit Forecast</h2>
-    </div>
-    <div class="card-content">
-      <div class="flex justify-end space-x-4 mb-4">
-        <div class="flex items-center">
-          <div class="w-3 h-3 rounded-full bg-purple-600 mr-2"></div>
-          <span class="text-sm text-gray-600">Actual</span>
-        </div>
-        <div class="flex items-center">
-          <div class="w-3 h-3 rounded-full bg-blue-400 mr-2"></div>
-          <span class="text-sm text-gray-600">Forecast</span>
+      <div class="flex items-center justify-between">
+        <h2 class="card-title">
+          <i class="fas fa-chart-line text-primary"></i>
+          Profit Forecast
+        </h2>
+        <div class="flex items-center gap-2">
+          <select id="timeRange" class="select-input text-xs">
+            <option value="6m">6M</option>
+            <option value="12m" selected>12M</option>
+            <option value="24m">24M</option>
+          </select>
+          <button id="refreshBtn" class="btn btn-secondary text-xs px-2 py-1">
+            <i class="fas fa-sync-alt text-xs"></i>
+          </button>
+          <button id="exportBtn" class="btn btn-primary text-xs px-2 py-1">
+            <i class="fas fa-download text-xs"></i>
+          </button>
         </div>
       </div>
-      
-      <div class="chart-container">
+    </div>
+
+    <div class="card-content">
+      <!-- Scenario Tabs -->
+      <div class="scenario-tabs mb-3">
+        <div class="scenario-tab active" data-scenario="realistic">Realistic</div>
+        <div class="scenario-tab" data-scenario="conservative">Conservative</div>
+        <div class="scenario-tab" data-scenario="optimistic">Optimistic</div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading" id="loadingState">
+        <i class="fas fa-spinner animate-spin text-lg mb-2"></i>
+        <p class="text-sm">Updating forecast...</p>
+      </div>
+
+      <!-- Chart Container -->
+      <div class="chart-container mb-4">
         <canvas id="profitChart"></canvas>
       </div>
-      
-      <div class="grid grid-cols-3 gap-4 mt-6">
-        <div class="text-center p-4 bg-purple-50 rounded-lg">
-          <p class="text-sm text-gray-600">Current Month</p>
-          <p class="text-xl font-bold text-purple-600">₹4,250</p>
+
+      <!-- Metrics Grid -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="metric-card">
+          <div class="metric-label">Current Month</div>
+          <div class="metric-value text-purple-600 text-lg" id="currentMonth">₹4,250</div>
+          <div class="metric-change positive text-xs" id="currentChange">
+            <i class="fas fa-arrow-up"></i>
+            <span>8.5%</span>
+          </div>
         </div>
-        <div class="text-center p-4 bg-blue-50 rounded-lg">
-          <p class="text-sm text-gray-600">Next Month</p>
-          <p class="text-xl font-bold text-blue-600">₹4,800</p>
+        <div class="metric-card">
+          <div class="metric-label">Next Month</div>
+          <div class="metric-value text-blue-600 text-lg" id="nextMonth">₹4,800</div>
+          <div class="metric-change positive text-xs" id="nextChange">
+            <i class="fas fa-arrow-up"></i>
+            <span>12.9%</span>
+          </div>
         </div>
-        <div class="text-center p-4 bg-green-50 rounded-lg">
-          <p class="text-sm text-gray-600">Growth</p>
-          <p class="text-xl font-bold text-green-600">+12.9%</p>
+        <div class="metric-card">
+          <div class="metric-label">Quarterly Avg</div>
+          <div class="metric-value text-green-600 text-lg" id="quarterlyAvg">₹5,150</div>
+          <div class="metric-change positive text-xs" id="quarterlyChange">
+            <i class="fas fa-arrow-up"></i>
+            <span>15.2%</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Annual Projection</div>
+          <div class="metric-value text-orange-600 text-lg" id="annualProjection">₹61,800</div>
+          <div class="metric-change positive text-xs" id="annualChange">
+            <i class="fas fa-arrow-up"></i>
+            <span>18.7%</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const ctx = document.getElementById('profitChart').getContext('2d');
-      
-      const data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+    // Global variables
+    let profitChart;
+    let currentScenario = 'realistic';
+    let currentTimeRange = '12m';
+
+    // Data models for different scenarios
+    const scenarioData = {
+      realistic: {
+        historical: [3200, 3400, 3800, 4000, 4250],
+        forecast: [4800, 5200, 5600, 6000, 6400, 6800, 7200],
+        confidence: [0.85, 0.82, 0.78, 0.75, 0.72, 0.68, 0.65]
+      },
+      conservative: {
+        historical: [3200, 3400, 3800, 4000, 4250],
+        forecast: [4400, 4600, 4800, 5000, 5200, 5400, 5600],
+        confidence: [0.92, 0.90, 0.87, 0.85, 0.82, 0.80, 0.78]
+      },
+      optimistic: {
+        historical: [3200, 3400, 3800, 4000, 4250],
+        forecast: [5200, 5800, 6400, 7000, 7600, 8200, 8800],
+        confidence: [0.75, 0.70, 0.65, 0.60, 0.55, 0.50, 0.45]
+      }
+    };
+
+    // Generate month labels based on time range
+    function generateLabels(timeRange) {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const currentMonth = new Date().getMonth();
+      const labels = [];
+
+      const totalMonths = timeRange === '6m' ? 6 : timeRange === '12m' ? 12 : 24;
+      const historicalMonths = 5;
+
+      // Add historical months
+      for (let i = historicalMonths - 1; i >= 0; i--) {
+        const monthIndex = (currentMonth - i + 12) % 12;
+        labels.push(months[monthIndex]);
+      }
+
+      // Add forecast months
+      for (let i = 1; i <= totalMonths - historicalMonths; i++) {
+        const monthIndex = (currentMonth + i) % 12;
+        labels.push(months[monthIndex]);
+      }
+
+      return labels;
+    }
+
+    // Create chart data based on scenario and time range
+    function createChartData(scenario, timeRange) {
+      const data = scenarioData[scenario];
+      const labels = generateLabels(timeRange);
+      const totalMonths = timeRange === '6m' ? 6 : timeRange === '12m' ? 12 : 24;
+      const forecastLength = totalMonths - 5;
+
+      const actualData = [...data.historical, ...Array(forecastLength).fill(null)];
+      const forecastData = [...Array(5).fill(null), ...data.forecast.slice(0, forecastLength)];
+
+      // Create confidence interval data
+      const upperBound = forecastData.map((value, index) => {
+        if (value === null) return null;
+        const confidence = data.confidence[index - 5] || 0.5;
+        return Math.round(value * (1 + (1 - confidence) * 0.3));
+      });
+
+      const lowerBound = forecastData.map((value, index) => {
+        if (value === null) return null;
+        const confidence = data.confidence[index - 5] || 0.5;
+        return Math.round(value * (1 - (1 - confidence) * 0.2));
+      });
+
+      return {
+        labels: labels,
         datasets: [
           {
             label: 'Actual Profit',
-            data: [3200, 3400, 3800, 4000, 4250, null, null, null, null],
+            data: actualData,
             borderColor: '#8B5CF6',
             backgroundColor: 'rgba(139, 92, 246, 0.1)',
-            fill: true,
-            tension: 0.4
+            fill: false,
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 6
           },
           {
-            label: 'Forecast',
-            data: [null, null, null, null, 4250, 4800, 5200, 5600, 6000],
-            borderColor: '#60A5FA',
-            backgroundColor: 'rgba(96, 165, 250, 0.1)',
-            fill: true,
+            label: `${scenario.charAt(0).toUpperCase() + scenario.slice(1)} Forecast`,
+            data: forecastData,
+            borderColor: scenario === 'realistic' ? '#3B82F6' : scenario === 'conservative' ? '#10B981' : '#F59E0B',
+            backgroundColor: scenario === 'realistic' ? 'rgba(59, 130, 246, 0.1)' : scenario === 'conservative' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
+            fill: false,
             tension: 0.4,
-            borderDash: [5, 5]
+            borderDash: [5, 5],
+            pointRadius: 4,
+            pointHoverRadius: 6
           }
         ]
       };
-      
-      const config = {
+    }
+
+    // Initialize chart
+    function initChart() {
+      const ctx = document.getElementById('profitChart').getContext('2d');
+      const chartData = createChartData(currentScenario, currentTimeRange);
+
+      profitChart = new Chart(ctx, {
         type: 'line',
-        data: data,
+        data: chartData,
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              display: false
+              display: true,
+              position: 'top',
+              labels: {
+                usePointStyle: true,
+                padding: 15,
+                font: {
+                  size: 12
+                }
+              }
             },
             tooltip: {
               mode: 'index',
               intersect: false,
               callbacks: {
                 label: function(context) {
-                  return context.dataset.label + ': ₹' + context.parsed.y;
+                  return context.dataset.label + ': ₹' + (context.parsed.y || 0).toLocaleString();
                 }
               }
             }
@@ -166,7 +554,7 @@
               },
               ticks: {
                 callback: function(value) {
-                  return '₹' + value;
+                  return '₹' + value.toLocaleString();
                 }
               }
             },
@@ -177,25 +565,189 @@
             }
           }
         }
-      };
-      
-      new Chart(ctx, config);
-      
-      // Send height to parent
-      function updateParentHeight() {
-        const height = document.body.scrollHeight;
-        if (window.parent && window.parent !== window) {
-          window.parent.postMessage({ type: 'iframe-height', height: height }, '*');
-        }
+      });
+    }
+
+    // Update metrics based on current scenario and time range
+    function updateMetrics() {
+      const data = scenarioData[currentScenario];
+      const currentMonth = data.historical[data.historical.length - 1];
+      const nextMonth = data.forecast[0];
+      const quarterlyAvg = Math.round(data.forecast.slice(0, 3).reduce((a, b) => a + b, 0) / 3);
+      const annualProjection = Math.round(data.forecast.slice(0, 12).reduce((a, b) => a + b, 0));
+
+      // Calculate growth percentages
+      const currentGrowth = ((currentMonth - data.historical[data.historical.length - 2]) / data.historical[data.historical.length - 2] * 100).toFixed(1);
+      const nextGrowth = ((nextMonth - currentMonth) / currentMonth * 100).toFixed(1);
+      const quarterlyGrowth = ((quarterlyAvg - currentMonth) / currentMonth * 100).toFixed(1);
+      const annualGrowth = ((annualProjection - (currentMonth * 12)) / (currentMonth * 12) * 100).toFixed(1);
+
+      // Update DOM elements
+      document.getElementById('currentMonth').textContent = `₹${currentMonth.toLocaleString()}`;
+      document.getElementById('nextMonth').textContent = `₹${nextMonth.toLocaleString()}`;
+      document.getElementById('quarterlyAvg').textContent = `₹${quarterlyAvg.toLocaleString()}`;
+      document.getElementById('annualProjection').textContent = `₹${annualProjection.toLocaleString()}`;
+
+      // Update change indicators
+      updateChangeIndicator('currentChange', currentGrowth);
+      updateChangeIndicator('nextChange', nextGrowth);
+      updateChangeIndicator('quarterlyChange', quarterlyGrowth);
+      updateChangeIndicator('annualChange', annualGrowth);
+    }
+
+    // Update change indicator with appropriate styling
+    function updateChangeIndicator(elementId, percentage) {
+      const element = document.getElementById(elementId);
+      const value = parseFloat(percentage);
+      const icon = element.querySelector('i');
+      const span = element.querySelector('span');
+
+      span.textContent = `${Math.abs(value).toFixed(1)}%`;
+
+      if (value > 0) {
+        element.className = 'metric-change positive';
+        icon.className = 'fas fa-arrow-up';
+      } else if (value < 0) {
+        element.className = 'metric-change negative';
+        icon.className = 'fas fa-arrow-down';
+      } else {
+        element.className = 'metric-change neutral';
+        icon.className = 'fas fa-minus';
       }
-      
-      // Update height after content loads
-      updateParentHeight();
-      // Also update after a short delay to account for dynamic content
-      setTimeout(updateParentHeight, 500);
-      
-      // Update height when window resizes
-      window.addEventListener('resize', updateParentHeight);
+    }
+
+    // Update chart with new data
+    function updateChart() {
+      showLoading();
+
+      setTimeout(() => {
+        try {
+          const newData = createChartData(currentScenario, currentTimeRange);
+          profitChart.data = newData;
+          profitChart.update();
+          updateMetrics();
+          hideLoading();
+          updateParentHeight();
+        } catch (error) {
+          console.error('Error updating chart:', error);
+          hideLoading();
+        }
+      }, 500);
+    }
+
+    // Show loading state
+    function showLoading() {
+      const loadingEl = document.getElementById('loadingState');
+      const chartEl = document.querySelector('.chart-container');
+      if (loadingEl) loadingEl.classList.add('show');
+      if (chartEl) chartEl.style.opacity = '0.3';
+    }
+
+    // Hide loading state
+    function hideLoading() {
+      const loadingEl = document.getElementById('loadingState');
+      const chartEl = document.querySelector('.chart-container');
+      if (loadingEl) loadingEl.classList.remove('show');
+      if (chartEl) chartEl.style.opacity = '1';
+    }
+
+    // Export data functionality
+    function exportData() {
+      const data = scenarioData[currentScenario];
+      const labels = generateLabels(currentTimeRange);
+
+      // Create CSV content
+      let csvContent = "Month,Actual Profit,Forecast Profit,Confidence\n";
+
+      labels.forEach((label, index) => {
+        const actual = index < 5 ? data.historical[index] : '';
+        const forecast = index >= 5 ? data.forecast[index - 5] : '';
+        const confidence = index >= 5 ? Math.round(data.confidence[index - 5] * 100) + '%' : '';
+        csvContent += `${label},${actual},${forecast},${confidence}\n`;
+      });
+
+      // Download CSV
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `profit-forecast-${currentScenario}-${currentTimeRange}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    // Send height to parent iframe
+    function updateParentHeight() {
+      const height = document.body.scrollHeight;
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'iframe-height', height: height }, '*');
+      }
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        // Initialize chart
+        initChart();
+        updateMetrics();
+
+        // Scenario tab switching
+        document.querySelectorAll('.scenario-tab').forEach(tab => {
+          tab.addEventListener('click', function() {
+            document.querySelectorAll('.scenario-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            currentScenario = this.dataset.scenario;
+            updateChart();
+          });
+        });
+
+        // Time range selection
+        const timeRangeSelect = document.getElementById('timeRange');
+        if (timeRangeSelect) {
+          timeRangeSelect.addEventListener('change', function() {
+            currentTimeRange = this.value;
+            updateChart();
+          });
+        }
+
+        // Refresh button
+        const refreshBtn = document.getElementById('refreshBtn');
+        if (refreshBtn) {
+          refreshBtn.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            if (icon) icon.classList.add('animate-spin');
+
+            // Simulate data refresh with slight variations
+            Object.keys(scenarioData).forEach(scenario => {
+              scenarioData[scenario].forecast = scenarioData[scenario].forecast.map(value =>
+                Math.round(value * (0.95 + Math.random() * 0.1))
+              );
+            });
+
+            updateChart();
+
+            setTimeout(() => {
+              if (icon) icon.classList.remove('animate-spin');
+            }, 1000);
+          });
+        }
+
+        // Export button
+        const exportBtn = document.getElementById('exportBtn');
+        if (exportBtn) {
+          exportBtn.addEventListener('click', exportData);
+        }
+
+        // Update height after content loads
+        updateParentHeight();
+        setTimeout(updateParentHeight, 1000);
+
+        // Update height when window resizes
+        window.addEventListener('resize', updateParentHeight);
+
+      } catch (error) {
+        console.error('Error initializing profit forecast:', error);
+      }
     });
   </script>
 </body>

@@ -169,18 +169,22 @@ function createProfileIcon() {
   profileLink.style.zIndex = '1000';
   profileLink.style.position = 'relative';
   profileLink.style.cursor = 'pointer';
+  profileLink.style.border = '2px solid rgba(173, 110, 245, 0.3)';
+  profileLink.style.overflow = 'hidden';
 
   // Add hover effect
   profileLink.onmouseover = function() {
     this.style.backgroundColor = 'rgba(173, 110, 245, 0.3)';
     this.style.transform = 'scale(1.05)';
     this.style.boxShadow = '0 0 10px rgba(173, 110, 245, 0.3)';
+    this.style.borderColor = 'rgba(173, 110, 245, 0.5)';
   };
 
   profileLink.onmouseout = function() {
     this.style.backgroundColor = 'rgba(173, 110, 245, 0.2)';
     this.style.transform = 'scale(1)';
     this.style.boxShadow = 'none';
+    this.style.borderColor = 'rgba(173, 110, 245, 0.3)';
   };
 
   // Add click event listener
@@ -198,26 +202,51 @@ function createProfileIcon() {
     window.location.href = profileUrl;
   };
 
-  // Create the profile icon
-  const profileIcon = document.createElement('svg');
-  profileIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  profileIcon.setAttribute('width', '20');
-  profileIcon.setAttribute('height', '20');
-  profileIcon.setAttribute('viewBox', '0 0 24 24');
-  profileIcon.setAttribute('fill', 'none');
-  profileIcon.setAttribute('stroke', 'currentColor');
-  profileIcon.setAttribute('stroke-width', '2');
-  profileIcon.setAttribute('stroke-linecap', 'round');
-  profileIcon.setAttribute('stroke-linejoin', 'round');
+  // Create the profile image element
+  const profileImage = document.createElement('img');
 
-  // Add the SVG path for user icon
-  profileIcon.innerHTML = `
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-    <circle cx="12" cy="7" r="4"></circle>
-  `;
+  // Determine the correct image path based on the current page
+  let imagePath = 'image/profileicone.png';
+  if (window.location.pathname.includes('filesforbuycattle')) {
+    imagePath = '../image/profileicone.png';
+  }
 
-  // Append icon to link
-  profileLink.appendChild(profileIcon);
+  profileImage.src = imagePath;
+  profileImage.alt = 'Profile';
+  profileImage.style.width = '100%';
+  profileImage.style.height = '100%';
+  profileImage.style.objectFit = 'cover';
+  profileImage.style.borderRadius = '50%';
+
+  // Add error handling for image loading
+  profileImage.onerror = function() {
+    debug('Profile image failed to load, falling back to SVG icon');
+
+    // Remove the image and create SVG fallback
+    profileLink.removeChild(this);
+
+    const profileIcon = document.createElement('svg');
+    profileIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    profileIcon.setAttribute('width', '20');
+    profileIcon.setAttribute('height', '20');
+    profileIcon.setAttribute('viewBox', '0 0 24 24');
+    profileIcon.setAttribute('fill', 'none');
+    profileIcon.setAttribute('stroke', 'currentColor');
+    profileIcon.setAttribute('stroke-width', '2');
+    profileIcon.setAttribute('stroke-linecap', 'round');
+    profileIcon.setAttribute('stroke-linejoin', 'round');
+
+    // Add the SVG path for user icon
+    profileIcon.innerHTML = `
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    `;
+
+    profileLink.appendChild(profileIcon);
+  };
+
+  // Append image to link
+  profileLink.appendChild(profileImage);
 
   return profileLink;
 }
@@ -567,19 +596,54 @@ function initAuth() {
     // Start observing the document with the configured parameters
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Set a periodic check to ensure the UI is updated
+    // Set a periodic check to ensure the UI is updated (optimized)
     // This helps with pages that load content dynamically
-    setInterval(function() {
-      if (isLoggedIn()) {
-        const profileIcon = document.getElementById('profile-icon-link');
-        if (!profileIcon) {
-          debug('Periodic check: profile icon not found, updating UI');
+    let periodicCheckInterval = null;
+    let consecutiveChecks = 0;
 
-          // Force UI update
-          updateAuthUI();
+    function startPeriodicCheck() {
+      if (periodicCheckInterval) return;
+
+      periodicCheckInterval = setInterval(function() {
+        if (isLoggedIn()) {
+          const profileIcon = document.getElementById('profile-icon-link');
+          if (!profileIcon) {
+            debug('Periodic check: profile icon not found, updating UI');
+            updateAuthUI();
+            consecutiveChecks = 0; // Reset counter when action is needed
+          } else {
+            consecutiveChecks++;
+            // If UI is stable for 10 checks, reduce frequency
+            if (consecutiveChecks >= 10) {
+              clearInterval(periodicCheckInterval);
+              periodicCheckInterval = null;
+              // Start a slower check
+              setTimeout(startSlowPeriodicCheck, 5000);
+            }
+          }
+        } else {
+          consecutiveChecks++;
+          if (consecutiveChecks >= 5) {
+            clearInterval(periodicCheckInterval);
+            periodicCheckInterval = null;
+          }
         }
-      }
-    }, 500); // Check more frequently (every 500ms)
+      }, 1000); // Check every 1 second initially
+    }
+
+    function startSlowPeriodicCheck() {
+      setInterval(function() {
+        if (isLoggedIn()) {
+          const profileIcon = document.getElementById('profile-icon-link');
+          if (!profileIcon) {
+            debug('Slow periodic check: profile icon not found, restarting fast check');
+            startPeriodicCheck();
+          }
+        }
+      }, 10000); // Check every 10 seconds when stable
+    }
+
+    startPeriodicCheck();
 
     // Force an update after page load
     window.addEventListener('load', function() {
@@ -636,6 +700,14 @@ window.DairyLiftAuth = {
   updateAuthUI,
   initAuth
 };
+
+// Also expose individual functions globally for backward compatibility
+window.isLoggedIn = isLoggedIn;
+window.getCurrentUser = getCurrentUser;
+window.setLoggedIn = setLoggedIn;
+window.logout = logout;
+window.updateAuthUI = updateAuthUI;
+window.initAuth = initAuth;
 
 // Initialize authentication when the script loads
 // Use a small delay to ensure the DOM is ready

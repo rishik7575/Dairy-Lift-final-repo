@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Investor - DairyVest Admin</title>
+  <script src="js/auth.js"></script>
   <style>
     /* Global Styles */
     * {
@@ -342,7 +343,7 @@
           <p class="card-description">Enter the details below to onboard a new investor to your dairy business.</p>
         </div>
       </div>
-      
+
       <form id="investor-form" onsubmit="handleSubmit(event)">
         <div class="card-body">
           <div class="form-grid">
@@ -350,17 +351,17 @@
               <label for="name" class="form-label required">Full Name</label>
               <input type="text" id="name" name="name" class="form-input" required placeholder="Enter investor's full name">
             </div>
-            
+
             <div class="form-group">
               <label for="email" class="form-label required">Email Address</label>
               <input type="email" id="email" name="email" class="form-input" required placeholder="Enter email address">
             </div>
-            
+
             <div class="form-group">
               <label for="phone" class="form-label required">Phone Number</label>
               <input type="tel" id="phone" name="phone" class="form-input" required placeholder="Enter phone number">
             </div>
-            
+
             <div class="form-group">
               <label for="investment_amount" class="form-label required">Investment Amount (₹)</label>
               <div class="input-with-icon">
@@ -373,7 +374,7 @@
                 <input type="number" id="investment_amount" name="investment_amount" class="form-input" required min="1000" step="1000" placeholder="Enter investment amount">
               </div>
             </div>
-            
+
             <div class="form-group">
               <label for="investment_type" class="form-label required">Investment Type</label>
               <select id="investment_type" name="investment_type" class="form-select" required>
@@ -385,29 +386,29 @@
               </select>
               <p class="form-description">Type of investment relationship</p>
             </div>
-            
+
             <div class="form-group">
               <label for="start_date" class="form-label required">Start Date</label>
               <input type="date" id="start_date" name="start_date" class="form-input" required>
             </div>
-            
+
             <div class="form-group">
               <label for="duration_months" class="form-label required">Duration (Months)</label>
               <input type="number" id="duration_months" name="duration_months" class="form-input" required min="1" value="12" placeholder="Enter duration in months">
             </div>
-            
+
             <div class="form-group">
               <label for="expected_return" class="form-label required">Expected Return (%)</label>
               <input type="number" id="expected_return" name="expected_return" class="form-input" required min="0" step="0.1" value="10" placeholder="Enter expected return %">
             </div>
           </div>
-          
+
           <div class="form-group">
             <label for="notes" class="form-label">Additional Notes</label>
             <textarea id="notes" name="notes" class="form-textarea" placeholder="Enter any additional information about the investor or agreement terms"></textarea>
           </div>
         </div>
-        
+
         <div class="card-footer">
           <a href="admin_dashboard.html" class="btn btn-outline">Cancel</a>
           <button type="submit" class="btn btn-green">
@@ -436,30 +437,30 @@
     // Form submission handler
     function handleSubmit(event) {
       event.preventDefault();
-      
+
       // Get form data
       const formData = new FormData(event.target);
       const investorData = Object.fromEntries(formData.entries());
-      
+
       // Email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(investorData.email)) {
         showToast('error', 'Validation Error', 'Please enter a valid email address.');
         return;
       }
-      
+
       // Phone validation (simple check)
       if (investorData.phone.length < 10) {
         showToast('error', 'Validation Error', 'Please enter a valid phone number.');
         return;
       }
-      
+
       // In a real application, you would send this data to a server
       console.log('Submitting investor data:', investorData);
-      
+
       // Show success message
       showToast('success', 'Investor Added Successfully', `${investorData.name} has been registered as a new investor with ₹${investorData.investment_amount} investment.`);
-      
+
       // Reset form after successful submission
       setTimeout(() => {
         window.location.href = 'admin_dashboard.html';
@@ -469,10 +470,10 @@
     // Function to show toast notifications
     function showToast(type, title, message, duration = 3000) {
       const toastContainer = document.getElementById('toast-container');
-      
+
       const toast = document.createElement('div');
       toast.className = `toast toast-${type}`;
-      
+
       let iconSvg = '';
       switch(type) {
         case 'success':
@@ -482,7 +483,7 @@
           iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
           break;
       }
-      
+
       toast.innerHTML = `
         ${iconSvg}
         <div class="toast-content">
@@ -496,14 +497,14 @@
           </svg>
         </button>
       `;
-      
+
       toastContainer.appendChild(toast);
-      
+
       const closeButton = toast.querySelector('.toast-close');
       closeButton.addEventListener('click', function() {
         toast.remove();
       });
-      
+
       // Auto remove after duration
       setTimeout(() => {
         toast.style.animation = 'slideOut 0.3s ease-out forwards';
@@ -512,6 +513,31 @@
         }, 300);
       }, duration);
     }
+
+    // Initialize authentication when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+      } else {
+        console.log('Auth script not loaded, trying to initialize...');
+        // Try to initialize auth after a short delay
+        setTimeout(function() {
+          if (typeof initAuth === 'function') {
+            initAuth();
+          } else {
+            console.error('Auth initialization function not found');
+          }
+        }, 500);
+      }
+
+      // Also try to initialize on window load
+      window.addEventListener('load', function() {
+        if (typeof initAuth === 'function') {
+          initAuth();
+        }
+      });
+    });
   </script>
 </body>
 </html>

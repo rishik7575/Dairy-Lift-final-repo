@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cattle Details View</title>
+  <script src="js/auth.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
   <style>
     :root {
@@ -27,7 +28,7 @@
       --input: 214.3 31.8% 91.4%;
       --ring: 222.2 84% 4.9%;
       --radius: 0.5rem;
-      
+
       /* Cattle-specific colors */
       --cattle-primary: #8B5CF6;
       --cattle-primary-light: rgba(139, 92, 246, 0.1);
@@ -49,7 +50,7 @@
       background-color: #f9fafb;
       color: hsl(var(--foreground));
     }
-    
+
     .dialog {
       position: fixed;
       top: 0;
@@ -76,7 +77,7 @@
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       animation: scaleIn 0.3s ease forwards;
     }
-    
+
     @keyframes scaleIn {
       from { transform: scale(0.95); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
@@ -147,7 +148,7 @@
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
-    
+
     .tabs::-webkit-scrollbar {
       display: none;
     }
@@ -173,7 +174,7 @@
       font-weight: 600;
       border-bottom-color: var(--cattle-primary);
     }
-    
+
     .tab[aria-selected="true"]::after {
       content: '';
       position: absolute;
@@ -184,7 +185,7 @@
       background-color: var(--cattle-primary);
       animation: slideIn 0.3s ease forwards;
     }
-    
+
     @keyframes slideIn {
       from { transform: scaleX(0); }
       to { transform: scaleX(1); }
@@ -203,251 +204,251 @@
       animation: fadeIn 0.3s ease forwards;
       max-height: 60vh;
     }
-    
+
     .tab-panel[aria-hidden="false"] {
       display: block;
     }
-    
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
+
     .grid {
       display: grid;
       gap: 1.5rem;
     }
-    
+
     .grid-cols-1 {
       grid-template-columns: 1fr;
     }
-    
+
     @media (min-width: 768px) {
       .md\:grid-cols-2 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      
+
       .md\:grid-cols-3 {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-      
+
       .md\:col-span-2 {
         grid-column: span 2 / span 2;
       }
     }
-    
+
     .space-y-3 > * + * {
       margin-top: 0.75rem;
     }
-    
+
     .space-y-4 > * + * {
       margin-top: 1rem;
     }
-    
+
     .space-y-5 > * + * {
       margin-top: 1.25rem;
     }
-    
+
     .space-y-6 > * + * {
       margin-top: 1.5rem;
     }
-    
+
     .flex {
       display: flex;
     }
-    
+
     .items-center {
       align-items: center;
     }
-    
+
     .justify-between {
       justify-content: space-between;
     }
-    
+
     .justify-center {
       justify-content: center;
     }
-    
+
     .text-muted-foreground {
       color: hsl(var(--muted-foreground));
     }
-    
+
     .font-medium {
       font-weight: 500;
     }
-    
+
     .font-semibold {
       font-weight: 600;
     }
-    
+
     .mb-1 {
       margin-bottom: 0.25rem;
     }
-    
+
     .mb-4 {
       margin-bottom: 1rem;
     }
-    
+
     .text-sm {
       font-size: 0.875rem;
     }
-    
+
     .text-lg {
       font-size: 1.125rem;
     }
-    
+
     .text-xl {
       font-size: 1.25rem;
     }
-    
+
     .text-center {
       text-align: center;
     }
-    
+
     .rounded-lg {
       border-radius: var(--radius);
     }
-    
+
     .rounded-full {
       border-radius: 9999px;
     }
-    
+
     .p-4 {
       padding: 1rem;
     }
-    
+
     .p-5 {
       padding: 1.25rem;
     }
-    
+
     .p-3 {
       padding: 0.75rem;
     }
-    
+
     .px-3 {
       padding-left: 0.75rem;
       padding-right: 0.75rem;
     }
-    
+
     .py-1 {
       padding-top: 0.25rem;
       padding-bottom: 0.25rem;
     }
-    
+
     .gap-2 {
       gap: 0.5rem;
     }
-    
+
     .gap-4 {
       gap: 1rem;
     }
-    
+
     .h-full {
       height: 100%;
     }
-    
+
     .w-full {
       width: 100%;
     }
-    
+
     .w-36 {
       width: 9rem;
     }
-    
+
     .h-36 {
       height: 9rem;
     }
-    
+
     .h-2 {
       height: 0.5rem;
     }
-    
+
     .w-2 {
       width: 0.5rem;
     }
-    
+
     .bg-cattle-primary-light {
       background-color: var(--cattle-primary-light);
     }
-    
+
     .bg-background\/50 {
       background-color: rgba(255, 255, 255, 0.5);
     }
-    
+
     .bg-muted {
       background-color: hsl(var(--muted));
     }
-    
+
     .bg-muted\/50 {
       background-color: hsla(var(--muted), 0.5);
     }
-    
+
     .bg-cattle-primary {
       background-color: var(--cattle-primary);
     }
-    
+
     .bg-cattle-primary\/20 {
       background-color: rgba(139, 92, 246, 0.2);
     }
-    
+
     .text-cattle-green {
       color: var(--cattle-green);
     }
-    
+
     .text-cattle-blue {
       color: var(--cattle-blue);
     }
-    
+
     .text-cattle-yellow {
       color: var(--cattle-yellow);
     }
-    
+
     .text-cattle-red {
       color: var(--cattle-red);
     }
-    
+
     .text-cattle-primary {
       color: var(--cattle-primary);
     }
-    
+
     .border-8 {
       border-width: 8px;
     }
-    
+
     .border-cattle-primary {
       border-color: var(--cattle-primary);
     }
-    
+
     .shadow-sm {
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
-    
+
     .shadow-md {
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
-    
+
     .shadow-inner {
       box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
     }
-    
+
     .transition-all {
       transition-property: all;
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-duration: 200ms;
     }
-    
+
     .hover\:translate-y-\[-2px\]:hover {
       transform: translateY(-2px);
     }
-    
+
     .hover\:shadow-md:hover {
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
-    
+
     .hover\:bg-cattle-primary-light\/30:hover {
       background-color: rgba(139, 92, 246, 0.1);
     }
-    
+
     /* Health table styles */
     .health-table {
       width: 100%;
@@ -465,7 +466,7 @@
       border-bottom: 1px solid hsl(var(--border));
       text-align: left;
     }
-    
+
     .health-table tr:last-child td {
       border-bottom: none;
     }
@@ -478,11 +479,11 @@
       top: 0;
       z-index: 10;
     }
-    
+
     .health-table tbody tr:hover {
       background-color: rgba(139, 92, 246, 0.05);
     }
-    
+
     .progress-bar {
       width: 100%;
       height: 0.5rem;
@@ -500,74 +501,74 @@
       background-size: 1rem 1rem;
       animation: progressAnimation 1s linear infinite;
     }
-    
+
     @keyframes progressAnimation {
       0% { background-position: 1rem 0; }
       100% { background-position: 0 0; }
     }
-    
-    .health-excellent { 
+
+    .health-excellent {
       color: var(--cattle-green);
       font-weight: 600;
     }
-    
-    .health-good { 
+
+    .health-good {
       color: var(--cattle-blue);
       font-weight: 600;
     }
-    
-    .health-fair { 
+
+    .health-fair {
       color: var(--cattle-yellow);
       font-weight: 600;
     }
-    
-    .health-poor { 
+
+    .health-poor {
       color: var(--cattle-red);
       font-weight: 600;
     }
-    
+
     .pl-6 {
       padding-left: 1.5rem;
     }
-    
+
     .relative {
       position: relative;
     }
-    
+
     .absolute {
       position: absolute;
     }
-    
+
     .left-0 {
       left: 0;
     }
-    
+
     .left-1 {
       left: 0.25rem;
     }
-    
+
     .top-1 {
       top: 0.25rem;
     }
-    
+
     .bottom-0 {
       bottom: 0;
     }
-    
+
     .w-\[1px\] {
       width: 1px;
     }
-    
+
     .bg-cattle-primary\/30 {
       background-color: rgba(139, 92, 246, 0.3);
     }
-    
+
     .divide-y > * + * {
       border-top-width: 1px;
       border-top-style: solid;
       border-color: hsl(var(--border));
     }
-    
+
     .chart-container {
       min-height: 300px;
       display: flex;
@@ -578,26 +579,26 @@
       background-color: rgba(210, 40%, 96.1%, 0.5);
       padding: 1rem;
     }
-    
+
     /* Custom scrollbar */
     .custom-scrollbar {
       scrollbar-width: thin;
       scrollbar-color: hsla(var(--muted-foreground), 0.5) transparent;
     }
-    
+
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
     }
-    
+
     .custom-scrollbar::-webkit-scrollbar-track {
       background: transparent;
     }
-    
+
     .custom-scrollbar::-webkit-scrollbar-thumb {
       background-color: hsla(var(--muted-foreground), 0.5);
       border-radius: 9999px;
     }
-    
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .tabs {
@@ -606,21 +607,21 @@
         -webkit-overflow-scrolling: touch;
         padding: 0 0.5rem;
       }
-      
+
       .tab {
         padding: 0.75rem 1rem;
       }
-      
+
       .tab-panel {
         padding: 1rem;
       }
-      
+
       .dialog-content {
         width: 95%;
         max-height: 95vh;
       }
     }
-    
+
     /* Fix for Safari */
     @supports (-webkit-touch-callout: none) {
       .dialog-content {
@@ -628,13 +629,13 @@
         max-height: 85vh;
       }
     }
-    
+
     /* Improve close button visibility */
     .close-button:focus, .close-button:active {
       outline: 2px solid var(--cattle-primary);
       outline-offset: 2px;
     }
-    
+
     /* Chart tooltip improvements */
     .chart-tooltip {
       background-color: white !important;
@@ -670,7 +671,7 @@
         <button class="tab" role="tab" aria-selected="false" aria-controls="health-panel" id="health-tab">Health Records</button>
         <button class="tab" role="tab" aria-selected="false" aria-controls="fertility-panel" id="fertility-tab">Fertility</button>
       </div>
-      
+
       <div class="tab-content">
         <div class="tab-panel custom-scrollbar" id="overview-panel" role="tabpanel" aria-labelledby="overview-tab" aria-hidden="false">
           <div class="grid grid-cols-1 md:grid-cols-2 space-y-6 md:space-y-0 gap-6">
@@ -735,13 +736,13 @@
             </div>
           </div>
         </div>
-        
+
         <div class="tab-panel custom-scrollbar" id="production-panel" role="tabpanel" aria-labelledby="production-tab" aria-hidden="true">
           <div class="space-y-6">
             <div class="chart-container">
               <canvas id="productionChart"></canvas>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div class="bg-muted/50 p-4 rounded-lg text-center shadow-sm hover:translate-y-[-2px] hover:shadow transition-all duration-200">
                 <p class="text-sm text-muted-foreground">Daily Average</p>
@@ -756,7 +757,7 @@
                 <p class="text-xl font-bold">32 L</p>
               </div>
             </div>
-            
+
             <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm">
               <h3 class="font-semibold mb-4">Production Trends</h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -775,7 +776,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="tab-panel custom-scrollbar" id="health-panel" role="tabpanel" aria-labelledby="health-tab" aria-hidden="true">
           <div class="space-y-6">
             <div class="overflow-hidden rounded-lg border shadow-sm">
@@ -843,7 +844,7 @@
                   </li>
                 </ul>
               </div>
-              
+
               <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm hover:translate-y-[-2px] hover:shadow-md transition-all duration-200">
                 <h3 class="font-semibold mb-4">Health Score Trend</h3>
                 <div class="flex flex-col items-center">
@@ -856,7 +857,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="tab-panel custom-scrollbar" id="fertility-panel" role="tabpanel" aria-labelledby="fertility-tab" aria-hidden="true">
           <div class="space-y-6">
             <div class="overflow-hidden rounded-lg border shadow-sm">
@@ -926,7 +927,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="bg-cattle-primary-light p-5 rounded-lg shadow-sm hover:translate-y-[-2px] hover:shadow-md transition-all duration-200">
                 <h3 class="font-semibold mb-4">Fertility Metrics</h3>
                 <div class="space-y-3">
@@ -964,33 +965,33 @@
       // Tab switching functionality
       const tabs = document.querySelectorAll('[role="tab"]');
       const tabPanels = document.querySelectorAll('[role="tabpanel"]');
-      
+
       tabs.forEach(tab => {
         tab.addEventListener('click', () => {
           // Deactivate all tabs
           tabs.forEach(t => {
             t.setAttribute('aria-selected', 'false');
           });
-          
+
           // Hide all panels
           tabPanels.forEach(panel => {
             panel.setAttribute('aria-hidden', 'true');
           });
-          
+
           // Activate clicked tab
           tab.setAttribute('aria-selected', 'true');
-          
+
           // Show corresponding panel
           const panelId = tab.getAttribute('aria-controls');
           document.getElementById(panelId).setAttribute('aria-hidden', 'false');
         });
       });
-      
+
       // Close button functionality - multiple ways to ensure it works
       const closeButton = document.getElementById('close-button');
       const closeDialog = () => {
         // Try multiple methods to ensure cross-browser compatibility
-        
+
         // Method 1: For when used as iframe
         if (window.parent && window.parent !== window) {
           try {
@@ -999,17 +1000,17 @@
             console.log('Could not send postMessage to parent');
           }
         }
-        
+
         // Method 2: If in standalone mode
         const dialog = document.querySelector('.dialog');
         if (dialog) {
           dialog.style.display = 'none';
         }
-        
+
         // Method 3: If integrated in a framework
         const event = new CustomEvent('closeModal', { bubbles: true });
         document.dispatchEvent(event);
-        
+
         // Method 4: For when window.close() is allowed
         try {
           window.close();
@@ -1017,17 +1018,17 @@
           console.log('Could not close window');
         }
       };
-      
+
       // Add click event listener
       closeButton.addEventListener('click', closeDialog);
-      
+
       // Add keyboard support for accessibility
       document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
           closeDialog();
         }
       });
-      
+
       // Production chart - with better styling and responsiveness
       const ctx = document.getElementById('productionChart').getContext('2d');
       const chart = new Chart(ctx, {
@@ -1111,16 +1112,16 @@
           }
         }
       });
-      
+
       // Make chart responsive
       const resizeChart = () => {
         if (chart) {
           chart.resize();
         }
       };
-      
+
       window.addEventListener('resize', resizeChart);
-      
+
       // Listen for messages from parent window
       window.addEventListener('message', function(event) {
         if (event.data && event.data.type === 'showCattleDetails') {
@@ -1128,7 +1129,7 @@
           updateCattleDetails(cattle);
         }
       });
-      
+
       // Check for cattle data in localStorage (from YourCattle.html)
       document.addEventListener('DOMContentLoaded', function() {
         const storedCattle = localStorage.getItem('selectedCattle');
@@ -1143,17 +1144,17 @@
           }
         }
       });
-      
+
       // Function to update cattle details in the UI
       function updateCattleDetails(cattle) {
         // Update cattle details
         document.getElementById('cattle-name').textContent = cattle.name;
         document.getElementById('cattle-image').src = cattle.image;
-        
+
         const healthStatus = document.getElementById('health-status');
         healthStatus.textContent = cattle.health;
         healthStatus.className = '';
-        
+
         // Set health status class
         if (cattle.health === 'Excellent') {
           healthStatus.classList.add('health-excellent');
@@ -1164,11 +1165,11 @@
         } else if (cattle.health === 'Poor') {
           healthStatus.classList.add('health-poor');
         }
-        
+
         document.getElementById('lactation-status').textContent = cattle.lactationStatus;
         document.getElementById('daily-production').textContent = cattle.dailyProduction;
       }
-      
+
       // Example data for testing without parent window
       const exampleCattle = {
         name: 'Bessie',
@@ -1177,7 +1178,7 @@
         lactationStatus: 'Active (3rd)',
         dailyProduction: '31.2 L'
       };
-      
+
       // Update with example data if not in iframe and no localStorage data was found
       if (window.self === window.top && !localStorage.getItem('selectedCattle')) {
         document.getElementById('cattle-name').textContent = exampleCattle.name;
@@ -1186,6 +1187,29 @@
         document.getElementById('lactation-status').textContent = exampleCattle.lactationStatus;
         document.getElementById('daily-production').textContent = exampleCattle.dailyProduction;
       }
+
+      // Initialize authentication when DOM is loaded
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+      } else {
+        console.log('Auth script not loaded, trying to initialize...');
+        // Try to initialize auth after a short delay
+        setTimeout(function() {
+          if (typeof initAuth === 'function') {
+            initAuth();
+          } else {
+            console.error('Auth initialization function not found');
+          }
+        }, 500);
+      }
+
+      // Also try to initialize on window load
+      window.addEventListener('load', function() {
+        if (typeof initAuth === 'function') {
+          initAuth();
+        }
+      });
     });
   </script>
 </body>

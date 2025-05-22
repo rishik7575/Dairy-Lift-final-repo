@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DairyVest - Cattle Farm Dashboard</title>
   <meta name="description" content="Manage and monitor your cattle farm operations">
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <!-- Required scripts -->
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-  
+
   <script>
     tailwind.config = {
       theme: {
@@ -67,12 +67,12 @@
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     html {
       scroll-behavior: smooth;
       scroll-padding-top: 80px;
     }
-    
+
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--foreground);
@@ -84,12 +84,12 @@
       text-decoration: none;
       color: inherit;
     }
-    
+
     img {
       max-width: 100%;
       height: auto;
     }
-    
+
     body {
       min-height: 100vh;
       display: flex;
@@ -160,17 +160,17 @@
       overflow: hidden;
       z-index: 50;
     }
-    
+
     .mobile-menu-toggle:hover {
       background-color: var(--primary-light);
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
     }
-    
+
     .mobile-menu-toggle:active {
       transform: scale(0.95);
     }
-    
+
     .hamburger-lines {
       width: 22px;
       height: 18px;
@@ -179,7 +179,7 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    
+
     .hamburger-line {
       display: block;
       height: 2px;
@@ -189,22 +189,22 @@
       transition: all 0.3s ease-in-out;
       transform-origin: center;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
       transform: translateY(8px) rotate(45deg);
       width: 22px;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
       opacity: 0;
       transform: translateX(-10px);
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
       transform: translateY(-8px) rotate(-45deg);
       width: 22px;
     }
-    
+
     .mobile-menu-toggle::after {
       content: '';
       position: absolute;
@@ -216,11 +216,11 @@
       transform: scale(0);
       transition: transform 0.3s ease;
     }
-    
+
     .mobile-menu-toggle:hover::after {
       transform: scale(1);
     }
-    
+
     .menu-toggle-ripple {
       position: absolute;
       background-color: rgba(173, 110, 245, 0.3);
@@ -229,7 +229,7 @@
       animation: ripple 0.6s linear;
       pointer-events: none;
     }
-    
+
     @keyframes ripple {
       to {
         transform: scale(2);
@@ -257,7 +257,7 @@
     .mobile-menu.active {
       transform: translateX(280px);
     }
-    
+
     .mobile-menu-overlay {
       position: fixed;
       top: 0;
@@ -271,7 +271,7 @@
       transition: opacity 0.3s ease, visibility 0.3s ease;
       backdrop-filter: blur(2px);
     }
-    
+
     .mobile-menu-overlay.active {
       opacity: 1;
       visibility: visible;
@@ -294,7 +294,7 @@
       background-color: var(--muted);
       transform: translateX(5px);
     }
-    
+
     .mobile-nav-link::after {
       content: '';
       position: absolute;
@@ -305,7 +305,7 @@
       background-color: var(--primary);
       transition: width 0.3s ease;
     }
-    
+
     .mobile-nav-link:hover::after {
       width: 30%;
     }
@@ -316,13 +316,13 @@
       background-color: var(--primary-light);
       margin-top: 0.75rem;
     }
-    
+
     .mobile-nav-link-primary:hover {
       background-color: var(--primary-light);
       transform: translateX(5px) scale(1.02);
       box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
     }
-    
+
     .mobile-menu-header {
       display: flex;
       align-items: center;
@@ -331,14 +331,14 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 1rem;
     }
-    
+
     .mobile-menu-logo {
       font-family: 'Pacifico', cursive;
       font-size: 1.5rem;
       color: var(--primary);
       text-decoration: none;
     }
-    
+
     .mobile-menu-close {
       background: none;
       border: none;
@@ -352,7 +352,7 @@
       border-radius: 50%;
       transition: all 0.2s ease;
     }
-    
+
     .mobile-menu-close:hover {
       background-color: var(--muted);
       color: var(--foreground);
@@ -434,7 +434,7 @@
       padding: 0.5rem 0;
       transition: color 0.3s;
     }
-    
+
     .navbar-link:hover {
       color: var(--primary);
     }
@@ -442,7 +442,7 @@
     .navbar-link.active {
       color: var(--primary);
     }
-    
+
     .navbar-link::after {
       content: '';
       position: absolute;
@@ -453,7 +453,7 @@
       background-color: var(--primary);
       transition: width 0.3s;
     }
-    
+
     .navbar-link:hover::after {
       width: 100%;
     }
@@ -522,7 +522,7 @@
       justify-content: center;
       font-weight: 500;
     }
-    
+
     /* Toast notifications */
     .toast-container {
       position: fixed;
@@ -530,7 +530,7 @@
       right: 1rem;
       z-index: 9999;
     }
-    
+
     .toast {
       background-color: white;
       border: 1px solid #e2e8f0;
@@ -547,18 +547,18 @@
     .toast.destructive {
       border-left: 4px solid #ef4444;
     }
-    
+
     @keyframes slideInFromRight {
       from { transform: translateX(100%); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
     }
-    
+
     .toast-title {
       font-weight: 600;
       font-size: 0.875rem;
       color: #1e293b;
     }
-    
+
     .toast-description {
       font-size: 0.75rem;
       color: #64748b;
@@ -588,7 +588,7 @@
         <nav class="desktop-nav">
           <a href="home_page.html" class="nav-link">Home</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
-          <a href="store.html" class="nav-link">Store</a>
+          <a href="storenew.html" class="nav-link">Store</a>
           <a href="admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
         </div>
@@ -620,7 +620,7 @@
         </svg>
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
-      
+
       <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
@@ -671,7 +671,7 @@
     </div>
     </div>
   </header>
-   
+
   <main class="container max-w-7xl mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
       <div>
@@ -689,7 +689,7 @@
         </button>
       </a>
     </div>
-    
+
     <!-- Dashboard Stats -->
     <div class="space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -785,7 +785,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Cattle List Table -->
     <div class="bg-white shadow rounded-lg border border-slate-200 mt-8">
       <div class="p-6 border-b border-slate-200">
@@ -818,7 +818,7 @@
   </main>
 
   <div id="toast-container" class="toast-container"></div>
-  
+
   <!-- Confirmation Dialog -->
   <div id="confirmDialog" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
@@ -838,21 +838,21 @@
   <script>
     // Store cattle data
     let cattleData = [];
-    
+
     // DOM ready event
     document.addEventListener('DOMContentLoaded', function() {
       loadCattleData();
       updateDashboardStats();
-      
+
       // Set up confirmation dialog
       const confirmDialog = document.getElementById('confirmDialog');
       const cancelButton = document.getElementById('cancelButton');
-      
+
       cancelButton.addEventListener('click', function() {
         confirmDialog.classList.add('hidden');
       });
     });
-    
+
     // Load cattle data from localStorage
     function loadCattleData() {
       try {
@@ -921,7 +921,7 @@
         } else {
           cattleData = JSON.parse(savedCattle);
         }
-        
+
         // Render cattle table
         renderCattleTable();
       } catch (error) {
@@ -929,68 +929,68 @@
         showToast("Error", "Failed to load cattle data", "error");
       }
     }
-    
+
     // Update dashboard statistics
     function updateDashboardStats() {
       // Count and display total cattle
       const totalCattle = cattleData.length;
       document.getElementById('totalCattle').textContent = totalCattle.toString();
       document.getElementById('totalCattleChange').textContent = totalCattle > 0 ? `+${Math.min(totalCattle, 3)}` : "0";
-      
+
       // Calculate and display total milk production
       const totalMilkProduction = getTotalMilkProduction();
       document.getElementById('totalMilkProduction').textContent = `${totalMilkProduction} L`;
-      
+
       // Calculate and display total revenue
       const totalRevenue = getTotalRevenue();
       document.getElementById('totalRevenue').textContent = `₹${totalRevenue.toLocaleString()}`;
-      
+
       // Calculate and display health index
       const healthIndex = getAverageHealthIndex();
       document.getElementById('healthIndex').textContent = `${healthIndex}%`;
     }
-    
+
     // Calculate total milk production
     function getTotalMilkProduction() {
       return cattleData
         .filter(c => c.gender === 'female' && c.expectedMilkProduction)
         .reduce((total, current) => total + Number(current.expectedMilkProduction), 0);
     }
-    
+
     // Calculate total revenue (milk production * ₹40 per liter * 30 days)
     function getTotalRevenue() {
       const milkRevenue = getTotalMilkProduction() * 40 * 30; // Monthly revenue
       return milkRevenue;
     }
-    
+
     // Calculate average health index
     function getAverageHealthIndex() {
       if (cattleData.length === 0) return 0;
-      
+
       const healthScores = {
         excellent: 100,
         good: 80,
         fair: 60,
         poor: 40
       };
-      
+
       const totalScore = cattleData.reduce((score, current) => {
         const healthScore = current.healthStatus === 'excellent' ? healthScores.excellent :
                            current.healthStatus === 'good' ? healthScores.good :
                            current.healthStatus === 'fair' ? healthScores.fair : healthScores.poor;
         return score + healthScore;
       }, 0);
-      
+
       return Math.round(totalScore / cattleData.length);
     }
-    
+
     // Render cattle table
     function renderCattleTable() {
       const tableBody = document.getElementById('cattleTableBody');
-      
+
       // Clear existing rows
       tableBody.innerHTML = '';
-      
+
       if (cattleData.length === 0) {
         // Show empty state
         const emptyRow = document.createElement('tr');
@@ -1002,28 +1002,28 @@
         tableBody.appendChild(emptyRow);
         return;
       }
-      
+
       // Add rows for each cattle
       cattleData.forEach(cattle => {
         const row = document.createElement('tr');
-        
+
         // Format breed name
         const breedName = cattle.breed.charAt(0).toUpperCase() + cattle.breed.slice(1).replace('_', ' ');
-        
+
         // Format gender
         const gender = cattle.gender.charAt(0).toUpperCase() + cattle.gender.slice(1);
-        
+
         // Determine health status class
         const healthClass = cattle.healthStatus === 'excellent' ? 'bg-green-100 text-green-800' :
                            cattle.healthStatus === 'good' ? 'bg-blue-100 text-blue-800' :
                            cattle.healthStatus === 'fair' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800';
-        
+
         // Format health status
         const healthStatus = cattle.healthStatus.charAt(0).toUpperCase() + cattle.healthStatus.slice(1);
-        
+
         // Format milk production
         const milkProduction = cattle.gender === 'female' ? `${cattle.expectedMilkProduction} L/day` : 'N/A';
-        
+
         row.innerHTML = `
           <td class="px-4 py-3 whitespace-nowrap">
             <div class="flex items-center">
@@ -1066,7 +1066,7 @@
           </td>
           <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
             <div class="flex space-x-2">
-              <button 
+              <button
                 class="text-blue-600 hover:text-blue-700 inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-3"
                 onclick="navigateToEdit('${cattle.id}')"
               >
@@ -1075,7 +1075,7 @@
                   <path d="m15 5 4 4"></path>
                 </svg>
               </button>
-              <button 
+              <button
                 class="text-red-600 hover:text-red-700 inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-3"
                 onclick="confirmDeleteCattle('${cattle.id}', '${cattle.tagId}')"
               >
@@ -1090,50 +1090,50 @@
             </div>
           </td>
         `;
-        
+
         tableBody.appendChild(row);
       });
     }
-    
+
     // Navigate to edit page
     function navigateToEdit(id) {
       window.location.href = `addcattle.html?edit=${id}`;
     }
-    
+
     // Show confirmation dialog for deleting cattle
     function confirmDeleteCattle(id, tagId) {
       const confirmDialog = document.getElementById('confirmDialog');
       const confirmTitle = document.getElementById('confirmTitle');
       const confirmMessage = document.getElementById('confirmMessage');
       const confirmButton = document.getElementById('confirmButton');
-      
+
       // Set dialog content
       confirmTitle.textContent = 'Delete Cattle';
       confirmMessage.textContent = `Are you sure you want to delete cattle with tag ${tagId}?`;
-      
+
       // Show dialog
       confirmDialog.classList.remove('hidden');
-      
+
       // Set up confirm button
       confirmButton.onclick = function() {
         deleteCattle(id, tagId);
         confirmDialog.classList.add('hidden');
       };
     }
-    
+
     // Delete cattle
     function deleteCattle(id, tagId) {
       try {
         // Filter out the cattle to be deleted
         cattleData = cattleData.filter(c => c.id !== id);
-        
+
         // Update localStorage
         localStorage.setItem('cattle', JSON.stringify(cattleData));
-        
+
         // Update UI
         renderCattleTable();
         updateDashboardStats();
-        
+
         // Show success message
         showToast("Cattle Deleted", `Cattle with tag ${tagId} has been removed from your inventory.`, "destructive");
       } catch (error) {
@@ -1141,14 +1141,14 @@
         showToast("Error", "Failed to delete cattle", "error");
       }
     }
-    
+
     // Show toast notification
     function showToast(title, message, type = 'success') {
       const toastContainer = document.getElementById('toast-container');
-      
+
       const toast = document.createElement('div');
       toast.className = `toast ${type === 'destructive' || type === 'error' ? 'destructive' : ''}`;
-      
+
       toast.innerHTML = `
         <div>
           <div class="toast-title">${title}</div>
@@ -1160,9 +1160,9 @@
           </svg>
         </button>
       `;
-      
+
       toastContainer.appendChild(toast);
-      
+
       // Auto-remove toast after 5 seconds
       setTimeout(() => {
         if (toast.parentNode === toastContainer) {
@@ -1170,7 +1170,7 @@
         }
       }, 5000);
     }
-    
+
     // Mobile menu functionality
     document.addEventListener('DOMContentLoaded', function() {
       const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
@@ -1185,25 +1185,25 @@
         mobileMenuOverlay.classList.add('active');
         mobileMenuToggle.classList.add('active');
         body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-        
+
         // Add a subtle ripple effect on click
         const ripple = document.createElement('span');
         ripple.classList.add('menu-toggle-ripple');
         mobileMenuToggle.appendChild(ripple);
-        
+
         // Position the ripple where the click happened
         const rect = mobileMenuToggle.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height) * 2;
-        
+
         ripple.style.width = ripple.style.height = `${size}px`;
         ripple.style.left = `${-size/4}px`;
         ripple.style.top = `${-size/4}px`;
-        
+
         // Remove the ripple after animation completes
         setTimeout(() => {
           ripple.remove();
         }, 600);
-        
+
         // Add entrance animation to each nav link
         const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
         navLinks.forEach((link, index) => {
@@ -1211,7 +1211,7 @@
           link.style.transform = 'translateX(-10px)';
           link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
           link.style.transitionDelay = `${0.05 * (index + 1)}s`;
-          
+
           setTimeout(() => {
             link.style.opacity = '1';
             link.style.transform = 'translateX(0)';
@@ -1243,7 +1243,7 @@
       if (mobileMenuClose) {
         mobileMenuClose.addEventListener('click', closeMobileMenu);
       }
-      
+
       // Close menu when clicking the overlay
       if (mobileMenuOverlay) {
         mobileMenuOverlay.addEventListener('click', closeMobileMenu);
@@ -1254,17 +1254,17 @@
       mobileLinks.forEach(link => {
         link.addEventListener('click', closeMobileMenu);
       });
-      
+
       // Close mobile menu when pressing Escape key
       document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape' && mobileMenu && mobileMenu.classList.contains('active')) {
           closeMobileMenu();
         }
       });
-      
+
       // Cart functionality
       updateCartCount();
-      
+
       // Cart toggle button event listener
       const cartToggle = document.getElementById('cart-toggle');
       if (cartToggle) {
@@ -1273,7 +1273,7 @@
         });
       }
     });
-    
+
     // Update cart count from localStorage
     function updateCartCount() {
       const cartCountElement = document.getElementById('cart-count');

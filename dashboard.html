@@ -19,6 +19,7 @@
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/auth.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -1171,9 +1172,100 @@
     .content-iframe {
       width: 100%;
       border: none;
-      height: auto;
-      min-height: 400px;
-      max-height: 14000px;
+      height: 500px;
+      min-height: 500px;
+      max-height: 500px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      background-color: white;
+      overflow: auto;
+    }
+
+    /* Grid container improvements */
+    .dashboard-grid {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .dashboard-grid > div {
+      display: flex;
+      flex-direction: column;
+      height: 500px;
+    }
+
+    .dashboard-grid iframe {
+      flex: 1;
+      height: 100%;
+    }
+
+    /* Responsive iframe heights for better content visibility */
+    @media (max-width: 768px) {
+      .content-iframe {
+        height: 450px;
+        min-height: 450px;
+        max-height: 450px;
+      }
+
+      .dashboard-grid > div {
+        height: 450px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .content-iframe {
+        height: 550px;
+        min-height: 550px;
+        max-height: 550px;
+      }
+
+      .dashboard-grid > div {
+        height: 550px;
+      }
+    }
+
+    /* Tall iframe for content-heavy cards */
+    .content-iframe-tall {
+      height: 600px !important;
+      min-height: 600px !important;
+      max-height: 600px !important;
+    }
+
+    .dashboard-grid .tall-card {
+      height: 600px !important;
+    }
+
+    /* Extra tall iframe for ProfitForecast */
+    .content-iframe-extra-tall {
+      height: 700px !important;
+      min-height: 700px !important;
+      max-height: 700px !important;
+    }
+
+    .dashboard-grid .extra-tall-card {
+      height: 700px !important;
+    }
+
+    @media (max-width: 768px) {
+      .content-iframe-tall {
+        height: 500px !important;
+        min-height: 500px !important;
+        max-height: 500px !important;
+      }
+
+      .dashboard-grid .tall-card {
+        height: 500px !important;
+      }
+
+      .content-iframe-extra-tall {
+        height: 550px !important;
+        min-height: 550px !important;
+        max-height: 550px !important;
+      }
+
+      .dashboard-grid .extra-tall-card {
+        height: 550px !important;
+      }
     }
 
     /* Chart container styling */
@@ -1322,7 +1414,7 @@
           <a href="home_page.html" class="nav-link">Home</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
           <a href="YourCattle.html" class="nav-link">All Cattle</a>
-          <a href="store.html" class="nav-link">Store</a>
+          <a href="storenew.html" class="nav-link">Store</a>
           <a href="admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
         <div class="navbar-actions">
@@ -1559,9 +1651,9 @@
       </div>
 
       <!-- Row 1 - ProfitForecast and MilkingEfficiency -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8" style="min-height: 600px;">
-        <div class="lg:col-span-2" style="height: 100%; min-height: 600px;">
-          <iframe src="ProfitForecast.html" frameborder="0" class="content-iframe" id="profit-forecast-frame" style="height: 100%; min-height: 600px;"></iframe>
+      <div class="dashboard-grid grid-cols-1 lg:grid-cols-3">
+        <div class="lg:col-span-2 extra-tall-card">
+          <iframe src="ProfitForecast.html" frameborder="0" class="content-iframe content-iframe-extra-tall" id="profit-forecast-frame"></iframe>
         </div>
         <div>
           <iframe src="MilkingEfficiencyCard.html" frameborder="0" class="content-iframe" id="milking-efficiency-frame"></iframe>
@@ -1569,7 +1661,7 @@
       </div>
 
       <!-- Row 2 - Farm Stats and Expense Breakdown -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="dashboard-grid grid-cols-1 md:grid-cols-2">
         <div>
           <iframe src="FarmStats.html" frameborder="0" class="content-iframe" id="farm-stats-frame"></iframe>
         </div>
@@ -1579,25 +1671,25 @@
       </div>
 
       <!-- Row 3 - Milk Wastage and Cattle Lifecycle -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" style="min-height: 600px;">
+      <div class="dashboard-grid grid-cols-1 md:grid-cols-2">
         <div>
           <iframe src="MilkWastageTracker.html" frameborder="0" class="content-iframe" id="milk-wastage-frame"></iframe>
         </div>
-        <div style="height: 100%; min-height: 600px;">
-          <iframe src="CattleLifecycleTracker.html" frameborder="0" class="content-iframe" id="cattle-lifecycle-frame" style="height: 100%; min-height: 600px;"></iframe>
+        <div class="tall-card">
+          <iframe src="CattleLifecycleTracker.html" frameborder="0" class="content-iframe content-iframe-tall" id="cattle-lifecycle-frame"></iframe>
         </div>
       </div>
 
       <!-- Row 4 - Weather, Waste to Profit, Investor Trust -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" style="min-height: 600px;">
-        <div style="height: 100%; min-height: 600px;">
-          <iframe src="WeatherImpactAnalytics.html" frameborder="0" class="content-iframe" id="weather-impact-frame" style="height: 100%; min-height: 600px;"></iframe>
+      <div class="dashboard-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div>
+          <iframe src="WeatherImpactAnalytics.html" frameborder="0" class="content-iframe" id="weather-impact-frame"></iframe>
         </div>
         <div>
-          <iframe src="WastetoProfitTracker.html" frameborder="0" class="content-iframe" id="waste-to-profit-frame" style="height: 500px; max-height: 500px;"></iframe>
+          <iframe src="WastetoProfitTracker.html" frameborder="0" class="content-iframe" id="waste-to-profit-frame"></iframe>
         </div>
         <div>
-          <iframe src="InvestorTrust.html" frameborder="0" class="content-iframe" id="investor-trust-frame" style="height: 500px; max-height: 500px;"></iframe>
+          <iframe src="InvestorTrust.html" frameborder="0" class="content-iframe" id="investor-trust-frame"></iframe>
         </div>
       </div>
 
@@ -1725,7 +1817,7 @@
               <a href="dashboard.html" class="text-gray-500 hover:text-purple-600 transition-colors">Dashboard</a>
             </li>
             <li>
-              <a href="store.html" class="text-gray-500 hover:text-purple-600 transition-colors">Store</a>
+              <a href="storenew.html" class="text-gray-500 hover:text-purple-600 transition-colors">Store</a>
             </li>
             <li>
               <a href="login.html" class="text-gray-500 hover:text-purple-600 transition-colors">Login</a>
@@ -2048,53 +2140,18 @@
         const iframe = document.getElementById(id);
         if (iframe) {
           iframe.classList.add('no-scroll-iframe');
-
-          // Initialize default height
-          iframe.style.height = '400px';
+          // Heights are now controlled via CSS classes for better content visibility
         }
       });
 
-      // Listen for resize messages from iframes and cattle details messages
+      // Listen for cattle details messages only
       window.addEventListener('message', function(event) {
-        if (event.data && event.data.type === 'resize') {
-          const height = event.data.height;
-          const iframes = document.querySelectorAll('iframe.content-iframe');
-
-          // Find the frame that sent the message by matching its content window
-          for (let i = 0; i < iframes.length; i++) {
-            try {
-              if (iframes[i].contentWindow === event.source) {
-                // Add a small buffer to avoid scrolling
-                iframes[i].style.height = (height + 20) + 'px';
-                break;
-              }
-            } catch (e) {
-              console.error('Error matching iframe:', e);
-            }
-          }
-        } else if (event.data && event.data.type === 'iframe-height') {
-          // Handle iframe height messages
-          const height = event.data.height;
-          const iframes = document.querySelectorAll('iframe');
-
-          // Find the frame that sent the message by matching its content window
-          for (let i = 0; i < iframes.length; i++) {
-            try {
-              if (iframes[i].contentWindow === event.source) {
-                // Add a small buffer to avoid scrolling
-                iframes[i].style.height = (height + 20) + 'px';
-                console.log('Updated iframe height to: ' + (height + 20) + 'px');
-                break;
-              }
-            } catch (e) {
-              console.error('Error matching iframe:', e);
-            }
-          }
-        } else if (event.data && event.data.type === 'openCattleDetails') {
+        if (event.data && event.data.type === 'openCattleDetails') {
           // Handle cattle details message from YourCattle.html
           const cattle = event.data.cattle;
           openCattleDetailsModal(cattle);
         }
+        // Removed dynamic iframe height adjustment to prevent cards from growing
       });
 
       // Cattle filter and sort functionality removed - now on separate page
@@ -2849,5 +2906,33 @@
       </div>
     </div>
   </footer>
+
+  <!-- Authentication Initialization -->
+  <script>
+    // Initialize authentication when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+      } else {
+        console.log('Auth script not loaded, trying to initialize...');
+        // Try to initialize auth after a short delay
+        setTimeout(function() {
+          if (typeof initAuth === 'function') {
+            initAuth();
+          } else {
+            console.error('Auth initialization function not found');
+          }
+        }, 500);
+      }
+    });
+
+    // Also try to initialize on window load
+    window.addEventListener('load', function() {
+      if (typeof initAuth === 'function') {
+        initAuth();
+      }
+    });
+  </script>
 </body>
 </html>

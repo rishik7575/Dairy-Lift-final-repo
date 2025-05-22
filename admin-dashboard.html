@@ -15,11 +15,13 @@
 
   <!-- Additional Resources -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-admin.js"></script>
+  <script src="js/auth.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -1352,92 +1354,57 @@
       color: var(--muted-text);
     }
 
-    /* Stats Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-      gap: 1rem;
-    }
-
-    @media (min-width: 640px) {
-      .stats-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .stats-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-
-    .stat-card {
+    /* Dashboard specific styles - matching main dashboard */
+    .dashboard-card {
       background-color: white;
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      padding: 1.5rem;
-      position: relative;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      transition: all 0.3s ease;
       overflow: hidden;
-      transition: all 0.2s ease;
     }
 
-    .stat-card:hover {
-      transform: translateY(-0.25rem);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-
-    .stat-top {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 4px;
-      background-color: var(--success);
-    }
-
-    .stat-icon {
-      width: 3rem;
-      height: 3rem;
-      border-radius: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .stat-blue {
-      background-color: #eff6ff;
-    }
-
-    .stat-green {
-      background-color: #ecfdf5;
-    }
-
-    .stat-purple {
-      background-color: #f5f3ff;
-    }
-
-    .stat-orange {
-      background-color: #fff7ed;
+    .dashboard-card:hover {
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
     }
 
     .stat-value {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       font-weight: 700;
-      margin: 0.5rem 0;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
     }
 
-    .trend {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
+    .stat-label {
       font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      text-transform: capitalize;
     }
 
     .trend-up {
-      color: var(--success);
+      color: #10B981;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
     }
 
     .trend-down {
-      color: var(--danger);
+      color: #EF4444;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    /* Enhanced metric cards */
+    .dashboard-card.border-l-4 {
+      border-left-width: 4px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dashboard-card.border-l-4:hover {
+      border-left-width: 6px;
     }
 
     /* Charts and Cards */
@@ -2151,7 +2118,7 @@
           <a href="home_page.html" class="nav-link">Home</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
           <a href="YourCattle.html" class="nav-link">All Cattle</a>
-          <a href="store.html" class="nav-link">Store</a>
+          <a href="storenew.html" class="nav-link">Store</a>
           <a href="admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
         <div class="navbar-actions">
@@ -2258,101 +2225,81 @@
         <p class="page-description">Welcome back to Dairy-Lift Admin Panel</p>
       </div>
 
-      <!-- Stats Cards -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-top" style="width: 60%;"></div>
-          <div class="flex items-center justify-between">
+      <!-- Stats Cards - Matching Dashboard Layout -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Revenue Card -->
+        <div class="dashboard-card p-5 hover:shadow-lg transition-all duration-300 border-l-4 border-blue-500">
+          <div class="flex justify-between items-start">
             <div>
-              <p class="text-sm text-muted">Revenue</p>
-              <h3 class="stat-value">₹45,231</h3>
-              <div class="trend trend-up">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="18 15 12 9 6 15"></polyline>
-                </svg>
-                <span>4.5%</span>
-                <span class="text-muted ml-1">from last month</span>
-              </div>
+              <p class="stat-label mb-1 text-gray-500 font-medium">Revenue</p>
+              <p class="stat-value text-2xl font-bold text-gray-800">₹45,231</p>
             </div>
-            <div class="stat-icon stat-blue">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
-                <line x1="12" y1="1" x2="12" y2="23"></line>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-              </svg>
+            <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center shadow-sm">
+              <i class="fas fa-dollar-sign text-blue-600 text-xl"></i>
             </div>
+          </div>
+          <div class="flex items-center mt-3 bg-blue-50 rounded-md px-2 py-1 w-fit">
+            <p class="trend-up text-xs font-medium text-blue-600 flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>
+              <span>4.5% from last month</span>
+            </p>
           </div>
         </div>
 
-        <div class="stat-card">
-          <div class="stat-top" style="width: 40%;"></div>
-          <div class="flex items-center justify-between">
+        <!-- Milk Production Card -->
+        <div class="dashboard-card p-5 hover:shadow-lg transition-all duration-300 border-l-4 border-green-500">
+          <div class="flex justify-between items-start">
             <div>
-              <p class="text-sm text-muted">Milk Production</p>
-              <h3 class="stat-value">1,423 L</h3>
-              <div class="trend trend-up">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="18 15 12 9 6 15"></polyline>
-                </svg>
-                <span>2.1%</span>
-                <span class="text-muted ml-1">from last month</span>
-              </div>
+              <p class="stat-label mb-1 text-gray-500 font-medium">Milk Production</p>
+              <p class="stat-value text-2xl font-bold text-gray-800">1,423 L</p>
             </div>
-            <div class="stat-icon stat-green">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600">
-                <path d="M12 2v20M2 12h20"></path>
-              </svg>
+            <div class="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center shadow-sm">
+              <i class="fas fa-glass-water text-green-600 text-xl"></i>
             </div>
+          </div>
+          <div class="flex items-center mt-3 bg-green-50 rounded-md px-2 py-1 w-fit">
+            <p class="trend-up text-xs font-medium text-green-600 flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>
+              <span>2.1% from last month</span>
+            </p>
           </div>
         </div>
 
-        <div class="stat-card">
-          <div class="stat-top bg-red-500" style="width: 30%;"></div>
-          <div class="flex items-center justify-between">
+        <!-- Feed Costs Card -->
+        <div class="dashboard-card p-5 hover:shadow-lg transition-all duration-300 border-l-4 border-purple-500">
+          <div class="flex justify-between items-start">
             <div>
-              <p class="text-sm text-muted">Feed Costs</p>
-              <h3 class="stat-value">₹12,750</h3>
-              <div class="trend trend-down">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-                <span>1.2%</span>
-                <span class="text-muted ml-1">from last month</span>
-              </div>
+              <p class="stat-label mb-1 text-gray-500 font-medium">Feed Costs</p>
+              <p class="stat-value text-2xl font-bold text-gray-800">₹12,750</p>
             </div>
-            <div class="stat-icon stat-purple">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-600">
-                <path d="M2 20h.01"></path>
-                <path d="M7 20v-4"></path>
-                <path d="M12 20v-8"></path>
-                <path d="M17 20V8"></path>
-                <path d="M22 4v16"></path>
-              </svg>
+            <div class="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center shadow-sm">
+              <i class="fas fa-wheat-awn text-purple-600 text-xl"></i>
             </div>
+          </div>
+          <div class="flex items-center mt-3 bg-purple-50 rounded-md px-2 py-1 w-fit">
+            <p class="trend-up text-xs font-medium text-purple-600 flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>
+              <span>1.2% from last month</span>
+            </p>
           </div>
         </div>
 
-        <div class="stat-card">
-          <div class="stat-top" style="width: 75%;"></div>
-          <div class="flex items-center justify-between">
+        <!-- Active Investors Card -->
+        <div class="dashboard-card p-5 hover:shadow-lg transition-all duration-300 border-l-4 border-orange-500">
+          <div class="flex justify-between items-start">
             <div>
-              <p class="text-sm text-muted">Active Investors</p>
-              <h3 class="stat-value">24</h3>
-              <div class="trend trend-up">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="18 15 12 9 6 15"></polyline>
-                </svg>
-                <span>8.3%</span>
-                <span class="text-muted ml-1">from last month</span>
-              </div>
+              <p class="stat-label mb-1 text-gray-500 font-medium">Active Investors</p>
+              <p class="stat-value text-2xl font-bold text-gray-800">24</p>
             </div>
-            <div class="stat-icon stat-orange">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-600">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
+            <div class="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center shadow-sm">
+              <i class="fas fa-user-tie text-orange-600 text-xl"></i>
             </div>
+          </div>
+          <div class="flex items-center mt-3 bg-orange-50 rounded-md px-2 py-1 w-fit">
+            <p class="trend-up text-xs font-medium text-orange-600 flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>
+              <span>8.3% from last month</span>
+            </p>
           </div>
         </div>
       </div>
@@ -2782,8 +2729,8 @@
         }
 
         // Initialize direct Supabase client
-        const supabaseUrl = 'https://avaakcvenjjydbxopwti.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2YWFrY3ZlbmpqeWRieG9wd3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTQzMjIsImV4cCI6MjA2MzQ3MDMyMn0.qeN6jRNwhhvkwpEZ-aTyQipLPA2KyUmW9prJ_-t4tOs';
+        const supabaseUrl = 'https://eseynihfxxojisyqmigk.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZXluaWhmeHhvamlzeXFtaWdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MTEzODksImV4cCI6MjA2MzQ4NzM4OX0.1nU7McnxI_Cx2zK2UMpxc5t1ZK0VJnx2sz_xFS0Np08';
 
         console.log('🔗 Creating Supabase client...');
         window.directSupabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -2802,12 +2749,15 @@
         supabaseInitialized = true;
         console.log('✅ Supabase initialized successfully');
 
-        // Load data from database
-        await loadActivitiesFromDatabase();
+        // Load data from database (simplified approach)
+        await loadProductActivitiesOnly();
+
+        // Set up real-time subscriptions
+        setupRealtimeSubscriptions();
 
         showToast({
           title: 'Database Connected',
-          message: 'Successfully connected to Supabase database',
+          message: 'Successfully connected to Supabase database with real-time updates',
           type: 'success'
         });
 
@@ -2826,7 +2776,151 @@
       }
     }
 
-    // Load activities from Supabase database
+    // Simplified function to load only product activities (avoids JOIN issues)
+    async function loadProductActivitiesOnly() {
+      try {
+        console.log('🔄 Loading product activities only...');
+
+        if (!window.directSupabaseClient) {
+          console.warn('Supabase client not available, using sample data');
+          loadSampleData();
+          return;
+        }
+
+        // Clear existing data
+        pendingActivities = [];
+        recentActivities = [];
+
+        // 1. Fetch pending product notifications
+        try {
+          const { data: pendingProducts, error: pendingError } = await window.directSupabaseClient
+            .from('notifications')
+            .select('*')
+            .eq('status', 'pending')
+            .in('type', ['product_added', 'product_updated', 'product_deleted', 'product_low_stock'])
+            .order('created_at', { ascending: false });
+
+          if (pendingError) throw pendingError;
+
+          // Transform product notifications to pending activities
+          if (pendingProducts && pendingProducts.length > 0) {
+            pendingProducts.forEach(notification => {
+              pendingActivities.push({
+                id: notification.id,
+                title: notification.title,
+                description: notification.description,
+                priority: notification.priority || 'medium',
+                time: formatTimeAgo(notification.created_at),
+                type: notification.type,
+                icon: getProductIcon(notification.type),
+                metadata: notification.metadata || {}
+              });
+            });
+          }
+
+          console.log(`✅ Loaded ${pendingProducts.length} pending product notifications`);
+        } catch (error) {
+          console.warn('Error loading pending product notifications:', error);
+        }
+
+        // 2. Fetch recent product activities
+        try {
+          const { data: recentProducts, error: recentError } = await window.directSupabaseClient
+            .from('recent_activities')
+            .select('*')
+            .in('type', ['product_added', 'product_updated', 'product_deleted'])
+            .order('created_at', { ascending: false })
+            .limit(10);
+
+          if (recentError) throw recentError;
+
+          // Transform recent activities
+          if (recentProducts && recentProducts.length > 0) {
+            recentProducts.forEach(activity => {
+              recentActivities.push({
+                id: activity.id,
+                title: activity.title,
+                description: activity.description,
+                priority: activity.priority || 'medium',
+                completedTime: formatTimeAgo(activity.created_at),
+                completedBy: activity.created_by || 'Admin',
+                action: 'completed',
+                type: 'success',
+                icon: activity.icon || getProductIcon(activity.type)
+              });
+            });
+          }
+
+          console.log(`✅ Loaded ${recentProducts.length} recent product activities`);
+        } catch (error) {
+          console.warn('Error loading recent product activities:', error);
+        }
+
+        // 3. Add helpful messages if no activities
+        if (pendingActivities.length === 0) {
+          pendingActivities.push({
+            id: 'no-pending',
+            title: 'No Pending Product Activities',
+            description: 'All product activities are up to date. Add a product to see notifications here.',
+            priority: 'low',
+            time: 'Just now',
+            type: 'info',
+            icon: '<i class="fas fa-info-circle text-info"></i>'
+          });
+        }
+
+        if (recentActivities.length === 0) {
+          recentActivities.push({
+            id: 'no-recent',
+            title: 'No Recent Product Activities',
+            description: 'Recent product activities will appear here when you add, edit, or delete products.',
+            priority: 'low',
+            completedTime: 'Just now',
+            completedBy: 'System',
+            action: 'info',
+            type: 'info',
+            icon: '<i class="fas fa-info-circle text-info"></i>'
+          });
+        }
+
+        console.log('✅ Product activities loaded successfully:', {
+          pending: pendingActivities.length,
+          recent: recentActivities.length
+        });
+
+        // Render the activities
+        renderPendingActivities();
+        renderRecentActivities();
+
+      } catch (error) {
+        console.error('Error loading product activities:', error);
+        loadSampleData();
+      }
+    }
+
+    // Helper functions for product activities
+    function getProductIcon(type) {
+      const icons = {
+        'product_added': '<i class="fas fa-plus-circle text-success"></i>',
+        'product_updated': '<i class="fas fa-edit text-warning"></i>',
+        'product_deleted': '<i class="fas fa-trash text-danger"></i>',
+        'product_low_stock': '<i class="fas fa-exclamation-triangle text-warning"></i>'
+      };
+      return icons[type] || '<i class="fas fa-box text-primary"></i>';
+    }
+
+    function formatTimeAgo(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffInSeconds = Math.floor((now - date) / 1000);
+
+      if (diffInSeconds < 60) return 'Just now';
+      if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+      if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+      return `${Math.floor(diffInSeconds / 86400)} days ago`;
+    }
+
+    // Load activities from Supabase database (original complex function - kept as backup)
     async function loadActivitiesFromDatabase() {
       try {
         console.log('Loading activities from database...');
@@ -2837,7 +2931,23 @@
 
         // Load pending notifications with better error handling
         console.log('Fetching pending notifications...');
-        const pendingQuery = await window.directSupabaseClient
+
+        // Fetch farm visit notifications (simplified query without JOIN)
+        let farmVisitQuery = { data: [], error: null };
+        try {
+          farmVisitQuery = await window.directSupabaseClient
+            .from('notifications')
+            .select('*')
+            .eq('status', 'pending')
+            .eq('type', 'farm_visit_request')
+            .order('created_at', { ascending: false });
+        } catch (error) {
+          console.warn('Error fetching farm visit notifications:', error);
+          farmVisitQuery = { data: [], error: null };
+        }
+
+        // Fetch product notifications
+        const productQuery = await window.directSupabaseClient
           .from('notifications')
           .select(`
             id,
@@ -2848,19 +2958,17 @@
             status,
             created_at,
             related_id,
-            farm_visit_requests!inner (
-              id,
-              name,
-              email,
-              phone,
-              visit_date,
-              message,
-              status
-            )
+            related_table,
+            metadata
           `)
           .eq('status', 'pending')
-          .eq('type', 'farm_visit_request')
+          .in('type', ['product_added', 'product_updated', 'product_deleted', 'product_low_stock'])
           .order('created_at', { ascending: false });
+
+        const pendingQuery = {
+          data: [...(farmVisitQuery.data || []), ...(productQuery.data || [])],
+          error: farmVisitQuery.error || productQuery.error
+        };
 
         if (pendingQuery.error) {
           console.error('Pending query error:', pendingQuery.error);
@@ -2872,53 +2980,70 @@
 
         // Transform data safely
         pendingActivities = pendingData.map(item => {
-          const visitData = Array.isArray(item.farm_visit_requests) ? item.farm_visit_requests[0] : item.farm_visit_requests;
-          const visitDate = visitData?.visit_date ? new Date(visitData.visit_date).toLocaleDateString() : 'Unknown date';
+          if (item.type === 'farm_visit_request') {
+            const visitData = Array.isArray(item.farm_visit_requests) ? item.farm_visit_requests[0] : item.farm_visit_requests;
+            const visitDate = visitData?.visit_date ? new Date(visitData.visit_date).toLocaleDateString() : 'Unknown date';
 
-          return {
-            id: item.id,
-            title: item.title || 'New Farm Visit Request',
-            description: item.description || `${visitData?.name || 'Someone'} has requested a farm visit on ${visitDate}`,
-            priority: item.priority || 'high',
-            time: formatTimeAgo(item.created_at),
-            type: getTypeIcon(item.priority || 'high'),
-            icon: getFarmVisitIcon(),
-            requestId: item.related_id,
-            visitData: visitData
-          };
+            return {
+              id: item.id,
+              title: item.title || 'New Farm Visit Request',
+              description: item.description || `${visitData?.name || 'Someone'} has requested a farm visit on ${visitDate}`,
+              priority: item.priority || 'high',
+              time: formatTimeAgo(item.created_at),
+              type: getTypeIcon(item.priority || 'high'),
+              icon: getFarmVisitIcon(),
+              requestId: item.related_id,
+              visitData: visitData,
+              notificationType: 'farm_visit'
+            };
+          } else {
+            // Handle product notifications
+            return {
+              id: item.id,
+              title: item.title,
+              description: item.description,
+              priority: item.priority || 'medium',
+              time: formatTimeAgo(item.created_at),
+              type: getTypeIcon(item.priority || 'medium'),
+              icon: getProductIcon(item.type),
+              requestId: item.related_id,
+              productData: item.metadata,
+              notificationType: 'product'
+            };
+          }
         });
 
         console.log('Transformed pending activities:', pendingActivities);
 
         // Load recent activities with better error handling
         console.log('Fetching recent activities...');
-        const recentQuery = await window.directSupabaseClient
-          .from('notifications')
-          .select(`
-            id,
-            type,
-            title,
-            description,
-            priority,
-            status,
-            action_taken,
-            completed_by,
-            completed_at,
-            created_at,
-            related_id,
-            farm_visit_requests!inner (
-              id,
-              name,
-              email,
-              phone,
-              visit_date,
-              message,
-              status
-            )
-          `)
-          .eq('status', 'completed')
-          .order('completed_at', { ascending: false })
-          .limit(10);
+
+        // Fetch recent farm visit activities (simplified query without JOIN)
+        let recentFarmVisitQuery = { data: [], error: null };
+        try {
+          recentFarmVisitQuery = await window.directSupabaseClient
+            .from('notifications')
+            .select('*')
+            .eq('status', 'completed')
+            .eq('type', 'farm_visit_request')
+            .order('completed_at', { ascending: false })
+            .limit(5);
+        } catch (error) {
+          console.warn('Error fetching recent farm visit activities:', error);
+          recentFarmVisitQuery = { data: [], error: null };
+        }
+
+        // Fetch recent product activities from recent_activities table
+        const recentProductQuery = await window.directSupabaseClient
+          .from('recent_activities')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(5);
+
+        const recentQuery = {
+          data: [...(recentFarmVisitQuery.data || []), ...(recentProductQuery.data || [])],
+          error: recentFarmVisitQuery.error || recentProductQuery.error
+        };
 
         if (recentQuery.error) {
           console.error('Recent query error:', recentQuery.error);
@@ -2930,21 +3055,38 @@
 
         // Transform data safely
         recentActivities = recentData.map(item => {
-          const visitData = Array.isArray(item.farm_visit_requests) ? item.farm_visit_requests[0] : item.farm_visit_requests;
-          const visitDate = visitData?.visit_date ? new Date(visitData.visit_date).toLocaleDateString() : 'Unknown date';
+          if (item.type === 'farm_visit_request' || item.farm_visit_requests) {
+            // Handle farm visit activities
+            const visitData = Array.isArray(item.farm_visit_requests) ? item.farm_visit_requests[0] : item.farm_visit_requests;
+            const visitDate = visitData?.visit_date ? new Date(visitData.visit_date).toLocaleDateString() : 'Unknown date';
 
-          return {
-            id: item.id,
-            title: item.title || 'Farm Visit Request Processed',
-            description: item.description || `${visitData?.name || 'Someone'} farm visit request for ${visitDate}`,
-            priority: item.priority || 'medium',
-            completedTime: formatTimeAgo(item.completed_at),
-            completedBy: item.completed_by || 'Admin',
-            action: item.action_taken,
-            type: item.action_taken === 'accepted' ? 'success' : 'error',
-            icon: getFarmVisitIcon(),
-            visitData: visitData
-          };
+            return {
+              id: item.id,
+              title: item.title || 'Farm Visit Request Processed',
+              description: item.description || `${visitData?.name || 'Someone'} farm visit request for ${visitDate}`,
+              priority: item.priority || 'medium',
+              completedTime: formatTimeAgo(item.completed_at),
+              completedBy: item.completed_by || 'Admin',
+              action: item.action_taken,
+              type: item.action_taken === 'accepted' ? 'success' : 'error',
+              icon: getFarmVisitIcon(),
+              visitData: visitData
+            };
+          } else {
+            // Handle product activities from recent_activities table
+            return {
+              id: item.id,
+              title: item.title,
+              description: item.description,
+              priority: item.priority || 'medium',
+              completedTime: formatTimeAgo(item.created_at),
+              completedBy: item.created_by || 'Admin',
+              action: 'completed',
+              type: 'success',
+              icon: item.icon || getProductIcon(item.type),
+              productData: item
+            };
+          }
         });
 
         console.log('Transformed recent activities:', recentActivities);
@@ -2954,6 +3096,10 @@
           recent: recentActivities.length
         });
 
+        // Render the activities
+        renderPendingActivities();
+        renderRecentActivities();
+
       } catch (error) {
         console.error('❌ Error loading activities from database:', error);
         showToast({
@@ -2962,6 +3108,135 @@
           type: 'error'
         });
         loadSampleData();
+      }
+    }
+
+    // Set up real-time subscriptions for activities
+    function setupRealtimeSubscriptions() {
+      if (!window.directSupabaseClient) return;
+
+      console.log('🔄 Setting up real-time subscriptions for admin dashboard...');
+
+      // Subscribe to notifications changes
+      const notificationsSubscription = window.directSupabaseClient
+        .channel('admin-notifications')
+        .on('postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'notifications'
+          },
+          (payload) => {
+            console.log('📡 Notification change detected:', payload);
+            handleNotificationChange(payload);
+          }
+        )
+        .subscribe();
+
+      // Subscribe to recent activities changes
+      const activitiesSubscription = window.directSupabaseClient
+        .channel('admin-activities')
+        .on('postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'recent_activities'
+          },
+          (payload) => {
+            console.log('📡 Recent activity change detected:', payload);
+            handleActivityChange(payload);
+          }
+        )
+        .subscribe();
+
+      console.log('✅ Real-time subscriptions established for admin dashboard');
+    }
+
+    // Handle real-time notification changes
+    function handleNotificationChange(payload) {
+      const { eventType, new: newRecord, old: oldRecord } = payload;
+
+      if (eventType === 'INSERT' && newRecord.status === 'pending') {
+        // New pending notification - refresh pending activities
+        console.log('🔔 New pending notification received, refreshing...');
+        loadActivitiesFromDatabase();
+
+        // Show toast notification
+        showToast({
+          title: 'New Notification',
+          message: newRecord.title || 'A new notification has been received',
+          type: 'info'
+        });
+      } else if (eventType === 'UPDATE') {
+        // Notification status changed - refresh both lists
+        console.log('📝 Notification updated, refreshing...');
+        loadActivitiesFromDatabase();
+      }
+    }
+
+    // Handle real-time activity changes
+    function handleActivityChange(payload) {
+      const { eventType, new: newRecord } = payload;
+
+      if (eventType === 'INSERT') {
+        // New recent activity - refresh recent activities
+        console.log('📋 New recent activity received, refreshing...');
+        loadActivitiesFromDatabase();
+
+        // Show toast notification for product activities
+        if (newRecord.type && newRecord.type.includes('product')) {
+          showToast({
+            title: 'Product Activity',
+            message: newRecord.title || 'A new product activity has been recorded',
+            type: 'success'
+          });
+        }
+      }
+    }
+
+    // Function to dismiss product notifications
+    async function dismissProductNotification(id) {
+      const activityIndex = pendingActivities.findIndex(a => a.id === id);
+
+      if (activityIndex !== -1) {
+        const activity = pendingActivities[activityIndex];
+
+        try {
+          // If Supabase is available, update the database
+          if (supabaseInitialized && window.directSupabaseClient) {
+            // Update the notification status to dismissed
+            const { error: notificationError } = await window.directSupabaseClient
+              .from('notifications')
+              .update({
+                status: 'dismissed',
+                completed_by: 'Admin',
+                completed_at: new Date().toISOString()
+              })
+              .eq('id', id);
+
+            if (notificationError) throw notificationError;
+          }
+
+          // Remove activity from the pending list
+          pendingActivities.splice(activityIndex, 1);
+
+          // Re-render pending activities
+          renderPendingActivities();
+
+          // Show success toast
+          showToast({
+            title: 'Notification Dismissed',
+            message: `"${activity.title}" has been dismissed.`,
+            type: 'success'
+          });
+        } catch (error) {
+          console.error('Error dismissing notification:', error);
+          showToast({
+            title: 'Error',
+            message: 'Failed to dismiss the notification. Please try again.',
+            type: 'error'
+          });
+        }
       }
     }
 
@@ -2992,6 +3267,10 @@
           icon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>'
         }
       ];
+
+      // Render the sample data
+      renderPendingActivities();
+      renderRecentActivities();
     }
 
     // Note: Transformation functions are now inline in loadActivitiesFromDatabase to prevent call stack issues
@@ -3024,6 +3303,21 @@
 
     function getFarmVisitIcon() {
       return '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>';
+    }
+
+    function getProductIcon(type) {
+      switch (type) {
+        case 'product_added':
+          return '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
+        case 'product_updated':
+          return '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
+        case 'product_deleted':
+          return '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
+        case 'product_low_stock':
+          return '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>';
+        default:
+          return '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>';
+      }
     }
 
     // Function to render pending activities
@@ -3061,12 +3355,18 @@
             </div>
           </div>
           <div class="pending-actions">
-            <button class="btn btn-sm btn-outline accept-action" data-id="${activity.id}" style="margin-right: 0.5rem; background-color: #ecfdf5; color: #059669; border-color: #059669;">
-              Accept
-            </button>
-            <button class="btn btn-sm btn-outline reject-action" data-id="${activity.id}" style="background-color: #fee2e2; color: #ef4444; border-color: #ef4444;">
-              Reject
-            </button>
+            ${activity.notificationType === 'farm_visit' ? `
+              <button class="btn btn-sm btn-outline accept-action" data-id="${activity.id}" style="margin-right: 0.5rem; background-color: #ecfdf5; color: #059669; border-color: #059669;">
+                Accept
+              </button>
+              <button class="btn btn-sm btn-outline reject-action" data-id="${activity.id}" style="background-color: #fee2e2; color: #ef4444; border-color: #ef4444;">
+                Reject
+              </button>
+            ` : `
+              <button class="btn btn-sm btn-outline dismiss-action" data-id="${activity.id}" style="background-color: #f3f4f6; color: #6b7280; border-color: #d1d5db;">
+                Dismiss
+              </button>
+            `}
           </div>
         `;
 
@@ -3088,6 +3388,15 @@
           e.stopPropagation();
           const id = parseInt(this.dataset.id);
           rejectActivity(id);
+        });
+      });
+
+      // Add event listeners to dismiss buttons
+      document.querySelectorAll('.dismiss-action').forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const id = parseInt(this.dataset.id);
+          dismissProductNotification(id);
         });
       });
 
@@ -3309,6 +3618,51 @@
       }
     }
 
+    // Function to dismiss product notification
+    async function dismissProductNotification(id) {
+      try {
+        const activityIndex = pendingActivities.findIndex(a => a.id === id);
+
+        if (activityIndex !== -1) {
+          const activity = pendingActivities[activityIndex];
+
+          if (supabaseInitialized && window.directSupabaseClient) {
+            // Update the notification status to completed
+            const { error } = await window.directSupabaseClient
+              .from('notifications')
+              .update({
+                status: 'completed',
+                completed_by: 'Admin',
+                completed_at: new Date().toISOString()
+              })
+              .eq('id', id);
+
+            if (error) throw error;
+          }
+
+          // Remove from pending activities
+          pendingActivities.splice(activityIndex, 1);
+
+          // Re-render pending activities
+          renderPendingActivities();
+
+          // Show success toast
+          showToast({
+            title: 'Notification Dismissed',
+            message: `"${activity.title}" has been dismissed.`,
+            type: 'success'
+          });
+        }
+      } catch (error) {
+        console.error('Error dismissing product notification:', error);
+        showToast({
+          title: 'Error',
+          message: 'Failed to dismiss the notification. Please try again.',
+          type: 'error'
+        });
+      }
+    }
+
     // Function to show activity details
     function showActivityDetails(activity) {
       // In a real application, this would open a modal or navigate to a details page
@@ -3409,23 +3763,73 @@
       }
     });
 
-    // Refresh data every 30 seconds to check for new requests (but prevent overlapping calls)
+    // Optimized refresh system with adaptive intervals
     let refreshInProgress = false;
-    setInterval(async function() {
-      if (supabaseInitialized && !refreshInProgress) {
-        refreshInProgress = true;
-        try {
-          console.log('Auto-refreshing data...');
-          await loadActivitiesFromDatabase();
-          renderPendingActivities();
-          renderRecentActivities();
-        } catch (error) {
-          console.error('Error during auto-refresh:', error);
-        } finally {
-          refreshInProgress = false;
+    let refreshInterval = 15000; // Start with 15 seconds
+    let consecutiveEmptyRefreshes = 0;
+    let refreshTimer;
+
+    function scheduleNextRefresh() {
+      if (refreshTimer) {
+        clearTimeout(refreshTimer);
+      }
+
+      refreshTimer = setTimeout(async function() {
+        if (supabaseInitialized && !refreshInProgress && document.visibilityState === 'visible') {
+          refreshInProgress = true;
+          try {
+            console.log('Auto-refreshing data...');
+            const activitiesBefore = pendingActivities.length + recentActivities.length;
+
+            await loadActivitiesFromDatabase();
+            renderPendingActivities();
+            renderRecentActivities();
+
+            const activitiesAfter = pendingActivities.length + recentActivities.length;
+
+            // Adaptive refresh rate based on activity
+            if (activitiesBefore === activitiesAfter) {
+              consecutiveEmptyRefreshes++;
+              // Gradually increase interval if no new data
+              if (consecutiveEmptyRefreshes >= 3) {
+                refreshInterval = Math.min(refreshInterval * 1.5, 60000); // Max 1 minute
+              }
+            } else {
+              consecutiveEmptyRefreshes = 0;
+              refreshInterval = 15000; // Reset to 15 seconds when there's activity
+            }
+
+            console.log(`Next refresh in ${refreshInterval/1000} seconds`);
+          } catch (error) {
+            console.error('Error during auto-refresh:', error);
+            refreshInterval = Math.min(refreshInterval * 2, 120000); // Backoff on error
+          } finally {
+            refreshInProgress = false;
+            scheduleNextRefresh();
+          }
+        } else {
+          // Reschedule if conditions aren't met
+          scheduleNextRefresh();
+        }
+      }, refreshInterval);
+    }
+
+    // Start the refresh cycle
+    scheduleNextRefresh();
+
+    // Pause/resume refresh based on page visibility
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') {
+        console.log('Page visible, resuming refresh');
+        refreshInterval = 15000; // Reset to fast refresh when page becomes visible
+        scheduleNextRefresh();
+      } else {
+        console.log('Page hidden, pausing refresh');
+        if (refreshTimer) {
+          clearTimeout(refreshTimer);
         }
       }
-    }, 30000);
+    });
   </script>
 
   <script>
@@ -3549,7 +3953,7 @@
               <a href="about.html" class="text-gray-400 hover:text-white transition-colors">About Us</a>
             </li>
             <li>
-              <a href="store.html" class="text-gray-400 hover:text-white transition-colors">Store</a>
+              <a href="storenew.html" class="text-gray-400 hover:text-white transition-colors">Store</a>
             </li>
             <li>
               <a href="dashboard.html" class="text-gray-400 hover:text-white transition-colors">Dashboard</a>
@@ -3623,5 +4027,33 @@
       </div>
     </div>
   </footer>
+
+  <!-- Authentication Initialization -->
+  <script>
+    // Initialize authentication when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+      } else {
+        console.log('Auth script not loaded, trying to initialize...');
+        // Try to initialize auth after a short delay
+        setTimeout(function() {
+          if (typeof initAuth === 'function') {
+            initAuth();
+          } else {
+            console.error('Auth initialization function not found');
+          }
+        }, 500);
+      }
+    });
+
+    // Also try to initialize on window load
+    window.addEventListener('load', function() {
+      if (typeof initAuth === 'function') {
+        initAuth();
+      }
+    });
+  </script>
 </body>
 </html>

@@ -21,14 +21,14 @@
       --border: hsl(214.3, 31.8%, 91.4%);
       --radius: 0.5rem;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       border-color: var(--border);
     }
-    
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       background: linear-gradient(135deg, var(--dairy-cream) 0%, rgba(232, 221, 201, 0.3) 100%);
@@ -39,13 +39,13 @@
       justify-content: center;
       padding: 2rem;
     }
-    
+
     .container {
       max-width: 800px;
       width: 100%;
       padding: 2rem;
     }
-    
+
     .card {
       background-color: rgba(255, 255, 255, 0.5);
       backdrop-filter: blur(4px);
@@ -54,12 +54,12 @@
       border: 1px solid var(--dairy-beige);
       overflow: hidden;
     }
-    
+
     .card-header {
       border-bottom: 2px solid var(--dairy-beige);
       padding-bottom: 1rem;
     }
-    
+
     .card-title {
       font-size: 2.25rem;
       font-weight: 700;
@@ -67,44 +67,44 @@
       text-align: center;
       padding: 1.5rem 1rem 1rem;
     }
-    
+
     .card-content {
       padding: 1.5rem;
     }
-    
+
     section {
       margin-bottom: 2rem;
     }
-    
+
     section:last-child {
       margin-bottom: 0;
     }
-    
+
     h3 {
       font-size: 1.25rem;
       font-weight: 600;
       color: var(--dairy-green);
       margin-bottom: 0.75rem;
     }
-    
+
     p {
       color: var(--dairy-brown);
       line-height: 1.6;
       margin-bottom: 1rem;
     }
-    
+
     ul {
       list-style: none;
       color: var(--dairy-brown);
       line-height: 1.6;
     }
-    
+
     li {
       margin-bottom: 0.5rem;
       padding-left: 1.5rem;
       position: relative;
     }
-    
+
     li:before {
       content: "•";
       position: absolute;
@@ -112,21 +112,21 @@
       color: var(--dairy-green);
       font-weight: bold;
     }
-    
+
     /* Responsive design */
     @media (max-width: 640px) {
       .container {
         padding: 1rem;
       }
-      
+
       .card-title {
         font-size: 1.75rem;
       }
-      
+
       h3 {
         font-size: 1.1rem;
       }
-      
+
       .card-content {
         padding: 1rem;
       }
@@ -143,19 +143,19 @@
         <section>
           <h3>Who We Are</h3>
           <p>
-            We are a dedicated team of experts in dairy farming, investment management, and technology, 
+            We are a dedicated team of experts in dairy farming, investment management, and technology,
             providing a hassle-free way for individuals to own cattle without daily responsibilities.
           </p>
         </section>
-        
+
         <section>
           <h3>Our Mission</h3>
           <p>
-            To bridge the gap between dairy farming and investors by offering a seamless, 
+            To bridge the gap between dairy farming and investors by offering a seamless,
             transparent, and profitable solution.
           </p>
         </section>
-        
+
         <section>
           <h3>What We Do</h3>
           <ul>
@@ -166,7 +166,7 @@
             <li>Sell fresh dairy products directly to consumers.</li>
           </ul>
         </section>
-        
+
         <section>
           <h3>Why Choose Us</h3>
           <ul>
@@ -179,6 +179,35 @@
       </div>
     </div>
   </div>
+
+  <!-- Authentication Script -->
+  <script src="js/auth.js"></script>
+  <script>
+    // Initialize authentication when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+      } else {
+        console.log('Auth script not loaded, trying to initialize...');
+        // Try to initialize auth after a short delay
+        setTimeout(function() {
+          if (typeof initAuth === 'function') {
+            initAuth();
+          } else {
+            console.error('Auth initialization function not found');
+          }
+        }, 500);
+      }
+    });
+
+    // Also try to initialize on window load
+    window.addEventListener('load', function() {
+      if (typeof initAuth === 'function') {
+        initAuth();
+      }
+    });
+  </script>
 
   <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>

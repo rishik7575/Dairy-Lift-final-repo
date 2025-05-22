@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dairy-Lift - Register Your Cattle</title>
   <meta name="description" content="Register your cattle for insurance coverage with Dairy-Lift." />
-  
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <!-- Additional Resources -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+  <script src="js/auth.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -169,17 +170,17 @@
       overflow: hidden;
       z-index: 50;
     }
-    
+
     .mobile-menu-toggle:hover {
       background-color: var(--primary-light);
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
     }
-    
+
     .mobile-menu-toggle:active {
       transform: scale(0.95);
     }
-    
+
     .hamburger-lines {
       width: 22px;
       height: 18px;
@@ -188,7 +189,7 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    
+
     .hamburger-line {
       display: block;
       height: 2px;
@@ -198,22 +199,22 @@
       transition: all 0.3s ease-in-out;
       transform-origin: center;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
       transform: translateY(8px) rotate(45deg);
       width: 22px;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
       opacity: 0;
       transform: translateX(-10px);
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
       transform: translateY(-8px) rotate(-45deg);
       width: 22px;
     }
-    
+
     .mobile-menu-toggle::after {
       content: '';
       position: absolute;
@@ -225,11 +226,11 @@
       transform: scale(0);
       transition: transform 0.3s ease;
     }
-    
+
     .mobile-menu-toggle:hover::after {
       transform: scale(1);
     }
-    
+
     .menu-toggle-ripple {
       position: absolute;
       background-color: rgba(173, 110, 245, 0.3);
@@ -238,7 +239,7 @@
       animation: ripple 0.6s linear;
       pointer-events: none;
     }
-    
+
     @keyframes ripple {
       to {
         transform: scale(2);
@@ -266,7 +267,7 @@
     .mobile-menu.active {
       transform: translateX(280px);
     }
-    
+
     .mobile-menu-overlay {
       position: fixed;
       top: 0;
@@ -280,7 +281,7 @@
       transition: opacity 0.3s ease, visibility 0.3s ease;
       backdrop-filter: blur(2px);
     }
-    
+
     .mobile-menu-overlay.active {
       opacity: 1;
       visibility: visible;
@@ -303,7 +304,7 @@
       background-color: var(--muted);
       transform: translateX(5px);
     }
-    
+
     .mobile-nav-link::after {
       content: '';
       position: absolute;
@@ -314,7 +315,7 @@
       background-color: var(--primary);
       transition: width 0.3s ease;
     }
-    
+
     .mobile-nav-link:hover::after {
       width: 30%;
     }
@@ -331,7 +332,7 @@
       transform: translateX(5px) scale(1.02);
       box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
     }
-    
+
     .mobile-menu-header {
       display: flex;
       align-items: center;
@@ -340,14 +341,14 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 1rem;
     }
-    
+
     .mobile-menu-logo {
       font-family: 'Pacifico', cursive;
       font-size: 1.5rem;
       color: var(--primary);
       text-decoration: none;
     }
-    
+
     .mobile-menu-close {
       background: none;
       border: none;
@@ -361,7 +362,7 @@
       border-radius: 50%;
       transition: all 0.2s ease;
     }
-    
+
     .mobile-menu-close:hover {
       background-color: var(--muted);
       color: var(--foreground);
@@ -425,10 +426,10 @@
         color: var(--primary);
       }
     }
-    
+
     /* Remix Icons Fix */
     :where([class^="ri-"])::before { content: "\f3c2"; }
-    
+
     /* Button Styles */
     .btn {
       display: inline-flex;
@@ -565,7 +566,7 @@
       padding-top: 3rem;
       padding-bottom: 3rem;
     }
-    
+
     /* Header photo styles */
     .header-photo-container {
       display: flex;
@@ -576,7 +577,7 @@
       height: 70px;
       flex-shrink: 0;
     }
-    
+
     .header-photo {
       width: 100%;
       height: 100%;
@@ -585,7 +586,7 @@
       background-color: white;
       padding: 2px;
     }
-    
+
     /* Override navbar-content styles */
     .navbar-content {
       display: flex !important;
@@ -595,7 +596,7 @@
       position: relative !important;
       padding: 0.5rem 0 !important;
     }
-    
+
     /* Override logo styles */
     .logo {
       font-weight: bold !important;
@@ -607,21 +608,21 @@
       display: inline-block !important;
       padding: 0 15px !important;
     }
-    
+
     /* Override navbar-actions styles */
     .navbar-actions {
       display: flex !important;
       align-items: center !important;
       gap: 1rem !important;
     }
-    
+
     @media (min-width: 768px) {
       .header-photo-container {
         width: 80px;
         height: 80px;
         margin: 0 30px 0 20px;
       }
-      
+
       .logo {
         font-size: 1.5rem !important;
         min-width: 250px !important;
@@ -676,7 +677,7 @@
         </svg>
         <span style="margin-left: 10px;">Home</span>
       </a>
-      
+
       <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -733,13 +734,13 @@
       </a>
     </div>
   </header>
-  
+
   <!-- Main Content -->
   <main class="container mx-auto py-8">
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h1 class="text-2xl font-bold mb-4">Register Your Cattle</h1>
       <p class="mb-6">Complete the form below to register your cattle for insurance coverage.</p>
-      
+
       <!-- Registration Form -->
       <form id="cattle-registration-form">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -765,7 +766,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Cattle Information -->
           <div>
             <h2 class="text-lg font-semibold mb-3">Cattle Information</h2>
@@ -807,7 +808,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Insurance Plan Selection -->
         <div class="mt-8">
           <h2 class="text-lg font-semibold mb-3">Select Insurance Plan</h2>
@@ -841,7 +842,7 @@
                 </div>
               </label>
             </div>
-            
+
             <div class="border border-gray-200 rounded-lg p-4 hover:border-primary hover:shadow-md transition-all cursor-pointer">
               <input type="radio" id="plan-standard" name="insurance-plan" value="standard" class="hidden" checked>
               <label for="plan-standard" class="cursor-pointer">
@@ -871,7 +872,7 @@
                 </div>
               </label>
             </div>
-            
+
             <div class="border border-gray-200 rounded-lg p-4 hover:border-primary hover:shadow-md transition-all cursor-pointer">
               <input type="radio" id="plan-premium" name="insurance-plan" value="premium" class="hidden">
               <label for="plan-premium" class="cursor-pointer">
@@ -903,7 +904,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Submit Button -->
         <div class="mt-8 text-center">
           <button type="submit" class="bg-primary text-white px-8 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors">
@@ -913,7 +914,7 @@
       </form>
     </div>
   </main>
-  
+
   <!-- Footer -->
   <footer class="bg-gray-900 text-white pt-16 pb-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1125,7 +1126,7 @@
       </div>
     </div>
   </footer>
-  
+
   <!-- Mobile Menu JavaScript -->
   <script>
     // Mobile Menu Toggle
@@ -1141,25 +1142,25 @@
       mobileMenuOverlay.classList.add('active');
       mobileMenuToggle.classList.add('active');
       body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-      
+
       // Add a subtle ripple effect on click
       const ripple = document.createElement('span');
       ripple.classList.add('menu-toggle-ripple');
       mobileMenuToggle.appendChild(ripple);
-      
+
       // Position the ripple where the click happened
       const rect = mobileMenuToggle.getBoundingClientRect();
       const size = Math.max(rect.width, rect.height) * 2;
-      
+
       ripple.style.width = ripple.style.height = `${size}px`;
       ripple.style.left = `${-size/4}px`;
       ripple.style.top = `${-size/4}px`;
-      
+
       // Remove the ripple after animation completes
       setTimeout(() => {
         ripple.remove();
       }, 600);
-      
+
       // Add entrance animation to each nav link
       const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
       navLinks.forEach((link, index) => {
@@ -1167,7 +1168,7 @@
         link.style.transform = 'translateX(-10px)';
         link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
         link.style.transitionDelay = `${0.05 * (index + 1)}s`;
-        
+
         setTimeout(() => {
           link.style.opacity = '1';
           link.style.transform = 'translateX(0)';
@@ -1211,14 +1212,14 @@
     mobileLinks.forEach(link => {
       link.addEventListener('click', closeMobileMenu);
     });
-    
+
     // Form submission handling
     document.getElementById('cattle-registration-form').addEventListener('submit', function(e) {
       e.preventDefault();
       alert('Cattle registration submitted successfully!');
       this.reset();
     });
-    
+
     // Plan selection handling
     const planCards = document.querySelectorAll('[name="insurance-plan"]');
     planCards.forEach(plan => {
@@ -1233,10 +1234,33 @@
         plan.parentElement.classList.add('border-primary', 'shadow-md');
       });
     });
-    
+
     // Initialize the selected plan
     document.querySelector('[name="insurance-plan"]:checked').parentElement.classList.add('border-primary', 'shadow-md');
     document.querySelector('[name="insurance-plan"]:checked').parentElement.classList.remove('border-gray-200');
+
+    // Initialize authentication when DOM is loaded
+    if (window.DairyLiftAuth) {
+      console.log('Auth script loaded, initializing...');
+      window.DairyLiftAuth.initAuth();
+    } else {
+      console.log('Auth script not loaded, trying to initialize...');
+      // Try to initialize auth after a short delay
+      setTimeout(function() {
+        if (typeof initAuth === 'function') {
+          initAuth();
+        } else {
+          console.error('Auth initialization function not found');
+        }
+      }, 500);
+    }
+
+    // Also try to initialize on window load
+    window.addEventListener('load', function() {
+      if (typeof initAuth === 'function') {
+        initAuth();
+      }
+    });
   </script>
 </body>
 </html>

@@ -47,9 +47,9 @@ END;
 $$ language 'plpgsql';
 
 -- 5. Create trigger to automatically update updated_at on farm_visit_requests
-CREATE TRIGGER update_farm_visit_requests_updated_at 
-    BEFORE UPDATE ON farm_visit_requests 
-    FOR EACH ROW 
+CREATE TRIGGER update_farm_visit_requests_updated_at
+    BEFORE UPDATE ON farm_visit_requests
+    FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
 -- 6. Enable Row Level Security (RLS) for security
@@ -94,13 +94,13 @@ INSERT INTO notifications (type, title, description, priority, status, related_i
 ('farm_visit_request', 'Farm Visit Request Processed', 'Mike Wilson farm visit request has been accepted', 'medium', 'completed', 3);
 
 -- Update the completed notification
-UPDATE notifications 
-SET action_taken = 'accepted', completed_by = 'Admin', completed_at = NOW() 
+UPDATE notifications
+SET action_taken = 'accepted', completed_by = 'Admin', completed_at = NOW()
 WHERE related_id = 3;
 
 -- 10. Create a view for easier querying (optional)
 CREATE OR REPLACE VIEW farm_visit_dashboard AS
-SELECT 
+SELECT
     n.id as notification_id,
     n.type,
     n.title,
@@ -128,6 +128,131 @@ ORDER BY n.created_at DESC;
 -- Grant access to the view
 GRANT SELECT ON farm_visit_dashboard TO anon, authenticated;
 
+-- 11. Create products table for comprehensive product management
+CREATE TABLE IF NOT EXISTS products (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL CHECK (price >= 0),
+    stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0),
+    category VARCHAR(100) NOT NULL,
+    image_url TEXT,
+    status VARCHAR(20) DEFAULT 'in-stock' CHECK (status IN ('in-stock', 'low-stock', 'out-of-stock', 'inactive')),
+    discount DECIMAL(5,2) DEFAULT 0 CHECK (discount >= 0 AND discount <= 100),
+    active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 12. Create product_categories table for category management
+CREATE TABLE IF NOT EXISTS product_categories (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT,
+    active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 13. Create recent_activities table for activity tracking
+CREATE TABLE IF NOT EXISTS recent_activities (
+    id BIGSERIAL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    priority VARCHAR(20) DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high')),
+    icon VARCHAR(100),
+    related_table VARCHAR(50),
+    related_id BIGINT,
+    created_by VARCHAR(255),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 14. Create indexes for products table
+CREATE INDEX IF NOT EXISTS idx_products_category ON products(category);
+CREATE INDEX IF NOT EXISTS idx_products_status ON products(status);
+CREATE INDEX IF NOT EXISTS idx_products_active ON products(active);
+CREATE INDEX IF NOT EXISTS idx_products_created_at ON products(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_products_updated_at ON products(updated_at DESC);
+
+-- 15. Create indexes for recent_activities table
+CREATE INDEX IF NOT EXISTS idx_recent_activities_type ON recent_activities(type);
+CREATE INDEX IF NOT EXISTS idx_recent_activities_created_at ON recent_activities(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_recent_activities_related ON recent_activities(related_table, related_id);
+
+-- 16. Create trigger to automatically update updated_at on products
+CREATE TRIGGER update_products_updated_at
+    BEFORE UPDATE ON products
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- 17. Enable Row Level Security for new tables
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE product_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE recent_activities ENABLE ROW LEVEL SECURITY;
+
+-- 18. Create policies for products table
+CREATE POLICY "Allow public read access to products" ON products
+    FOR SELECT USING (active = true);
+
+CREATE POLICY "Allow public insert on products" ON products
+    FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Allow public update on products" ON products
+    FOR UPDATE USING (true);
+
+CREATE POLICY "Allow public delete on products" ON products
+    FOR DELETE USING (true);
+
+-- 19. Create policies for product_categories table
+CREATE POLICY "Allow public read access to product_categories" ON product_categories
+    FOR SELECT USING (active = true);
+
+CREATE POLICY "Allow public insert on product_categories" ON product_categories
+    FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Allow public update on product_categories" ON product_categories
+    FOR UPDATE USING (true);
+
+-- 20. Create policies for recent_activities table
+CREATE POLICY "Allow public read access to recent_activities" ON recent_activities
+    FOR SELECT USING (true);
+
+CREATE POLICY "Allow public insert on recent_activities" ON recent_activities
+    FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Allow public update on recent_activities" ON recent_activities
+    FOR UPDATE USING (true);
+
+-- 21. Insert default product categories
+INSERT INTO product_categories (name, description) VALUES
+('milk', 'Fresh milk and milk-based products'),
+('ghee', 'Pure ghee and clarified butter products'),
+('yogurt', 'Yogurt and fermented dairy products'),
+('paneer', 'Fresh paneer and cottage cheese'),
+('butter', 'Fresh butter and spreads'),
+('cheese', 'Artisan cheese varieties'),
+('other', 'Other dairy and farm products');
+
+-- 22. Update notifications table to support product notifications
+ALTER TABLE notifications ADD COLUMN IF NOT EXISTS related_table VARCHAR(50);
+ALTER TABLE notifications ADD COLUMN IF NOT EXISTS metadata JSONB;
+
+-- Update the constraint to include product-related types
+ALTER TABLE notifications DROP CONSTRAINT IF EXISTS notifications_type_check;
+ALTER TABLE notifications ADD CONSTRAINT notifications_type_check
+    CHECK (type IN ('farm_visit_request', 'product_added', 'product_updated', 'product_deleted', 'product_low_stock', 'general'));
+
+-- 23. Insert sample products for testing
+INSERT INTO products (name, description, price, stock, category, status, active) VALUES
+('Fresh Milk (500ml)', 'Nutrient-rich whole milk straight from our dairy farm. Pasteurized and non-homogenized.', 45.00, 120, 'milk', 'in-stock', true),
+('Premium Ghee (200g)', 'Pure ghee made from fresh cream using traditional methods.', 180.00, 50, 'ghee', 'in-stock', true),
+('Yogurt (400g)', 'Creamy yogurt made from fresh milk with live cultures.', 60.00, 85, 'yogurt', 'in-stock', true),
+('Paneer (250g)', 'Fresh paneer made daily from pure milk.', 120.00, 5, 'paneer', 'low-stock', true),
+('Artisan Cheese (200g)', 'Handcrafted aged cheese made using traditional methods.', 250.00, 25, 'cheese', 'in-stock', true);
+
 COMMENT ON TABLE farm_visit_requests IS 'Stores farm visit requests from customers';
 COMMENT ON TABLE notifications IS 'Stores notifications for admin dashboard';
+COMMENT ON TABLE products IS 'Stores all dairy products available in the store';
+COMMENT ON TABLE product_categories IS 'Stores product categories for organization';
+COMMENT ON TABLE recent_activities IS 'Stores recent activities for dashboard display';
 COMMENT ON VIEW farm_visit_dashboard IS 'Combined view of farm visit requests and notifications for dashboard';
