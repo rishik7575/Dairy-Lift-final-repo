@@ -17,6 +17,9 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/performance-optimizations.css">
+  <script src="../js/performance-manager.js"></script>
+  <script src="../js/performance-monitor.js"></script>
   <script src="../js/auth.js"></script>
   <script>
     tailwind.config = {
@@ -1785,12 +1788,20 @@
     let wishlistItems = new Set();
     let cartItems = new Map();
 
-    // Performance optimizations
+    // Enhanced Performance optimizations with caching and virtual scrolling
     const performanceOptimizations = {
       debounceTimers: new Map(),
       throttleTimers: new Map(),
+      cache: new Map(),
+      renderQueue: [],
+      isRendering: false,
+      virtualScrollConfig: {
+        itemHeight: 300,
+        containerHeight: 600,
+        buffer: 5
+      },
 
-      debounce(key, func, delay = 300) {
+      debounce(key, func, delay = 150) { // Reduced delay for faster response
         if (this.debounceTimers.has(key)) {
           clearTimeout(this.debounceTimers.get(key));
         }
@@ -1803,7 +1814,7 @@
         this.debounceTimers.set(key, timer);
       },
 
-      throttle(key, func, delay = 100) {
+      throttle(key, func, delay = 50) { // Reduced delay for smoother performance
         if (this.throttleTimers.has(key)) {
           return;
         }
@@ -1814,26 +1825,81 @@
 
         this.throttleTimers.set(key, timer);
         func();
+      },
+
+      // Memoization for expensive operations
+      memoize(key, func, ttl = 30000) {
+        const cached = this.cache.get(key);
+        if (cached && Date.now() - cached.timestamp < ttl) {
+          return cached.value;
+        }
+
+        const result = func();
+        this.cache.set(key, {
+          value: result,
+          timestamp: Date.now()
+        });
+
+        return result;
+      },
+
+      // Batch DOM updates for better performance
+      batchRender(renderFunc) {
+        this.renderQueue.push(renderFunc);
+
+        if (!this.isRendering) {
+          this.isRendering = true;
+          requestAnimationFrame(() => {
+            const queue = [...this.renderQueue];
+            this.renderQueue = [];
+
+            queue.forEach(func => func());
+            this.isRendering = false;
+          });
+        }
+      },
+
+      // Clear cache periodically to prevent memory leaks
+      clearCache() {
+        const now = Date.now();
+        for (const [key, value] of this.cache.entries()) {
+          if (now - value.timestamp > 60000) { // Clear items older than 1 minute
+            this.cache.delete(key);
+          }
+        }
       }
     };
 
-    // Initialize Supabase and load products
+    // Clear cache periodically
+    setInterval(() => performanceOptimizations.clearCache(), 60000);
+
+    // Initialize Supabase and load products with performance optimization
     async function initializeSupabase() {
       try {
         console.log('🔄 Initializing Supabase Products Manager...');
 
-        const initialized = await window.supabaseProductsManager.initialize();
+        // Use cached initialization if available
+        const cachedInit = performanceOptimizations.memoize('supabase-init', async () => {
+          return await window.supabaseProductsManager.initialize();
+        }, 300000); // Cache for 5 minutes
+
+        const initialized = await cachedInit;
         if (initialized) {
           supabaseInitialized = true;
           console.log('✅ Supabase Products Manager initialized successfully');
-          await loadProductsFromDatabase();
+
+          // Load products in background to avoid blocking UI
+          setTimeout(async () => {
+            await loadProductsFromDatabase();
+          }, 100);
         } else {
           throw new Error('Failed to initialize Supabase Products Manager');
         }
       } catch (error) {
         console.error('❌ Failed to initialize Supabase:', error);
         supabaseInitialized = false;
-        loadFallbackProducts();
+        // Load fallback products immediately to show content
+        setTimeout(loadFallbackProducts, 50);
       }
     }
 
@@ -2758,20 +2824,32 @@
       }
     }
 
-    // Initialize everything when DOM is loaded
-    document.addEventListener('DOMContentLoaded', async function() {
-      console.log('🚀 Store page initializing...');
+    // Optimized initialization - prevent multiple DOM loaded listeners
+    let isInitialized = false;
 
-      // Initialize Supabase first
-      await initializeSupabase();
+    async function initializeStorePage() {
+      if (isInitialized) return;
+      isInitialized = true;
 
-      // Initialize other components
+      console.log('🚀 Investor Store page initializing...');
+
+      // Initialize Supabase first (non-blocking)
+      initializeSupabase(); // Don't await to prevent blocking
+
+      // Initialize other components immediately
       const cart = new Cart();
       const wishlist = new Wishlist();
       window.productListing = new ProductListing(cart, wishlist);
 
-      console.log('✅ Store page initialization complete');
-    });
+      console.log('✅ Investor Store page initialization complete');
+    }
+
+    // Initialize when DOM is loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeStorePage);
+    } else {
+      initializeStorePage();
+    }
 
     // Utility functions
     function formatPrice(price) {

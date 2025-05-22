@@ -13,7 +13,7 @@ class PerformanceManager {
     this.refreshRates = new Map();
     this.isVisible = true;
     this.networkStatus = 'online';
-    
+
     // Performance settings
     this.settings = {
       cacheTimeout: 30000, // 30 seconds
@@ -33,7 +33,9 @@ class PerformanceManager {
     this.setupNetworkListener();
     this.setupPerformanceMonitoring();
     this.optimizeExistingTimers();
-    console.log('🚀 Performance Manager initialized');
+    this.optimizeDOMOperations();
+    this.preloadCriticalResources();
+    console.log('🚀 Performance Manager initialized with enhanced optimizations');
   }
 
   // Visibility API for performance optimization
@@ -41,7 +43,7 @@ class PerformanceManager {
     document.addEventListener('visibilitychange', () => {
       this.isVisible = !document.hidden;
       console.log(`👁️ Page visibility changed: ${this.isVisible ? 'visible' : 'hidden'}`);
-      
+
       if (this.isVisible) {
         this.resumeOperations();
       } else {
@@ -81,14 +83,14 @@ class PerformanceManager {
     // Monitor frame rate
     let lastTime = performance.now();
     let frameCount = 0;
-    
+
     const checkFrameRate = (currentTime) => {
       frameCount++;
       if (currentTime - lastTime >= 1000) {
         const fps = frameCount;
         frameCount = 0;
         lastTime = currentTime;
-        
+
         if (fps < 30) {
           console.warn(`⚠️ Low FPS detected: ${fps}`);
           this.optimizeForLowPerformance();
@@ -96,7 +98,7 @@ class PerformanceManager {
       }
       requestAnimationFrame(checkFrameRate);
     };
-    
+
     requestAnimationFrame(checkFrameRate);
   }
 
@@ -105,7 +107,7 @@ class PerformanceManager {
     // Override setInterval to track and optimize
     const originalSetInterval = window.setInterval;
     const originalClearInterval = window.clearInterval;
-    
+
     window.setInterval = (callback, delay, ...args) => {
       const optimizedDelay = this.getOptimizedDelay(delay);
       const id = originalSetInterval(() => {
@@ -113,7 +115,7 @@ class PerformanceManager {
           callback(...args);
         }
       }, optimizedDelay);
-      
+
       this.timers.set(id, { type: 'interval', delay: optimizedDelay, original: delay });
       return id;
     };
@@ -129,11 +131,11 @@ class PerformanceManager {
     if (!this.isVisible) {
       return Math.max(originalDelay * 4, this.settings.slowRefreshRate);
     }
-    
+
     if (this.networkStatus === 'offline') {
       return Math.max(originalDelay * 2, this.settings.normalRefreshRate);
     }
-    
+
     return originalDelay;
   }
 
@@ -147,14 +149,14 @@ class PerformanceManager {
     if (this.debounceTimers.has(key)) {
       clearTimeout(this.debounceTimers.get(key));
     }
-    
+
     const timer = setTimeout(() => {
       if (this.shouldExecute()) {
         func();
       }
       this.debounceTimers.delete(key);
     }, delay);
-    
+
     this.debounceTimers.set(key, timer);
   }
 
@@ -163,13 +165,13 @@ class PerformanceManager {
     if (this.throttleTimers.has(key)) {
       return;
     }
-    
+
     const timer = setTimeout(() => {
       this.throttleTimers.delete(key);
     }, delay);
-    
+
     this.throttleTimers.set(key, timer);
-    
+
     if (this.shouldExecute()) {
       func();
     }
@@ -182,7 +184,7 @@ class PerformanceManager {
       const firstKey = this.cache.keys().next().value;
       this.cache.delete(firstKey);
     }
-    
+
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
@@ -193,17 +195,17 @@ class PerformanceManager {
   getCache(key) {
     const cached = this.cache.get(key);
     if (!cached) return null;
-    
+
     const now = Date.now();
     if (now - cached.timestamp > cached.timeout) {
       this.cache.delete(key);
       return null;
     }
-    
+
     // Move to end (LRU)
     this.cache.delete(key);
     this.cache.set(key, cached);
-    
+
     return cached.data;
   }
 
@@ -242,10 +244,10 @@ class PerformanceManager {
   // Optimize for low performance devices
   optimizeForLowPerformance() {
     console.log('🐌 Optimizing for low performance');
-    
+
     // Reduce animation complexity
     document.documentElement.style.setProperty('--animation-duration', '0.1s');
-    
+
     // Disable non-essential animations
     const style = document.createElement('style');
     style.textContent = `
@@ -255,11 +257,25 @@ class PerformanceManager {
         transition-duration: 0.1s !important;
         transition-delay: 0s !important;
       }
+      .product-card {
+        will-change: auto !important;
+      }
+      .product-image {
+        will-change: auto !important;
+      }
+      .hover-effect:hover {
+        transform: none !important;
+      }
     `;
     document.head.appendChild(style);
-    
+
     // Increase cache timeout
     this.settings.cacheTimeout = 60000; // 1 minute
+
+    // Disable virtual scrolling for low-end devices
+    if (window.productListing && window.productListing.virtualScroll) {
+      window.productListing.virtualScroll.enabled = false;
+    }
   }
 
   // Get performance metrics
@@ -272,9 +288,82 @@ class PerformanceManager {
       memory: performance.memory ? {
         used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024),
         total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024),
-        limit: Math.round(performance.memory.jsHeapSizeLimit / 1024 / 1024)
-      } : null
+        limit: Math.round(performance.memory.jsHeapSizeLimit / 1024 / 1024),
+        percentage: Math.round((performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit) * 100)
+      } : null,
+      renderingPerformance: this.getRenderingMetrics()
     };
+  }
+
+  // Get rendering performance metrics
+  getRenderingMetrics() {
+    const navigation = performance.getEntriesByType('navigation')[0];
+    if (navigation) {
+      return {
+        domContentLoaded: Math.round(navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart),
+        loadComplete: Math.round(navigation.loadEventEnd - navigation.loadEventStart),
+        firstPaint: this.getFirstPaint(),
+        firstContentfulPaint: this.getFirstContentfulPaint()
+      };
+    }
+    return null;
+  }
+
+  // Get First Paint timing
+  getFirstPaint() {
+    const paintEntries = performance.getEntriesByType('paint');
+    const firstPaint = paintEntries.find(entry => entry.name === 'first-paint');
+    return firstPaint ? Math.round(firstPaint.startTime) : null;
+  }
+
+  // Get First Contentful Paint timing
+  getFirstContentfulPaint() {
+    const paintEntries = performance.getEntriesByType('paint');
+    const firstContentfulPaint = paintEntries.find(entry => entry.name === 'first-contentful-paint');
+    return firstContentfulPaint ? Math.round(firstContentfulPaint.startTime) : null;
+  }
+
+  // Optimize DOM operations
+  optimizeDOMOperations() {
+    // Batch DOM reads and writes
+    let readOperations = [];
+    let writeOperations = [];
+
+    window.requestDOMRead = (callback) => {
+      readOperations.push(callback);
+      this.scheduleDOM();
+    };
+
+    window.requestDOMWrite = (callback) => {
+      writeOperations.push(callback);
+      this.scheduleDOM();
+    };
+
+    this.scheduleDOM = this.debounce('dom-operations', () => {
+      // Execute all reads first
+      readOperations.forEach(callback => callback());
+      readOperations = [];
+
+      // Then execute all writes
+      writeOperations.forEach(callback => callback());
+      writeOperations = [];
+    }, 16); // ~60fps
+  }
+
+  // Preload critical resources
+  preloadCriticalResources() {
+    const criticalImages = [
+      'image/profileicone.png',
+      // Add other critical images here
+    ];
+
+    criticalImages.forEach(src => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+    });
   }
 
   // Cleanup method
@@ -285,13 +374,13 @@ class PerformanceManager {
       if (timer.type === 'interval') clearInterval(id);
       if (timer.type === 'timeout') clearTimeout(id);
     });
-    
+
     this.cache.clear();
     this.observers.clear();
     this.timers.clear();
     this.debounceTimers.clear();
     this.throttleTimers.clear();
-    
+
     console.log('🧹 Performance Manager cleaned up');
   }
 }

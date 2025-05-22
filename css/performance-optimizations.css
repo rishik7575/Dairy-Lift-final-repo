@@ -1,0 +1,278 @@
+/* Performance Optimizations CSS for Dairy-Lift Store Pages */
+
+/* Critical performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+/* Optimize images for better loading */
+img {
+  max-width: 100%;
+  height: auto;
+  loading: lazy;
+  decoding: async;
+}
+
+/* Optimize animations for better performance */
+.card, .product-card {
+  will-change: transform;
+  transform: translateZ(0); /* Force hardware acceleration */
+}
+
+/* Reduce layout thrashing */
+.product-grid {
+  contain: layout style paint;
+}
+
+/* Optimize hover effects */
+.hover-effect {
+  transition: transform 0.2s ease;
+}
+
+.hover-effect:hover {
+  transform: translateY(-2px);
+}
+
+/* Lazy loading animations */
+.lazy-animate {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.lazy-animate.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Virtual scrolling container */
+.virtual-scroll-container {
+  overflow-y: auto;
+  height: 600px;
+  contain: strict;
+}
+
+/* Optimize button interactions */
+.btn, .button {
+  will-change: transform;
+  transition: transform 0.1s ease;
+}
+
+.btn:active, .button:active {
+  transform: scale(0.98);
+}
+
+/* Optimize product cards for better performance */
+.product-card {
+  contain: layout style;
+  transform: translateZ(0);
+}
+
+.product-image {
+  will-change: transform;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+/* Optimize loading states */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Optimize modal animations */
+.modal {
+  will-change: opacity, transform;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal.open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Optimize scroll performance */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .lazy-animate,
+  .hover-effect,
+  .btn,
+  .button,
+  .product-image,
+  .modal {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .scroll-container {
+    scroll-behavior: auto;
+  }
+}
+
+/* Optimize for low-end devices */
+@media (max-width: 768px) {
+  .product-card {
+    will-change: auto;
+  }
+  
+  .product-image {
+    will-change: auto;
+  }
+  
+  .hover-effect:hover {
+    transform: none;
+  }
+}
+
+/* Critical loading optimizations */
+.critical-resource {
+  font-display: swap;
+}
+
+/* Optimize font loading */
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+  src: local('Inter');
+}
+
+/* Optimize grid layouts */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  contain: layout;
+}
+
+/* Optimize search and filter performance */
+.search-input {
+  will-change: auto;
+}
+
+.filter-container {
+  contain: layout style;
+}
+
+/* Optimize wishlist and cart interactions */
+.wishlist-btn,
+.cart-btn {
+  will-change: transform;
+  transition: transform 0.1s ease;
+}
+
+.wishlist-btn:active,
+.cart-btn:active {
+  transform: scale(0.95);
+}
+
+/* Optimize navigation */
+.navbar {
+  contain: layout style;
+  will-change: transform;
+}
+
+/* Optimize footer */
+.footer {
+  contain: layout style;
+}
+
+/* Performance monitoring styles */
+.performance-indicator {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 9999;
+  display: none;
+}
+
+.performance-indicator.show {
+  display: block;
+}
+
+/* Optimize for high DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .product-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Critical path optimizations */
+.above-fold {
+  contain: layout style paint;
+}
+
+.below-fold {
+  contain: layout;
+}
+
+/* Optimize animations for 60fps */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* GPU acceleration for smooth scrolling */
+.smooth-scroll {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Optimize table layouts */
+.data-table {
+  table-layout: fixed;
+  contain: layout;
+}
+
+/* Optimize form performance */
+.form-container {
+  contain: layout style;
+}
+
+.form-input {
+  will-change: auto;
+}
+
+/* Memory optimization */
+.memory-efficient {
+  contain: strict;
+}
+
+/* Network optimization hints */
+.preload-hint {
+  content-visibility: auto;
+  contain-intrinsic-size: 300px;
+}

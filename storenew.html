@@ -17,7 +17,10 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/performance-optimizations.css">
   <script src="js/global-optimizations.js"></script>
+  <script src="js/performance-manager.js"></script>
+  <script src="js/performance-monitor.js"></script>
   <script src="js/auth.js"></script>
   <script>
     tailwind.config = {
@@ -1788,12 +1791,20 @@
     let wishlistItems = new Set();
     let cartItems = new Map();
 
-    // Performance optimizations
+    // Enhanced Performance optimizations with caching and virtual scrolling
     const performanceOptimizations = {
       debounceTimers: new Map(),
       throttleTimers: new Map(),
+      cache: new Map(),
+      renderQueue: [],
+      isRendering: false,
+      virtualScrollConfig: {
+        itemHeight: 300,
+        containerHeight: 600,
+        buffer: 5
+      },
 
-      debounce(key, func, delay = 300) {
+      debounce(key, func, delay = 150) { // Reduced delay for faster response
         if (this.debounceTimers.has(key)) {
           clearTimeout(this.debounceTimers.get(key));
         }
@@ -1806,7 +1817,7 @@
         this.debounceTimers.set(key, timer);
       },
 
-      throttle(key, func, delay = 100) {
+      throttle(key, func, delay = 50) { // Reduced delay for smoother performance
         if (this.throttleTimers.has(key)) {
           return;
         }
@@ -1817,29 +1828,82 @@
 
         this.throttleTimers.set(key, timer);
         func();
+      },
+
+      // Memoization for expensive operations
+      memoize(key, func, ttl = 30000) {
+        const cached = this.cache.get(key);
+        if (cached && Date.now() - cached.timestamp < ttl) {
+          return cached.value;
+        }
+
+        const result = func();
+        this.cache.set(key, {
+          value: result,
+          timestamp: Date.now()
+        });
+
+        return result;
+      },
+
+      // Batch DOM updates for better performance
+      batchRender(renderFunc) {
+        this.renderQueue.push(renderFunc);
+
+        if (!this.isRendering) {
+          this.isRendering = true;
+          requestAnimationFrame(() => {
+            const queue = [...this.renderQueue];
+            this.renderQueue = [];
+
+            queue.forEach(func => func());
+            this.isRendering = false;
+          });
+        }
+      },
+
+      // Clear cache periodically to prevent memory leaks
+      clearCache() {
+        const now = Date.now();
+        for (const [key, value] of this.cache.entries()) {
+          if (now - value.timestamp > 60000) { // Clear items older than 1 minute
+            this.cache.delete(key);
+          }
+        }
       }
     };
 
-    // Initialize Supabase and load products
+    // Clear cache periodically
+    setInterval(() => performanceOptimizations.clearCache(), 60000);
+
+    // Initialize Supabase and load products with performance optimization
     async function initializeSupabase() {
       try {
         console.log('🔄 Initializing Supabase Products Manager...');
 
-        const initialized = await window.supabaseProductsManager.initialize();
+        // Use cached initialization if available
+        const cachedInit = performanceOptimizations.memoize('supabase-init', async () => {
+          return await window.supabaseProductsManager.initialize();
+        }, 300000); // Cache for 5 minutes
+
+        const initialized = await cachedInit;
         if (initialized) {
           supabaseInitialized = true;
           console.log('✅ Supabase Products Manager initialized successfully');
-          await loadProductsFromDatabase();
 
-          // Set up real-time listeners
-          setupRealtimeListeners();
+          // Load products in background to avoid blocking UI
+          setTimeout(async () => {
+            await loadProductsFromDatabase();
+            setupRealtimeListeners();
+          }, 100);
         } else {
           throw new Error('Failed to initialize Supabase Products Manager');
         }
       } catch (error) {
         console.error('❌ Failed to initialize Supabase:', error);
         supabaseInitialized = false;
-        loadFallbackProducts();
+        // Load fallback products immediately to show content
+        setTimeout(loadFallbackProducts, 50);
       }
     }
 
@@ -2046,12 +2110,12 @@
 
         console.log(`✅ Loaded ${productsData.length} products from database`);
 
-        // Update the product listing with debouncing
-        performanceOptimizations.debounce('update-product-listing', () => {
+        // Update the product listing with optimized rendering
+        performanceOptimizations.batchRender(() => {
           if (window.productListing) {
             window.productListing.products = [...productsData];
             window.productListing.filteredProducts = [...productsData];
-            window.productListing.render();
+            window.productListing.renderOptimized();
           } else {
             initializeProductListing();
           }
@@ -2061,7 +2125,7 @@
 
           // Hide loading indicator
           showLoadingIndicator(false);
-        }, 100);
+        });
 
       } catch (error) {
         console.error('Error loading products from database:', error);
@@ -2798,20 +2862,32 @@
       }
     }
 
-    // Initialize everything when DOM is loaded
-    document.addEventListener('DOMContentLoaded', async function() {
+    // Optimized initialization - prevent multiple DOM loaded listeners
+    let isInitialized = false;
+
+    async function initializeStorePage() {
+      if (isInitialized) return;
+      isInitialized = true;
+
       console.log('🚀 Store page initializing...');
 
-      // Initialize Supabase first
-      await initializeSupabase();
+      // Initialize Supabase first (non-blocking)
+      initializeSupabase(); // Don't await to prevent blocking
 
-      // Initialize other components
+      // Initialize other components immediately
       const cart = new Cart();
       const wishlist = new Wishlist();
       window.productListing = new ProductListing(cart, wishlist);
 
       console.log('✅ Store page initialization complete');
-    });
+    }
+
+    // Initialize when DOM is loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeStorePage);
+    } else {
+      initializeStorePage();
+    }
 
     // Utility functions
     function formatPrice(price) {
@@ -3128,7 +3204,7 @@
       }
     }
 
-    // Product listing functionality
+    // Enhanced Product listing functionality with virtual scrolling
     class ProductListing {
       constructor(cart, wishlist) {
         this.cart = cart;
@@ -3142,6 +3218,20 @@
         this.showOutOfStock = false;
         this.ratings = [3, 4, 5];
         this.searchQuery = '';
+
+        // Virtual scrolling properties
+        this.virtualScroll = {
+          itemHeight: 300,
+          containerHeight: 600,
+          startIndex: 0,
+          endIndex: 0,
+          visibleItems: 6,
+          buffer: 2
+        };
+
+        // Performance tracking
+        this.renderCache = new Map();
+        this.lastRenderTime = 0;
 
         this.initEventListeners();
         this.render();
@@ -3357,30 +3447,196 @@
 
         productGrid.innerHTML = productsHTML;
 
-        // Add event listeners to product cards
-        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-          btn.addEventListener('click', (event) => {
+        // Add event listeners to product cards with optimized delegation
+        this.attachEventListeners();
+      }
+
+      // Optimized render method with virtual scrolling and caching
+      renderOptimized() {
+        const productGrid = document.getElementById('product-grid');
+        if (!productGrid) return;
+
+        const now = performance.now();
+
+        // Throttle rendering to prevent excessive updates
+        if (now - this.lastRenderTime < 16) { // ~60fps
+          requestAnimationFrame(() => this.renderOptimized());
+          return;
+        }
+
+        this.lastRenderTime = now;
+
+        if (this.filteredProducts.length === 0) {
+          productGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 0;">
+              <i class="fas fa-search" style="font-size: 3rem; color: var(--muted); margin-bottom: 1rem;"></i>
+              <h3>No products found</h3>
+              <p>Try adjusting your search or filter criteria</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Use virtual scrolling for large product lists
+        if (this.filteredProducts.length > 20) {
+          this.renderVirtualized(productGrid);
+        } else {
+          // For smaller lists, render normally but with caching
+          this.renderCached(productGrid);
+        }
+
+        // Attach event listeners once
+        this.attachEventListeners();
+      }
+
+      // Virtual scrolling implementation
+      renderVirtualized(productGrid) {
+        const { itemHeight, visibleItems, buffer } = this.virtualScroll;
+        const scrollTop = productGrid.scrollTop || 0;
+
+        const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - buffer);
+        const endIndex = Math.min(
+          this.filteredProducts.length,
+          startIndex + visibleItems + (buffer * 2)
+        );
+
+        const totalHeight = this.filteredProducts.length * itemHeight;
+
+        // Create virtual container
+        const virtualContainer = document.createElement('div');
+        virtualContainer.style.height = `${totalHeight}px`;
+        virtualContainer.style.position = 'relative';
+        virtualContainer.style.display = 'grid';
+        virtualContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
+        virtualContainer.style.gap = '1.5rem';
+
+        // Create visible items
+        const visibleProducts = this.filteredProducts.slice(startIndex, endIndex);
+        const itemsHTML = visibleProducts.map((product, index) => {
+          const actualIndex = startIndex + index;
+          const cachedCard = this.renderCache.get(product.id);
+
+          if (cachedCard) {
+            return cachedCard;
+          }
+
+          const cardHTML = this.createProductCard(product);
+          this.renderCache.set(product.id, cardHTML);
+
+          return cardHTML;
+        }).join('');
+
+        virtualContainer.innerHTML = itemsHTML;
+        productGrid.innerHTML = '';
+        productGrid.appendChild(virtualContainer);
+
+        // Clean up cache if it gets too large
+        if (this.renderCache.size > 100) {
+          const keys = Array.from(this.renderCache.keys());
+          keys.slice(0, 50).forEach(key => this.renderCache.delete(key));
+        }
+      }
+
+      // Cached rendering for smaller lists
+      renderCached(productGrid) {
+        const cachedHTML = this.filteredProducts.map(product => {
+          const cached = this.renderCache.get(product.id);
+          if (cached) return cached;
+
+          const cardHTML = this.createProductCard(product);
+          this.renderCache.set(product.id, cardHTML);
+          return cardHTML;
+        }).join('');
+
+        productGrid.innerHTML = cachedHTML;
+      }
+
+      // Create product card HTML
+      createProductCard(product) {
+        const isInWishlist = wishlistManager.isInWishlist(product.id);
+
+        return `
+          <div class="card product-card" data-id="${product.id}">
+            <div class="product-image-container">
+              <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy" decoding="async">
+              ${product.inStock ?
+                (product.featured ? '<span class="product-badge">Featured</span>' : '') :
+                '<span class="product-badge out-of-stock">Out of Stock</span>'
+              }
+              <div class="product-actions">
+                <button class="action-btn wishlist-btn ${isInWishlist ? 'active' : ''}" data-product-id="${product.id}">
+                  <i class="fa${isInWishlist ? 's' : 'r'} fa-heart"></i>
+                </button>
+                <button class="action-btn quick-view-btn" data-id="${product.id}">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="product-content">
+              <div class="product-rating">
+                <div class="rating-stars">
+                  ${renderStars(product.rating)}
+                </div>
+                <span class="rating-count">(${product.rating})</span>
+              </div>
+              <h3 class="product-title">${product.name}</h3>
+              <p class="product-description">${product.description}</p>
+              <div class="product-price-container">
+                <div class="product-price">${formatPrice(product.price)}</div>
+                <div class="product-stock ${product.inStock ? 'in-stock' : 'out-of-stock'}">
+                  ${product.inStock ? 'In Stock' : 'Out of Stock'}
+                </div>
+              </div>
+            </div>
+            <div class="product-footer">
+              <button class="btn btn-primary add-to-cart-btn" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+              </button>
+              <a href="cartstore.html" class="btn btn-outline view-cart-btn" style="margin-left: 8px; display: none;">
+                <i class="fas fa-eye"></i> View Cart
+              </a>
+            </div>
+          </div>
+        `;
+      }
+
+      // Optimized event listener attachment using delegation
+      attachEventListeners() {
+        // Remove existing listeners to prevent duplicates
+        const productGrid = document.getElementById('product-grid');
+        if (!productGrid) return;
+
+        // Use event delegation for better performance
+        productGrid.removeEventListener('click', this.handleProductGridClick);
+        this.handleProductGridClick = (event) => {
+          const target = event.target;
+
+          // Handle add to cart
+          if (target.matches('.add-to-cart-btn') || target.closest('.add-to-cart-btn')) {
             event.preventDefault();
+            const btn = target.matches('.add-to-cart-btn') ? target : target.closest('.add-to-cart-btn');
             const id = btn.getAttribute('data-id');
             this.cart.addItem(id);
-          });
-        });
+          }
 
-        document.querySelectorAll('.wishlist-btn').forEach(btn => {
-          btn.addEventListener('click', (event) => {
+          // Handle wishlist
+          else if (target.matches('.wishlist-btn') || target.closest('.wishlist-btn')) {
             event.preventDefault();
+            const btn = target.matches('.wishlist-btn') ? target : target.closest('.wishlist-btn');
             const id = btn.getAttribute('data-product-id');
             wishlistManager.toggleWishlist(id);
-          });
-        });
+          }
 
-        document.querySelectorAll('.quick-view-btn').forEach(btn => {
-          btn.addEventListener('click', (event) => {
+          // Handle quick view
+          else if (target.matches('.quick-view-btn') || target.closest('.quick-view-btn')) {
             event.preventDefault();
+            const btn = target.matches('.quick-view-btn') ? target : target.closest('.quick-view-btn');
             const id = btn.getAttribute('data-id');
             this.openQuickView(id);
-          });
-        });
+          }
+        };
+
+        productGrid.addEventListener('click', this.handleProductGridClick);
       }
 
       openQuickView(productId) {
@@ -3579,11 +3835,8 @@
       }
     }
 
-    // Mobile Menu Toggle functionality - Optimized version
-    document.addEventListener('DOMContentLoaded', function() {
-      // Initialize store
-      initializeStore();
-
+    // Mobile Menu Toggle functionality - Optimized version (integrated into main initialization)
+    function loadMobileMenu() {
       // Load optimized mobile menu from external file
       if (typeof window.loadScript === 'function') {
         window.loadScript('js/mobile-menu.js');
@@ -3594,7 +3847,10 @@
         script.async = true;
         document.head.appendChild(script);
       }
-    });
+    }
+
+    // Load mobile menu after a short delay to prevent blocking
+    setTimeout(loadMobileMenu, 100);
   </script>
 
   <!-- Footer -->
@@ -3766,32 +4022,23 @@
     </div>
   </footer>
 
-  <!-- Authentication Initialization -->
+  <!-- Authentication Initialization - Optimized -->
   <script>
-    // Initialize authentication when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize authentication with performance optimization
+    function initializeAuth() {
       if (window.DairyLiftAuth) {
         console.log('Auth script loaded, initializing...');
         window.DairyLiftAuth.initAuth();
-      } else {
-        console.log('Auth script not loaded, trying to initialize...');
-        // Try to initialize auth after a short delay
-        setTimeout(function() {
-          if (typeof initAuth === 'function') {
-            initAuth();
-          } else {
-            console.error('Auth initialization function not found');
-          }
-        }, 500);
-      }
-    });
-
-    // Also try to initialize on window load
-    window.addEventListener('load', function() {
-      if (typeof initAuth === 'function') {
+      } else if (typeof initAuth === 'function') {
         initAuth();
+      } else {
+        console.log('Auth not ready, will retry...');
+        setTimeout(initializeAuth, 200);
       }
-    });
+    }
+
+    // Initialize auth after a short delay to prevent blocking main thread
+    setTimeout(initializeAuth, 300);
   </script>
 </body>
 </html>
