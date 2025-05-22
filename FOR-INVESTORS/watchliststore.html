@@ -17,6 +17,10 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/performance-optimizations.css">
+  <script src="js/global-optimizations.js"></script>
+  <script src="js/performance-manager.js"></script>
+  <script src="js/performance-monitor.js"></script>
   <script src="js/auth.js"></script>
   <script>
     // Function to initialize auth and dispatch events
@@ -724,6 +728,7 @@
       margin-bottom: 1rem;
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -1240,6 +1245,7 @@
         <nav class="desktop-nav">
           <a href="home_page.html" class="nav-link">Home</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="YourCattle.html" class="nav-link">All Cattle</a>
           <a href="storenew.html" class="nav-link">Store</a>
           <a href="admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
@@ -1286,7 +1292,7 @@
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
 
-      <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+      <a href="../farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
           <rect x="14" y="3" width="7" height="7"></rect>
@@ -1522,7 +1528,7 @@
 
     // Utility functions
     function formatPrice(price) {
-      return `$${price.toFixed(2)}`;
+      return `₹${price.toFixed(2)}`;
     }
 
     function renderStars(rating) {
@@ -1695,7 +1701,57 @@
       }
     }
 
-    // Wishlist functionality
+    // Enhanced Performance optimizations for wishlist
+    const wishlistPerformance = {
+      cache: new Map(),
+      renderQueue: [],
+      isRendering: false,
+
+      debounce(key, func, delay = 150) {
+        if (this.debounceTimers) {
+          clearTimeout(this.debounceTimers[key]);
+        } else {
+          this.debounceTimers = {};
+        }
+
+        this.debounceTimers[key] = setTimeout(() => {
+          func();
+          delete this.debounceTimers[key];
+        }, delay);
+      },
+
+      batchRender(renderFunc) {
+        this.renderQueue.push(renderFunc);
+
+        if (!this.isRendering) {
+          this.isRendering = true;
+          requestAnimationFrame(() => {
+            const queue = [...this.renderQueue];
+            this.renderQueue = [];
+
+            queue.forEach(func => func());
+            this.isRendering = false;
+          });
+        }
+      },
+
+      memoize(key, func, ttl = 30000) {
+        const cached = this.cache.get(key);
+        if (cached && Date.now() - cached.timestamp < ttl) {
+          return cached.value;
+        }
+
+        const result = func();
+        this.cache.set(key, {
+          value: result,
+          timestamp: Date.now()
+        });
+
+        return result;
+      }
+    };
+
+    // Optimized Wishlist functionality with performance enhancements
     class Wishlist {
       constructor(cart) {
         this.cart = cart;
@@ -1703,21 +1759,115 @@
         this.filteredItems = [];
         this.availabilityFilter = 'all';
         this.sortBy = 'date-added';
-        this.loadFromStorage();
-        this.initEventListeners();
-        this.render();
+        this.renderCache = new Map();
+        this.lastRenderTime = 0;
+
+        // Show loading indicator
+        this.showLoadingIndicator(true);
+
+        // Load data asynchronously to prevent blocking
+        setTimeout(() => {
+          this.loadFromStorage();
+          this.initEventListeners();
+          this.render();
+          this.showLoadingIndicator(false);
+        }, 50);
+      }
+
+      showLoadingIndicator(show) {
+        const indicator = document.getElementById('wishlist-loading');
+        if (show && !indicator) {
+          const loadingDiv = document.createElement('div');
+          loadingDiv.id = 'wishlist-loading';
+          loadingDiv.innerHTML = `
+            <div style="
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              background: rgba(255, 255, 255, 0.95);
+              padding: 2rem;
+              border-radius: 12px;
+              box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+              z-index: 9999;
+              text-align: center;
+              backdrop-filter: blur(10px);
+            ">
+              <div style="
+                width: 40px;
+                height: 40px;
+                border: 3px solid #f3f3f3;
+                border-top: 3px solid var(--primary);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 1rem;
+              "></div>
+              <div style="color: var(--foreground); font-weight: 500;">Loading wishlist...</div>
+            </div>
+            <style>
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            </style>
+          `;
+          document.body.appendChild(loadingDiv);
+        } else if (!show && indicator) {
+          indicator.remove();
+        }
       }
 
       loadFromStorage() {
-        const savedWishlist = localStorage.getItem('dairyvestWishlist');
-        if (savedWishlist) {
-          this.items = JSON.parse(savedWishlist);
+        try {
+          // Load detailed product data first
+          const savedWishlistData = localStorage.getItem('Dairy-LiftWishlistData');
+          if (savedWishlistData) {
+            const wishlistData = JSON.parse(savedWishlistData);
+            // Convert the object to an array of products
+            this.items = Object.values(wishlistData);
+            console.log(`✅ Loaded ${this.items.length} items from detailed wishlist data`);
+          } else {
+            // Fallback: Try to load from old format
+            let savedWishlist = localStorage.getItem('Dairy-LiftWishlist');
+
+            if (!savedWishlist) {
+              // Try alternative keys
+              savedWishlist = localStorage.getItem('dairyvestWishlist');
+
+              // If found with old key, migrate to new key
+              if (savedWishlist) {
+                localStorage.setItem('Dairy-LiftWishlist', savedWishlist);
+                localStorage.removeItem('dairyvestWishlist');
+              }
+            }
+
+            if (savedWishlist) {
+              const wishlistIds = JSON.parse(savedWishlist);
+              // For old format, we only have IDs, so create basic product objects
+              this.items = wishlistIds.map(id => ({
+                id: id,
+                name: 'Product',
+                price: 0,
+                imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80',
+                description: 'Product from wishlist',
+                category: 'dairy',
+                inStock: true,
+                rating: 4
+              }));
+              console.log(`✅ Loaded ${this.items.length} items from legacy wishlist format`);
+            }
+          }
+          this.applyFilters();
+        } catch (error) {
+          console.error('Error loading wishlist from storage:', error);
+          this.items = [];
+          this.applyFilters();
         }
-        this.applyFilters();
       }
 
       saveToStorage() {
-        localStorage.setItem('dairyvestWishlist', JSON.stringify(this.items));
+        localStorage.setItem('Dairy-LiftWishlist', JSON.stringify(this.items));
+        console.log(`💾 Saved ${this.items.length} items to wishlist`);
       }
 
       toggleItem(productId) {
@@ -1729,7 +1879,11 @@
         }
         this.saveToStorage();
         this.applyFilters();
-        this.render();
+
+        // Use debounced rendering for better performance
+        wishlistPerformance.debounce('render-wishlist', () => {
+          this.render();
+        }, 100);
       }
 
       removeItem(productId) {
@@ -1738,7 +1892,11 @@
           this.items.splice(index, 1);
           this.saveToStorage();
           this.applyFilters();
-          this.render();
+
+          // Use debounced rendering for better performance
+          wishlistPerformance.debounce('render-wishlist', () => {
+            this.render();
+          }, 100);
         }
       }
 
@@ -1746,7 +1904,11 @@
         this.items = [];
         this.saveToStorage();
         this.applyFilters();
-        this.render();
+
+        // Use debounced rendering for better performance
+        wishlistPerformance.debounce('render-wishlist', () => {
+          this.render();
+        }, 100);
       }
 
       addAllToCart() {
@@ -1807,12 +1969,11 @@
       }
 
       applyFilters() {
-        // Filter by availability
+        // Filter by availability - now working with product objects directly
         let filtered = [...this.items];
 
         if (this.availabilityFilter !== 'all') {
-          filtered = filtered.filter(itemId => {
-            const product = productsData.find(p => p.id === itemId);
+          filtered = filtered.filter(product => {
             if (!product) return false;
 
             if (this.availabilityFilter === 'in-stock') {
@@ -1824,22 +1985,16 @@
           });
         }
 
-        // Get full product data
-        const products = filtered.map(id => {
-          const product = productsData.find(p => p.id === id);
-          return { id, ...product };
-        }).filter(p => p);
-
         // Sort products
         switch (this.sortBy) {
           case 'price-low':
-            products.sort((a, b) => a.price - b.price);
+            filtered.sort((a, b) => a.price - b.price);
             break;
           case 'price-high':
-            products.sort((a, b) => b.price - a.price);
+            filtered.sort((a, b) => b.price - a.price);
             break;
           case 'name':
-            products.sort((a, b) => a.name.localeCompare(b.name));
+            filtered.sort((a, b) => a.name.localeCompare(b.name));
             break;
           case 'date-added':
           default:
@@ -1847,28 +2002,35 @@
             break;
         }
 
-        // Extract IDs back
-        this.filteredItems = products.map(p => p.id);
+        this.filteredItems = filtered;
       }
 
       initEventListeners() {
-        // Availability filter
+        // Availability filter with debouncing
         const availabilityFilter = document.getElementById('availability-filter');
         if (availabilityFilter) {
           availabilityFilter.addEventListener('change', () => {
             this.availabilityFilter = availabilityFilter.value;
             this.applyFilters();
-            this.render();
+
+            // Use debounced rendering for better performance
+            wishlistPerformance.debounce('render-wishlist', () => {
+              this.render();
+            }, 150);
           });
         }
 
-        // Sort filter
+        // Sort filter with debouncing
         const sortFilter = document.getElementById('sort-filter');
         if (sortFilter) {
           sortFilter.addEventListener('change', () => {
             this.sortBy = sortFilter.value;
             this.applyFilters();
-            this.render();
+
+            // Use debounced rendering for better performance
+            wishlistPerformance.debounce('render-wishlist', () => {
+              this.render();
+            }, 150);
           });
         }
 
@@ -1892,7 +2054,7 @@
       }
 
       openQuickView(productId) {
-        const product = productsData.find(p => p.id === productId);
+        const product = this.items.find(p => p.id === productId);
         if (!product) return;
 
         const modal = document.getElementById('quick-view-modal');
@@ -1998,37 +2160,54 @@
       }
 
       render() {
+        const now = performance.now();
+
+        // Throttle rendering to prevent excessive updates
+        if (now - this.lastRenderTime < 16) { // ~60fps
+          requestAnimationFrame(() => this.render());
+          return;
+        }
+
+        this.lastRenderTime = now;
+
         const wishlistContainer = document.getElementById('wishlist-container');
         const wishlistCount = document.getElementById('wishlist-count');
 
         if (!wishlistContainer || !wishlistCount) return;
 
-        // Update count
-        wishlistCount.textContent = `${this.filteredItems.length} ${this.filteredItems.length === 1 ? 'item' : 'items'}`;
+        // Use batched rendering for better performance
+        wishlistPerformance.batchRender(() => {
+          // Update count
+          wishlistCount.textContent = `${this.filteredItems.length} ${this.filteredItems.length === 1 ? 'item' : 'items'}`;
 
-        // Render wishlist items or empty state
-        if (this.filteredItems.length === 0) {
-          wishlistContainer.innerHTML = `
-            <div class="wishlist-empty">
-              <i class="fas fa-heart wishlist-empty-icon"></i>
-              <h3>Your wishlist is empty</h3>
-              <p>Items added to your wishlist will be saved here for easy access.</p>
-              <a href="storenew.html" class="btn btn-primary" style="margin-top: 1.5rem;">
-                Explore Products
-              </a>
-            </div>
-          `;
-        } else {
-          let wishlistHTML = '<div class="wishlist-grid">';
+          // Render wishlist items or empty state
+          if (this.filteredItems.length === 0) {
+            wishlistContainer.innerHTML = `
+              <div class="wishlist-empty">
+                <i class="fas fa-heart wishlist-empty-icon"></i>
+                <h3>Your wishlist is empty</h3>
+                <p>Items added to your wishlist will be saved here for easy access.</p>
+                <a href="storenew.html" class="btn btn-primary" style="margin-top: 1.5rem;">
+                  Explore Products
+                </a>
+              </div>
+            `;
+          } else {
+            this.renderWishlistItems(wishlistContainer);
+          }
+        });
+      }
 
-          this.filteredItems.forEach(itemId => {
-            const product = productsData.find(p => p.id === itemId);
-            if (!product) return;
+      renderWishlistItems(wishlistContainer) {
+        let wishlistHTML = '<div class="wishlist-grid">';
+
+        this.filteredItems.forEach(product => {
+          if (!product) return;
 
             wishlistHTML += `
               <div class="product-card" data-id="${product.id}">
                 <div class="product-image-container">
-                  <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                  <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy" decoding="async">
                   ${product.inStock ? '' : '<span class="product-badge out-of-stock">Out of Stock</span>'}
                   <div class="product-actions">
                     <button class="action-btn quick-view-btn" data-id="${product.id}">
@@ -2064,44 +2243,76 @@
             `;
           });
 
-          wishlistHTML += '</div>';
-          wishlistContainer.innerHTML = wishlistHTML;
+        wishlistHTML += '</div>';
 
-          // Add event listeners to product cards
-          document.querySelectorAll('.product-card .btn-primary').forEach(btn => {
-            btn.addEventListener('click', () => {
-              const id = btn.getAttribute('data-id');
-              const product = productsData.find(p => p.id === id);
-              if (product && product.inStock) {
-                if (this.cart.addItem(id)) {
-                  this.cart.showAddToCartNotification(product.name);
-                }
+        wishlistContainer.innerHTML = wishlistHTML;
+
+        // Use optimized event delegation instead of individual listeners
+        this.attachEventListeners(wishlistContainer);
+      }
+
+      // Optimized event listener attachment using delegation
+      attachEventListeners(container) {
+        // Remove existing listeners to prevent duplicates
+        container.removeEventListener('click', this.handleWishlistClick);
+
+        this.handleWishlistClick = (event) => {
+          const target = event.target;
+
+          // Handle add to cart
+          if (target.matches('.btn-primary') || target.closest('.btn-primary')) {
+            event.preventDefault();
+            const btn = target.matches('.btn-primary') ? target : target.closest('.btn-primary');
+            const id = btn.getAttribute('data-id');
+            const product = this.filteredItems.find(p => p.id === id);
+            if (product && product.inStock) {
+              if (this.cart.addItem(id)) {
+                this.cart.showAddToCartNotification(product.name);
               }
-            });
-          });
+            }
+          }
 
-          document.querySelectorAll('.remove-wishlist-item').forEach(btn => {
-            btn.addEventListener('click', () => {
-              const id = btn.getAttribute('data-id');
-              this.removeItem(id);
-            });
-          });
+          // Handle remove from wishlist
+          else if (target.matches('.remove-wishlist-item') || target.closest('.remove-wishlist-item')) {
+            event.preventDefault();
+            const btn = target.matches('.remove-wishlist-item') ? target : target.closest('.remove-wishlist-item');
+            const id = btn.getAttribute('data-id');
+            this.removeItem(id);
+          }
 
-          document.querySelectorAll('.quick-view-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-              const id = btn.getAttribute('data-id');
-              this.openQuickView(id);
-            });
-          });
-        }
+          // Handle quick view
+          else if (target.matches('.quick-view-btn') || target.closest('.quick-view-btn')) {
+            event.preventDefault();
+            const btn = target.matches('.quick-view-btn') ? target : target.closest('.quick-view-btn');
+            const id = btn.getAttribute('data-id');
+            this.openQuickView(id);
+          }
+        };
+
+        container.addEventListener('click', this.handleWishlistClick);
       }
     }
 
-    // Initialize cart and wishlist on page load
-    document.addEventListener('DOMContentLoaded', function() {
+    // Optimized initialization - prevent multiple DOM loaded listeners
+    let isWishlistInitialized = false;
+
+    function initializeWishlistPage() {
+      if (isWishlistInitialized) return;
+      isWishlistInitialized = true;
+
+      console.log('🚀 Wishlist page initializing...');
+
       const cart = new Cart();
       const wishlist = new Wishlist(cart);
 
+      // Initialize mobile menu after a short delay to prevent blocking
+      setTimeout(initializeMobileMenu, 100);
+
+      console.log('✅ Wishlist page initialization complete');
+    }
+
+    // Mobile menu initialization function
+    function initializeMobileMenu() {
       // Mobile Menu Toggle
       const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
@@ -2191,9 +2402,15 @@
             closeMobileMenu();
           }
         });
-        }
       }
-    });
+    }
+
+    // Initialize when DOM is loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeWishlistPage);
+    } else {
+      initializeWishlistPage();
+    }
   </script>
 
   <!-- Footer -->

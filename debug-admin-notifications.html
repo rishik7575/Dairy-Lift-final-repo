@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Admin Notifications</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        button {
+            background-color: #ad6ef5;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #9b55e0;
+        }
+        .notification-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .pending {
+            border-left: 4px solid #ffc107;
+        }
+        .completed {
+            border-left: 4px solid #28a745;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Admin Notifications Debug</h1>
+
+    <div class="container">
+        <h2>Database Connection</h2>
+        <div id="connection-status" class="status info">Testing connection...</div>
+        <button onclick="testConnection()">Test Connection</button>
+        <button onclick="checkTables()">Check Tables</button>
+    </div>
+
+    <div class="grid">
+        <div class="container">
+            <h2>Pending Notifications</h2>
+            <button onclick="loadPendingNotifications()">Load Pending</button>
+            <div id="pending-notifications"></div>
+        </div>
+
+        <div class="container">
+            <h2>All Notifications</h2>
+            <button onclick="loadAllNotifications()">Load All</button>
+            <div id="all-notifications"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Farm Visit Requests</h2>
+        <button onclick="loadFarmVisitRequests()">Load Requests</button>
+        <div id="farm-visit-requests"></div>
+    </div>
+
+    <div class="container">
+        <h2>Raw Database Queries</h2>
+        <button onclick="runRawQueries()">Run Raw Queries</button>
+        <div id="raw-queries"></div>
+    </div>
+
+    <div class="container">
+        <h2>Console Log</h2>
+        <div id="console-log" class="log"></div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <script>
+        // Supabase configuration
+        const supabaseUrl = 'https://avaakcvenjjydbxopwti.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2YWFrY3ZlbmpqeWRieG9wd3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTQzMjIsImV4cCI6MjA2MzQ3MDMyMn0.qeN6jRNwhhvkwpEZ-aTyQipLPA2KyUmW9prJ_-t4tOs';
+
+        let supabaseClient;
+        let logs = [];
+
+        // Initialize Supabase
+        function initSupabase() {
+            try {
+                supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+                log('✅ Supabase client initialized successfully');
+                return true;
+            } catch (error) {
+                log('❌ Failed to initialize Supabase client: ' + error.message);
+                return false;
+            }
+        }
+
+        // Logging function
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}`;
+            logs.push(logMessage);
+            updateConsole();
+            console.log(message);
+        }
+
+        function updateConsole() {
+            document.getElementById('console-log').innerHTML =
+                '<pre>' + logs.slice(-30).join('\n') + '</pre>';
+        }
+
+        function clearLog() {
+            logs = [];
+            updateConsole();
+        }
+
+        // Test database connection
+        async function testConnection() {
+            const statusDiv = document.getElementById('connection-status');
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Testing connection...';
+
+            try {
+                log('🔄 Testing database connection...');
+
+                const { data, error } = await supabaseClient
+                    .from('farm_visit_requests')
+                    .select('count', { count: 'exact', head: true });
+
+                if (error) {
+                    throw error;
+                }
+
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '✅ Database connection successful!';
+                log('✅ Database connection test passed');
+
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Connection failed: ' + error.message;
+                log('❌ Database connection test failed: ' + error.message);
+            }
+        }
+
+        // Check if tables exist
+        async function checkTables() {
+            try {
+                log('🔄 Checking if tables exist...');
+
+                // Check farm_visit_requests table
+                const { data: fvrData, error: fvrError } = await supabaseClient
+                    .from('farm_visit_requests')
+                    .select('count', { count: 'exact', head: true });
+
+                if (fvrError) {
+                    log('❌ farm_visit_requests table error: ' + fvrError.message);
+                } else {
+                    log('✅ farm_visit_requests table exists');
+                }
+
+                // Check notifications table
+                const { data: notifData, error: notifError } = await supabaseClient
+                    .from('notifications')
+                    .select('count', { count: 'exact', head: true });
+
+                if (notifError) {
+                    log('❌ notifications table error: ' + notifError.message);
+                } else {
+                    log('✅ notifications table exists');
+                }
+
+            } catch (error) {
+                log('❌ Error checking tables: ' + error.message);
+            }
+        }
+
+        // Load pending notifications
+        async function loadPendingNotifications() {
+            const div = document.getElementById('pending-notifications');
+            div.innerHTML = '<p>Loading...</p>';
+
+            try {
+                log('🔄 Loading pending notifications...');
+
+                const { data, error } = await supabaseClient
+                    .from('notifications')
+                    .select('*')
+                    .eq('status', 'pending')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    throw error;
+                }
+
+                log(`✅ Found ${data.length} pending notifications`);
+
+                if (data.length === 0) {
+                    div.innerHTML = '<p>No pending notifications found.</p>';
+                    return;
+                }
+
+                let html = '';
+                data.forEach(notification => {
+                    html += `
+                        <div class="notification-item pending">
+                            <strong>ID:</strong> ${notification.id}<br>
+                            <strong>Type:</strong> ${notification.type}<br>
+                            <strong>Title:</strong> ${notification.title}<br>
+                            <strong>Description:</strong> ${notification.description}<br>
+                            <strong>Priority:</strong> ${notification.priority}<br>
+                            <strong>Status:</strong> ${notification.status}<br>
+                            <strong>Related ID:</strong> ${notification.related_id}<br>
+                            <strong>Created:</strong> ${new Date(notification.created_at).toLocaleString()}
+                        </div>
+                    `;
+                });
+
+                div.innerHTML = html;
+
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error loading pending notifications: ' + error.message);
+            }
+        }
+
+        // Load all notifications
+        async function loadAllNotifications() {
+            const div = document.getElementById('all-notifications');
+            div.innerHTML = '<p>Loading...</p>';
+
+            try {
+                log('🔄 Loading all notifications...');
+
+                const { data, error } = await supabaseClient
+                    .from('notifications')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+
+                if (error) {
+                    throw error;
+                }
+
+                log(`✅ Found ${data.length} total notifications`);
+
+                if (data.length === 0) {
+                    div.innerHTML = '<p>No notifications found.</p>';
+                    return;
+                }
+
+                let html = '<table><tr><th>ID</th><th>Type</th><th>Title</th><th>Status</th><th>Created</th></tr>';
+                data.forEach(notification => {
+                    html += `
+                        <tr>
+                            <td>${notification.id}</td>
+                            <td>${notification.type}</td>
+                            <td>${notification.title}</td>
+                            <td>${notification.status}</td>
+                            <td>${new Date(notification.created_at).toLocaleString()}</td>
+                        </tr>
+                    `;
+                });
+                html += '</table>';
+
+                div.innerHTML = html;
+
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error loading all notifications: ' + error.message);
+            }
+        }
+
+        // Load farm visit requests
+        async function loadFarmVisitRequests() {
+            const div = document.getElementById('farm-visit-requests');
+            div.innerHTML = '<p>Loading...</p>';
+
+            try {
+                log('🔄 Loading farm visit requests...');
+
+                const { data, error } = await supabaseClient
+                    .from('farm_visit_requests')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+
+                if (error) {
+                    throw error;
+                }
+
+                log(`✅ Found ${data.length} farm visit requests`);
+
+                if (data.length === 0) {
+                    div.innerHTML = '<p>No farm visit requests found.</p>';
+                    return;
+                }
+
+                let html = '<table><tr><th>ID</th><th>Name</th><th>Email</th><th>Visit Date</th><th>Status</th><th>Created</th></tr>';
+                data.forEach(request => {
+                    html += `
+                        <tr>
+                            <td>${request.id}</td>
+                            <td>${request.name}</td>
+                            <td>${request.email}</td>
+                            <td>${new Date(request.visit_date).toLocaleString()}</td>
+                            <td>${request.status}</td>
+                            <td>${new Date(request.created_at).toLocaleString()}</td>
+                        </tr>
+                    `;
+                });
+                html += '</table>';
+
+                div.innerHTML = html;
+
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error loading farm visit requests: ' + error.message);
+            }
+        }
+
+        // Run raw queries to debug
+        async function runRawQueries() {
+            const div = document.getElementById('raw-queries');
+            div.innerHTML = '<p>Running queries...</p>';
+
+            try {
+                log('🔄 Running raw database queries...');
+
+                // Query 1: Count all notifications
+                const { count: notifCount, error: countError } = await supabaseClient
+                    .from('notifications')
+                    .select('*', { count: 'exact', head: true });
+
+                if (countError) {
+                    log('❌ Count query error: ' + countError.message);
+                } else {
+                    log(`✅ Total notifications in database: ${notifCount}`);
+                }
+
+                // Query 2: Count pending farm visit notifications
+                const { count: pendingCount, error: pendingError } = await supabaseClient
+                    .from('notifications')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'pending')
+                    .eq('type', 'farm_visit_request');
+
+                if (pendingError) {
+                    log('❌ Pending count query error: ' + pendingError.message);
+                } else {
+                    log(`✅ Pending farm visit notifications: ${pendingCount}`);
+                }
+
+                // Query 3: Get latest notification
+                const { data: latestData, error: latestError } = await supabaseClient
+                    .from('notifications')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(1);
+
+                if (latestError) {
+                    log('❌ Latest notification query error: ' + latestError.message);
+                } else if (latestData.length > 0) {
+                    log(`✅ Latest notification: ${JSON.stringify(latestData[0], null, 2)}`);
+                } else {
+                    log('⚠️ No notifications found in database');
+                }
+
+                // Query 4: Test the exact same query as admin dashboard
+                const { data: adminQueryData, error: adminQueryError } = await supabaseClient
+                    .from('notifications')
+                    .select('*')
+                    .eq('status', 'pending')
+                    .eq('type', 'farm_visit_request')
+                    .order('created_at', { ascending: false });
+
+                if (adminQueryError) {
+                    log('❌ Admin query error: ' + adminQueryError.message);
+                } else {
+                    log(`✅ Admin dashboard query result: ${adminQueryData.length} items`);
+                    if (adminQueryData.length > 0) {
+                        log(`First item: ${JSON.stringify(adminQueryData[0], null, 2)}`);
+                    }
+                }
+
+                div.innerHTML = `
+                    <div class="status info">
+                        <strong>Query Results:</strong><br>
+                        Total notifications: ${notifCount || 'Error'}<br>
+                        Pending farm visit notifications: ${pendingCount || 'Error'}<br>
+                        Admin dashboard query results: ${adminQueryData ? adminQueryData.length : 'Error'}<br>
+                        Latest notification: ${latestData && latestData.length > 0 ? latestData[0].title : 'None'}
+                    </div>
+                    ${adminQueryData && adminQueryData.length > 0 ? `
+                        <h4>Sample Admin Query Result:</h4>
+                        <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto;">
+${JSON.stringify(adminQueryData[0], null, 2)}
+                        </pre>
+                    ` : ''}
+                `;
+
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error running raw queries: ' + error.message);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            log('🚀 Debug page loaded, initializing...');
+            if (initSupabase()) {
+                testConnection();
+            }
+        });
+    </script>
+</body>
+</html>

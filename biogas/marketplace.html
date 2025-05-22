@@ -144,7 +144,7 @@
             </div>
         </div>
     </nav>
-    
+
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu" class="mobile-menu hidden flex-col">
         <div class="flex justify-between items-center mb-8">
@@ -170,7 +170,7 @@
             <a href="howitworks.html" class="text-gray-600 hover:text-farm-green py-2 border-b border-gray-200">How It Works</a>
         </div>
     </div>
-    
+
     <main class="flex-1 container mx-auto px-4 py-8">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
             <div>
@@ -196,7 +196,7 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- Search and Filter -->
         <div class="mb-6">
             <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4">
@@ -205,10 +205,10 @@
                         <circle cx="11" cy="11" r="8"/>
                         <path d="m21 21-4.3-4.3"/>
                     </svg>
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         id="search-input"
-                        placeholder="Search products, farms, or categories..." 
+                        placeholder="Search products, farms, or categories..."
                         class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-farm-green focus:border-transparent"
                     />
                 </div>
@@ -219,7 +219,7 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- Categories -->
         <div class="mb-8">
             <div class="border-b border-gray-200">
@@ -244,7 +244,7 @@
                     </li>
                 </ul>
             </div>
-            
+
             <!-- Products Grid -->
             <div class="mt-6" id="products-container">
                 <div id="empty-message" class="text-center py-12 hidden">
@@ -258,13 +258,13 @@
                     <h3 class="mt-4 text-lg font-medium">No products found</h3>
                     <p class="text-gray-500">Try adjusting your search or filter criteria</p>
                 </div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="products-grid">
                     <!-- Product cards will be inserted here dynamically -->
                 </div>
             </div>
         </div>
-        
+
         <!-- Featured Section -->
         <div class="mb-8">
             <h2 class="text-xl font-bold text-farm-green mb-4">Featured Products</h2>
@@ -277,8 +277,8 @@
                     <div class="px-6 py-4">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-3xl font-bold">$4.99</p>
-                                <p class="text-sm line-through text-gray-500">$5.99</p>
+                                <p class="text-3xl font-bold">₹4.99</p>
+                                <p class="text-sm line-through text-gray-500">₹5.99</p>
                             </div>
                             <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Save 16%</span>
                         </div>
@@ -295,7 +295,7 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="bg-gradient-to-r from-amber-50 to-green-50 rounded-lg shadow md:col-span-2">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold">Farm to Table Bundle</h3>
@@ -367,7 +367,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Seller Section -->
         <div>
             <h2 class="text-xl font-bold text-farm-green mb-4">Become a Seller</h2>
@@ -439,7 +439,7 @@
             </div>
         </div>
     </main>
-    
+
     <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 hidden transform transition-transform duration-300 translate-y-full">
         <div class="flex items-start">
@@ -454,7 +454,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Footer -->
     <footer class="bg-gray-100 py-8 mt-8">
         <div class="container mx-auto px-4">
@@ -581,34 +581,34 @@
                     inStock: 64
                 }
             ];
-            
+
             // Cart counter
             let cartCount = 0;
-            
+
             // Display products
             function renderProducts(filteredProducts) {
                 const productsGrid = document.getElementById('products-grid');
                 const emptyMessage = document.getElementById('empty-message');
-                
+
                 productsGrid.innerHTML = '';
-                
+
                 if (filteredProducts.length === 0) {
                     productsGrid.classList.add('hidden');
                     emptyMessage.classList.remove('hidden');
                 } else {
                     productsGrid.classList.remove('hidden');
                     emptyMessage.classList.add('hidden');
-                    
+
                     filteredProducts.forEach(product => {
                         const productCard = `
                             <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col">
                                 <div class="relative">
-                                    <img 
-                                        src="${product.image}" 
-                                        alt="${product.name}" 
+                                    <img
+                                        src="${product.image}"
+                                        alt="${product.name}"
                                         class="w-full h-48 object-cover"
                                     />
-                                    <button 
+                                    <button
                                         class="absolute top-2 right-2 bg-white rounded-full p-1 hover:bg-gray-100"
                                         aria-label="Add to favorites"
                                     >
@@ -622,7 +622,7 @@
                                         </div>
                                     ` : ''}
                                 </div>
-                                
+
                                 <div class="p-4 flex-grow">
                                     <div class="mb-2 flex items-center">
                                         <span class="px-2 py-0.5 text-xs border border-gray-300 rounded-full">
@@ -636,20 +636,20 @@
                                             <span class="text-xs text-gray-500 ml-1">(${product.reviews})</span>
                                         </div>
                                     </div>
-                                    
+
                                     <h3 class="font-semibold text-base line-clamp-1">${product.name}</h3>
                                     <p class="text-sm text-gray-500 mb-2 line-clamp-2">${product.description}</p>
-                                    
+
                                     <p class="text-xs text-gray-500">From: ${product.farm}</p>
                                 </div>
-                                
+
                                 <div class="p-4 border-t flex-shrink-0">
                                     <div class="flex items-center justify-between">
                                         <div>
                                             <p class="font-bold text-lg">$${product.price.toFixed(2)}</p>
                                             <p class="text-xs text-gray-500">per ${product.unit}</p>
                                         </div>
-                                        
+
                                         <button
                                             ${!product.available ? 'disabled' : ''}
                                             class="bg-farm-green hover:bg-farm-green/90 text-white px-3 py-1.5 rounded flex items-center text-sm ${!product.available ? 'opacity-50 cursor-not-allowed' : ''}"
@@ -666,15 +666,15 @@
                                 </div>
                             </div>
                         `;
-                        
+
                         productsGrid.innerHTML += productCard;
                     });
                 }
             }
-            
+
             // Initial render
             renderProducts(products);
-            
+
             // Filter by category
             const categoryTabs = document.querySelectorAll('#category-tabs button');
             categoryTabs.forEach(tab => {
@@ -686,58 +686,58 @@
                     });
                     this.classList.remove('border-transparent', 'text-gray-500');
                     this.classList.add('border-farm-green', 'text-farm-green');
-                    
+
                     // Filter products
                     const category = this.getAttribute('data-category');
                     const searchTerm = document.getElementById('search-input').value.toLowerCase();
-                    
+
                     filterProducts(category, searchTerm);
                 });
             });
-            
+
             // Search functionality
             const searchInput = document.getElementById('search-input');
             searchInput.addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase();
                 const activeCategory = document.querySelector('#category-tabs button.text-farm-green').getAttribute('data-category');
-                
+
                 filterProducts(activeCategory, searchTerm);
             });
-            
+
             // Filter products by category and search term
             function filterProducts(category, searchTerm) {
                 let filteredProducts = products;
-                
+
                 // Filter by category
                 if (category !== 'all') {
                     filteredProducts = filteredProducts.filter(product => product.category === category);
                 }
-                
+
                 // Filter by search term
                 if (searchTerm) {
-                    filteredProducts = filteredProducts.filter(product => 
-                        product.name.toLowerCase().includes(searchTerm) || 
+                    filteredProducts = filteredProducts.filter(product =>
+                        product.name.toLowerCase().includes(searchTerm) ||
                         product.description.toLowerCase().includes(searchTerm) ||
                         product.farm.toLowerCase().includes(searchTerm)
                     );
                 }
-                
+
                 renderProducts(filteredProducts);
             }
-            
+
             // Add to cart functionality
             window.addToCart = function(productName) {
                 cartCount++;
                 updateCartCount();
                 showToast(`Added to cart`, `${productName} has been added to your cart.`);
             };
-            
+
             // Update cart count
             function updateCartCount() {
                 const cartCountElements = document.querySelectorAll('#cart-count, #secondary-cart-count');
                 cartCountElements.forEach(el => {
                     el.textContent = cartCount;
-                    
+
                     if (cartCount > 0) {
                         el.classList.remove('hidden');
                     } else {
@@ -745,25 +745,25 @@
                     }
                 });
             }
-            
+
             // Show toast notification
             function showToast(title, description) {
                 const toast = document.getElementById('toast');
                 const toastTitle = document.getElementById('toast-title');
                 const toastDescription = document.getElementById('toast-description');
-                
+
                 toastTitle.textContent = title;
                 toastDescription.textContent = description;
-                
+
                 // Show toast
                 toast.classList.remove('hidden', 'translate-y-full');
                 toast.classList.add('translate-y-0');
-                
+
                 // Hide toast after 3 seconds
                 setTimeout(() => {
                     toast.classList.remove('translate-y-0');
                     toast.classList.add('translate-y-full');
-                    
+
                     setTimeout(() => {
                         toast.classList.add('hidden');
                     }, 300);

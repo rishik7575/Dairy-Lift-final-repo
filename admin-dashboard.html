@@ -2163,7 +2163,7 @@
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
 
-      <a href="FOR-INVESTORS/visit-farm.html" class="mobile-nav-link">
+      <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
           <rect x="14" y="3" width="7" height="7"></rect>
@@ -2729,8 +2729,8 @@
         }
 
         // Initialize direct Supabase client
-        const supabaseUrl = 'https://eseynihfxxojisyqmigk.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZXluaWhmeHhvamlzeXFtaWdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MTEzODksImV4cCI6MjA2MzQ4NzM4OX0.1nU7McnxI_Cx2zK2UMpxc5t1ZK0VJnx2sz_xFS0Np08';
+        const supabaseUrl = 'https://avaakcvenjjydbxopwti.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2YWFrY3ZlbmpqeWRieG9wd3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTQzMjIsImV4cCI6MjA2MzQ3MDMyMn0.qeN6jRNwhhvkwpEZ-aTyQipLPA2KyUmW9prJ_-t4tOs';
 
         console.log('🔗 Creating Supabase client...');
         window.directSupabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -2749,8 +2749,8 @@
         supabaseInitialized = true;
         console.log('✅ Supabase initialized successfully');
 
-        // Load data from database (simplified approach)
-        await loadProductActivitiesOnly();
+        // Load data from database (complete approach)
+        await loadActivitiesFromDatabase();
 
         // Set up real-time subscriptions
         setupRealtimeSubscriptions();
@@ -2923,27 +2923,39 @@
     // Load activities from Supabase database (original complex function - kept as backup)
     async function loadActivitiesFromDatabase() {
       try {
-        console.log('Loading activities from database...');
+        console.log('🚀 Loading activities from database...');
+        console.log('🔍 Checking Supabase client:', window.directSupabaseClient);
 
         if (!window.directSupabaseClient) {
+          console.error('❌ Supabase client not initialized!');
           throw new Error('Supabase client not initialized');
         }
 
+        console.log('✅ Supabase client is available');
+
         // Load pending notifications with better error handling
-        console.log('Fetching pending notifications...');
+        console.log('🔄 Fetching pending notifications...');
 
         // Fetch farm visit notifications (simplified query without JOIN)
         let farmVisitQuery = { data: [], error: null };
         try {
+          console.log('🔍 Querying farm visit notifications...');
           farmVisitQuery = await window.directSupabaseClient
             .from('notifications')
             .select('*')
             .eq('status', 'pending')
             .eq('type', 'farm_visit_request')
             .order('created_at', { ascending: false });
+
+          console.log('📊 Farm visit query result:', farmVisitQuery);
+          console.log('📊 Farm visit notifications found:', farmVisitQuery.data?.length || 0);
+
+          if (farmVisitQuery.data && farmVisitQuery.data.length > 0) {
+            console.log('📋 First farm visit notification:', farmVisitQuery.data[0]);
+          }
         } catch (error) {
-          console.warn('Error fetching farm visit notifications:', error);
-          farmVisitQuery = { data: [], error: null };
+          console.error('❌ Error fetching farm visit notifications:', error);
+          farmVisitQuery = { data: [], error: error };
         }
 
         // Fetch product notifications
@@ -2976,26 +2988,32 @@
         }
 
         const pendingData = pendingQuery.data || [];
-        console.log('Raw pending data from Supabase:', pendingData);
+        console.log('📊 Raw pending data from Supabase:', pendingData);
+        console.log('📊 Total pending items to process:', pendingData.length);
 
         // Transform data safely
         pendingActivities = pendingData.map(item => {
-          if (item.type === 'farm_visit_request') {
-            const visitData = Array.isArray(item.farm_visit_requests) ? item.farm_visit_requests[0] : item.farm_visit_requests;
-            const visitDate = visitData?.visit_date ? new Date(visitData.visit_date).toLocaleDateString() : 'Unknown date';
+          console.log('🔄 Processing pending item:', item);
 
-            return {
+          if (item.type === 'farm_visit_request') {
+            console.log('✅ Processing farm visit request notification');
+            // Since we're not doing a JOIN, we don't have farm_visit_requests data
+            // The description should already contain the necessary information
+            const transformedItem = {
               id: item.id,
               title: item.title || 'New Farm Visit Request',
-              description: item.description || `${visitData?.name || 'Someone'} has requested a farm visit on ${visitDate}`,
+              description: item.description || 'Someone has requested a farm visit',
               priority: item.priority || 'high',
               time: formatTimeAgo(item.created_at),
               type: getTypeIcon(item.priority || 'high'),
               icon: getFarmVisitIcon(),
               requestId: item.related_id,
-              visitData: visitData,
+              visitData: null, // We'll fetch this separately if needed
               notificationType: 'farm_visit'
             };
+
+            console.log('✅ Transformed farm visit item:', transformedItem);
+            return transformedItem;
           } else {
             // Handle product notifications
             return {
@@ -3013,10 +3031,19 @@
           }
         });
 
-        console.log('Transformed pending activities:', pendingActivities);
+        console.log('✅ Transformed pending activities:', pendingActivities);
+        console.log('📊 Total pending activities after transformation:', pendingActivities.length);
+
+        // Count farm visit activities specifically
+        const farmVisitActivities = pendingActivities.filter(a => a.notificationType === 'farm_visit');
+        console.log('🚜 Farm visit activities found:', farmVisitActivities.length);
+
+        if (farmVisitActivities.length > 0) {
+          console.log('🚜 First farm visit activity:', farmVisitActivities[0]);
+        }
 
         // Load recent activities with better error handling
-        console.log('Fetching recent activities...');
+        console.log('🔄 Fetching recent activities...');
 
         // Fetch recent farm visit activities (simplified query without JOIN)
         let recentFarmVisitQuery = { data: [], error: null };
@@ -3033,6 +3060,21 @@
           recentFarmVisitQuery = { data: [], error: null };
         }
 
+        // Fetch recent product notifications from notifications table (completed status)
+        let recentProductNotificationsQuery;
+        try {
+          recentProductNotificationsQuery = await window.directSupabaseClient
+            .from('notifications')
+            .select('*')
+            .eq('status', 'completed')
+            .in('type', ['product_added', 'product_updated', 'product_deleted', 'product_low_stock'])
+            .order('completed_at', { ascending: false })
+            .limit(5);
+        } catch (error) {
+          console.warn('Error fetching recent product notifications:', error);
+          recentProductNotificationsQuery = { data: [], error: null };
+        }
+
         // Fetch recent product activities from recent_activities table
         const recentProductQuery = await window.directSupabaseClient
           .from('recent_activities')
@@ -3041,8 +3083,12 @@
           .limit(5);
 
         const recentQuery = {
-          data: [...(recentFarmVisitQuery.data || []), ...(recentProductQuery.data || [])],
-          error: recentFarmVisitQuery.error || recentProductQuery.error
+          data: [
+            ...(recentFarmVisitQuery.data || []),
+            ...(recentProductNotificationsQuery.data || []),
+            ...(recentProductQuery.data || [])
+          ],
+          error: recentFarmVisitQuery.error || recentProductNotificationsQuery.error || recentProductQuery.error
         };
 
         if (recentQuery.error) {
@@ -3055,22 +3101,33 @@
 
         // Transform data safely
         recentActivities = recentData.map(item => {
-          if (item.type === 'farm_visit_request' || item.farm_visit_requests) {
-            // Handle farm visit activities
-            const visitData = Array.isArray(item.farm_visit_requests) ? item.farm_visit_requests[0] : item.farm_visit_requests;
-            const visitDate = visitData?.visit_date ? new Date(visitData.visit_date).toLocaleDateString() : 'Unknown date';
-
+          if (item.type === 'farm_visit_request') {
+            // Handle farm visit activities from notifications table
             return {
               id: item.id,
               title: item.title || 'Farm Visit Request Processed',
-              description: item.description || `${visitData?.name || 'Someone'} farm visit request for ${visitDate}`,
+              description: item.description || 'Farm visit request has been processed',
+              priority: item.priority || 'medium',
+              completedTime: formatTimeAgo(item.completed_at || item.created_at),
+              completedBy: item.completed_by || 'Admin',
+              action: item.action_taken || 'completed',
+              type: item.action_taken === 'accepted' ? 'success' : item.action_taken === 'rejected' ? 'error' : 'info',
+              icon: getFarmVisitIcon(),
+              visitData: null // We'll fetch this separately if needed
+            };
+          } else if (item.type && item.type.includes('product') && item.completed_at) {
+            // Handle product notifications from notifications table (completed status)
+            return {
+              id: item.id,
+              title: item.title || 'Product Activity',
+              description: item.description || 'Product activity completed',
               priority: item.priority || 'medium',
               completedTime: formatTimeAgo(item.completed_at),
               completedBy: item.completed_by || 'Admin',
-              action: item.action_taken,
-              type: item.action_taken === 'accepted' ? 'success' : 'error',
-              icon: getFarmVisitIcon(),
-              visitData: visitData
+              action: 'completed',
+              type: 'success',
+              icon: getProductIcon(item.type),
+              productData: item
             };
           } else {
             // Handle product activities from recent_activities table
@@ -3097,8 +3154,12 @@
         });
 
         // Render the activities
+        console.log('🎨 Rendering pending activities...');
         renderPendingActivities();
+        console.log('🎨 Rendering recent activities...');
         renderRecentActivities();
+
+        console.log('✅ Admin dashboard loading completed!');
 
       } catch (error) {
         console.error('❌ Error loading activities from database:', error);
@@ -3156,17 +3217,30 @@
     function handleNotificationChange(payload) {
       const { eventType, new: newRecord, old: oldRecord } = payload;
 
-      if (eventType === 'INSERT' && newRecord.status === 'pending') {
-        // New pending notification - refresh pending activities
-        console.log('🔔 New pending notification received, refreshing...');
-        loadActivitiesFromDatabase();
+      if (eventType === 'INSERT') {
+        if (newRecord.status === 'pending') {
+          // New pending notification - refresh pending activities
+          console.log('🔔 New pending notification received, refreshing...');
+          loadActivitiesFromDatabase();
 
-        // Show toast notification
-        showToast({
-          title: 'New Notification',
-          message: newRecord.title || 'A new notification has been received',
-          type: 'info'
-        });
+          // Show toast notification
+          showToast({
+            title: 'New Notification',
+            message: newRecord.title || 'A new notification has been received',
+            type: 'info'
+          });
+        } else if (newRecord.status === 'completed' && newRecord.type && newRecord.type.includes('product')) {
+          // New completed product notification - refresh recent activities
+          console.log('🛒 New product notification received, refreshing...');
+          loadActivitiesFromDatabase();
+
+          // Show toast notification for product activities
+          showToast({
+            title: 'Product Activity',
+            message: newRecord.title || 'A new product activity has been recorded',
+            type: 'success'
+          });
+        }
       } else if (eventType === 'UPDATE') {
         // Notification status changed - refresh both lists
         console.log('📝 Notification updated, refreshing...');
@@ -3750,13 +3824,12 @@
 
     // Initialize activities on page load
     window.addEventListener('load', async function() {
-      console.log('Page loaded, initializing...');
+      console.log('🚀 Page loaded, initializing admin dashboard...');
       try {
         await initializeSupabase();
-        renderPendingActivities();
-        renderRecentActivities();
+        // Don't render here as initializeSupabase already calls loadActivitiesFromDatabase
       } catch (error) {
-        console.error('Error during initialization:', error);
+        console.error('❌ Error during initialization:', error);
         loadSampleData();
         renderPendingActivities();
         renderRecentActivities();

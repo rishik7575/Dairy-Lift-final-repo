@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete System Test - Dairy-Lift</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #ad6ef5;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #9b55e0;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .notification-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .pending {
+            border-left: 4px solid #ffc107;
+        }
+        .completed {
+            border-left: 4px solid #28a745;
+        }
+        .action-buttons {
+            margin-top: 10px;
+        }
+        .accept-btn {
+            background-color: #28a745;
+            margin-right: 10px;
+        }
+        .reject-btn {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Complete System Test - Dairy-Lift</h1>
+    
+    <div class="container">
+        <h2>System Status</h2>
+        <div id="system-status" class="status info">Initializing...</div>
+        <button onclick="checkSystemStatus()">Check System Status</button>
+    </div>
+
+    <div class="grid">
+        <div class="container">
+            <h2>🚜 Test Farm Visit Request</h2>
+            <form id="farm-visit-form">
+                <div class="form-group">
+                    <label for="visitor-name">Name:</label>
+                    <input type="text" id="visitor-name" value="Test Visitor" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="visitor-email">Email:</label>
+                    <input type="email" id="visitor-email" value="test@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="visitor-phone">Phone:</label>
+                    <input type="tel" id="visitor-phone" value="+1-555-0123">
+                </div>
+                
+                <div class="form-group">
+                    <label for="visit-date">Visit Date:</label>
+                    <input type="datetime-local" id="visit-date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="visit-message">Message:</label>
+                    <textarea id="visit-message" rows="3">I would like to visit your farm to learn about dairy operations.</textarea>
+                </div>
+                
+                <button type="submit">Submit Farm Visit Request</button>
+            </form>
+            <div id="farm-visit-status"></div>
+        </div>
+
+        <div class="container">
+            <h2>🛒 Test Product Addition</h2>
+            <form id="product-form">
+                <div class="form-group">
+                    <label for="product-name">Product Name:</label>
+                    <input type="text" id="product-name" value="Test Milk Product" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-category">Category:</label>
+                    <select id="product-category" required>
+                        <option value="Dairy">Dairy</option>
+                        <option value="Organic">Organic</option>
+                        <option value="Premium">Premium</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-price">Price ($):</label>
+                    <input type="number" id="product-price" value="5.99" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-stock">Stock:</label>
+                    <input type="number" id="product-stock" value="100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-description">Description:</label>
+                    <textarea id="product-description" rows="3">Fresh organic milk from grass-fed cows.</textarea>
+                </div>
+                
+                <button type="submit">Add Test Product</button>
+            </form>
+            <div id="product-status"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📋 Pending Notifications (Admin View)</h2>
+        <button onclick="loadPendingNotifications()">Refresh Pending</button>
+        <div id="pending-notifications"></div>
+    </div>
+
+    <div class="container">
+        <h2>📈 Recent Activities (Admin View)</h2>
+        <button onclick="loadRecentActivities()">Refresh Recent</button>
+        <div id="recent-activities"></div>
+    </div>
+
+    <div class="container">
+        <h2>🔍 System Log</h2>
+        <div id="system-log" class="log"></div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <script>
+        // Supabase configuration
+        const supabaseUrl = 'https://avaakcvenjjydbxopwti.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2YWFrY3ZlbmpqeWRieG9wd3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTQzMjIsImV4cCI6MjA2MzQ3MDMyMn0.qeN6jRNwhhvkwpEZ-aTyQipLPA2KyUmW9prJ_-t4tOs';
+        
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        let logs = [];
+
+        // Set default date to tomorrow
+        document.getElementById('visit-date').value = new Date(Date.now() + 24*60*60*1000).toISOString().slice(0, 16);
+
+        // Logging function
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}`;
+            logs.push(logMessage);
+            updateLog();
+            console.log(message);
+        }
+
+        function updateLog() {
+            document.getElementById('system-log').innerHTML = 
+                '<pre>' + logs.slice(-50).join('\n') + '</pre>';
+        }
+
+        function clearLog() {
+            logs = [];
+            updateLog();
+        }
+
+        // Check system status
+        async function checkSystemStatus() {
+            const statusDiv = document.getElementById('system-status');
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Checking system status...';
+            
+            try {
+                log('🔄 Checking system status...');
+                
+                // Test database connections
+                const { count: fvrCount, error: fvrError } = await supabase
+                    .from('farm_visit_requests')
+                    .select('*', { count: 'exact', head: true });
+                
+                if (fvrError) throw new Error('farm_visit_requests: ' + fvrError.message);
+                
+                const { count: notifCount, error: notifError } = await supabase
+                    .from('notifications')
+                    .select('*', { count: 'exact', head: true });
+                
+                if (notifError) throw new Error('notifications: ' + notifError.message);
+                
+                const { count: productCount, error: productError } = await supabase
+                    .from('products')
+                    .select('*', { count: 'exact', head: true });
+                
+                if (productError) throw new Error('products: ' + productError.message);
+                
+                const { count: activityCount, error: activityError } = await supabase
+                    .from('recent_activities')
+                    .select('*', { count: 'exact', head: true });
+                
+                if (activityError) throw new Error('recent_activities: ' + activityError.message);
+                
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = `
+                    ✅ All systems operational!<br>
+                    Farm visit requests: ${fvrCount}<br>
+                    Notifications: ${notifCount}<br>
+                    Products: ${productCount}<br>
+                    Recent activities: ${activityCount}
+                `;
+                
+                log('✅ System status check passed');
+                
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ System error: ' + error.message;
+                log('❌ System status check failed: ' + error.message);
+            }
+        }
+
+        // Submit farm visit request
+        document.getElementById('farm-visit-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const statusDiv = document.getElementById('farm-visit-status');
+            statusDiv.innerHTML = '';
+            
+            try {
+                const name = document.getElementById('visitor-name').value.trim();
+                const email = document.getElementById('visitor-email').value.trim();
+                const phone = document.getElementById('visitor-phone').value.trim();
+                const visitDate = new Date(document.getElementById('visit-date').value).toISOString();
+                const message = document.getElementById('visit-message').value.trim();
+                
+                log('🔄 Submitting farm visit request...');
+                
+                // Create farm visit request
+                const visitRequest = {
+                    name: name,
+                    email: email,
+                    phone: phone || null,
+                    visit_date: visitDate,
+                    message: message || null,
+                    status: 'pending'
+                };
+                
+                const { data: requestData, error: requestError } = await supabase
+                    .from('farm_visit_requests')
+                    .insert([visitRequest])
+                    .select()
+                    .single();
+                
+                if (requestError) throw requestError;
+                
+                log('✅ Farm visit request created with ID: ' + requestData.id);
+                
+                // Create notification
+                const notification = {
+                    type: 'farm_visit_request',
+                    title: 'New Farm Visit Request',
+                    description: `${name} has requested a farm visit on ${new Date(visitDate).toLocaleDateString()}`,
+                    priority: 'high',
+                    status: 'pending',
+                    related_id: requestData.id
+                };
+                
+                const { error: notificationError } = await supabase
+                    .from('notifications')
+                    .insert([notification]);
+                
+                if (notificationError) throw notificationError;
+                
+                log('✅ Notification created successfully');
+                
+                statusDiv.innerHTML = '<div class="status success">✅ Farm visit request submitted successfully! Request ID: ' + requestData.id + '</div>';
+                
+                // Auto-refresh pending notifications
+                setTimeout(loadPendingNotifications, 1000);
+                
+            } catch (error) {
+                log('❌ Error submitting farm visit request: ' + error.message);
+                statusDiv.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+            }
+        });
+
+        // Submit product addition
+        document.getElementById('product-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const statusDiv = document.getElementById('product-status');
+            statusDiv.innerHTML = '';
+            
+            try {
+                const name = document.getElementById('product-name').value.trim();
+                const category = document.getElementById('product-category').value;
+                const price = parseFloat(document.getElementById('product-price').value);
+                const stock = parseInt(document.getElementById('product-stock').value);
+                const description = document.getElementById('product-description').value.trim();
+                
+                log('🔄 Adding test product...');
+                
+                // Create product
+                const product = {
+                    name: name,
+                    description: description,
+                    price: price,
+                    stock_quantity: stock,
+                    category: category,
+                    is_active: true
+                };
+                
+                const { data: productData, error: productError } = await supabase
+                    .from('products')
+                    .insert([product])
+                    .select()
+                    .single();
+                
+                if (productError) throw productError;
+                
+                log('✅ Product created with ID: ' + productData.id);
+                
+                // Create recent activity
+                const activity = {
+                    type: 'product_added',
+                    title: 'Product Added',
+                    description: `${name} was added to the store`,
+                    priority: 'medium',
+                    related_table: 'products',
+                    related_id: productData.id,
+                    created_by: 'Admin'
+                };
+                
+                const { error: activityError } = await supabase
+                    .from('recent_activities')
+                    .insert([activity]);
+                
+                if (activityError) throw activityError;
+                
+                log('✅ Recent activity created successfully');
+                
+                statusDiv.innerHTML = '<div class="status success">✅ Product added successfully! Product ID: ' + productData.id + '</div>';
+                
+                // Auto-refresh recent activities
+                setTimeout(loadRecentActivities, 1000);
+                
+            } catch (error) {
+                log('❌ Error adding product: ' + error.message);
+                statusDiv.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+            }
+        });
+
+        // Load pending notifications
+        async function loadPendingNotifications() {
+            const div = document.getElementById('pending-notifications');
+            div.innerHTML = '<p>Loading...</p>';
+            
+            try {
+                log('🔄 Loading pending notifications...');
+                
+                const { data, error } = await supabase
+                    .from('notifications')
+                    .select('*')
+                    .eq('status', 'pending')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                log(`✅ Found ${data.length} pending notifications`);
+                
+                if (data.length === 0) {
+                    div.innerHTML = '<p>No pending notifications found.</p>';
+                    return;
+                }
+                
+                let html = '';
+                data.forEach(notification => {
+                    html += `
+                        <div class="notification-item pending">
+                            <strong>ID:</strong> ${notification.id}<br>
+                            <strong>Type:</strong> ${notification.type}<br>
+                            <strong>Title:</strong> ${notification.title}<br>
+                            <strong>Description:</strong> ${notification.description}<br>
+                            <strong>Priority:</strong> ${notification.priority}<br>
+                            <strong>Created:</strong> ${new Date(notification.created_at).toLocaleString()}
+                            ${notification.type === 'farm_visit_request' ? `
+                                <div class="action-buttons">
+                                    <button class="accept-btn" onclick="acceptNotification(${notification.id})">Accept</button>
+                                    <button class="reject-btn" onclick="rejectNotification(${notification.id})">Reject</button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                
+                div.innerHTML = html;
+                
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error loading pending notifications: ' + error.message);
+            }
+        }
+
+        // Load recent activities
+        async function loadRecentActivities() {
+            const div = document.getElementById('recent-activities');
+            div.innerHTML = '<p>Loading...</p>';
+            
+            try {
+                log('🔄 Loading recent activities...');
+                
+                // Load from both notifications (completed) and recent_activities tables
+                const { data: notificationActivities, error: notifError } = await supabase
+                    .from('notifications')
+                    .select('*')
+                    .eq('status', 'completed')
+                    .order('completed_at', { ascending: false })
+                    .limit(5);
+                
+                const { data: recentActivities, error: recentError } = await supabase
+                    .from('recent_activities')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+                
+                if (notifError) throw notifError;
+                if (recentError) throw recentError;
+                
+                const allActivities = [
+                    ...(notificationActivities || []).map(item => ({...item, source: 'notifications'})),
+                    ...(recentActivities || []).map(item => ({...item, source: 'recent_activities'}))
+                ].sort((a, b) => {
+                    const dateA = new Date(a.completed_at || a.created_at);
+                    const dateB = new Date(b.completed_at || b.created_at);
+                    return dateB - dateA;
+                }).slice(0, 10);
+                
+                log(`✅ Found ${allActivities.length} recent activities`);
+                
+                if (allActivities.length === 0) {
+                    div.innerHTML = '<p>No recent activities found.</p>';
+                    return;
+                }
+                
+                let html = '';
+                allActivities.forEach(activity => {
+                    const date = new Date(activity.completed_at || activity.created_at).toLocaleString();
+                    const action = activity.action_taken || 'completed';
+                    html += `
+                        <div class="notification-item completed">
+                            <strong>Title:</strong> ${activity.title}<br>
+                            <strong>Description:</strong> ${activity.description}<br>
+                            <strong>Action:</strong> ${action}<br>
+                            <strong>Completed:</strong> ${date}<br>
+                            <strong>Source:</strong> ${activity.source}
+                        </div>
+                    `;
+                });
+                
+                div.innerHTML = html;
+                
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error loading recent activities: ' + error.message);
+            }
+        }
+
+        // Accept notification
+        async function acceptNotification(id) {
+            try {
+                log(`🔄 Accepting notification ${id}...`);
+                
+                const { error } = await supabase
+                    .from('notifications')
+                    .update({
+                        status: 'completed',
+                        action_taken: 'accepted',
+                        completed_by: 'Admin',
+                        completed_at: new Date().toISOString()
+                    })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
+                log(`✅ Notification ${id} accepted`);
+                
+                // Refresh both lists
+                loadPendingNotifications();
+                setTimeout(loadRecentActivities, 500);
+                
+            } catch (error) {
+                log(`❌ Error accepting notification: ${error.message}`);
+                alert('Error accepting notification: ' + error.message);
+            }
+        }
+
+        // Reject notification
+        async function rejectNotification(id) {
+            try {
+                log(`🔄 Rejecting notification ${id}...`);
+                
+                const { error } = await supabase
+                    .from('notifications')
+                    .update({
+                        status: 'completed',
+                        action_taken: 'rejected',
+                        completed_by: 'Admin',
+                        completed_at: new Date().toISOString()
+                    })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
+                log(`✅ Notification ${id} rejected`);
+                
+                // Refresh both lists
+                loadPendingNotifications();
+                setTimeout(loadRecentActivities, 500);
+                
+            } catch (error) {
+                log(`❌ Error rejecting notification: ${error.message}`);
+                alert('Error rejecting notification: ' + error.message);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            log('🚀 Complete system test page loaded');
+            checkSystemStatus();
+        });
+    </script>
+</body>
+</html>

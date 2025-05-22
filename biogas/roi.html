@@ -117,7 +117,7 @@
                                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
                                 />
                             </div>
-                            
+
                             <div>
                                 <label for="time-period" class="block text-sm font-medium text-gray-700">Investment Period (Years)</label>
                                 <input
@@ -138,7 +138,7 @@
                                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
                                 />
                             </div>
-                            
+
                             <div>
                                 <label for="milk-revenue" class="block text-sm font-medium text-gray-700">Annual Milk Revenue (%)</label>
                                 <input
@@ -160,7 +160,7 @@
                                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
                                 />
                             </div>
-                            
+
                             <div>
                                 <label for="biogas-revenue" class="block text-sm font-medium text-gray-700">Annual Biogas Revenue (%)</label>
                                 <input
@@ -182,7 +182,7 @@
                                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
                                 />
                             </div>
-                            
+
                             <div>
                                 <label for="operating-costs" class="block text-sm font-medium text-gray-700">Annual Operating Costs (%)</label>
                                 <input
@@ -204,7 +204,7 @@
                                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2"
                                 />
                             </div>
-                            
+
                             <button
                                 type="submit"
                                 class="w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-farm-green hover:bg-farm-green/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-farm-green"
@@ -215,7 +215,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Results Section -->
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-lg shadow overflow-hidden">
@@ -230,27 +230,27 @@
                                 <div class="text-2xl font-bold text-farm-green" id="total-return">$15,927</div>
                                 <p class="text-sm text-gray-600">Over 5 years</p>
                             </div>
-                            
+
                             <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                 <h3 class="text-sm font-medium text-gray-700 mb-1">ROI Percentage</h3>
                                 <div class="text-2xl font-bold text-farm-green" id="roi-percentage">59.3%</div>
                                 <p class="text-sm text-gray-600">Total return on investment</p>
                             </div>
-                            
+
                             <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                 <h3 class="text-sm font-medium text-gray-700 mb-1">Annual Return Rate</h3>
                                 <div class="text-2xl font-bold text-farm-green" id="annual-return">11.9%</div>
                                 <p class="text-sm text-gray-600">Average per year</p>
                             </div>
                         </div>
-                        
+
                         <div class="mb-6">
                             <h3 class="text-md font-medium mb-2">Investment Growth Projection</h3>
                             <div class="h-80">
                                 <canvas id="investment-chart"></canvas>
                             </div>
                         </div>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <h3 class="text-md font-medium mb-2">Revenue Breakdown</h3>
@@ -258,7 +258,7 @@
                                     <canvas id="revenue-chart"></canvas>
                                 </div>
                             </div>
-                            
+
                             <div>
                                 <h3 class="text-md font-medium mb-2">Yearly Returns</h3>
                                 <div class="overflow-x-auto">
@@ -282,7 +282,7 @@
             </div>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="bg-gray-100 py-8 mt-8">
         <div class="container mx-auto px-4">
@@ -296,18 +296,18 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize form inputs and ranges
             initializeRangeInputs();
-            
+
             // Initialize charts
             let investmentChart, revenueChart;
             initializeCharts();
-            
+
             // Handle form submission
             const roiForm = document.getElementById('roi-form');
             roiForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 calculateROI();
             });
-            
+
             // Function to synchronize range inputs with text inputs
             function initializeRangeInputs() {
                 const investmentAmount = document.getElementById('investment-amount');
@@ -320,7 +320,7 @@
                 const biogasRevenueRange = document.getElementById('biogas-revenue-range');
                 const operatingCosts = document.getElementById('operating-costs');
                 const operatingCostsRange = document.getElementById('operating-costs-range');
-                
+
                 // Investment amount
                 investmentAmount.addEventListener('input', function() {
                     investmentAmountRange.value = this.value;
@@ -328,7 +328,7 @@
                 investmentAmountRange.addEventListener('input', function() {
                     investmentAmount.value = this.value;
                 });
-                
+
                 // Time period
                 timePeriod.addEventListener('input', function() {
                     timePeriodRange.value = this.value;
@@ -336,7 +336,7 @@
                 timePeriodRange.addEventListener('input', function() {
                     timePeriod.value = this.value;
                 });
-                
+
                 // Milk revenue
                 milkRevenue.addEventListener('input', function() {
                     milkRevenueRange.value = this.value;
@@ -344,7 +344,7 @@
                 milkRevenueRange.addEventListener('input', function() {
                     milkRevenue.value = this.value;
                 });
-                
+
                 // Biogas revenue
                 biogasRevenue.addEventListener('input', function() {
                     biogasRevenueRange.value = this.value;
@@ -352,7 +352,7 @@
                 biogasRevenueRange.addEventListener('input', function() {
                     biogasRevenue.value = this.value;
                 });
-                
+
                 // Operating costs
                 operatingCosts.addEventListener('input', function() {
                     operatingCostsRange.value = this.value;
@@ -361,7 +361,7 @@
                     operatingCosts.value = this.value;
                 });
             }
-            
+
             // Initialize charts
             function initializeCharts() {
                 // Investment growth chart
@@ -403,7 +403,7 @@
                         }
                     }
                 });
-                
+
                 // Revenue breakdown chart
                 const revenueCtx = document.getElementById('revenue-chart').getContext('2d');
                 revenueChart = new Chart(revenueCtx, {
@@ -435,7 +435,7 @@
                         }
                     }
                 });
-                
+
                 // Initialize yearly returns table
                 updateYearlyReturnsTable([
                     { year: 1, value: 11000, return: 1000 },
@@ -445,7 +445,7 @@
                     { year: 5, value: 15927, return: 1286 }
                 ]);
             }
-            
+
             // Calculate ROI based on form inputs
             function calculateROI() {
                 const investmentAmount = parseFloat(document.getElementById('investment-amount').value);
@@ -453,106 +453,106 @@
                 const milkRevenue = parseFloat(document.getElementById('milk-revenue').value) / 100;
                 const biogasRevenue = parseFloat(document.getElementById('biogas-revenue').value) / 100;
                 const operatingCosts = parseFloat(document.getElementById('operating-costs').value) / 100;
-                
+
                 // Calculate net annual return rate
                 const netReturnRate = milkRevenue + biogasRevenue - operatingCosts;
-                
+
                 // Calculate investment growth over time
                 const yearlyData = [];
                 let currentValue = investmentAmount;
-                
+
                 yearlyData.push({
                     year: 0,
                     value: currentValue,
                     return: 0
                 });
-                
+
                 for (let year = 1; year <= timePeriod; year++) {
                     const yearReturn = currentValue * netReturnRate;
                     currentValue += yearReturn;
-                    
+
                     yearlyData.push({
                         year: year,
                         value: currentValue,
                         return: yearReturn
                     });
                 }
-                
+
                 // Calculate total return and ROI
                 const totalReturn = currentValue - investmentAmount;
                 const roiPercentage = (totalReturn / investmentAmount) * 100;
                 const annualReturn = Math.pow((1 + roiPercentage / 100), 1 / timePeriod) - 1;
-                
+
                 // Update the UI
-                document.getElementById('total-return').textContent = '$' + totalReturn.toLocaleString(undefined, { maximumFractionDigits: 0 });
+                document.getElementById('total-return').textContent = '₹' + totalReturn.toLocaleString(undefined, { maximumFractionDigits: 0 });
                 document.getElementById('roi-percentage').textContent = roiPercentage.toFixed(1) + '%';
                 document.getElementById('annual-return').textContent = (annualReturn * 100).toFixed(1) + '%';
-                
+
                 // Update the investment chart
                 updateInvestmentChart(yearlyData);
-                
+
                 // Update the revenue chart
                 updateRevenueChart(investmentAmount, milkRevenue, biogasRevenue, operatingCosts, netReturnRate);
-                
+
                 // Update yearly returns table
                 updateYearlyReturnsTable(yearlyData.slice(1)); // Skip year 0
             }
-            
+
             // Update investment chart
             function updateInvestmentChart(yearlyData) {
                 const labels = yearlyData.map(data => 'Year ' + data.year);
                 const values = yearlyData.map(data => data.value);
-                
+
                 investmentChart.data.labels = labels;
                 investmentChart.data.datasets[0].data = values;
                 investmentChart.update();
             }
-            
+
             // Update revenue chart
             function updateRevenueChart(investmentAmount, milkRevenue, biogasRevenue, operatingCosts, netReturnRate) {
                 const milkRevenueAmount = investmentAmount * milkRevenue;
                 const biogasRevenueAmount = investmentAmount * biogasRevenue;
                 const operatingCostsAmount = investmentAmount * operatingCosts;
                 const netProfitAmount = investmentAmount * netReturnRate;
-                
+
                 revenueChart.data.datasets[0].data = [
                     milkRevenueAmount,
                     biogasRevenueAmount,
                     -operatingCostsAmount, // Negative for costs
                     netProfitAmount
                 ];
-                
+
                 revenueChart.update();
             }
-            
+
             // Update yearly returns table
             function updateYearlyReturnsTable(yearlyData) {
                 const tableBody = document.getElementById('yearly-returns-table');
                 tableBody.innerHTML = '';
-                
+
                 yearlyData.forEach(data => {
                     const row = document.createElement('tr');
-                    
+
                     const yearCell = document.createElement('td');
                     yearCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-900';
                     yearCell.textContent = 'Year ' + data.year;
-                    
+
                     const valueCell = document.createElement('td');
                     valueCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium';
                     valueCell.textContent = '$' + data.value.toLocaleString(undefined, { maximumFractionDigits: 0 });
-                    
+
                     const returnCell = document.createElement('td');
                     returnCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-green-600';
                     returnCell.textContent = '+$' + data.return.toLocaleString(undefined, { maximumFractionDigits: 0 });
-                    
+
                     row.appendChild(yearCell);
                     row.appendChild(valueCell);
                     row.appendChild(returnCell);
-                    
+
                     tableBody.appendChild(row);
                 });
             }
-            
+
             // Calculate ROI on initial load
             calculateROI();
         });

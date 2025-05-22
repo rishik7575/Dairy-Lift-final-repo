@@ -2,8 +2,8 @@
 // This file handles database operations for the admin dashboard
 
 // Supabase configuration
-const SUPABASE_URL = 'https://eseynihfxxojisyqmigk.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZXluaWhmeHhvamlzeXFtaWdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MTEzODksImV4cCI6MjA2MzQ4NzM4OX0.1nU7McnxI_Cx2zK2UMpxc5t1ZK0VJnx2sz_xFS0Np08';
+const SUPABASE_URL = 'https://avaakcvenjjydbxopwti.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2YWFrY3ZlbmpqeWRieG9wd3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTQzMjIsImV4cCI6MjA2MzQ3MDMyMn0.qeN6jRNwhhvkwpEZ-aTyQipLPA2KyUmW9prJ_-t4tOs';
 
 // Initialize Supabase client
 let supabaseClient;

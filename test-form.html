@@ -82,42 +82,42 @@
     <div class="container">
         <h1>Farm Visit Request Form (Test)</h1>
         <p>This is a simple test form to submit farm visit requests directly to the database.</p>
-        
+
         <form id="farmVisitForm">
             <div class="form-group">
                 <label for="name">Full Name *</label>
                 <input type="text" id="name" name="name" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="email">Email Address *</label>
                 <input type="email" id="email" name="email" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="phone">Phone Number</label>
                 <input type="tel" id="phone" name="phone">
             </div>
-            
+
             <div class="form-group">
                 <label for="visitDate">Preferred Visit Date *</label>
                 <input type="date" id="visitDate" name="visitDate" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="message">Message (Optional)</label>
                 <textarea id="message" name="message" rows="4" placeholder="Tell us about your interest in visiting our farm..."></textarea>
             </div>
-            
+
             <button type="submit" id="submitBtn">Submit Farm Visit Request</button>
         </form>
-        
+
         <div id="status"></div>
-        
+
         <div class="links">
             <h3>Quick Links:</h3>
             <a href="FOR-INVESTORS/visit-farm.html">Original Visit Farm Page</a>
-            <a href="FOR-INVESTORS/farm-vista-scheduler-flow/dist/index.html">React Form (Direct)</a>
+            <a href="farm-vista-scheduler-flow/dist/index.html">Farm Vista Scheduler (React)</a>
             <a href="admin-dashboard.html">Admin Dashboard</a>
             <a href="simple-test.html">Database Test</a>
         </div>
@@ -127,9 +127,9 @@
     <script>
         const supabaseUrl = 'https://avaakcvenjjydbxopwti.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2YWFrY3ZlbmpqeWRieG9wd3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTQzMjIsImV4cCI6MjA2MzQ3MDMyMn0.qeN6jRNwhhvkwpEZ-aTyQipLPA2KyUmW9prJ_-t4tOs';
-        
+
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-        
+
         function showStatus(message, type = 'info') {
             const statusDiv = document.getElementById('status');
             statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
@@ -137,11 +137,11 @@
 
         document.getElementById('farmVisitForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
-            
+
             try {
                 // Get form data
                 const formData = new FormData(e.target);
@@ -150,14 +150,14 @@
                 const phone = formData.get('phone');
                 const visitDate = formData.get('visitDate');
                 const message = formData.get('message');
-                
+
                 // Validate required fields
                 if (!name || !email || !visitDate) {
                     throw new Error('Please fill in all required fields');
                 }
-                
+
                 showStatus('Submitting your farm visit request...', 'info');
-                
+
                 // Create farm visit request
                 const visitRequest = {
                     name: name,
@@ -167,15 +167,15 @@
                     message: message || null,
                     status: 'pending'
                 };
-                
+
                 const { data: requestData, error: requestError } = await supabaseClient
                     .from('farm_visit_requests')
                     .insert([visitRequest])
                     .select()
                     .single();
-                
+
                 if (requestError) throw requestError;
-                
+
                 // Create notification
                 const notification = {
                     type: 'farm_visit_request',
@@ -185,23 +185,23 @@
                     status: 'pending',
                     related_id: requestData.id
                 };
-                
+
                 const { data: notificationData, error: notificationError } = await supabaseClient
                     .from('notifications')
                     .insert([notification])
                     .select()
                     .single();
-                
+
                 if (notificationError) throw notificationError;
-                
+
                 showStatus(`✅ Success! Your farm visit request has been submitted. Request ID: ${requestData.id}`, 'success');
-                
+
                 // Reset form
                 e.target.reset();
-                
+
                 // Set minimum date to today for next submission
                 document.getElementById('visitDate').min = new Date().toISOString().split('T')[0];
-                
+
             } catch (error) {
                 console.error('Error submitting form:', error);
                 showStatus(`❌ Error: ${error.message}`, 'error');
@@ -210,7 +210,7 @@
                 submitBtn.textContent = 'Submit Farm Visit Request';
             }
         });
-        
+
         // Set minimum date to today
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];

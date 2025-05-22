@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cattle Lifecycle Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8B5CF6;
+      --border: #E5E7EB;
+      --foreground: #111827;
+      --muted: #6B7280;
+      --radius: 0.5rem;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: transparent;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .card {
+      background-color: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      height: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .card-header {
+      padding: 1rem 1.5rem 0.5rem 1.5rem;
+    }
+    
+    .card-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--foreground);
+      margin: 0;
+    }
+    
+    .card-content {
+      padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .lifecycle-track {
+      position: relative;
+      padding: 0.75rem 0;
+      margin-bottom: 1rem;
+    }
+    
+    .progress-bar {
+      height: 0.5rem;
+      background-color: #E5E7EB;
+      border-radius: 9999px;
+      margin: 0.5rem 0;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 1s ease-in-out;
+    }
+    
+    .stage-markers {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      position: relative;
+    }
+    
+    .stage-marker {
+      width: 1px;
+      height: 0.5rem;
+      background-color: var(--muted);
+    }
+    
+    .stage-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+    
+    .stage-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      transform: translateX(-50%);
+    }
+    
+    .lifecycle-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 0.75rem;
+      background-color: #F9FAFB;
+      border-radius: var(--radius);
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .legend-dot {
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Cattle Lifecycle Progress</h2>
+    </div>
+    <div class="card-content">
+      <div class="lifecycle-legend">
+        <div class="legend-item">
+          <div class="legend-dot bg-blue-400"></div>
+          <span class="text-sm">Calf</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot bg-green-400"></div>
+          <span class="text-sm">Heifer</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot bg-yellow-400"></div>
+          <span class="text-sm">Mature</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot bg-purple-500"></div>
+          <span class="text-sm">Milking</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot bg-gray-400"></div>
+          <span class="text-sm">Old</span>
+        </div>
+      </div>
+
+      <div class="lifecycle-track">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium">Bella</span>
+          <span class="text-sm text-purple-600">Milking (70%)</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill bg-purple-500" style="width: 70%"></div>
+        </div>
+      </div>
+      
+      <div class="lifecycle-track">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium">Daisy</span>
+          <span class="text-sm text-green-600">Mature (45%)</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill bg-green-400" style="width: 45%"></div>
+        </div>
+      </div>
+      
+      <div class="lifecycle-track">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium">Rosie</span>
+          <span class="text-sm text-gray-600">Old (85%)</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill bg-gray-400" style="width: 85%"></div>
+        </div>
+      </div>
+      
+      <div class="lifecycle-track">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium">Mabel</span>
+          <span class="text-sm text-blue-600">Heifer (25%)</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill bg-blue-400" style="width: 25%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Animate progress bars on load
+      const progressBars = document.querySelectorAll('.progress-fill');
+      progressBars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => {
+          bar.style.width = width;
+        }, 100);
+      });
+      
+      // Send height to parent
+      function updateParentHeight() {
+        const height = document.body.scrollHeight;
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: 'iframe-height', height: height }, '*');
+        }
+      }
+      
+      // Update height after content loads
+      updateParentHeight();
+      // Also update after a short delay to account for dynamic content
+      setTimeout(updateParentHeight, 500);
+      
+      // Update height when window resizes
+      window.addEventListener('resize', updateParentHeight);
+    });
+  </script>
+</body>
+</html>

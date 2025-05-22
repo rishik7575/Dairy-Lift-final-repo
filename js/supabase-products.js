@@ -3,8 +3,8 @@
 
 class SupabaseProductsManager {
   constructor() {
-    this.supabaseUrl = 'https://eseynihfxxojisyqmigk.supabase.co';
-    this.supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZXluaWhmeHhvamlzeXFtaWdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MTEzODksImV4cCI6MjA2MzQ4NzM4OX0.1nU7McnxI_Cx2zK2UMpxc5t1ZK0VJnx2sz_xFS0Np08';
+    this.supabaseUrl = 'https://avaakcvenjjydbxopwti.supabase.co';
+    this.supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2YWFrY3ZlbmpqeWRieG9wd3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTQzMjIsImV4cCI6MjA2MzQ3MDMyMn0.qeN6jRNwhhvkwpEZ-aTyQipLPA2KyUmW9prJ_-t4tOs';
     this.client = null;
     this.initialized = false;
     this.subscriptions = [];
@@ -220,7 +220,7 @@ class SupabaseProductsManager {
       const { data, error } = await this.client
         .from('products')
         .select('*')
-        .eq('active', true)
+        .eq('is_active', true)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -257,7 +257,7 @@ class SupabaseProductsManager {
       const { data, error } = await this.client
         .from('products')
         .select('*')
-        .eq('active', true)
+        .eq('is_active', true)
         .eq('category', category)
         .order('created_at', { ascending: false });
 
@@ -283,7 +283,7 @@ class SupabaseProductsManager {
         .from('products')
         .select('*')
         .eq('id', id)
-        .eq('active', true)
+        .eq('is_active', true)
         .single();
 
       if (error) {
@@ -311,12 +311,10 @@ class SupabaseProductsManager {
         name: productData.name,
         description: productData.description || '',
         price: parseFloat(productData.price),
-        stock: parseInt(productData.stock),
+        stock_quantity: parseInt(productData.stock),
         category: productData.category,
         image_url: productData.imageUrl || '',
-        status: status,
-        discount: parseFloat(productData.discount) || 0,
-        active: true
+        is_active: true
       };
 
       const { data, error } = await this.client
@@ -357,11 +355,9 @@ class SupabaseProductsManager {
         name: productData.name,
         description: productData.description || '',
         price: parseFloat(productData.price),
-        stock: parseInt(productData.stock),
+        stock_quantity: parseInt(productData.stock),
         category: productData.category,
-        image_url: productData.imageUrl || '',
-        status: status,
-        discount: parseFloat(productData.discount) || 0
+        image_url: productData.imageUrl || ''
       };
 
       const { data, error } = await this.client
@@ -404,7 +400,7 @@ class SupabaseProductsManager {
 
       const { data, error } = await this.client
         .from('products')
-        .update({ active: false })
+        .update({ is_active: false })
         .eq('id', id)
         .select()
         .single();
@@ -480,14 +476,17 @@ class SupabaseProductsManager {
         title: titles[type],
         description: descriptions[type],
         priority: type === 'product_low_stock' ? 'high' : 'medium',
-        status: 'pending',
+        status: 'completed',
+        action_taken: 'completed',
+        completed_by: 'Admin',
+        completed_at: new Date().toISOString(),
         related_table: 'products',
         related_id: product.id,
         metadata: {
           product_name: product.name,
           product_category: product.category,
           product_price: product.price,
-          product_stock: product.stock
+          product_stock: product.stock_quantity
         }
       };
 

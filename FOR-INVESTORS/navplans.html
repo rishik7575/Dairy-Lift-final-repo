@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dairy-Lift - Cattle Insurance Plans</title>
   <meta name="description" content="Comprehensive cattle insurance solutions for farmers and investors. Protect your livestock with confidence." />
-  
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <!-- Additional Resources -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
@@ -55,7 +55,7 @@
       --muted-foreground: #64748b;
       --border: #e2e8f0;
       --radius: 0.5rem;
-      
+
       /* Keep original cattle colors for the insurance plans */
       --cattle-green: #4D7C0F;
       --cattle-lightGreen: #84CC16;
@@ -63,20 +63,20 @@
       --cattle-lightBrown: #B45309;
       --cattle-blue: #0891B2;
     }
-    
+
     * {
       box-sizing: border-box;
       padding: 0;
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
-    
+
     body {
       background-color: var(--background);
       color: var(--foreground);
       line-height: 1.5;
     }
-    
+
     /* Layout */
     .container {
       width: 100%;
@@ -86,163 +86,163 @@
       padding-left: 1rem;
       padding-right: 1rem;
     }
-    
+
     .flex {
       display: flex;
     }
-    
+
     .flex-col {
       flex-direction: column;
     }
-    
+
     .items-center {
       align-items: center;
     }
-    
+
     .justify-center {
       justify-content: center;
     }
-    
+
     .justify-between {
       justify-content: space-between;
     }
-    
+
     .gap-2 {
       gap: 0.5rem;
     }
-    
+
     .gap-4 {
       gap: 1rem;
     }
-    
+
     .gap-6 {
       gap: 1.5rem;
     }
-    
+
     .gap-8 {
       gap: 2rem;
     }
-    
+
     .text-center {
       text-align: center;
     }
-    
+
     .py-4 {
       padding-top: 1rem;
       padding-bottom: 1rem;
     }
-    
+
     .py-8 {
       padding-top: 2rem;
       padding-bottom: 2rem;
     }
-    
+
     .py-16 {
       padding-top: 4rem;
       padding-bottom: 4rem;
     }
-    
+
     .px-4 {
       padding-left: 1rem;
       padding-right: 1rem;
     }
-    
+
     .py-2 {
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
     }
-    
+
     .px-2\.5 {
       padding-left: 0.625rem;
       padding-right: 0.625rem;
     }
-    
+
     .py-0\.5 {
       padding-top: 0.125rem;
       padding-bottom: 0.125rem;
     }
-    
+
     .mb-2 {
       margin-bottom: 0.5rem;
     }
-    
+
     .mb-4 {
       margin-bottom: 1rem;
     }
-    
+
     .mb-6 {
       margin-bottom: 1.5rem;
     }
-    
+
     .mb-8 {
       margin-bottom: 2rem;
     }
-    
+
     .mb-12 {
       margin-bottom: 3rem;
     }
-    
+
     .mb-16 {
       margin-bottom: 4rem;
     }
-    
+
     .mt-1 {
       margin-top: 0.25rem;
     }
-    
+
     .mt-2 {
       margin-top: 0.5rem;
     }
-    
+
     .ml-1 {
       margin-left: 0.25rem;
     }
-    
+
     .mr-4 {
       margin-right: 1rem;
     }
-    
+
     .mx-auto {
       margin-left: auto;
       margin-right: auto;
     }
-    
+
     .space-x-2 > * + * {
       margin-left: 0.5rem;
     }
-    
+
     .space-x-4 > * + * {
       margin-left: 1rem;
     }
-    
+
     .space-x-6 > * + * {
       margin-left: 1.5rem;
     }
-    
+
     .space-y-2 > * + * {
       margin-top: 0.5rem;
     }
-    
+
     .space-y-3 > * + * {
       margin-top: 0.75rem;
     }
-    
+
     .space-y-4 > * + * {
       margin-top: 1rem;
     }
-    
+
     .space-y-6 > * + * {
       margin-top: 1.5rem;
     }
-    
+
     .space-y-8 > * + * {
       margin-top: 2rem;
     }
-    
+
     .space-y-10 > * + * {
       margin-top: 2.5rem;
     }
-    
+
     /* Navbar Styles */
     .navbar {
       background-color: var(--background);
@@ -298,17 +298,17 @@
       overflow: hidden;
       z-index: 50;
     }
-    
+
     .mobile-menu-toggle:hover {
       background-color: var(--primary-light);
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
     }
-    
+
     .mobile-menu-toggle:active {
       transform: scale(0.95);
     }
-    
+
     .hamburger-lines {
       width: 22px;
       height: 18px;
@@ -317,7 +317,7 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    
+
     .hamburger-line {
       display: block;
       height: 2px;
@@ -327,22 +327,22 @@
       transition: all 0.3s ease-in-out;
       transform-origin: center;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
       transform: translateY(8px) rotate(45deg) !important;
       width: 22px !important;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
       opacity: 0 !important;
       transform: translateX(-10px) !important;
     }
-    
+
     .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
       transform: translateY(-8px) rotate(-45deg) !important;
       width: 22px !important;
     }
-    
+
     .mobile-menu-toggle::after {
       content: '';
       position: absolute;
@@ -354,11 +354,11 @@
       transform: scale(0);
       transition: transform 0.3s ease;
     }
-    
+
     .mobile-menu-toggle:hover::after {
       transform: scale(1);
     }
-    
+
     .menu-toggle-ripple {
       position: absolute;
       background-color: rgba(173, 110, 245, 0.3);
@@ -367,7 +367,7 @@
       animation: ripple 0.6s linear;
       pointer-events: none;
     }
-    
+
     @keyframes ripple {
       to {
         transform: scale(2);
@@ -395,7 +395,7 @@
     .mobile-menu.active {
       transform: translateX(280px);
     }
-    
+
     .mobile-menu-overlay {
       position: fixed;
       top: 0;
@@ -409,7 +409,7 @@
       transition: opacity 0.3s ease, visibility 0.3s ease;
       backdrop-filter: blur(2px);
     }
-    
+
     .mobile-menu-overlay.active {
       opacity: 1;
       visibility: visible;
@@ -432,7 +432,7 @@
       background-color: var(--muted);
       transform: translateX(5px);
     }
-    
+
     .mobile-nav-link::after {
       content: '';
       position: absolute;
@@ -443,7 +443,7 @@
       background-color: var(--primary);
       transition: width 0.3s ease;
     }
-    
+
     .mobile-nav-link:hover::after {
       width: 30%;
     }
@@ -460,7 +460,7 @@
       transform: translateX(5px) scale(1.02);
       box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
     }
-    
+
     .mobile-menu-header {
       display: flex;
       align-items: center;
@@ -469,14 +469,14 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 1rem;
     }
-    
+
     .mobile-menu-logo {
       font-family: 'Pacifico', cursive;
       font-size: 1.5rem;
       color: var(--primary);
       text-decoration: none;
     }
-    
+
     .mobile-menu-close {
       background: none;
       border: none;
@@ -490,7 +490,7 @@
       border-radius: 50%;
       transition: all 0.2s ease;
     }
-    
+
     .mobile-menu-close:hover {
       background-color: var(--muted);
       color: var(--foreground);
@@ -554,10 +554,10 @@
         color: var(--primary);
       }
     }
-    
+
     /* Remix Icons Fix */
     :where([class^="ri-"])::before { content: "\f3c2"; }
-    
+
     /* Button Styles */
     .btn {
       display: inline-flex;
@@ -621,43 +621,43 @@
       width: 16px;
       height: 16px;
     }
-    
+
     /* Footer */
     .footer {
       background-color: #1F2937;
       color: white;
       padding: 3rem 0;
     }
-    
+
     .footer-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 2rem;
     }
-    
+
     .footer-heading {
       font-size: 1.25rem;
       font-weight: bold;
       margin-bottom: 1rem;
     }
-    
+
     .footer-link {
       color: #D1D5DB;
       text-decoration: none;
       display: block;
       margin-bottom: 0.5rem;
     }
-    
+
     .footer-link:hover {
       color: white;
     }
-    
+
     .footer-social {
       display: flex;
       gap: 1rem;
       margin-top: 1rem;
     }
-    
+
     .footer-social a {
       color: white;
       background-color: rgba(255, 255, 255, 0.1);
@@ -668,11 +668,11 @@
       justify-content: center;
       transition: background-color 0.2s;
     }
-    
+
     .footer-social a:hover {
       background-color: rgba(255, 255, 255, 0.2);
     }
-    
+
     .footer-bottom {
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       margin-top: 2rem;
@@ -683,14 +683,14 @@
       flex-wrap: wrap;
       gap: 1rem;
     }
-    
+
     /* Tabs */
     .tabs {
       max-width: 62rem;
       margin-left: auto;
       margin-right: auto;
     }
-    
+
     .tabs-list {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -699,7 +699,7 @@
       border-radius: var(--radius);
       margin-bottom: 2rem;
     }
-    
+
     .tab-trigger {
       display: inline-flex;
       align-items: center;
@@ -715,46 +715,46 @@
       cursor: pointer;
       color: var(--muted-foreground);
     }
-    
+
     .tab-trigger[data-state="active"] {
       background-color: white;
       color: var(--foreground);
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
-    
+
     .tab-content {
       display: none;
     }
-    
+
     .tab-content[data-state="active"] {
       display: block;
     }
-    
+
     /* Cards */
     .card {
       border-radius: var(--radius);
       border: 1px solid var(--border);
       background-color: white;
     }
-    
+
     .card-header {
       padding: 1.5rem;
     }
-    
+
     .card-title {
       font-size: 1.5rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
-    
+
     .card-description {
       color: var(--muted-foreground);
     }
-    
+
     .card-content {
       padding: 0 1.5rem 1.5rem;
     }
-    
+
     /* Switch */
     .switch-container {
       display: flex;
@@ -762,20 +762,20 @@
       justify-content: center;
       margin-bottom: 2rem;
     }
-    
+
     .switch-label {
       font-size: 0.875rem;
       transition: color 0.2s;
     }
-    
+
     .switch-label.active {
       color: var(--foreground);
     }
-    
+
     .switch-label.inactive {
       color: var(--muted-foreground);
     }
-    
+
     .switch {
       position: relative;
       display: inline-block;
@@ -783,13 +783,13 @@
       height: 1.5rem;
       margin: 0 0.5rem;
     }
-    
+
     .switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
-    
+
     .switch-slider {
       position: absolute;
       cursor: pointer;
@@ -801,7 +801,7 @@
       transition: .4s;
       border-radius: 34px;
     }
-    
+
     .switch-slider:before {
       position: absolute;
       content: "";
@@ -813,15 +813,15 @@
       transition: .4s;
       border-radius: 50%;
     }
-    
+
     input:checked + .switch-slider {
       background-color: var(--cattle-green);
     }
-    
+
     input:checked + .switch-slider:before {
       transform: translateX(1.25rem);
     }
-    
+
     .save-badge {
       display: inline-block;
       background-color: #D1FAE5;
@@ -831,86 +831,86 @@
       padding: 0.25rem 0.625rem;
       border-radius: 9999px;
     }
-    
+
     /* Plan Cards */
     .plans-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
-    
+
     .plan-card {
       border-radius: var(--radius);
       border: 1px solid var(--border);
       overflow: hidden;
       transition: transform 0.3s, box-shadow 0.3s;
     }
-    
+
     .plan-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
-    
+
     .plan-card.popular {
       border-color: var(--cattle-green);
       transform: scale(1.05);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       position: relative;
     }
-    
+
     .plan-card.popular:hover {
       transform: scale(1.05) translateY(-5px);
     }
-    
+
     .plan-header {
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
     }
-    
+
     .plan-header.basic {
       background-color: #F3F4F6;
       color: #1F2937;
     }
-    
+
     .plan-header.standard {
       background-color: var(--cattle-blue);
       color: white;
     }
-    
+
     .plan-header.premium {
       background-color: var(--cattle-brown);
       color: white;
     }
-    
+
     .plan-header-icon {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       margin-bottom: 0.5rem;
     }
-    
+
     .plan-name {
       font-size: 1.25rem;
       font-weight: 600;
     }
-    
+
     .plan-description {
       font-size: 0.875rem;
       opacity: 0.9;
       margin-bottom: 1rem;
     }
-    
+
     .plan-price {
       font-size: 2rem;
       font-weight: bold;
     }
-    
+
     .plan-period {
       font-size: 0.875rem;
       opacity: 0.9;
     }
-    
+
     .plan-button {
       display: block;
       width: 100%;
@@ -924,69 +924,69 @@
       text-decoration: none;
       transition: background-color 0.2s;
     }
-    
+
     .plan-button.basic {
       background-color: var(--cattle-green);
       color: white;
     }
-    
+
     .plan-button.basic:hover {
       background-color: var(--cattle-lightGreen);
     }
-    
+
     .plan-button.standard {
       background-color: white;
       color: var(--cattle-blue);
       border: 1px solid var(--cattle-blue);
     }
-    
+
     .plan-button.standard:hover {
       background-color: #f8f9fa;
     }
-    
+
     .plan-button.premium {
       background-color: var(--cattle-brown);
       color: white;
     }
-    
+
     .plan-button.premium:hover {
       background-color: var(--cattle-lightBrown);
     }
-    
+
     .plan-features {
       padding: 1.5rem;
       border-top: 1px solid var(--border);
     }
-    
+
     .plan-feature {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       margin-bottom: 0.75rem;
     }
-    
+
     .plan-feature:last-child {
       margin-bottom: 0;
     }
-    
+
     .feature-icon {
       flex-shrink: 0;
       width: 20px;
       height: 20px;
     }
-    
+
     .feature-name {
       font-size: 0.875rem;
     }
-    
+
     .feature-included {
       color: #374151;
     }
-    
+
     .feature-excluded {
       color: #9CA3AF;
     }
-    
+
     .popular-badge {
       position: absolute;
       top: 1rem;
@@ -999,14 +999,14 @@
       border-radius: 9999px;
       z-index: 1;
     }
-    
+
     /* Benefits */
     .benefits-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 2rem;
     }
-    
+
     .benefit-card {
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -1014,43 +1014,43 @@
       background-color: white;
       transition: box-shadow 0.2s;
     }
-    
+
     .benefit-card:hover {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-    
+
     .benefit-header {
       display: flex;
       align-items: center;
       gap: 1rem;
       margin-bottom: 0.5rem;
     }
-    
+
     .benefit-icon {
       width: 3rem;
       height: 3rem;
       color: var(--cattle-green);
     }
-    
+
     .benefit-title {
       font-size: 1.25rem;
       font-weight: 600;
     }
-    
+
     .benefit-description {
       font-size: 1rem;
       color: var(--muted-foreground);
     }
-    
+
     /* FAQ */
     .accordion {
       width: 100%;
     }
-    
+
     .accordion-item {
       border-bottom: 1px solid var(--border);
     }
-    
+
     .accordion-trigger {
       display: flex;
       justify-content: space-between;
@@ -1065,37 +1065,37 @@
       font-weight: 500;
       color: var(--foreground);
     }
-    
+
     .accordion-content {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.2s ease-out;
     }
-    
+
     .accordion-content-inner {
       padding: 0 0 1rem;
       color: var(--muted-foreground);
     }
-    
+
     .accordion-item.active .accordion-content {
       max-height: 200px;
     }
-    
+
     .accordion-icon {
       transform: rotate(0deg);
       transition: transform 0.2s;
     }
-    
+
     .accordion-item.active .accordion-icon {
       transform: rotate(180deg);
     }
-    
+
     /* Stats */
     .stats-section {
       padding: 4rem 0;
       background-color: rgba(77, 124, 15, 0.05);
     }
-    
+
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1104,62 +1104,62 @@
       max-width: 800px;
       margin: 0 auto;
     }
-    
+
     .stat-card {
       background-color: white;
       padding: 1.5rem;
       border-radius: var(--radius);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
-    
+
     .stat-value {
       font-size: 2rem;
       font-weight: bold;
       color: var(--cattle-green);
       margin-bottom: 0.5rem;
     }
-    
+
     .stat-label {
       color: var(--muted-foreground);
     }
-    
+
     /* CTA Section */
     .cta-section {
       padding: 4rem 0;
       background-color: var(--cattle-green);
       color: white;
     }
-    
+
     .cta-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
     }
-    
+
     .cta-content {
       margin-bottom: 2rem;
       text-align: center;
       max-width: 800px;
     }
-    
+
     .cta-title {
       font-size: 2rem;
       font-weight: bold;
       margin-bottom: 1rem;
     }
-    
+
     .cta-description {
       font-size: 1.125rem;
       opacity: 0.9;
     }
-    
+
     .cta-buttons {
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
-    
+
     .cta-button {
       display: inline-block;
       padding: 0.75rem 2rem;
@@ -1170,76 +1170,76 @@
       transition: all 0.2s;
       text-align: center;
     }
-    
+
     .cta-button-white {
       background-color: white;
       color: var(--cattle-green);
     }
-    
+
     .cta-button-white:hover {
       background-color: #f8f9fa;
     }
-    
+
     .cta-button-outline {
       background-color: transparent;
       border: 1px solid white;
       color: white;
     }
-    
+
     .cta-button-outline:hover {
       background-color: rgba(255, 255, 255, 0.1);
     }
-    
+
     /* Responsive */
     @media (min-width: 640px) {
       .plans-grid {
         grid-template-columns: repeat(2, 1fr);
       }
-      
+
       .benefits-grid {
         grid-template-columns: repeat(2, 1fr);
       }
-      
+
       .cta-buttons {
         flex-direction: row;
       }
     }
-    
+
     @media (min-width: 768px) {
       .nav-menu {
         display: flex;
       }
-      
+
       /* Keep mobile menu visible but positioned off-screen */
       .mobile-menu {
         left: -280px;
       }
-      
+
       .plans-grid {
         grid-template-columns: repeat(3, 1fr);
       }
-      
+
       .cta-container {
         flex-direction: row;
       }
-      
+
       .cta-content {
         margin-bottom: 0;
         text-align: left;
       }
     }
-    
+
     @media (max-width: 767px) {
       .nav-menu {
         display: none;
       }
-      
+
       .tab-trigger {
         font-size: 0.875rem;
         padding: 0.5rem;
       }
     }
-    
+
     /* Header photo styles */
     .header-photo-container {
       display: flex;
@@ -1250,7 +1250,7 @@
       height: 70px;
       flex-shrink: 0;
     }
-    
+
     .header-photo {
       width: 100%;
       height: 100%;
@@ -1259,7 +1259,7 @@
       background-color: white;
       padding: 2px;
     }
-    
+
     /* Override navbar-content styles */
     .navbar-content {
       display: flex !important;
@@ -1269,7 +1269,7 @@
       position: relative !important;
       padding: 0.5rem 0 !important;
     }
-    
+
     /* Override logo styles */
     .logo {
       font-weight: bold !important;
@@ -1281,21 +1281,21 @@
       display: inline-block !important;
       padding: 0 15px !important;
     }
-    
+
     /* Override navbar-actions styles */
     .navbar-actions {
       display: flex !important;
       align-items: center !important;
       gap: 1rem !important;
     }
-    
+
     @media (min-width: 768px) {
       .header-photo-container {
         width: 80px;
         height: 80px;
         margin: 0 30px 0 20px;
       }
-      
+
       .logo {
         font-size: 1.5rem !important;
         min-width: 250px !important;
@@ -1346,7 +1346,7 @@
         </svg>
         <span style="margin-left: 10px;">Home</span>
       </a>
-      
+
       <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -1362,7 +1362,7 @@
         </svg>
         <span style="margin-left: 10px;">Bio-Gas</span>
       </a>
-      <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+      <a href="../farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <rect x="3" y="3" width="7" height="7"></rect>
           <rect x="14" y="3" width="7" height="7"></rect>
@@ -1403,7 +1403,7 @@
       </a>
     </div>
   </header>
-    
+
   <main>
     <div class="py-16 bg-gradient-to-b from-[#F9FAFB] to-white">
       <div class="container">
@@ -1420,7 +1420,7 @@
             <button class="tab-trigger" data-tab="benefits">Benefits</button>
             <button class="tab-trigger" data-tab="faq">FAQ</button>
           </div>
-          
+
           <div class="tab-content" data-tab="plans" data-state="active">
             <section class="py-8">
               <div class="container">
@@ -1448,7 +1448,7 @@
                       </div>
                       <p class="plan-description">Essential coverage for small-scale farmers.</p>
                       <div class="flex items-baseline">
-                        <span class="plan-price">$9.99</span>
+                        <span class="plan-price">₹9.99</span>
                         <span class="plan-period ml-1">/month/cattle</span>
                       </div>
                     </div>
@@ -1511,7 +1511,7 @@
                       </div>
                       <p class="pldairylift@gmail.complete protection for most farmers.</p>
                       <div class="flex items-baseline">
-                        <span class="plan-price">$19.99</span>
+                        <span class="plan-price">₹19.99</span>
                         <span class="plan-period ml-1">/month/cattle</span>
                       </div>
                     </div>
@@ -1570,7 +1570,7 @@
                       </div>
                       <p class="plan-description">Maximum protection for valuable livestock.</p>
                       <div class="flex items-baseline">
-                        <span class="plan-price">$29.99</span>
+                        <span class="plan-price">₹29.99</span>
                         <span class="plan-period ml-1">/month/cattle</span>
                       </div>
                     </div>
@@ -1620,7 +1620,7 @@
               </div>
             </section>
           </div>
-          
+
           <div class="tab-content" data-tab="benefits">
             <div class="benefits-grid mb-8">
               <div class="benefit-card">
@@ -1634,7 +1634,7 @@
                   Full coverage against disease, accidents, natural disasters, and theft depending on your selected plan.
                 </p>
               </div>
-              
+
               <div class="benefit-card">
                 <div class="benefit-header">
                   <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1650,7 +1650,7 @@
                   Minimal paperwork with our streamlined digital application process.
                 </p>
               </div>
-              
+
               <div class="benefit-card">
                 <div class="benefit-header">
                   <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1666,7 +1666,7 @@
                   Fast claim settlements with our efficient 5-7 day processing timeline.
                 </p>
               </div>
-              
+
               <div class="benefit-card">
                 <div class="benefit-header">
                   <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1682,7 +1682,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="tab-content" data-tab="faq">
             <div class="card">
               <div class="card-header">
@@ -1706,7 +1706,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="accordion-item">
                     <button class="accordion-trigger">
                       What are the waiting periods for new policies?
@@ -1720,7 +1720,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="accordion-item">
                     <button class="accordion-trigger">
                       How do I file a claim?
@@ -1734,7 +1734,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="accordion-item">
                     <button class="accordion-trigger">
                       Can I insure multiple cattle under one policy?
@@ -1748,7 +1748,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="accordion-item">
                     <button class="accordion-trigger">
                       What factors affect my premium rates?
@@ -1779,7 +1779,7 @@
           <p class="text-gray-600 mb-8">
             With decades of experience in the agricultural sector, we understand the unique challenges faced by livestock farmers.
           </p>
-          
+
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-value">98%</div>
@@ -1797,7 +1797,7 @@
         </div>
       </div>
     </section>
-    
+
     <section class="cta-section">
       <div class="container">
         <div class="cta-container">
@@ -1986,46 +1986,46 @@
   <script src="js/mobile-menu-fix.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      
+
       // Tab switching
       const tabTriggers = document.querySelectorAll('.tab-trigger');
       const tabContents = document.querySelectorAll('.tab-content');
-      
+
       tabTriggers.forEach(trigger => {
         trigger.addEventListener('click', () => {
           // Remove active state from all triggers
           tabTriggers.forEach(t => t.setAttribute('data-state', 'inactive'));
-          
+
           // Set this trigger as active
           trigger.setAttribute('data-state', 'active');
-          
+
           // Hide all tab contents
           tabContents.forEach(content => content.setAttribute('data-state', 'inactive'));
-          
+
           // Show the selected tab content
           const tabId = trigger.getAttribute('data-tab');
           const activeContent = document.querySelector(`.tab-content[data-tab="${tabId}"]`);
           activeContent.setAttribute('data-state', 'active');
         });
       });
-      
+
       // Accordion functionality
       const accordionItems = document.querySelectorAll('.accordion-item');
-      
+
       accordionItems.forEach(item => {
         const trigger = item.querySelector('.accordion-trigger');
         const content = item.querySelector('.accordion-content');
-        
+
         trigger.addEventListener('click', () => {
           // Toggle active class
           const isActive = item.classList.contains('active');
-          
+
           // Close all items
           accordionItems.forEach(accItem => {
             accItem.classList.remove('active');
             accItem.querySelector('.accordion-content').style.maxHeight = null;
           });
-          
+
           // If it wasn't active, open it
           if (!isActive) {
             item.classList.add('active');
@@ -2033,7 +2033,7 @@
           }
         });
       });
-      
+
       // Billing cycle toggle
       const billingCycleToggle = document.getElementById('billing-cycle');
       const monthlyLabel = document.getElementById('monthly-label');
@@ -2041,13 +2041,13 @@
       const saveBadge = document.getElementById('save-badge');
       const planPrices = document.querySelectorAll('.plan-price');
       const planPeriods = document.querySelectorAll('.plan-period');
-      
+
       // Store original prices for monthly billing
-      const originalPrices = ['$9.99', '$19.99', '$29.99'];
-      const annualPrices = ['$99.99', '$199.99', '$299.99'];
+      const originalPrices = ['₹9.99', '₹19.99', '₹29.99'];
+      const annualPrices = ['₹99.99', '₹199.99', '₹299.99'];
       const monthlyPeriods = ['/month/cattle', '/month/cattle', '/month/cattle'];
       const annualPeriods = ['/year/cattle', '/year/cattle', '/year/cattle'];
-      
+
       if (billingCycleToggle) {
         billingCycleToggle.addEventListener('change', () => {
           if (billingCycleToggle.checked) {
@@ -2057,12 +2057,12 @@
             annuallyLabel.classList.remove('inactive');
             annuallyLabel.classList.add('active');
             saveBadge.style.display = 'inline-block';
-            
+
             // Update prices
             planPrices.forEach((price, index) => {
               price.textContent = annualPrices[index];
             });
-            
+
             // Update periods
             planPeriods.forEach((period, index) => {
               period.textContent = annualPeriods[index];
@@ -2074,12 +2074,12 @@
             annuallyLabel.classList.remove('active');
             annuallyLabel.classList.add('inactive');
             saveBadge.style.display = 'none';
-            
+
             // Update prices
             planPrices.forEach((price, index) => {
               price.textContent = originalPrices[index];
             });
-            
+
             // Update periods
             planPeriods.forEach((period, index) => {
               period.textContent = monthlyPeriods[index];
@@ -2087,7 +2087,7 @@
           }
         });
       }
-      
+
 
     });
   </script>
@@ -2098,10 +2098,10 @@
       const mobileMenu = document.getElementById('mobile-menu');
       const mobileMenuClose = document.getElementById('mobile-menu-close');
       const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-      
+
       if (mobileMenuToggle && mobileMenu && mobileMenuClose && mobileMenuOverlay) {
         console.log("Mobile menu elements found in inline script");
-        
+
         // Function to open mobile menu
         function openMobileMenu() {
           console.log("Opening mobile menu from inline script");
@@ -2110,7 +2110,7 @@
           mobileMenuToggle.classList.add('active');
           document.body.style.overflow = 'hidden';
         }
-        
+
         // Function to close mobile menu
         function closeMobileMenu() {
           console.log("Closing mobile menu from inline script");
@@ -2119,7 +2119,7 @@
           mobileMenuToggle.classList.remove('active');
           document.body.style.overflow = '';
         }
-        
+
         // Add click event directly to the toggle button
         mobileMenuToggle.onclick = function(event) {
           console.log("Mobile menu toggle clicked from inline script");
@@ -2130,10 +2130,10 @@
             openMobileMenu();
           }
         };
-        
+
         // Close menu when clicking the close button
         mobileMenuClose.onclick = closeMobileMenu;
-        
+
         // Close menu when clicking the overlay
         mobileMenuOverlay.onclick = closeMobileMenu;
       } else {

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Product Notifications in Recent Activities</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-products.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background-color: #ad6ef5;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #9b55e0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .activity-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .activity-item.recent {
+            border-left: 4px solid #28a745;
+        }
+        .activity-item.notification {
+            border-left: 4px solid #007bff;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Product Notifications in Recent Activities</h1>
+    
+    <div class="container">
+        <h2>System Status</h2>
+        <div id="system-status" class="status info">Initializing...</div>
+        <button onclick="checkSystemStatus()">Check System Status</button>
+    </div>
+
+    <div class="grid">
+        <div class="container">
+            <h2>🆕 Add Product (Should Create Recent Activity)</h2>
+            <form id="add-product-form">
+                <div class="form-group">
+                    <label for="product-name">Product Name:</label>
+                    <input type="text" id="product-name" value="Test Recent Activity Product" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-category">Category:</label>
+                    <select id="product-category" required>
+                        <option value="Dairy">Dairy</option>
+                        <option value="Organic">Organic</option>
+                        <option value="Premium">Premium</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-price">Price ($):</label>
+                    <input type="number" id="product-price" value="7.99" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-stock">Stock:</label>
+                    <input type="number" id="product-stock" value="30" required>
+                </div>
+                
+                <button type="submit">Add Product</button>
+            </form>
+            <div id="add-product-status"></div>
+        </div>
+
+        <div class="container">
+            <h2>📋 Recent Activities (Admin Dashboard View)</h2>
+            <button onclick="loadRecentActivitiesLikeAdmin()">Load Like Admin Dashboard</button>
+            <div id="admin-recent-activities"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🔔 Product Notifications (From Notifications Table)</h2>
+        <button onclick="loadProductNotifications()">Load Product Notifications</button>
+        <div id="product-notifications"></div>
+    </div>
+
+    <div class="container">
+        <h2>📈 Recent Activities (From Recent Activities Table)</h2>
+        <button onclick="loadRecentActivitiesTable()">Load Recent Activities Table</button>
+        <div id="recent-activities-table"></div>
+    </div>
+
+    <div class="container">
+        <h2>🔍 System Log</h2>
+        <div id="system-log" class="log"></div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <script>
+        let logs = [];
+        let productManager = null;
+        let supabase = null;
+
+        // Logging function
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}`;
+            logs.push(logMessage);
+            updateLog();
+            console.log(message);
+        }
+
+        function updateLog() {
+            document.getElementById('system-log').innerHTML = 
+                '<pre>' + logs.slice(-50).join('\n') + '</pre>';
+        }
+
+        function clearLog() {
+            logs = [];
+            updateLog();
+        }
+
+        // Initialize
+        async function initialize() {
+            try {
+                log('🔄 Initializing system...');
+                
+                // Initialize Supabase
+                const supabaseUrl = 'https://avaakcvenjjydbxopwti.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2YWFrY3ZlbmpqeWRieG9wd3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTQzMjIsImV4cCI6MjA2MzQ3MDMyMn0.qeN6jRNwhhvkwpEZ-aTyQipLPA2KyUmW9prJ_-t4tOs';
+                
+                supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+                
+                // Initialize product manager
+                if (window.supabaseProductsManager) {
+                    productManager = window.supabaseProductsManager;
+                    await productManager.initialize();
+                    log('✅ Product manager initialized');
+                } else {
+                    throw new Error('Product manager not available');
+                }
+                
+                log('✅ System initialized successfully');
+                
+            } catch (error) {
+                log('❌ Error initializing system: ' + error.message);
+            }
+        }
+
+        // Check system status
+        async function checkSystemStatus() {
+            const statusDiv = document.getElementById('system-status');
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Checking system status...';
+            
+            try {
+                log('🔄 Checking system status...');
+                
+                if (!productManager) {
+                    await initialize();
+                }
+                
+                // Test database connections
+                const { count: notifCount, error: notifError } = await supabase
+                    .from('notifications')
+                    .select('*', { count: 'exact', head: true });
+                
+                if (notifError) throw new Error('notifications: ' + notifError.message);
+                
+                const { count: activityCount, error: activityError } = await supabase
+                    .from('recent_activities')
+                    .select('*', { count: 'exact', head: true });
+                
+                if (activityError) throw new Error('recent_activities: ' + activityError.message);
+                
+                const { count: productCount, error: productError } = await supabase
+                    .from('products')
+                    .select('*', { count: 'exact', head: true });
+                
+                if (productError) throw new Error('products: ' + productError.message);
+                
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = `
+                    ✅ All systems operational!<br>
+                    Notifications: ${notifCount}<br>
+                    Recent activities: ${activityCount}<br>
+                    Products: ${productCount}
+                `;
+                
+                log('✅ System status check passed');
+                
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ System error: ' + error.message;
+                log('❌ System status check failed: ' + error.message);
+            }
+        }
+
+        // Add product form submission
+        document.getElementById('add-product-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const statusDiv = document.getElementById('add-product-status');
+            statusDiv.innerHTML = '';
+            
+            try {
+                if (!productManager) {
+                    await initialize();
+                }
+                
+                const productData = {
+                    name: document.getElementById('product-name').value.trim(),
+                    category: document.getElementById('product-category').value,
+                    price: document.getElementById('product-price').value,
+                    stock: document.getElementById('product-stock').value,
+                    description: 'Test product for recent activities verification'
+                };
+                
+                log('🔄 Adding product: ' + productData.name);
+                
+                const result = await productManager.addProduct(productData);
+                
+                log('✅ Product added successfully with ID: ' + result.id);
+                log('📋 This should create notifications in both notifications and recent_activities tables');
+                
+                statusDiv.innerHTML = '<div class="status success">✅ Product added successfully! ID: ' + result.id + '<br>Check Recent Activities sections below.</div>';
+                
+                // Auto-refresh all lists after a short delay
+                setTimeout(() => {
+                    loadRecentActivitiesLikeAdmin();
+                    loadProductNotifications();
+                    loadRecentActivitiesTable();
+                }, 2000);
+                
+            } catch (error) {
+                log('❌ Error adding product: ' + error.message);
+                statusDiv.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+            }
+        });
+
+        // Load recent activities like admin dashboard does
+        async function loadRecentActivitiesLikeAdmin() {
+            const div = document.getElementById('admin-recent-activities');
+            div.innerHTML = '<p>Loading...</p>';
+            
+            try {
+                log('🔄 Loading recent activities like admin dashboard...');
+                
+                if (!supabase) {
+                    await initialize();
+                }
+                
+                // Replicate admin dashboard logic
+                // Fetch recent farm visit activities
+                const { data: farmVisitData, error: farmVisitError } = await supabase
+                    .from('notifications')
+                    .select('*')
+                    .eq('status', 'completed')
+                    .eq('type', 'farm_visit_request')
+                    .order('completed_at', { ascending: false })
+                    .limit(5);
+                
+                // Fetch recent product notifications
+                const { data: productNotifData, error: productNotifError } = await supabase
+                    .from('notifications')
+                    .select('*')
+                    .eq('status', 'completed')
+                    .in('type', ['product_added', 'product_updated', 'product_deleted', 'product_low_stock'])
+                    .order('completed_at', { ascending: false })
+                    .limit(5);
+                
+                // Fetch recent activities
+                const { data: recentActivitiesData, error: recentActivitiesError } = await supabase
+                    .from('recent_activities')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+                
+                if (farmVisitError || productNotifError || recentActivitiesError) {
+                    throw new Error('Database query error');
+                }
+                
+                const allData = [
+                    ...(farmVisitData || []),
+                    ...(productNotifData || []),
+                    ...(recentActivitiesData || [])
+                ];
+                
+                log(`✅ Found ${allData.length} total recent activities (${farmVisitData.length} farm visits, ${productNotifData.length} product notifications, ${recentActivitiesData.length} recent activities)`);
+                
+                if (allData.length === 0) {
+                    div.innerHTML = '<p>No recent activities found.</p>';
+                    return;
+                }
+                
+                let html = '';
+                allData.forEach(item => {
+                    const isNotification = item.completed_at; // Has completed_at = from notifications table
+                    const date = new Date(item.completed_at || item.created_at).toLocaleString();
+                    
+                    html += `
+                        <div class="activity-item ${isNotification ? 'notification' : 'recent'}">
+                            <strong>Source:</strong> ${isNotification ? 'Notifications Table' : 'Recent Activities Table'}<br>
+                            <strong>ID:</strong> ${item.id}<br>
+                            <strong>Type:</strong> ${item.type}<br>
+                            <strong>Title:</strong> ${item.title}<br>
+                            <strong>Description:</strong> ${item.description}<br>
+                            <strong>Status:</strong> ${item.status || 'N/A'}<br>
+                            <strong>Date:</strong> ${date}
+                        </div>
+                    `;
+                });
+                
+                div.innerHTML = html;
+                
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error loading admin recent activities: ' + error.message);
+            }
+        }
+
+        // Load product notifications from notifications table
+        async function loadProductNotifications() {
+            const div = document.getElementById('product-notifications');
+            div.innerHTML = '<p>Loading...</p>';
+            
+            try {
+                log('🔄 Loading product notifications...');
+                
+                if (!supabase) {
+                    await initialize();
+                }
+                
+                const { data, error } = await supabase
+                    .from('notifications')
+                    .select('*')
+                    .in('type', ['product_added', 'product_updated', 'product_deleted', 'product_low_stock'])
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+                
+                if (error) throw error;
+                
+                log(`✅ Found ${data.length} product notifications`);
+                
+                if (data.length === 0) {
+                    div.innerHTML = '<p>No product notifications found.</p>';
+                    return;
+                }
+                
+                let html = '';
+                data.forEach(notification => {
+                    html += `
+                        <div class="activity-item notification">
+                            <strong>ID:</strong> ${notification.id}<br>
+                            <strong>Type:</strong> ${notification.type}<br>
+                            <strong>Title:</strong> ${notification.title}<br>
+                            <strong>Description:</strong> ${notification.description}<br>
+                            <strong>Status:</strong> ${notification.status}<br>
+                            <strong>Priority:</strong> ${notification.priority}<br>
+                            <strong>Created:</strong> ${new Date(notification.created_at).toLocaleString()}<br>
+                            ${notification.completed_at ? `<strong>Completed:</strong> ${new Date(notification.completed_at).toLocaleString()}<br>` : ''}
+                            ${notification.completed_by ? `<strong>Completed By:</strong> ${notification.completed_by}<br>` : ''}
+                        </div>
+                    `;
+                });
+                
+                div.innerHTML = html;
+                
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error loading product notifications: ' + error.message);
+            }
+        }
+
+        // Load recent activities from recent_activities table
+        async function loadRecentActivitiesTable() {
+            const div = document.getElementById('recent-activities-table');
+            div.innerHTML = '<p>Loading...</p>';
+            
+            try {
+                log('🔄 Loading recent activities table...');
+                
+                if (!supabase) {
+                    await initialize();
+                }
+                
+                const { data, error } = await supabase
+                    .from('recent_activities')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+                
+                if (error) throw error;
+                
+                log(`✅ Found ${data.length} recent activities`);
+                
+                if (data.length === 0) {
+                    div.innerHTML = '<p>No recent activities found.</p>';
+                    return;
+                }
+                
+                let html = '';
+                data.forEach(activity => {
+                    html += `
+                        <div class="activity-item recent">
+                            <strong>ID:</strong> ${activity.id}<br>
+                            <strong>Type:</strong> ${activity.type}<br>
+                            <strong>Title:</strong> ${activity.title}<br>
+                            <strong>Description:</strong> ${activity.description}<br>
+                            <strong>Priority:</strong> ${activity.priority}<br>
+                            <strong>Created:</strong> ${new Date(activity.created_at).toLocaleString()}<br>
+                            <strong>Created By:</strong> ${activity.created_by || 'System'}
+                        </div>
+                    `;
+                });
+                
+                div.innerHTML = html;
+                
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error loading recent activities: ' + error.message);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            log('🚀 Product recent activities test page loaded');
+            checkSystemStatus();
+        });
+    </script>
+</body>
+</html>

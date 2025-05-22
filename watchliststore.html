@@ -1528,7 +1528,7 @@
 
     // Utility functions
     function formatPrice(price) {
-      return `$${price.toFixed(2)}`;
+      return `₹${price.toFixed(2)}`;
     }
 
     function renderStars(rating) {
@@ -1819,9 +1819,43 @@
 
       loadFromStorage() {
         try {
-          const savedWishlist = localStorage.getItem('dairyvestWishlist');
-          if (savedWishlist) {
-            this.items = JSON.parse(savedWishlist);
+          // Load detailed product data first
+          const savedWishlistData = localStorage.getItem('Dairy-LiftWishlistData');
+          if (savedWishlistData) {
+            const wishlistData = JSON.parse(savedWishlistData);
+            // Convert the object to an array of products
+            this.items = Object.values(wishlistData);
+            console.log(`✅ Loaded ${this.items.length} items from detailed wishlist data`);
+          } else {
+            // Fallback: Try to load from old format
+            let savedWishlist = localStorage.getItem('Dairy-LiftWishlist');
+
+            if (!savedWishlist) {
+              // Try alternative keys
+              savedWishlist = localStorage.getItem('dairyvestWishlist');
+
+              // If found with old key, migrate to new key
+              if (savedWishlist) {
+                localStorage.setItem('Dairy-LiftWishlist', savedWishlist);
+                localStorage.removeItem('dairyvestWishlist');
+              }
+            }
+
+            if (savedWishlist) {
+              const wishlistIds = JSON.parse(savedWishlist);
+              // For old format, we only have IDs, so create basic product objects
+              this.items = wishlistIds.map(id => ({
+                id: id,
+                name: 'Product',
+                price: 0,
+                imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80',
+                description: 'Product from wishlist',
+                category: 'dairy',
+                inStock: true,
+                rating: 4
+              }));
+              console.log(`✅ Loaded ${this.items.length} items from legacy wishlist format`);
+            }
           }
           this.applyFilters();
         } catch (error) {
@@ -1832,7 +1866,8 @@
       }
 
       saveToStorage() {
-        localStorage.setItem('dairyvestWishlist', JSON.stringify(this.items));
+        localStorage.setItem('Dairy-LiftWishlist', JSON.stringify(this.items));
+        console.log(`💾 Saved ${this.items.length} items to wishlist`);
       }
 
       toggleItem(productId) {
@@ -1934,58 +1969,40 @@
       }
 
       applyFilters() {
-        // Use caching for expensive filter operations
-        const cacheKey = `filters-${this.availabilityFilter}-${this.sortBy}-${this.items.join(',')}`;
+        // Filter by availability - now working with product objects directly
+        let filtered = [...this.items];
 
-        const cachedResult = wishlistPerformance.memoize(cacheKey, () => {
-          // Filter by availability
-          let filtered = [...this.items];
+        if (this.availabilityFilter !== 'all') {
+          filtered = filtered.filter(product => {
+            if (!product) return false;
 
-          if (this.availabilityFilter !== 'all') {
-            filtered = filtered.filter(itemId => {
-              const product = productsData.find(p => p.id === itemId);
-              if (!product) return false;
+            if (this.availabilityFilter === 'in-stock') {
+              return product.inStock;
+            } else if (this.availabilityFilter === 'out-of-stock') {
+              return !product.inStock;
+            }
+            return true;
+          });
+        }
 
-              if (this.availabilityFilter === 'in-stock') {
-                return product.inStock;
-              } else if (this.availabilityFilter === 'out-of-stock') {
-                return !product.inStock;
-              }
-              return true;
-            });
-          }
+        // Sort products
+        switch (this.sortBy) {
+          case 'price-low':
+            filtered.sort((a, b) => a.price - b.price);
+            break;
+          case 'price-high':
+            filtered.sort((a, b) => b.price - a.price);
+            break;
+          case 'name':
+            filtered.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+          case 'date-added':
+          default:
+            // Use the original order, which is the order they were added to wishlist
+            break;
+        }
 
-          // Get full product data with caching
-          const products = filtered.map(id => {
-            const productCacheKey = `product-${id}`;
-            return wishlistPerformance.memoize(productCacheKey, () => {
-              const product = productsData.find(p => p.id === id);
-              return product ? { id, ...product } : null;
-            }, 60000); // Cache products for 1 minute
-          }).filter(p => p);
-
-          // Sort products
-          switch (this.sortBy) {
-            case 'price-low':
-              products.sort((a, b) => a.price - b.price);
-              break;
-            case 'price-high':
-              products.sort((a, b) => b.price - a.price);
-              break;
-            case 'name':
-              products.sort((a, b) => a.name.localeCompare(b.name));
-              break;
-            case 'date-added':
-            default:
-              // Use the original order, which is the order they were added to wishlist
-              break;
-          }
-
-          // Extract IDs back
-          return products.map(p => p.id);
-        }, 10000); // Cache filter results for 10 seconds
-
-        this.filteredItems = cachedResult;
+        this.filteredItems = filtered;
       }
 
       initEventListeners() {
@@ -2037,7 +2054,7 @@
       }
 
       openQuickView(productId) {
-        const product = productsData.find(p => p.id === productId);
+        const product = this.items.find(p => p.id === productId);
         if (!product) return;
 
         const modal = document.getElementById('quick-view-modal');
@@ -2182,15 +2199,10 @@
       }
 
       renderWishlistItems(wishlistContainer) {
-        // Use caching for product cards
-        const cacheKey = `wishlist-items-${this.filteredItems.join(',')}`;
+        let wishlistHTML = '<div class="wishlist-grid">';
 
-        const cachedHTML = wishlistPerformance.memoize(cacheKey, () => {
-          let wishlistHTML = '<div class="wishlist-grid">';
-
-          this.filteredItems.forEach(itemId => {
-            const product = productsData.find(p => p.id === itemId);
-            if (!product) return;
+        this.filteredItems.forEach(product => {
+          if (!product) return;
 
             wishlistHTML += `
               <div class="product-card" data-id="${product.id}">
@@ -2231,11 +2243,9 @@
             `;
           });
 
-          wishlistHTML += '</div>';
-          return wishlistHTML;
-        }, 30000); // Cache for 30 seconds
+        wishlistHTML += '</div>';
 
-        wishlistContainer.innerHTML = cachedHTML;
+        wishlistContainer.innerHTML = wishlistHTML;
 
         // Use optimized event delegation instead of individual listeners
         this.attachEventListeners(wishlistContainer);
@@ -2254,7 +2264,7 @@
             event.preventDefault();
             const btn = target.matches('.btn-primary') ? target : target.closest('.btn-primary');
             const id = btn.getAttribute('data-id');
-            const product = productsData.find(p => p.id === id);
+            const product = this.filteredItems.find(p => p.id === id);
             if (product && product.inStock) {
               if (this.cart.addItem(id)) {
                 this.cart.showAddToCartNotification(product.name);
