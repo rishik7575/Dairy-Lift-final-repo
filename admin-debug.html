@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .activity-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+        }
+        .activity-actions {
+            margin-top: 10px;
+        }
+        .activity-actions button {
+            margin-right: 10px;
+        }
+        .accept-btn { background-color: #28a745; }
+        .reject-btn { background-color: #dc3545; }
+        .accept-btn:hover { background-color: #218838; }
+        .reject-btn:hover { background-color: #c82333; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard Debug Version</h1>
+    
+    <div class="container">
+        <h2>Database Connection Status</h2>
+        <div id="connection-status">
+            <div class="status info">Initializing...</div>
+        </div>
+        <button onclick="testConnection()">Test Connection</button>
+        <button onclick="loadData()">Load Data</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+    </div>
+
+    <div class="grid">
+        <div class="container">
+            <h2>Pending Actions</h2>
+            <div id="pending-activities">
+                <div class="status info">Loading...</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h2>Recent Activities</h2>
+            <div id="recent-activities">
+                <div class="status info">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Debug Logs</h2>
+        <pre id="debug-logs"></pre>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Debug logging
+        let debugLogs = [];
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
+            debugLogs.push(logEntry);
+            console.log(logEntry);
+            updateDebugDisplay();
+        }
+        
+        function updateDebugDisplay() {
+            document.getElementById('debug-logs').textContent = debugLogs.slice(-50).join('\n');
+        }
+        
+        function clearLogs() {
+            debugLogs = [];
+            updateDebugDisplay();
+        }
+        
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        // Supabase configuration
+        const supabaseUrl = 'https://avaakcvenjjydbxopwti.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2YWFrY3ZlbmpqeWRieG9wd3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTQzMjIsImV4cCI6MjA2MzQ3MDMyMn0.qeN6jRNwhhvkwpEZ-aTyQipLPA2KyUmW9prJ_-t4tOs';
+        
+        let supabaseClient;
+        let pendingActivities = [];
+        let recentActivities = [];
+
+        async function testConnection() {
+            try {
+                log('Testing Supabase connection...');
+                showStatus('connection-status', 'Testing connection...', 'info');
+                
+                if (typeof supabase === 'undefined') {
+                    throw new Error('Supabase library not loaded');
+                }
+                
+                supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+                log('Supabase client created');
+                
+                // Test basic connection
+                const { error } = await supabaseClient
+                    .from('farm_visit_requests')
+                    .select('count', { count: 'exact', head: true });
+                
+                if (error) throw error;
+                
+                log('✅ Connection successful');
+                showStatus('connection-status', '✅ Connected to Supabase successfully', 'success');
+                
+            } catch (error) {
+                log(`❌ Connection failed: ${error.message}`, 'error');
+                showStatus('connection-status', `❌ Connection failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadData() {
+            try {
+                log('Loading data from database...');
+                
+                if (!supabaseClient) {
+                    throw new Error('Supabase client not initialized');
+                }
+                
+                // Load pending notifications
+                log('Fetching pending notifications...');
+                const { data: pendingData, error: pendingError } = await supabaseClient
+                    .from('notifications')
+                    .select(`
+                        id,
+                        type,
+                        title,
+                        description,
+                        priority,
+                        status,
+                        created_at,
+                        related_id,
+                        farm_visit_requests (
+                            id,
+                            name,
+                            email,
+                            phone,
+                            visit_date,
+                            message,
+                            status
+                        )
+                    `)
+                    .eq('status', 'pending')
+                    .eq('type', 'farm_visit_request')
+                    .order('created_at', { ascending: false });
+
+                if (pendingError) {
+                    log(`Pending query error: ${pendingError.message}`, 'error');
+                    throw pendingError;
+                }
+                
+                log(`Found ${pendingData.length} pending notifications`);
+                pendingActivities = pendingData;
+                renderPendingActivities();
+
+                // Load recent activities
+                log('Fetching recent activities...');
+                const { data: recentData, error: recentError } = await supabaseClient
+                    .from('notifications')
+                    .select(`
+                        id,
+                        type,
+                        title,
+                        description,
+                        priority,
+                        status,
+                        action_taken,
+                        completed_by,
+                        completed_at,
+                        created_at,
+                        related_id,
+                        farm_visit_requests (
+                            id,
+                            name,
+                            email,
+                            phone,
+                            visit_date,
+                            message,
+                            status
+                        )
+                    `)
+                    .eq('status', 'completed')
+                    .order('completed_at', { ascending: false })
+                    .limit(10);
+
+                if (recentError) {
+                    log(`Recent query error: ${recentError.message}`, 'error');
+                    throw recentError;
+                }
+                
+                log(`Found ${recentData.length} recent activities`);
+                recentActivities = recentData;
+                renderRecentActivities();
+                
+                log('✅ Data loaded successfully');
+                
+            } catch (error) {
+                log(`❌ Error loading data: ${error.message}`, 'error');
+                showStatus('pending-activities', `❌ Error loading data: ${error.message}`, 'error');
+                showStatus('recent-activities', `❌ Error loading data: ${error.message}`, 'error');
+            }
+        }
+
+        function renderPendingActivities() {
+            const container = document.getElementById('pending-activities');
+            
+            if (pendingActivities.length === 0) {
+                container.innerHTML = '<div class="status info">No pending activities</div>';
+                return;
+            }
+            
+            const html = pendingActivities.map(activity => {
+                const visitData = activity.farm_visit_requests;
+                const visitDate = visitData?.visit_date ? new Date(visitData.visit_date).toLocaleDateString() : 'Unknown date';
+                
+                return `
+                    <div class="activity-item">
+                        <h4>${activity.title || 'New Farm Visit Request'}</h4>
+                        <p><strong>Customer:</strong> ${visitData?.name || 'Unknown'}</p>
+                        <p><strong>Email:</strong> ${visitData?.email || 'Unknown'}</p>
+                        <p><strong>Visit Date:</strong> ${visitDate}</p>
+                        <p><strong>Message:</strong> ${visitData?.message || 'No message'}</p>
+                        <p><strong>Priority:</strong> ${activity.priority}</p>
+                        <p><strong>Created:</strong> ${new Date(activity.created_at).toLocaleString()}</p>
+                        <div class="activity-actions">
+                            <button class="accept-btn" onclick="acceptActivity(${activity.id}, ${activity.related_id})">Accept</button>
+                            <button class="reject-btn" onclick="rejectActivity(${activity.id}, ${activity.related_id})">Reject</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = html;
+        }
+
+        function renderRecentActivities() {
+            const container = document.getElementById('recent-activities');
+            
+            if (recentActivities.length === 0) {
+                container.innerHTML = '<div class="status info">No recent activities</div>';
+                return;
+            }
+            
+            const html = recentActivities.map(activity => {
+                const visitData = activity.farm_visit_requests;
+                const visitDate = visitData?.visit_date ? new Date(visitData.visit_date).toLocaleDateString() : 'Unknown date';
+                const actionClass = activity.action_taken === 'accepted' ? 'success' : 'error';
+                
+                return `
+                    <div class="activity-item">
+                        <h4>${activity.title || 'Farm Visit Request Processed'}</h4>
+                        <p><strong>Customer:</strong> ${visitData?.name || 'Unknown'}</p>
+                        <p><strong>Visit Date:</strong> ${visitDate}</p>
+                        <p><strong>Action:</strong> <span class="status ${actionClass}">${activity.action_taken?.toUpperCase()}</span></p>
+                        <p><strong>Completed by:</strong> ${activity.completed_by}</p>
+                        <p><strong>Completed:</strong> ${new Date(activity.completed_at).toLocaleString()}</p>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = html;
+        }
+
+        async function acceptActivity(notificationId, requestId) {
+            try {
+                log(`Accepting activity ${notificationId} for request ${requestId}`);
+                
+                // Update farm visit request
+                const { error: requestError } = await supabaseClient
+                    .from('farm_visit_requests')
+                    .update({ 
+                        status: 'accepted',
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', requestId);
+
+                if (requestError) throw requestError;
+
+                // Update notification
+                const { error: notificationError } = await supabaseClient
+                    .from('notifications')
+                    .update({
+                        status: 'completed',
+                        action_taken: 'accepted',
+                        completed_by: 'Admin',
+                        completed_at: new Date().toISOString()
+                    })
+                    .eq('id', notificationId);
+
+                if (notificationError) throw notificationError;
+
+                log('✅ Activity accepted successfully');
+                await loadData(); // Reload data
+                
+            } catch (error) {
+                log(`❌ Error accepting activity: ${error.message}`, 'error');
+                alert(`Error accepting activity: ${error.message}`);
+            }
+        }
+
+        async function rejectActivity(notificationId, requestId) {
+            try {
+                log(`Rejecting activity ${notificationId} for request ${requestId}`);
+                
+                // Update farm visit request
+                const { error: requestError } = await supabaseClient
+                    .from('farm_visit_requests')
+                    .update({ 
+                        status: 'rejected',
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', requestId);
+
+                if (requestError) throw requestError;
+
+                // Update notification
+                const { error: notificationError } = await supabaseClient
+                    .from('notifications')
+                    .update({
+                        status: 'completed',
+                        action_taken: 'rejected',
+                        completed_by: 'Admin',
+                        completed_at: new Date().toISOString()
+                    })
+                    .eq('id', notificationId);
+
+                if (notificationError) throw notificationError;
+
+                log('✅ Activity rejected successfully');
+                await loadData(); // Reload data
+                
+            } catch (error) {
+                log(`❌ Error rejecting activity: ${error.message}`, 'error');
+                alert(`Error rejecting activity: ${error.message}`);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', async function() {
+            log('Page loaded, initializing...');
+            await testConnection();
+            if (supabaseClient) {
+                await loadData();
+            }
+        });
+    </script>
+</body>
+</html>
