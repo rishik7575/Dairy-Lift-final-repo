@@ -508,6 +508,16 @@
       box-shadow: 0 3px 10px rgba(173, 110, 245, 0.2);
     }
 
+    .btn-primary.added-to-cart {
+      background-color: #10b981;
+      color: white;
+    }
+
+    .btn-primary.added-to-cart:hover {
+      background-color: #059669;
+      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.2);
+    }
+
     .btn-outline {
       background-color: transparent;
       color: var(--foreground);
@@ -1701,8 +1711,8 @@
               <h4 class="filter-section-title">Price Range</h4>
               <input type="range" min="0" max="20" value="20" class="range-slider" id="price-range">
               <div class="range-labels">
-                <span>$0</span>
-                <span id="price-range-value">$20</span>
+                <span>₹0</span>
+                <span id="price-range-value">₹20</span>
               </div>
             </div>
 
@@ -1822,7 +1832,7 @@
     <div class="cart-footer">
       <div class="cart-subtotal">
         <span>Subtotal:</span>
-        <span id="cart-subtotal">$0.00</span>
+        <span id="cart-subtotal">₹0.00</span>
       </div>
       <div class="cart-buttons">
         <a href="cartstore.html" class="btn btn-primary">View Cart</a>
@@ -3030,7 +3040,7 @@
 
     // Utility functions
     function formatPrice(price) {
-      return `$${price.toFixed(2)}`;
+      return `₹${price.toFixed(2)}`;
     }
 
     function renderStars(rating) {
@@ -3107,21 +3117,41 @@
         this.saveToStorage();
         this.updateCartDisplay();
         this.showAddToCartNotification(product.name);
+        this.updateProductButtonState(productId);
+      }
 
-        // Show the View Cart button on the product card
-        const productCard = document.querySelector(`.product-card[data-id="${productId}"]`);
-        if (productCard) {
-          const viewCartBtn = productCard.querySelector('.view-cart-btn');
-          if (viewCartBtn) {
-            viewCartBtn.style.display = 'inline-flex';
+      updateProductButtonState(productId) {
+        // Update all add to cart buttons for this product
+        const addToCartBtns = document.querySelectorAll(`.add-to-cart-btn[data-id="${productId}"]`);
+        const item = this.items.find(item => item.id === productId);
+
+        addToCartBtns.forEach(btn => {
+          if (item && item.quantity > 0) {
+            btn.innerHTML = `<i class="fas fa-check"></i> Added to Cart (${item.quantity})`;
+            btn.classList.add('added-to-cart');
+          } else {
+            btn.innerHTML = `<i class="fas fa-shopping-cart"></i> Add to Cart`;
+            btn.classList.remove('added-to-cart');
           }
-        }
+        });
+      }
+
+      updateAllProductButtonStates() {
+        // Update button states for all products
+        const allAddToCartBtns = document.querySelectorAll('.add-to-cart-btn');
+        allAddToCartBtns.forEach(btn => {
+          const productId = btn.getAttribute('data-id');
+          if (productId) {
+            this.updateProductButtonState(productId);
+          }
+        });
       }
 
       removeItem(productId) {
         this.items = this.items.filter(item => item.id !== productId);
         this.saveToStorage();
         this.updateCartDisplay();
+        this.updateProductButtonState(productId);
       }
 
       updateQuantity(productId, newQuantity) {
@@ -3133,6 +3163,7 @@
             item.quantity = newQuantity;
             this.saveToStorage();
             this.updateCartDisplay();
+            this.updateProductButtonState(productId);
           }
         }
       }
@@ -3154,7 +3185,12 @@
       updateCartDisplay() {
         // Update cart count
         const cartCount = document.getElementById('cart-count');
-        cartCount.textContent = this.getTotalItems();
+        if (cartCount) {
+          cartCount.textContent = this.getTotalItems();
+        }
+
+        // Update all product button states
+        this.updateAllProductButtonStates();
 
         // Update cart items in drawer
         const cartBody = document.getElementById('cart-body');
@@ -3364,6 +3400,38 @@
       return `₹${price.toFixed(2)}`;
     }
 
+    // Render add to cart button with correct state
+    function renderAddToCartButton(product) {
+      if (!product.inStock) {
+        return `<button class="btn btn-primary add-to-cart-btn" data-id="${product.id}" disabled>
+                  <i class="fas fa-shopping-cart"></i> Out of Stock
+                </button>`;
+      }
+
+      // Check if product is in cart
+      let cart = [];
+      try {
+        const savedCart = localStorage.getItem('Dairy-LiftCart');
+        if (savedCart) {
+          cart = JSON.parse(savedCart);
+        }
+      } catch (error) {
+        console.error('Error loading cart:', error);
+      }
+
+      const cartItem = cart.find(item => item.id === product.id);
+
+      if (cartItem && cartItem.quantity > 0) {
+        return `<button class="btn btn-primary add-to-cart-btn added-to-cart" data-id="${product.id}">
+                  <i class="fas fa-check"></i> Added to Cart (${cartItem.quantity})
+                </button>`;
+      } else {
+        return `<button class="btn btn-primary add-to-cart-btn" data-id="${product.id}">
+                  <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>`;
+      }
+    }
+
     // Initialize simple filtering system
     function initializeSimpleFiltering() {
       console.log('🔄 Initializing simple filtering system...');
@@ -3471,9 +3539,7 @@
               </div>
             </div>
             <div class="product-footer">
-              <button class="btn btn-primary add-to-cart-btn" data-id="${product.id}" ${!product.inStock ? 'disabled' : ''}>
-                <i class="fas fa-shopping-cart"></i> Add to Cart
-              </button>
+              ${renderAddToCartButton(product)}
             </div>
           </div>
         `;
@@ -3560,11 +3626,30 @@
 
           // Update cart count if element exists
           updateCartCount(cart);
+
+          // Update button state
+          updateProductButtonStateStandalone(productId, cart);
         } catch (error) {
           console.error('Error saving cart:', error);
           showNotification('Error adding to cart', 'error');
         }
       }
+    }
+
+    // Standalone function to update button state when cart instance is not available
+    function updateProductButtonStateStandalone(productId, cart) {
+      const addToCartBtns = document.querySelectorAll(`.add-to-cart-btn[data-id="${productId}"]`);
+      const item = cart.find(item => item.id === productId);
+
+      addToCartBtns.forEach(btn => {
+        if (item && item.quantity > 0) {
+          btn.innerHTML = `<i class="fas fa-check"></i> Added to Cart (${item.quantity})`;
+          btn.classList.add('added-to-cart');
+        } else {
+          btn.innerHTML = `<i class="fas fa-shopping-cart"></i> Add to Cart`;
+          btn.classList.remove('added-to-cart');
+        }
+      });
     }
 
     // Update cart count display
@@ -3867,7 +3952,7 @@
         const priceRangeValue = document.getElementById('price-range-value');
         priceRange.addEventListener('input', () => {
           this.priceRange = parseInt(priceRange.value);
-          priceRangeValue.textContent = `$${this.priceRange}`;
+          priceRangeValue.textContent = `₹${this.priceRange}`;
           this.applyFilters();
         });
 
