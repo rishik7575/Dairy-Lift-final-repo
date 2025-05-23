@@ -471,7 +471,24 @@ class SupabaseProductsManager {
         'product_low_stock': `${product.name} is running low on stock (${product.stock} remaining)`
       };
 
-      const notification = {
+      // Create both pending and completed notifications for better admin dashboard experience
+      const pendingNotification = {
+        type: type,
+        title: titles[type],
+        description: descriptions[type],
+        priority: type === 'product_low_stock' ? 'high' : 'medium',
+        status: 'pending',
+        related_table: 'products',
+        related_id: product.id,
+        metadata: {
+          product_name: product.name,
+          product_category: product.category,
+          product_price: product.price,
+          product_stock: product.stock_quantity
+        }
+      };
+
+      const completedNotification = {
         type: type,
         title: titles[type],
         description: descriptions[type],
@@ -490,13 +507,34 @@ class SupabaseProductsManager {
         }
       };
 
-      const { error } = await this.client
+      // Insert both notifications
+      const { error: pendingError } = await this.client
         .from('notifications')
-        .insert([notification]);
+        .insert([pendingNotification]);
 
-      if (error) {
-        console.error('Failed to create notification:', error);
+      if (pendingError) {
+        console.error('Failed to create pending notification:', pendingError);
+      } else {
+        console.log('✅ Created pending notification for:', type);
       }
+
+      // Auto-complete the notification after a short delay to move it to Recent Activities
+      setTimeout(async () => {
+        try {
+          const { error: completedError } = await this.client
+            .from('notifications')
+            .insert([completedNotification]);
+
+          if (completedError) {
+            console.error('Failed to create completed notification:', completedError);
+          } else {
+            console.log('✅ Created completed notification for:', type);
+          }
+        } catch (error) {
+          console.error('Error creating completed notification:', error);
+        }
+      }, 2000); // 2 second delay
+
     } catch (error) {
       console.error('Error creating product notification:', error);
     }

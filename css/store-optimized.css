@@ -1,0 +1,640 @@
+/* 
+ * Optimized CSS for Dairy-Lift Store
+ * Performance-focused styles to improve rendering and interaction
+ * 
+ * NOTE: These styles are designed to enhance, not replace, the existing styles.
+ * They focus on performance optimizations without changing the visual appearance.
+ */
+
+/* Performance optimizations */
+.product-card {
+  contain: content;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.product-image-container {
+  contain: strict;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(0);
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimize rendering */
+.product-grid {
+  contain: layout style;
+  will-change: transform;
+  transform: translateZ(0);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Optimize loading states */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Optimize modal rendering */
+.modal-overlay {
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  will-change: opacity;
+}
+
+.modal-container {
+  will-change: transform;
+  transform: translateZ(0);
+  contain: content;
+}
+
+/* Optimize scrolling */
+html, body {
+  scroll-behavior: smooth;
+}
+
+/* Optimize hover effects */
+.btn, .product-card, .category-tag, .nav-link {
+  transform: translateZ(0);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* Optimize checkbox interactions */
+.checkbox-item {
+  transition: background-color 0.2s ease;
+}
+
+.checkbox-changed {
+  background-color: rgba(173, 110, 245, 0.1);
+}
+
+/* Optimize image loading */
+.error-image {
+  opacity: 0.7;
+  filter: grayscale(1);
+}
+
+/* Virtual scrolling optimizations */
+.virtual-scroll-container {
+  min-height: 200px;
+  position: relative;
+}
+
+/* Optimize product card visibility animation */
+.product-card {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.product-card-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduced motion */
+.reduced-motion .product-card {
+  transition: none;
+  opacity: 1;
+  transform: none;
+}
+
+/* Optimize filter sidebar */
+.store-sidebar {
+  contain: style layout;
+}
+
+/* Optimize mobile filter toggle */
+.mobile-filter-toggle {
+  will-change: transform;
+}
+
+/* Optimize search input */
+.search-input {
+  will-change: box-shadow;
+}
+
+/* Cart and wishlist buttons */
+.cart-button {
+  will-change: transform;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  transition: all 0.2s ease;
+}
+
+.cart-button:hover, .wishlist-nav-btn:hover {
+  color: #ad6ef5;
+  transform: translateY(-2px);
+}
+
+.cart-count, .wishlist-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background-color: #ad6ef5;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.wishlist-nav-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b5563;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+/* Product wishlist button */
+.wishlist-btn {
+  will-change: transform, color;
+  transition: all 0.2s ease;
+}
+
+.wishlist-btn.active {
+  color: #ad6ef5;
+}
+
+.wishlist-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Quick view button */
+.quick-view-btn {
+  will-change: transform, opacity;
+  transition: all 0.2s ease;
+}
+
+.quick-view-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Optimize category tags */
+.category-tags {
+  contain: content;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding-bottom: 8px;
+}
+
+.category-tag {
+  flex: 0 0 auto;
+}
+
+/* Optimize toolbar */
+.toolbar {
+  contain: content;
+}
+
+/* Optimize sort select */
+.sort-select {
+  will-change: box-shadow;
+}
+
+/* Optimize mobile menu */
+.mobile-menu {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Optimize navbar */
+.navbar {
+  contain: layout style;
+}
+
+/* Optimize footer */
+footer {
+  contain: layout style;
+}
+
+/* Optimize buttons */
+.btn {
+  contain: layout style;
+}
+
+/* Optimize product actions */
+.product-actions {
+  contain: layout style;
+}
+
+/* Optimize product content */
+.product-content {
+  contain: content;
+}
+
+/* Optimize product footer */
+.product-footer {
+  contain: content;
+}
+
+/* Optimize product rating */
+.product-rating {
+  contain: content;
+}
+
+/* Optimize product price container */
+.product-price-container {
+  contain: content;
+}
+
+/* Optimize product title */
+.product-title {
+  contain: content;
+}
+
+/* Optimize product description */
+.product-description {
+  contain: content;
+}
+
+/* Optimize product price */
+.product-price {
+  contain: content;
+}
+
+/* Optimize product stock */
+.product-stock {
+  contain: content;
+}
+
+/* Optimize product badge */
+.product-badge {
+  contain: content;
+}
+
+/* Optimize rating stars */
+.rating-stars {
+  contain: content;
+}
+
+/* Optimize rating count */
+.rating-count {
+  contain: content;
+}
+
+/* Optimize filter card */
+.filter-card {
+  contain: content;
+}
+
+/* Optimize filter section */
+.filter-section {
+  contain: content;
+}
+
+/* Optimize filter section title */
+.filter-section-title {
+  contain: content;
+}
+
+/* Optimize checkbox group */
+.checkbox-group {
+  contain: content;
+}
+
+/* Optimize checkbox item */
+.checkbox-item {
+  contain: content;
+}
+
+/* Optimize range slider */
+.range-slider {
+  contain: content;
+}
+
+/* Optimize range labels */
+.range-labels {
+  contain: content;
+}
+
+/* Optimize apply filters button */
+#apply-filters {
+  contain: content;
+}
+
+/* Optimize search bar */
+.search-bar {
+  contain: content;
+}
+
+/* Optimize search icon */
+.search-icon {
+  contain: content;
+}
+
+/* Optimize search input */
+.search-input {
+  contain: content;
+}
+
+/* Optimize empty state */
+.empty-state {
+  contain: content;
+}
+
+/* Loading indicator styles */
+.loading-indicator {
+  contain: content;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px);
+}
+
+.loading-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 90%;
+  width: 300px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid var(--primary-light, #f3e8ff);
+  border-top: 5px solid var(--primary, #ad6ef5);
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  font-size: 1.1rem;
+  color: var(--foreground, #020617);
+  margin: 0;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Optimize notification */
+.notification {
+  contain: content;
+}
+
+/* Optimize notification types */
+.notification-info,
+.notification-success,
+.notification-warning,
+.notification-error {
+  contain: content;
+}
+
+/* Optimize notification animation */
+.notification {
+  will-change: transform, opacity;
+}
+
+/* Optimize notification show */
+.notification.show {
+  will-change: transform, opacity;
+}
+
+/* Optimize notification hide */
+.notification.hide {
+  will-change: transform, opacity;
+}
+
+/* Optimize mobile menu overlay */
+.mobile-menu-overlay {
+  will-change: opacity;
+}
+
+/* Optimize mobile menu open */
+.mobile-menu.open {
+  will-change: transform;
+}
+
+/* Optimize mobile menu close */
+.mobile-menu-close {
+  will-change: transform;
+}
+
+/* Optimize mobile menu toggle */
+.mobile-menu-toggle {
+  will-change: transform;
+}
+
+/* Optimize hamburger lines */
+.hamburger-lines {
+  will-change: transform;
+}
+
+/* Optimize hamburger line */
+.hamburger-line {
+  will-change: transform, opacity;
+}
+
+/* Optimize mobile menu header */
+.mobile-menu-header {
+  contain: content;
+}
+
+/* Optimize mobile menu logo */
+.mobile-menu-logo {
+  contain: content;
+}
+
+/* Optimize mobile nav link */
+.mobile-nav-link {
+  contain: content;
+}
+
+/* Optimize mobile nav link primary */
+.mobile-nav-link-primary {
+  contain: content;
+}
+
+/* Optimize desktop nav */
+.desktop-nav {
+  contain: content;
+}
+
+/* Optimize nav link */
+.nav-link {
+  contain: content;
+}
+
+/* Optimize icon link */
+.icon-link {
+  contain: content;
+}
+
+/* Optimize navbar links */
+.navbar-links {
+  contain: content;
+}
+
+/* Optimize navbar link */
+.navbar-link {
+  contain: content;
+}
+
+/* Optimize navbar actions */
+.navbar-actions {
+  contain: content;
+}
+
+/* Optimize button styles */
+.button, .btn {
+  contain: content;
+}
+
+/* Optimize button hover */
+.button:hover, .btn:hover {
+  will-change: transform, box-shadow;
+}
+
+/* Optimize button active */
+.button:active, .btn:active {
+  will-change: transform, box-shadow;
+}
+
+/* Optimize button primary */
+.btn-primary {
+  contain: content;
+}
+
+/* Optimize button primary hover */
+.btn-primary:hover {
+  will-change: transform, box-shadow;
+}
+
+/* Optimize button primary added to cart */
+.btn-primary.added-to-cart {
+  contain: content;
+}
+
+/* Optimize button outline */
+.btn-outline {
+  contain: content;
+}
+
+/* Optimize button outline hover */
+.btn-outline:hover {
+  will-change: transform, box-shadow;
+}
+
+/* Optimize button small */
+.btn-sm {
+  contain: content;
+}
+
+/* Optimize button icon */
+.btn-icon {
+  contain: content;
+}
+
+/* Optimize cart button */
+.cart-button {
+  contain: content;
+}
+
+/* Optimize cart button hover */
+.cart-button:hover {
+  will-change: transform;
+}
+
+/* Optimize cart count */
+.cart-count {
+  contain: content;
+}
+
+/* Optimize main layout */
+.main {
+  contain: content;
+}
+
+/* Optimize page header */
+.page-header {
+  contain: content;
+}
+
+/* Optimize page title */
+.page-title {
+  contain: content;
+}
+
+/* Optimize page subtitle */
+.page-subtitle {
+  contain: content;
+}
+
+/* Optimize store layout */
+.store-layout {
+  contain: content;
+}
+
+/* Optimize store sidebar */
+.store-sidebar {
+  contain: content;
+}
+
+/* Optimize store main */
+.store-main {
+  contain: content;
+}
+
+/* Optimize card styles */
+.card {
+  contain: content;
+}

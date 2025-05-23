@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Product Sync</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Sync Test</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Add Test Product</h2>
+        <button onclick="addTestProduct()">Add Test Product to localStorage</button>
+        <div id="add-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Check localStorage</h2>
+        <button onclick="checkLocalStorage()">Check localStorage Products</button>
+        <div id="storage-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Clear localStorage</h2>
+        <button onclick="clearProducts()">Clear All Products</button>
+        <div id="clear-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Navigation</h2>
+        <button onclick="window.open('manage_store.html', '_blank')">Open Manage Store</button>
+        <button onclick="window.open('storenew.html', '_blank')">Open Main Store</button>
+        <button onclick="window.open('FOR-INVESTORS/store.html', '_blank')">Open Investor Store</button>
+    </div>
+
+    <script>
+        function addTestProduct() {
+            const testProduct = {
+                id: Date.now(),
+                name: "Test Sync Product",
+                price: 99.99,
+                stock: 50,
+                status: "in-stock",
+                category: "milk",
+                imageUrl: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80",
+                active: true,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            };
+            
+            // Get existing products
+            let products = [];
+            const stored = localStorage.getItem('dairyvestProducts');
+            if (stored) {
+                products = JSON.parse(stored);
+            }
+            
+            // Add test product
+            products.push(testProduct);
+            
+            // Save back to localStorage
+            localStorage.setItem('dairyvestProducts', JSON.stringify(products));
+            
+            document.getElementById('add-result').innerHTML = `
+                <strong>✅ Test product added!</strong><br>
+                Product ID: ${testProduct.id}<br>
+                Name: ${testProduct.name}<br>
+                Total products in storage: ${products.length}
+            `;
+        }
+        
+        function checkLocalStorage() {
+            const stored = localStorage.getItem('dairyvestProducts');
+            const resultDiv = document.getElementById('storage-result');
+            
+            if (stored) {
+                const products = JSON.parse(stored);
+                resultDiv.innerHTML = `
+                    <strong>📦 Found ${products.length} products in localStorage:</strong><br>
+                    ${products.map(p => `• ${p.name} (${p.category}) - ₹${p.price}`).join('<br>')}
+                `;
+            } else {
+                resultDiv.innerHTML = '<strong>❌ No products found in localStorage</strong>';
+            }
+        }
+        
+        function clearProducts() {
+            localStorage.removeItem('dairyvestProducts');
+            document.getElementById('clear-result').innerHTML = '<strong>🗑️ All products cleared from localStorage</strong>';
+        }
+        
+        // Auto-check on page load
+        window.addEventListener('load', checkLocalStorage);
+    </script>
+</body>
+</html>

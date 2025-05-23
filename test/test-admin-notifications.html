@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin Notifications - Dairy-Lift</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-products.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        button {
+            background-color: #ad6ef5;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #9b55e0;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .notification-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .notification-item.pending {
+            border-left: 4px solid #ffc107;
+        }
+        .notification-item.completed {
+            border-left: 4px solid #28a745;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔔 Admin Notification System Test</h1>
+
+    <div class="container">
+        <h2>System Status</h2>
+        <div id="system-status" class="status info">Initializing...</div>
+        <button onclick="checkSystemStatus()">Check System Status</button>
+        <button onclick="openAdminDashboard()">Open Admin Dashboard</button>
+        <button onclick="openManageStore()">Open Manage Store</button>
+    </div>
+
+    <div class="grid">
+        <div class="container">
+            <h2>🆕 Add Test Product (Creates Notifications)</h2>
+            <form id="add-product-form">
+                <div class="form-group">
+                    <label for="product-name">Product Name:</label>
+                    <input type="text" id="product-name" value="Test Notification Product" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-category">Category:</label>
+                    <select id="product-category" required>
+                        <option value="Dairy">Dairy</option>
+                        <option value="Organic">Organic</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Fresh">Fresh</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-price">Price (₹):</label>
+                    <input type="number" id="product-price" value="99.99" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-stock">Stock Quantity:</label>
+                    <input type="number" id="product-stock" value="50" required>
+                </div>
+
+                <button type="submit">Add Product & Create Notifications</button>
+            </form>
+            <div id="add-product-status"></div>
+        </div>
+
+        <div class="container">
+            <h2>🔄 Notification Actions</h2>
+            <button onclick="loadPendingNotifications()">Load Pending Notifications</button>
+            <button onclick="loadRecentActivities()">Load Recent Activities</button>
+            <button onclick="clearAllNotifications()">Clear All Test Notifications</button>
+            <button onclick="simulateMultipleProducts()">Add 3 Test Products</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📋 Pending Notifications</h2>
+        <div id="pending-notifications"></div>
+    </div>
+
+    <div class="container">
+        <h2>✅ Recent Activities</h2>
+        <div id="recent-activities"></div>
+    </div>
+
+    <div class="container">
+        <h2>🔍 System Log</h2>
+        <div id="system-log" class="log"></div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <script>
+        let logs = [];
+        let productManager = null;
+
+        // Logging function
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}`;
+            logs.push(logMessage);
+            updateLog();
+            console.log(message);
+        }
+
+        function updateLog() {
+            document.getElementById('system-log').innerHTML =
+                '<pre>' + logs.slice(-50).join('\n') + '</pre>';
+        }
+
+        function clearLog() {
+            logs = [];
+            updateLog();
+        }
+
+        // Initialize product manager
+        async function initializeProductManager() {
+            try {
+                log('🔄 Initializing product manager...');
+
+                if (window.supabaseProductsManager) {
+                    productManager = window.supabaseProductsManager;
+                    const initialized = await productManager.initialize();
+
+                    if (initialized) {
+                        log('✅ Product manager initialized successfully');
+                        return true;
+                    } else {
+                        log('❌ Failed to initialize product manager');
+                        return false;
+                    }
+                } else {
+                    log('❌ Product manager not available');
+                    return false;
+                }
+            } catch (error) {
+                log('❌ Error initializing product manager: ' + error.message);
+                return false;
+            }
+        }
+
+        // Check system status
+        async function checkSystemStatus() {
+            const statusDiv = document.getElementById('system-status');
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Checking system status...';
+
+            try {
+                log('🔄 Checking system status...');
+
+                // Initialize if not already done
+                if (!productManager) {
+                    const initialized = await initializeProductManager();
+                    if (!initialized) {
+                        throw new Error('Failed to initialize product manager');
+                    }
+                }
+
+                // Test database connections
+                const products = await productManager.getAllProducts();
+
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = `
+                    ✅ Notification system operational!<br>
+                    Products in database: ${products.length}<br>
+                    Ready to create and test notifications
+                `;
+
+                log('✅ System status check passed');
+
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ System error: ' + error.message;
+                log('❌ System status check failed: ' + error.message);
+            }
+        }
+
+        // Open admin dashboard
+        function openAdminDashboard() {
+            window.open('admin-dashboard.html', '_blank');
+        }
+
+        // Open manage store
+        function openManageStore() {
+            window.open('manage_store.html', '_blank');
+        }
+
+        // Add product form submission
+        document.getElementById('add-product-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const statusDiv = document.getElementById('add-product-status');
+            statusDiv.innerHTML = '';
+
+            try {
+                if (!productManager) {
+                    await initializeProductManager();
+                }
+
+                const productData = {
+                    name: document.getElementById('product-name').value.trim(),
+                    category: document.getElementById('product-category').value,
+                    price: document.getElementById('product-price').value,
+                    stock: document.getElementById('product-stock').value,
+                    description: 'Test product for notification system'
+                };
+
+                log('🔄 Adding product: ' + productData.name);
+
+                const result = await productManager.addProduct(productData);
+
+                log('✅ Product added successfully with ID: ' + result.id);
+                log('📋 This should create notifications in both pending and recent activities');
+
+                statusDiv.innerHTML = '<div class="status success">✅ Product added successfully! ID: ' + result.id + '<br>Check admin dashboard for notifications.</div>';
+
+                // Auto-refresh notifications after a short delay
+                setTimeout(() => {
+                    loadPendingNotifications();
+                    loadRecentActivities();
+                }, 3000);
+
+            } catch (error) {
+                log('❌ Error adding product: ' + error.message);
+                statusDiv.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+            }
+        });
+
+        // Load pending notifications
+        async function loadPendingNotifications() {
+            const div = document.getElementById('pending-notifications');
+            div.innerHTML = '<p>Loading...</p>';
+
+            try {
+                log('🔄 Loading pending notifications...');
+
+                if (!productManager) {
+                    await initializeProductManager();
+                }
+
+                // Get pending notifications directly from Supabase
+                const { data, error } = await productManager.client
+                    .from('notifications')
+                    .select('*')
+                    .eq('status', 'pending')
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+
+                if (error) throw error;
+
+                log(`✅ Found ${data.length} pending notifications`);
+
+                if (data.length === 0) {
+                    div.innerHTML = '<p>No pending notifications found. Add a product to create notifications.</p>';
+                    return;
+                }
+
+                let html = '';
+                data.forEach(notification => {
+                    html += `
+                        <div class="notification-item pending">
+                            <strong>ID:</strong> ${notification.id}<br>
+                            <strong>Type:</strong> ${notification.type}<br>
+                            <strong>Title:</strong> ${notification.title}<br>
+                            <strong>Description:</strong> ${notification.description}<br>
+                            <strong>Priority:</strong> ${notification.priority}<br>
+                            <strong>Created:</strong> ${new Date(notification.created_at).toLocaleString()}
+                        </div>
+                    `;
+                });
+
+                div.innerHTML = html;
+
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error loading pending notifications: ' + error.message);
+            }
+        }
+
+        // Load recent activities
+        async function loadRecentActivities() {
+            const div = document.getElementById('recent-activities');
+            div.innerHTML = '<p>Loading...</p>';
+
+            try {
+                log('🔄 Loading recent activities...');
+
+                if (!productManager) {
+                    await initializeProductManager();
+                }
+
+                // Get recent activities from both tables
+                const [notificationsResult, activitiesResult] = await Promise.all([
+                    productManager.client
+                        .from('notifications')
+                        .select('*')
+                        .eq('status', 'completed')
+                        .order('completed_at', { ascending: false })
+                        .limit(5),
+                    productManager.client
+                        .from('recent_activities')
+                        .select('*')
+                        .order('created_at', { ascending: false })
+                        .limit(5)
+                ]);
+
+                const allActivities = [
+                    ...(notificationsResult.data || []),
+                    ...(activitiesResult.data || [])
+                ].sort((a, b) => {
+                    const dateA = new Date(a.completed_at || a.created_at);
+                    const dateB = new Date(b.completed_at || b.created_at);
+                    return dateB - dateA;
+                }).slice(0, 10);
+
+                log(`✅ Found ${allActivities.length} recent activities`);
+
+                if (allActivities.length === 0) {
+                    div.innerHTML = '<p>No recent activities found.</p>';
+                    return;
+                }
+
+                let html = '';
+                allActivities.forEach(activity => {
+                    const date = activity.completed_at || activity.created_at;
+                    html += `
+                        <div class="notification-item completed">
+                            <strong>Title:</strong> ${activity.title}<br>
+                            <strong>Description:</strong> ${activity.description}<br>
+                            <strong>Type:</strong> ${activity.type}<br>
+                            <strong>Date:</strong> ${new Date(date).toLocaleString()}<br>
+                            <strong>Source:</strong> ${activity.completed_at ? 'Notifications' : 'Recent Activities'}
+                        </div>
+                    `;
+                });
+
+                div.innerHTML = html;
+
+            } catch (error) {
+                div.innerHTML = '<div class="status error">❌ Error: ' + error.message + '</div>';
+                log('❌ Error loading recent activities: ' + error.message);
+            }
+        }
+
+        // Clear all test notifications
+        async function clearAllNotifications() {
+            try {
+                log('🔄 Clearing test notifications...');
+
+                if (!productManager) {
+                    await initializeProductManager();
+                }
+
+                // Delete test notifications
+                await productManager.client
+                    .from('notifications')
+                    .delete()
+                    .like('title', '%Test%');
+
+                await productManager.client
+                    .from('recent_activities')
+                    .delete()
+                    .like('title', '%Test%');
+
+                log('✅ Test notifications cleared');
+
+                // Refresh displays
+                loadPendingNotifications();
+                loadRecentActivities();
+
+            } catch (error) {
+                log('❌ Error clearing notifications: ' + error.message);
+            }
+        }
+
+        // Simulate multiple products
+        async function simulateMultipleProducts() {
+            try {
+                log('🔄 Adding multiple test products...');
+
+                if (!productManager) {
+                    await initializeProductManager();
+                }
+
+                const products = [
+                    { name: 'Test Milk A', category: 'Dairy', price: 45.99, stock: 30 },
+                    { name: 'Test Cheese B', category: 'Dairy', price: 120.50, stock: 15 },
+                    { name: 'Test Yogurt C', category: 'Organic', price: 75.25, stock: 8 }
+                ];
+
+                for (const product of products) {
+                    await productManager.addProduct({
+                        ...product,
+                        description: 'Test product for notification system'
+                    });
+                    log(`✅ Added ${product.name}`);
+
+                    // Small delay between products
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+
+                log('✅ All test products added');
+
+                // Refresh after delay
+                setTimeout(() => {
+                    loadPendingNotifications();
+                    loadRecentActivities();
+                }, 5000);
+
+            } catch (error) {
+                log('❌ Error adding multiple products: ' + error.message);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', async function() {
+            log('🚀 Page loaded, initializing...');
+            await checkSystemStatus();
+        });
+    </script>
+</body>
+</html>
