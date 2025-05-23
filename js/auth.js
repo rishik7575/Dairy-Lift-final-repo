@@ -1,10 +1,20 @@
 /**
- * Authentication utilities for Dairy-Lift
- * Handles user authentication state and UI updates
+ * Authentication utilities for Dairy-Lift Main Website
+ * Handles user authentication state and UI updates for the main website domain
+ * This auth system is separate from the FOR-INVESTORS domain
  */
 
-// Key for storing authentication state in localStorage
-const AUTH_KEY = 'dairyLift_auth';
+// Key for storing authentication state in localStorage (Main Website Domain)
+const AUTH_KEY = 'dairyLift_main_auth';
+
+// Broadcast channel for cross-tab communication (Main Website Domain)
+const BROADCAST_CHANNEL = 'dairyLift_main_auth_channel';
+
+// Custom event name for auth changes (Main Website Domain)
+const AUTH_EVENT_NAME = 'dairyLiftMainAuthChanged';
+
+// Auth loaded event name (Main Website Domain)
+const AUTH_LOADED_EVENT_NAME = 'dairyLiftMainAuthLoaded';
 
 // Debug mode - set to true to enable console logs
 const DEBUG = true;
@@ -14,7 +24,7 @@ const DEBUG = true;
  */
 function debug(...args) {
   if (DEBUG) {
-    console.log('[DairyLiftAuth]', ...args);
+    console.log('[DairyLiftAuth-Main]', ...args);
   }
 }
 
@@ -60,28 +70,29 @@ function setLoggedIn(userData) {
 
   // Dispatch a custom event that other scripts can listen for
   try {
-    const event = new CustomEvent('dairyLiftAuthChanged', {
+    const event = new CustomEvent(AUTH_EVENT_NAME, {
       detail: { isLoggedIn: true, user: userData, timestamp: Date.now() }
     });
     document.dispatchEvent(event);
-    debug('Dispatched dairyLiftAuthChanged event');
+    debug('Dispatched main auth changed event');
   } catch (error) {
-    debug('Error dispatching dairyLiftAuthChanged event:', error);
+    debug('Error dispatching main auth changed event:', error);
   }
 
-  // Broadcast a message to all tabs
+  // Broadcast a message to all tabs in the main domain
   try {
     if (window.BroadcastChannel) {
-      const bc = new BroadcastChannel('dairyLift_auth_channel');
+      const bc = new BroadcastChannel(BROADCAST_CHANNEL);
       bc.postMessage({
         type: 'auth_changed',
+        domain: 'main',
         isLoggedIn: true,
         timestamp: Date.now()
       });
-      debug('Broadcasted auth change to all tabs');
+      debug('Broadcasted main auth change to all tabs');
     }
   } catch (error) {
-    debug('Error broadcasting auth change:', error);
+    debug('Error broadcasting main auth change:', error);
   }
 }
 
@@ -102,28 +113,29 @@ function logout() {
 
   // Dispatch a custom event that other scripts can listen for
   try {
-    const event = new CustomEvent('dairyLiftAuthChanged', {
+    const event = new CustomEvent(AUTH_EVENT_NAME, {
       detail: { isLoggedIn: false, user: null, timestamp: Date.now() }
     });
     document.dispatchEvent(event);
-    debug('Dispatched dairyLiftAuthChanged event for logout');
+    debug('Dispatched main auth changed event for logout');
   } catch (error) {
-    debug('Error dispatching dairyLiftAuthChanged event for logout:', error);
+    debug('Error dispatching main auth changed event for logout:', error);
   }
 
-  // Broadcast a message to all tabs
+  // Broadcast a message to all tabs in the main domain
   try {
     if (window.BroadcastChannel) {
-      const bc = new BroadcastChannel('dairyLift_auth_channel');
+      const bc = new BroadcastChannel(BROADCAST_CHANNEL);
       bc.postMessage({
         type: 'auth_changed',
+        domain: 'main',
         isLoggedIn: false,
         timestamp: Date.now()
       });
-      debug('Broadcasted logout to all tabs');
+      debug('Broadcasted main logout to all tabs');
     }
   } catch (error) {
-    debug('Error broadcasting logout:', error);
+    debug('Error broadcasting main logout:', error);
   }
 
   // Determine the correct redirect URL based on the current page
@@ -506,13 +518,13 @@ function initAuth() {
       setTimeout(updateAuthUI, 1000);
     }
 
-    // Set up BroadcastChannel for cross-tab communication
+    // Set up BroadcastChannel for cross-tab communication (Main Domain Only)
     try {
       if (window.BroadcastChannel) {
-        const bc = new BroadcastChannel('dairyLift_auth_channel');
+        const bc = new BroadcastChannel(BROADCAST_CHANNEL);
         bc.onmessage = function(event) {
-          if (event.data && event.data.type === 'auth_changed') {
-            debug('Received auth change broadcast:', event.data);
+          if (event.data && event.data.type === 'auth_changed' && event.data.domain === 'main') {
+            debug('Received main auth change broadcast:', event.data);
 
             // Force UI update
             updateAuthUI();
@@ -524,10 +536,10 @@ function initAuth() {
             setTimeout(updateAuthUI, 800);
           }
         };
-        debug('Set up BroadcastChannel for auth synchronization');
+        debug('Set up BroadcastChannel for main auth synchronization');
       }
     } catch (error) {
-      debug('Error setting up BroadcastChannel:', error);
+      debug('Error setting up main BroadcastChannel:', error);
     }
 
     // Add event listener for storage changes (for cross-tab synchronization)
@@ -546,9 +558,9 @@ function initAuth() {
       }
     });
 
-    // Add a custom event listener for auth changes
-    document.addEventListener('dairyLiftAuthChanged', function(event) {
-      debug('Auth changed event detected, updating UI');
+    // Add a custom event listener for main auth changes
+    document.addEventListener(AUTH_EVENT_NAME, function(event) {
+      debug('Main auth changed event detected, updating UI');
 
       // Force UI update
       updateAuthUI();
@@ -675,18 +687,19 @@ function initAuth() {
       }
     });
 
-    // Broadcast a ping to all tabs to check if we need to update
+    // Broadcast a ping to all main domain tabs to check if we need to update
     try {
       if (window.BroadcastChannel) {
-        const bc = new BroadcastChannel('dairyLift_auth_channel');
+        const bc = new BroadcastChannel(BROADCAST_CHANNEL);
         bc.postMessage({
           type: 'auth_ping',
+          domain: 'main',
           timestamp: Date.now()
         });
-        debug('Broadcasted auth ping to all tabs');
+        debug('Broadcasted main auth ping to all tabs');
       }
     } catch (error) {
-      debug('Error broadcasting auth ping:', error);
+      debug('Error broadcasting main auth ping:', error);
     }
   }
 }
@@ -715,14 +728,14 @@ setTimeout(function() {
   debug('Initializing authentication with delay');
   initAuth();
 
-  // Dispatch a custom event to notify that auth.js is loaded
+  // Dispatch a custom event to notify that main auth.js is loaded
   try {
-    const event = new CustomEvent('dairyLiftAuthLoaded', {
-      detail: { isReady: true }
+    const event = new CustomEvent(AUTH_LOADED_EVENT_NAME, {
+      detail: { isReady: true, domain: 'main' }
     });
     document.dispatchEvent(event);
-    debug('Dispatched dairyLiftAuthLoaded event');
+    debug('Dispatched main auth loaded event');
   } catch (error) {
-    debug('Error dispatching dairyLiftAuthLoaded event:', error);
+    debug('Error dispatching main auth loaded event:', error);
   }
 }, 100);

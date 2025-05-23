@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Authentication Synchronization Test - Dairy-Lift</title>
+    
+    <!-- Load investor auth.js -->
+    <script src="../FOR-INVESTORS/js/auth.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .login-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .test-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .open-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .app-card {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .app-link {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .app-link:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔄 Investor Authentication Synchronization Test</h1>
+    <p>This test verifies comprehensive authentication state synchronization across the FOR-INVESTORS domain.</p>
+
+    <!-- Test Controls -->
+    <div class="section">
+        <h2>🎮 Test Controls</h2>
+        <button class="test-button login-btn" onclick="performInvestorLogin()">Login as Investor</button>
+        <button class="test-button logout-btn" onclick="performInvestorLogout()">Logout</button>
+        <button class="test-button test-btn" onclick="testSynchronization()">Test Sync</button>
+        <button class="test-button open-btn" onclick="openInvestorPages()">Open Investor Pages</button>
+        <button class="test-button" onclick="clearLogs()">Clear Logs</button>
+    </div>
+
+    <!-- Synchronization Status -->
+    <div class="section">
+        <h2>🔗 Synchronization Status</h2>
+        <div id="sync-status"></div>
+    </div>
+
+    <!-- Investor Domain Pages -->
+    <div class="section">
+        <h2>🏢 FOR-INVESTORS Domain Pages</h2>
+        <div class="warning">
+            <strong>Instructions:</strong> After logging in above, open these pages to test synchronization:
+        </div>
+        <div class="app-grid">
+            <div class="app-card">
+                <h4>Main Pages</h4>
+                <a href="../FOR-INVESTORS/home_page.html" target="_blank" class="app-link">Home Page</a>
+                <a href="../FOR-INVESTORS/dashboard.html" target="_blank" class="app-link">Dashboard</a>
+                <a href="../FOR-INVESTORS/store.html" target="_blank" class="app-link">Store</a>
+            </div>
+            <div class="app-card">
+                <h4>React BuyCattle App</h4>
+                <a href="../FOR-INVESTORS/filesforbuycattle/dist/index.html" target="_blank" class="app-link">BuyCattle React App</a>
+                <p style="font-size: 12px; color: #666;">Should show profile icon when logged in</p>
+            </div>
+            <div class="app-card">
+                <h4>Help Section</h4>
+                <a href="../FOR-INVESTORS/help/home.html" target="_blank" class="app-link">Help Home</a>
+                <a href="../FOR-INVESTORS/help/faqs.html" target="_blank" class="app-link">FAQs</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Console Logs -->
+    <div class="section">
+        <h2>📋 Console Logs & Events</h2>
+        <div id="console-log" class="log">Authentication events will appear here...</div>
+    </div>
+
+    <script>
+        let logs = [];
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
+            logs.push(logEntry);
+            updateConsoleLog();
+            console.log(logEntry);
+        }
+
+        function updateConsoleLog() {
+            const logDiv = document.getElementById('console-log');
+            logDiv.textContent = logs.slice(-30).join('\n');
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLogs() {
+            logs = [];
+            updateConsoleLog();
+        }
+
+        function performInvestorLogin() {
+            log('Performing investor login...');
+            if (window.DairyLiftInvestorAuth && window.DairyLiftInvestorAuth.setLoggedIn) {
+                window.DairyLiftInvestorAuth.setLoggedIn({
+                    username: 'investor_user',
+                    email: 'investor@dairylift.com',
+                    domain: 'investor',
+                    role: 'investor'
+                });
+                log('Investor login successful', 'success');
+                updateSyncStatus();
+            } else {
+                log('Investor auth functions not available', 'error');
+            }
+        }
+
+        function performInvestorLogout() {
+            log('Performing investor logout...');
+            if (window.DairyLiftInvestorAuth && window.DairyLiftInvestorAuth.logout) {
+                window.DairyLiftInvestorAuth.logout();
+                log('Investor logout successful', 'success');
+                updateSyncStatus();
+            } else {
+                log('Investor auth functions not available', 'error');
+            }
+        }
+
+        function testSynchronization() {
+            log('Testing synchronization...');
+            
+            // Check auth state
+            const isLoggedIn = window.DairyLiftInvestorAuth?.isLoggedIn() || false;
+            const currentUser = window.DairyLiftInvestorAuth?.getCurrentUser() || null;
+            
+            log(`Auth state: ${isLoggedIn ? 'Logged in' : 'Logged out'}`);
+            if (currentUser) {
+                log(`User: ${JSON.stringify(currentUser)}`);
+            }
+            
+            // Check localStorage
+            const authData = localStorage.getItem('dairyLift_investor_auth');
+            log(`localStorage: ${authData ? 'Has data' : 'No data'}`);
+            
+            // Test UI update
+            if (window.DairyLiftInvestorAuth?.performComprehensiveUIUpdate) {
+                window.DairyLiftInvestorAuth.performComprehensiveUIUpdate(isLoggedIn, currentUser);
+                log('Triggered comprehensive UI update', 'success');
+            }
+            
+            updateSyncStatus();
+        }
+
+        function openInvestorPages() {
+            log('Opening investor domain pages...');
+            const pages = [
+                '../FOR-INVESTORS/home_page.html',
+                '../FOR-INVESTORS/dashboard.html',
+                '../FOR-INVESTORS/filesforbuycattle/dist/index.html'
+            ];
+            
+            pages.forEach(page => {
+                window.open(page, '_blank');
+            });
+            
+            log('Investor pages opened in new tabs', 'success');
+        }
+
+        function updateSyncStatus() {
+            const statusDiv = document.getElementById('sync-status');
+            const isLoggedIn = window.DairyLiftInvestorAuth?.isLoggedIn() || false;
+            const currentUser = window.DairyLiftInvestorAuth?.getCurrentUser() || null;
+            
+            if (isLoggedIn) {
+                statusDiv.innerHTML = `
+                    <div class="success">
+                        ✅ Investor logged in: ${currentUser?.username || currentUser?.email || 'Unknown'}
+                        <br>Profile icons should appear across all FOR-INVESTORS pages
+                        <br>Cross-tab synchronization is active
+                    </div>
+                `;
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="warning">
+                        ⚠️ No investor logged in. Login buttons should be visible across all FOR-INVESTORS pages.
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Investor auth sync test page loaded');
+            updateSyncStatus();
+            
+            // Listen for auth events
+            const authEvents = [
+                'dairyLiftInvestorAuthChanged',
+                'investorAuthChanged',
+                'authStateChanged',
+                'dairyLiftInvestorAuthLoaded'
+            ];
+            
+            authEvents.forEach(eventType => {
+                document.addEventListener(eventType, function(e) {
+                    log(`Event received: ${eventType}`, 'success');
+                    if (e.detail) {
+                        log(`Event detail: ${JSON.stringify(e.detail)}`);
+                    }
+                    updateSyncStatus();
+                });
+            });
+            
+            // Test auth system availability
+            setTimeout(() => {
+                if (window.DairyLiftInvestorAuth) {
+                    log('Investor auth system available', 'success');
+                } else {
+                    log('Investor auth system not available', 'error');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ProfileIcon from './ProfileIcon';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -18,7 +19,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     };
 
     document.addEventListener('click', handleOutsideClick);
-    
+
     // Prevent scrolling when sidebar is open
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -36,14 +37,14 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     <>
       {/* Overlay */}
       {isOpen && (
-        <div 
+        <div
           id="sidebar-overlay"
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
         />
       )}
-      
+
       {/* Sidebar */}
-      <div 
+      <div
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
@@ -53,12 +54,16 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             Dairy-<span className="text-dairy-orange">Lift</span>
           </h2>
         </div>
-        
+
+        <div className="p-4 border-b flex justify-center">
+          <ProfileIcon />
+        </div>
+
         <nav className="p-4">
           <ul className="space-y-2">
             <li>
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="block p-2 rounded hover:bg-dairy-light hover:text-dairy-green transition-colors"
                 onClick={onClose}
               >
@@ -66,8 +71,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/store" 
+              <Link
+                to="/store"
                 className="block p-2 rounded hover:bg-dairy-light hover:text-dairy-green transition-colors"
                 onClick={onClose}
               >
@@ -75,8 +80,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/investments" 
+              <Link
+                to="/investments"
                 className="block p-2 rounded hover:bg-dairy-light hover:text-dairy-green transition-colors"
                 onClick={onClose}
               >
@@ -84,8 +89,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/about" 
+              <Link
+                to="/about"
                 className="block p-2 rounded hover:bg-dairy-light hover:text-dairy-green transition-colors"
                 onClick={onClose}
               >
@@ -93,8 +98,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/contact" 
+              <Link
+                to="/contact"
                 className="block p-2 rounded hover:bg-dairy-light hover:text-dairy-green transition-colors"
                 onClick={onClose}
               >

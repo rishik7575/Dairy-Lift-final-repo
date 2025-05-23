@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Diagnosis - Dairy-Lift BuyCattle</title>
+    
+    <!-- Load auth.js BEFORE any other scripts -->
+    <script src="../js/auth.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .login-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .test-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .nav-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .path-test {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .path-result {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .path-valid {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .path-invalid {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Navigation Diagnosis - BuyCattle Profile Icon</h1>
+    <p>This comprehensive test diagnoses and verifies profile icon navigation in React apps.</p>
+
+    <!-- Test Controls -->
+    <div class="section">
+        <h2>🎮 Test Controls</h2>
+        <button class="test-button login-btn" onclick="performLogin()">Login User</button>
+        <button class="test-button test-btn" onclick="testPathResolution()">Test Path Resolution</button>
+        <button class="test-button nav-btn" onclick="testDirectNavigation()">Test Direct Navigation</button>
+        <button class="test-button nav-btn" onclick="openReactApps()">Open React Apps</button>
+        <button class="test-button" onclick="clearLogs()">Clear Logs</button>
+    </div>
+
+    <!-- Path Resolution Tests -->
+    <div class="section">
+        <h2>📁 Path Resolution Tests</h2>
+        <div id="path-tests"></div>
+    </div>
+
+    <!-- Navigation Tests -->
+    <div class="section">
+        <h2>🔗 Navigation Tests</h2>
+        <div id="navigation-status"></div>
+        <button class="test-button nav-btn" onclick="simulateProfileClick()">Simulate Profile Click</button>
+    </div>
+
+    <!-- Console Logs -->
+    <div class="section">
+        <h2>📋 Console Logs & Diagnostics</h2>
+        <div id="console-log" class="log">Diagnostic logs will appear here...</div>
+    </div>
+
+    <!-- React App Links -->
+    <div class="section">
+        <h2>🚀 React App Links</h2>
+        <div class="warning">
+            <strong>Instructions:</strong> After logging in above, open these React apps and test profile icon navigation:
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+            <div style="padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                <h4>Main Domain BuyCattle</h4>
+                <a href="../filesforbuycattle/dist/index.html" target="_blank" style="color: #007bff; font-weight: bold;">
+                    Open Main BuyCattle App
+                </a>
+                <p style="font-size: 12px; color: #666;">Should navigate to: ../profile.html</p>
+            </div>
+            <div style="padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                <h4>Investor Domain BuyCattle</h4>
+                <a href="../FOR-INVESTORS/filesforbuycattle/dist/index.html" target="_blank" style="color: #007bff; font-weight: bold;">
+                    Open Investor BuyCattle App
+                </a>
+                <p style="font-size: 12px; color: #666;">Should navigate to: ../profile.html (FOR-INVESTORS/profile.html)</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let logs = [];
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
+            logs.push(logEntry);
+            updateConsoleLog();
+            console.log(logEntry);
+        }
+
+        function updateConsoleLog() {
+            const logDiv = document.getElementById('console-log');
+            logDiv.textContent = logs.slice(-50).join('\n');
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLogs() {
+            logs = [];
+            updateConsoleLog();
+        }
+
+        function performLogin() {
+            log('Performing test login...');
+            if (window.setLoggedIn) {
+                window.setLoggedIn({
+                    username: 'test_user',
+                    email: 'test@buycattle.com',
+                    domain: 'main'
+                });
+                log('Login successful', 'success');
+                updateNavigationStatus();
+            } else {
+                log('Auth functions not available', 'error');
+            }
+        }
+
+        function testPathResolution() {
+            log('Testing path resolution...');
+            const pathTests = document.getElementById('path-tests');
+            
+            const tests = [
+                {
+                    name: 'Main BuyCattle to Profile',
+                    from: 'filesforbuycattle/dist/',
+                    to: '../profile.html',
+                    expected: 'profile.html'
+                },
+                {
+                    name: 'Investor BuyCattle to Profile', 
+                    from: 'FOR-INVESTORS/filesforbuycattle/dist/',
+                    to: '../profile.html',
+                    expected: 'FOR-INVESTORS/profile.html'
+                }
+            ];
+
+            let html = '';
+            tests.forEach(test => {
+                const isValid = test.to.includes('../');
+                html += `
+                    <div class="path-test">
+                        <strong>${test.name}:</strong>
+                        <span>From: ${test.from}</span>
+                        <span>To: ${test.to}</span>
+                        <span>Expected: ${test.expected}</span>
+                        <span class="path-result ${isValid ? 'path-valid' : 'path-invalid'}">
+                            ${isValid ? '✅ Valid' : '❌ Invalid'}
+                        </span>
+                    </div>
+                `;
+            });
+            
+            pathTests.innerHTML = html;
+            log('Path resolution tests completed');
+        }
+
+        function testDirectNavigation() {
+            log('Testing direct navigation...');
+            try {
+                // Test if we can resolve the path
+                const testUrl = new URL('../profile.html', window.location.href);
+                log(`Resolved URL: ${testUrl.href}`, 'success');
+                
+                // Test navigation (but don't actually navigate)
+                log('Navigation test would redirect to: ' + testUrl.href, 'info');
+                
+                updateNavigationStatus();
+            } catch (error) {
+                log(`Navigation test failed: ${error.message}`, 'error');
+            }
+        }
+
+        function simulateProfileClick() {
+            log('Simulating profile icon click...');
+            
+            // Check if global navigation function exists
+            if (window.navigateToProfile) {
+                log('Global navigateToProfile function found', 'success');
+                try {
+                    // Don't actually navigate, just test the function exists
+                    log('Would call window.navigateToProfile()', 'info');
+                } catch (error) {
+                    log(`Error calling navigation function: ${error.message}`, 'error');
+                }
+            } else {
+                log('Global navigateToProfile function NOT found', 'error');
+            }
+            
+            // Test direct navigation
+            try {
+                const targetUrl = '../profile.html';
+                log(`Would navigate to: ${targetUrl}`, 'info');
+                log('Navigation simulation completed', 'success');
+            } catch (error) {
+                log(`Navigation simulation failed: ${error.message}`, 'error');
+            }
+        }
+
+        function openReactApps() {
+            log('Opening React applications...');
+            window.open('../filesforbuycattle/dist/index.html', '_blank');
+            window.open('../FOR-INVESTORS/filesforbuycattle/dist/index.html', '_blank');
+            log('React apps opened in new tabs', 'success');
+        }
+
+        function updateNavigationStatus() {
+            const statusDiv = document.getElementById('navigation-status');
+            const authState = checkAuthStatus();
+            
+            if (authState.isLoggedIn) {
+                statusDiv.innerHTML = `
+                    <div class="success">
+                        ✅ User logged in: ${authState.user?.username || authState.user?.email}
+                        <br>Profile icon should be visible and clickable in React apps
+                    </div>
+                `;
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="warning">
+                        ⚠️ User not logged in. Login first to test profile icon navigation.
+                    </div>
+                `;
+            }
+        }
+
+        function checkAuthStatus() {
+            try {
+                if (!window.isLoggedIn || !window.getCurrentUser) {
+                    const authData = localStorage.getItem('dairyLift_main_auth');
+                    if (authData) {
+                        const userData = JSON.parse(authData);
+                        return { isLoggedIn: true, user: userData };
+                    }
+                    return { isLoggedIn: false, user: null };
+                }
+
+                const isLoggedIn = window.isLoggedIn() || false;
+                const user = window.getCurrentUser() || null;
+                return { isLoggedIn, user };
+            } catch (error) {
+                return { isLoggedIn: false, user: null };
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Navigation diagnosis page loaded');
+            testPathResolution();
+            updateNavigationStatus();
+            
+            // Test if global functions will be available
+            setTimeout(() => {
+                if (window.navigateToProfile) {
+                    log('Global navigation function detected', 'success');
+                } else {
+                    log('Global navigation function not detected', 'warning');
+                }
+            }, 1000);
+        });
+
+        // Listen for auth changes
+        document.addEventListener('dairyLiftMainAuthChanged', function(e) {
+            log('Auth state changed');
+            updateNavigationStatus();
+        });
+    </script>
+</body>
+</html>

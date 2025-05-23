@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyCattle & Store Fix Test</title>
+    
+    <!-- Load investor auth -->
+    <script src="../FOR-INVESTORS/js/auth.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: black;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .test-card {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 BuyCattle & Store Fix Test</h1>
+    <p>Test both the BuyCattle button navigation and store.html auth synchronization.</p>
+
+    <!-- Test Controls -->
+    <div class="section">
+        <h2>Test Controls</h2>
+        <button class="btn btn-success" onclick="performLogin()">Login as Investor</button>
+        <button class="btn btn-warning" onclick="performLogout()">Logout</button>
+        <button class="btn" onclick="checkAuthStatus()">Check Auth Status</button>
+    </div>
+
+    <!-- Auth Status -->
+    <div class="section">
+        <h2>Authentication Status</h2>
+        <div id="auth-status"></div>
+    </div>
+
+    <!-- Test Links -->
+    <div class="section">
+        <h2>Test Both Issues</h2>
+        <div class="test-grid">
+            <div class="test-card">
+                <h3>🐄 BuyCattle Button Fix</h3>
+                <p>Test that the BuyCattle button opens correctly from dashboard:</p>
+                <a href="../FOR-INVESTORS/dashboard.html" target="_blank" class="btn btn-primary">
+                    Open Dashboard
+                </a>
+                <p><small>Click the "Buy Cattle" button in the mobile menu</small></p>
+            </div>
+            
+            <div class="test-card">
+                <h3>🏪 Store Auth Sync Fix</h3>
+                <p>Test that store.html shows profile icon when logged in:</p>
+                <a href="../FOR-INVESTORS/store.html" target="_blank" class="btn btn-primary">
+                    Open Store
+                </a>
+                <p><small>Should show profile icon in header when logged in</small></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expected Results -->
+    <div class="section">
+        <h2>Expected Results</h2>
+        <div class="status warning">
+            <h3>🐄 BuyCattle Button Fix:</h3>
+            <ul>
+                <li>Dashboard mobile menu "Buy Cattle" button should open BuyCattle app</li>
+                <li>No more "file not found" or navigation errors</li>
+                <li>BuyCattle app should load properly</li>
+            </ul>
+        </div>
+        
+        <div class="status warning">
+            <h3>🏪 Store Auth Sync Fix:</h3>
+            <ul>
+                <li>Store.html should load auth.js correctly</li>
+                <li>When logged in, store should show profile icon instead of login button</li>
+                <li>Profile icon should navigate to profile.html</li>
+                <li>Cross-tab sync should work between store and other pages</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Direct Test Links -->
+    <div class="section">
+        <h2>Direct Test Links</h2>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+            <a href="../FOR-INVESTORS/filesforbuycattle/dist/index.html" target="_blank" class="btn btn-primary">
+                🐄 Direct BuyCattle App Link
+            </a>
+            <a href="../FOR-INVESTORS/store.html" target="_blank" class="btn btn-primary">
+                🏪 Direct Store Link
+            </a>
+            <a href="../FOR-INVESTORS/dashboard.html" target="_blank" class="btn btn-primary">
+                📊 Dashboard (to test BuyCattle button)
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function performLogin() {
+            if (window.DairyLiftAuth) {
+                window.DairyLiftAuth.setLoggedIn({
+                    username: 'test_investor',
+                    email: 'investor@test.com',
+                    role: 'investor'
+                });
+                console.log('Login performed');
+                checkAuthStatus();
+            } else {
+                console.error('Auth system not available');
+            }
+        }
+
+        function performLogout() {
+            if (window.DairyLiftAuth) {
+                window.DairyLiftAuth.logout();
+                console.log('Logout performed');
+                checkAuthStatus();
+            } else {
+                console.error('Auth system not available');
+            }
+        }
+
+        function checkAuthStatus() {
+            const statusDiv = document.getElementById('auth-status');
+            
+            if (window.DairyLiftAuth) {
+                const isLoggedIn = window.DairyLiftAuth.isLoggedIn();
+                const user = window.DairyLiftAuth.getCurrentUser();
+                
+                if (isLoggedIn) {
+                    statusDiv.innerHTML = `
+                        <div class="status success">
+                            ✅ Logged in as: ${user?.email || user?.username || 'Unknown'}
+                            <br><strong>Expected:</strong> Store and BuyCattle should show profile icon
+                            <br><strong>Storage:</strong> ${localStorage.getItem('dairyLift_investor_auth') ? 'Present' : 'Missing'}
+                        </div>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <div class="status warning">
+                            ⚠️ Not logged in
+                            <br><strong>Expected:</strong> Store and BuyCattle should show login buttons
+                        </div>
+                    `;
+                }
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="status error">
+                        ❌ Auth system not available
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('BuyCattle & Store fix test loaded');
+            checkAuthStatus();
+            
+            // Listen for auth changes
+            window.addEventListener('investorAuthChanged', function(event) {
+                console.log('Auth changed:', event.detail);
+                checkAuthStatus();
+            });
+        });
+    </script>
+</body>
+</html>

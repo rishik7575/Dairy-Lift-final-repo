@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Login Test</title>
+    
+    <!-- Load investor auth -->
+    <script src="../FOR-INVESTORS/js/auth.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 Investor Login Test</h1>
+    <p>Test the login functionality for the FOR-INVESTORS domain</p>
+
+    <!-- Login Form -->
+    <div class="form-group">
+        <h2>Test Login</h2>
+        <form id="test-login-form">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" value="test@investor.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" value="password123" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- Status Display -->
+    <div id="status-display"></div>
+
+    <!-- Test Controls -->
+    <div>
+        <h2>Test Controls</h2>
+        <button onclick="checkAuthStatus()">Check Auth Status</button>
+        <button onclick="testLogout()">Logout</button>
+        <button onclick="openLoginPage()">Open Real Login Page</button>
+        <button onclick="openBuyCattlePage()">Open BuyCattle Page</button>
+    </div>
+
+    <!-- Debug Info -->
+    <div>
+        <h2>Debug Info</h2>
+        <div id="debug-info"></div>
+    </div>
+
+    <script>
+        function updateStatus(message, type = 'success') {
+            const statusDiv = document.getElementById('status-display');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function updateDebugInfo() {
+            const debugDiv = document.getElementById('debug-info');
+            const authAvailable = !!window.DairyLiftAuth;
+            const functionsAvailable = !!(window.isLoggedIn && window.setLoggedIn);
+            const storageData = localStorage.getItem('dairyLift_investor_auth');
+            
+            debugDiv.innerHTML = `
+                <div class="status ${authAvailable ? 'success' : 'error'}">
+                    <strong>DairyLiftAuth Available:</strong> ${authAvailable ? 'Yes' : 'No'}
+                </div>
+                <div class="status ${functionsAvailable ? 'success' : 'error'}">
+                    <strong>Auth Functions Available:</strong> ${functionsAvailable ? 'Yes' : 'No'}
+                </div>
+                <div class="status ${storageData ? 'success' : 'warning'}">
+                    <strong>Storage Data:</strong> ${storageData ? 'Present' : 'None'}
+                </div>
+                <div class="status warning">
+                    <strong>Storage Content:</strong><br>
+                    <code>${storageData || 'null'}</code>
+                </div>
+            `;
+        }
+
+        function checkAuthStatus() {
+            if (window.DairyLiftAuth) {
+                const isLoggedIn = window.DairyLiftAuth.isLoggedIn();
+                const user = window.DairyLiftAuth.getCurrentUser();
+                
+                if (isLoggedIn) {
+                    updateStatus(`✅ Logged in as: ${user?.email || user?.name || 'Unknown'}`, 'success');
+                } else {
+                    updateStatus('⚠️ Not logged in', 'warning');
+                }
+            } else {
+                updateStatus('❌ Auth system not available', 'error');
+            }
+            updateDebugInfo();
+        }
+
+        function testLogout() {
+            if (window.DairyLiftAuth) {
+                window.DairyLiftAuth.logout();
+                updateStatus('Logged out successfully', 'success');
+                checkAuthStatus();
+            } else {
+                updateStatus('❌ Auth system not available for logout', 'error');
+            }
+        }
+
+        function openLoginPage() {
+            window.open('../FOR-INVESTORS/login.html', '_blank');
+        }
+
+        function openBuyCattlePage() {
+            window.open('../FOR-INVESTORS/filesforbuycattle/dist/index.html', '_blank');
+        }
+
+        // Handle login form submission
+        document.getElementById('test-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                updateStatus('❌ Please fill in all fields', 'error');
+                return;
+            }
+
+            // Simulate login process
+            updateStatus('🔄 Logging in...', 'warning');
+            
+            setTimeout(() => {
+                if (window.DairyLiftAuth) {
+                    try {
+                        const userData = {
+                            email: email,
+                            name: email.split('@')[0],
+                            lastLogin: new Date().toISOString()
+                        };
+                        
+                        window.DairyLiftAuth.setLoggedIn(userData);
+                        updateStatus(`✅ Login successful! Welcome ${userData.name}`, 'success');
+                        checkAuthStatus();
+                    } catch (error) {
+                        updateStatus(`❌ Login failed: ${error.message}`, 'error');
+                        console.error('Login error:', error);
+                    }
+                } else {
+                    updateStatus('❌ Auth system not available', 'error');
+                }
+            }, 1000);
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Login test page loaded');
+            checkAuthStatus();
+            
+            // Listen for auth events
+            window.addEventListener('investorAuthChanged', function(event) {
+                console.log('Auth changed event:', event.detail);
+                checkAuthStatus();
+            });
+
+            // Listen for auth loaded event
+            document.addEventListener('dairyLiftAuthLoaded', function(event) {
+                console.log('Auth loaded event:', event.detail);
+                checkAuthStatus();
+            });
+        });
+    </script>
+</body>
+</html>

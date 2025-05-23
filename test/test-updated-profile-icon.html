@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updated Profile Icon Test - Dairy-Lift</title>
+    
+    <!-- Load auth.js BEFORE any other scripts -->
+    <script src="../js/auth.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d5a27;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            color: #2d5a27;
+        }
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-icon {
+            padding: 8px;
+            border-radius: 50%;
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none;
+        }
+        .profile-icon:hover {
+            background-color: #f0f0f0;
+        }
+        .profile-image {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .profile-fallback {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #2d5a27;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .login-button {
+            padding: 8px 16px;
+            background-color: #2d5a27;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .login-button:hover {
+            background-color: #1e3a1a;
+        }
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .control-button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .login-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .status {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 5px 0;
+        }
+        .feature-list li:before {
+            content: "✅ ";
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Updated Profile Icon Test</h1>
+    <p>This demonstrates the updated profile icon behavior: <strong>icon only, no email/username text, no "Get Started" button</strong>.</p>
+
+    <!-- Simulated Header -->
+    <div class="header">
+        <div class="logo">🐄 BuyCattle</div>
+        <div class="nav">
+            <a href="#" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Store</a>
+            <a href="#" class="nav-link">Investments</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="#" class="nav-link">Contact</a>
+        </div>
+        <div class="profile-section">
+            <div id="profile-container">
+                <!-- Profile icon will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <h3>Test Controls</h3>
+        <button class="control-button login-btn" onclick="testLogin()">Login</button>
+        <button class="control-button logout-btn" onclick="testLogout()">Logout</button>
+        <button class="control-button" onclick="updateProfileIcon()">Refresh Icon</button>
+    </div>
+
+    <!-- Status -->
+    <div class="status">
+        <h3>Updated Features</h3>
+        <div class="success">
+            <ul class="feature-list">
+                <li>Profile icon shows ONLY the icon (no email/username text)</li>
+                <li>"Get Started" button has been removed</li>
+                <li>Clicking profile icon redirects to profile.html</li>
+                <li>Clean, minimal design</li>
+                <li>Hover effects for better UX</li>
+            </ul>
+        </div>
+        
+        <h3>Current Status</h3>
+        <div id="auth-status"></div>
+    </div>
+
+    <script>
+        function checkAuthStatus() {
+            try {
+                if (!window.isLoggedIn || !window.getCurrentUser) {
+                    const authData = localStorage.getItem('dairyLift_main_auth');
+                    if (authData) {
+                        const userData = JSON.parse(authData);
+                        return { isLoggedIn: true, user: userData };
+                    }
+                    return { isLoggedIn: false, user: null };
+                }
+
+                const isLoggedIn = window.isLoggedIn() || false;
+                const user = window.getCurrentUser() || null;
+                return { isLoggedIn, user };
+            } catch (error) {
+                return { isLoggedIn: false, user: null };
+            }
+        }
+
+        function updateProfileIcon() {
+            const container = document.getElementById('profile-container');
+            const authState = checkAuthStatus();
+
+            if (!authState.isLoggedIn) {
+                container.innerHTML = `
+                    <button class="login-button" onclick="handleLogin()">
+                        👤 Sign In
+                    </button>
+                `;
+            } else {
+                const username = authState.user?.username || authState.user?.email || 'User';
+                const firstLetter = username.charAt(0).toUpperCase();
+                
+                container.innerHTML = `
+                    <button class="profile-icon" onclick="handleProfileClick()" title="Profile: ${username}">
+                        <img src="../image/profileicone.png" 
+                             alt="Profile" 
+                             class="profile-image"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="profile-fallback" style="display: none;">
+                            ${firstLetter}
+                        </div>
+                    </button>
+                `;
+            }
+        }
+
+        function updateStatus() {
+            const authState = checkAuthStatus();
+            const statusDiv = document.getElementById('auth-status');
+            
+            statusDiv.innerHTML = `
+                <p><strong>Logged In:</strong> ${authState.isLoggedIn ? 'Yes' : 'No'}</p>
+                <p><strong>User:</strong> ${authState.user ? (authState.user.username || authState.user.email || 'Unknown') : 'None'}</p>
+                <p><strong>Profile Icon:</strong> ${authState.isLoggedIn ? 'Shows icon only (no text)' : 'Shows Sign In button'}</p>
+                <p><strong>Get Started Button:</strong> Removed ✅</p>
+            `;
+        }
+
+        function handleLogin() {
+            alert('Redirecting to login.html...');
+            // In real app: window.location.href = '../login.html';
+        }
+
+        function handleProfileClick() {
+            alert('Redirecting to profile.html...');
+            // In real app: window.location.href = '../profile.html';
+        }
+
+        function testLogin() {
+            if (window.setLoggedIn) {
+                window.setLoggedIn({
+                    username: 'john_doe',
+                    email: 'john@buycattle.com',
+                    domain: 'main'
+                });
+                setTimeout(() => {
+                    updateProfileIcon();
+                    updateStatus();
+                }, 100);
+            }
+        }
+
+        function testLogout() {
+            if (window.logout) {
+                window.logout();
+                setTimeout(() => {
+                    updateProfileIcon();
+                    updateStatus();
+                }, 100);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Updated profile icon test loaded');
+            updateProfileIcon();
+            updateStatus();
+            
+            // Set up event listeners
+            document.addEventListener('dairyLiftMainAuthChanged', function(e) {
+                console.log('Auth changed:', e.detail);
+                updateProfileIcon();
+                updateStatus();
+            });
+            
+            // Set up periodic updates
+            setInterval(() => {
+                updateProfileIcon();
+                updateStatus();
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

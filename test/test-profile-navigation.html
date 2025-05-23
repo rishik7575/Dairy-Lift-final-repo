@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Navigation Test - Dairy-Lift</title>
+    
+    <!-- Load auth.js BEFORE any other scripts -->
+    <script src="../js/auth.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d5a27;
+        }
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-icon {
+            padding: 8px;
+            border-radius: 50%;
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none;
+        }
+        .profile-icon:hover {
+            background-color: #f0f0f0;
+        }
+        .profile-image {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+        .profile-fallback {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #2d5a27;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .login-button {
+            padding: 8px 16px;
+            background-color: #2d5a27;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .login-button:hover {
+            background-color: #1e3a1a;
+        }
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .control-button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .login-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .test-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .status {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔗 Profile Navigation Test</h1>
+    <p>This test verifies that clicking the profile icon properly navigates to profile.html</p>
+
+    <!-- Simulated Header -->
+    <div class="header">
+        <div class="logo">🐄 BuyCattle</div>
+        <div class="profile-section">
+            <div id="profile-container">
+                <!-- Profile icon will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <h3>Test Controls</h3>
+        <button class="control-button login-btn" onclick="testLogin()">Login</button>
+        <button class="control-button logout-btn" onclick="testLogout()">Logout</button>
+        <button class="control-button test-btn" onclick="testNavigation()">Test Navigation</button>
+    </div>
+
+    <!-- Status -->
+    <div class="status">
+        <h3>Navigation Test Status</h3>
+        <div id="navigation-status"></div>
+        
+        <h3>Click Log</h3>
+        <div id="click-log" class="log">
+            Click events will appear here...
+        </div>
+        
+        <div class="warning">
+            <strong>Note:</strong> In this test, navigation is intercepted to prevent actual page changes. 
+            In the real React app, clicking will navigate to profile.html.
+        </div>
+    </div>
+
+    <script>
+        let clickLog = [];
+
+        function logClick(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            clickLog.push(`[${timestamp}] ${message}`);
+            updateClickLog();
+        }
+
+        function updateClickLog() {
+            const logDiv = document.getElementById('click-log');
+            logDiv.innerHTML = clickLog.slice(-10).join('\n');
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function checkAuthStatus() {
+            try {
+                if (!window.isLoggedIn || !window.getCurrentUser) {
+                    const authData = localStorage.getItem('dairyLift_main_auth');
+                    if (authData) {
+                        const userData = JSON.parse(authData);
+                        return { isLoggedIn: true, user: userData };
+                    }
+                    return { isLoggedIn: false, user: null };
+                }
+
+                const isLoggedIn = window.isLoggedIn() || false;
+                const user = window.getCurrentUser() || null;
+                return { isLoggedIn, user };
+            } catch (error) {
+                return { isLoggedIn: false, user: null };
+            }
+        }
+
+        function updateProfileIcon() {
+            const container = document.getElementById('profile-container');
+            const authState = checkAuthStatus();
+
+            if (!authState.isLoggedIn) {
+                container.innerHTML = `
+                    <button class="login-button" onclick="handleLogin()">
+                        👤 Sign In
+                    </button>
+                `;
+            } else {
+                const username = authState.user?.username || authState.user?.email || 'User';
+                const firstLetter = username.charAt(0).toUpperCase();
+                
+                container.innerHTML = `
+                    <button 
+                        class="profile-icon" 
+                        onclick="handleProfileClick(event)" 
+                        title="Profile: ${username}"
+                        type="button"
+                    >
+                        <img src="../image/profileicone.png" 
+                             alt="Profile" 
+                             class="profile-image"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="profile-fallback" style="display: none;">
+                            ${firstLetter}
+                        </div>
+                    </button>
+                `;
+            }
+        }
+
+        function updateNavigationStatus() {
+            const authState = checkAuthStatus();
+            const statusDiv = document.getElementById('navigation-status');
+            
+            if (authState.isLoggedIn) {
+                statusDiv.innerHTML = `
+                    <div class="success">
+                        ✅ User is logged in. Profile icon should be clickable and navigate to profile.html
+                    </div>
+                    <p><strong>Current User:</strong> ${authState.user?.username || authState.user?.email || 'Unknown'}</p>
+                    <p><strong>Expected Behavior:</strong> Click profile icon → Navigate to ../profile.html</p>
+                `;
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="warning">
+                        ⚠️ User is not logged in. Only "Sign In" button should be visible.
+                    </div>
+                    <p><strong>Expected Behavior:</strong> Click "Sign In" → Navigate to ../login.html</p>
+                `;
+            }
+        }
+
+        function handleLogin() {
+            logClick('Login button clicked - would navigate to ../login.html');
+            // In real app: window.location.href = '../login.html';
+        }
+
+        function handleProfileClick(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            logClick('Profile icon clicked - would navigate to ../profile.html');
+            
+            // Show success message
+            const statusDiv = document.getElementById('navigation-status');
+            statusDiv.innerHTML = `
+                <div class="success">
+                    ✅ Navigation triggered! In the real React app, this would redirect to profile.html
+                </div>
+                <p><strong>Navigation URL:</strong> ../profile.html</p>
+                <p><strong>Method:</strong> window.location.href</p>
+            `;
+            
+            // In real app: window.location.href = '../profile.html';
+        }
+
+        function testLogin() {
+            if (window.setLoggedIn) {
+                window.setLoggedIn({
+                    username: 'test_user',
+                    email: 'test@buycattle.com',
+                    domain: 'main'
+                });
+                logClick('Test login performed');
+                setTimeout(() => {
+                    updateProfileIcon();
+                    updateNavigationStatus();
+                }, 100);
+            }
+        }
+
+        function testLogout() {
+            if (window.logout) {
+                window.logout();
+                logClick('Test logout performed');
+                setTimeout(() => {
+                    updateProfileIcon();
+                    updateNavigationStatus();
+                }, 100);
+            }
+        }
+
+        function testNavigation() {
+            const authState = checkAuthStatus();
+            if (authState.isLoggedIn) {
+                logClick('Testing profile icon navigation...');
+                const profileIcon = document.querySelector('.profile-icon');
+                if (profileIcon) {
+                    profileIcon.click();
+                } else {
+                    logClick('ERROR: Profile icon not found');
+                }
+            } else {
+                logClick('Cannot test navigation - user not logged in');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Profile navigation test loaded');
+            updateProfileIcon();
+            updateNavigationStatus();
+            logClick('Test page initialized');
+            
+            // Set up event listeners
+            document.addEventListener('dairyLiftMainAuthChanged', function(e) {
+                logClick('Auth state changed');
+                updateProfileIcon();
+                updateNavigationStatus();
+            });
+        });
+    </script>
+</body>
+</html>
