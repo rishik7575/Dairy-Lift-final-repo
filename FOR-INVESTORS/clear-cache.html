@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Authentication Cache - Dairy-Lift</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+        <h1 class="text-2xl font-bold text-center mb-6">Clear Authentication Cache</h1>
+
+        <div id="status" class="mb-6 p-4 rounded-lg bg-blue-100 border border-blue-300">
+            <p class="text-blue-800">Click the button below to clear all cached authentication data.</p>
+        </div>
+
+        <button id="clear-cache-btn" class="w-full bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors">
+            Clear All Cache Data
+        </button>
+
+        <div class="mt-6 space-y-2">
+            <a href="login.html" class="block w-full bg-blue-500 text-white p-3 rounded-lg text-center hover:bg-blue-600 transition-colors">
+                Go to Login Page
+            </a>
+            <a href="dashboard.html" class="block w-full bg-green-500 text-white p-3 rounded-lg text-center hover:bg-green-600 transition-colors">
+                Go to Dashboard
+            </a>
+        </div>
+
+        <div id="cleared-items" class="mt-6 hidden">
+            <h3 class="font-semibold mb-2">Cleared Items:</h3>
+            <ul id="cleared-list" class="text-sm text-gray-600 space-y-1"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('clear-cache-btn').addEventListener('click', function() {
+            const clearedItems = [];
+            const statusDiv = document.getElementById('status');
+            const clearedItemsDiv = document.getElementById('cleared-items');
+            const clearedList = document.getElementById('cleared-list');
+
+            // Clear all possible authentication-related localStorage items
+            const keysToRemove = [
+                'dairyLift_investor_auth',
+                'dairyLift_main_auth',
+                'dairyLift_main_auth_timestamp',
+                'rememberedEmail',
+                'authData',
+                'userData',
+                'userSession',
+                'supabase.auth.token',
+                'sb-hepirukxniwnijwmjdoj-auth-token'
+            ];
+
+            keysToRemove.forEach(key => {
+                if (localStorage.getItem(key)) {
+                    localStorage.removeItem(key);
+                    clearedItems.push(key);
+                }
+            });
+
+            // Clear all localStorage items that might be related to auth
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const key = localStorage.key(i);
+                if (key && (key.includes('auth') || key.includes('user') || key.includes('login') || key.includes('dairy'))) {
+                    localStorage.removeItem(key);
+                    if (!clearedItems.includes(key)) {
+                        clearedItems.push(key);
+                    }
+                }
+            }
+
+            // Clear sessionStorage as well
+            sessionStorage.clear();
+            clearedItems.push('All sessionStorage data');
+
+            // Update UI
+            statusDiv.innerHTML = '<p class="text-green-800">✅ Cache cleared successfully!</p>';
+            statusDiv.className = 'mb-6 p-4 rounded-lg bg-green-100 border border-green-300';
+
+            // Show cleared items
+            clearedList.innerHTML = '';
+            if (clearedItems.length > 0) {
+                clearedItems.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = `• ${item}`;
+                    clearedList.appendChild(li);
+                });
+                clearedItemsDiv.classList.remove('hidden');
+            } else {
+                const li = document.createElement('li');
+                li.textContent = '• No cached data found';
+                clearedList.appendChild(li);
+                clearedItemsDiv.classList.remove('hidden');
+            }
+
+            // Change button text
+            this.textContent = 'Cache Cleared!';
+            this.disabled = true;
+            this.className = 'w-full bg-gray-500 text-white p-3 rounded-lg cursor-not-allowed';
+
+            // Show success message
+            setTimeout(() => {
+                statusDiv.innerHTML = '<p class="text-green-800">✅ You can now try logging in with fresh credentials!</p>';
+            }, 2000);
+        });
+
+        // Show current cache status on load
+        window.addEventListener('load', function() {
+            const authKeys = [
+                'dairyLift_investor_auth',
+                'dairyLift_main_auth',
+                'rememberedEmail'
+            ];
+
+            const foundKeys = authKeys.filter(key => localStorage.getItem(key));
+
+            if (foundKeys.length > 0) {
+                document.getElementById('status').innerHTML =
+                    `<p class="text-orange-800">⚠️ Found ${foundKeys.length} cached authentication item(s). Click to clear them.</p>`;
+                document.getElementById('status').className = 'mb-6 p-4 rounded-lg bg-orange-100 border border-orange-300';
+            }
+        });
+    </script>
+</body>
+</html>

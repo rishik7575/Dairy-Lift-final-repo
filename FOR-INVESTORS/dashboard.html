@@ -19,6 +19,11 @@
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Supabase Integration -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Comprehensive Authentication -->
   <script src="js/auth.js"></script>
   <script>
     tailwind.config = {
@@ -2829,27 +2834,25 @@
   <script>
     // Initialize authentication when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
-      if (window.DairyLiftAuth) {
-        console.log('Auth script loaded, initializing...');
-        window.DairyLiftAuth.initAuth();
-      } else {
-        console.log('Auth script not loaded, trying to initialize...');
-        // Try to initialize auth after a short delay
-        setTimeout(function() {
-          if (typeof initAuth === 'function') {
-            initAuth();
-          } else {
-            console.error('Auth initialization function not found');
-          }
-        }, 500);
-      }
-    });
+      console.log('Dashboard DOM loaded, initializing auth UI...');
 
-    // Also try to initialize on window load
-    window.addEventListener('load', function() {
-      if (typeof initAuth === 'function') {
-        initAuth();
+      // Initialize auth UI (no forced login required)
+      if (typeof updateAuthUI === 'function') {
+        updateAuthUI();
       }
+
+      // Show appropriate content based on login status
+      const isLoggedIn = typeof window.isLoggedIn === 'function' ? window.isLoggedIn() : false;
+
+      if (isLoggedIn) {
+        console.log('User is logged in, showing personalized dashboard');
+        // Show personalized content
+      } else {
+        console.log('User not logged in, showing general dashboard');
+        // Show general content with login prompts for specific features
+      }
+
+      console.log('Dashboard initialization complete');
     });
   </script>
 </body>

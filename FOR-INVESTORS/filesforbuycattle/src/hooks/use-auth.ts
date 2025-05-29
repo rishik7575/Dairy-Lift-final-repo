@@ -13,7 +13,7 @@ interface AuthState {
 }
 
 /**
- * React hook that integrates with the investor domain auth.js system
+ * React hook that integrates with the investor domain client-side auth.js system
  * This hook listens to auth changes and provides React state management
  */
 export const useAuth = (): AuthState & {
