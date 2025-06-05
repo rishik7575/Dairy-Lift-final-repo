@@ -16,7 +16,13 @@
     preloadImportant: true,
     cacheImages: true,
     optimizeOnError: true,
-    lowQualityPlaceholders: true
+    lowQualityPlaceholders: true,
+    useWebP: true,
+    useSrcset: true,
+    progressiveLoading: true,
+    blurPlaceholders: true,
+    optimizeVisibility: true,
+    priorityLoading: true
   };
 
   // Initialize image optimization
@@ -89,7 +95,7 @@
     window.addEventListener('resize', throttle(lazyLoad, 200), { passive: true });
   }
 
-  // Load image with caching
+  // Load image with caching and optimizations
   function loadImage(imgElement, src) {
     if (!src) return;
     
@@ -101,12 +107,42 @@
       return;
     }
     
+    // Apply blur placeholder if enabled
+    if (settings.blurPlaceholders && !imgElement.classList.contains('no-blur')) {
+      // Create a tiny placeholder if not already present
+      if (!imgElement.style.backgroundImage) {
+        const tinyPlaceholder = imgElement.dataset.placeholder || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E';
+        imgElement.style.backgroundImage = `url(${tinyPlaceholder})`;
+        imgElement.style.backgroundSize = 'cover';
+        imgElement.style.backgroundPosition = 'center';
+        imgElement.style.filter = 'blur(10px)';
+      }
+    }
+    
     // Create new image for preloading
     const img = new Image();
     
     img.onload = function() {
       // Update the actual image
-      imgElement.src = src;
+      if (settings.progressiveLoading) {
+        // Fade in the image
+        imgElement.style.opacity = '0';
+        imgElement.src = src;
+        
+        // Remove blur filter
+        if (settings.blurPlaceholders) {
+          imgElement.style.filter = 'blur(0)';
+        }
+        
+        // Transition opacity
+        setTimeout(() => {
+          imgElement.style.transition = 'opacity 0.3s ease, filter 0.3s ease';
+          imgElement.style.opacity = '1';
+        }, 10);
+      } else {
+        imgElement.src = src;
+      }
+      
       imgElement.removeAttribute('data-src');
       imgElement.classList.remove('loading-skeleton');
       
@@ -114,6 +150,9 @@
       if (settings.cacheImages) {
         imageCache.set(src, true);
       }
+      
+      // Add decoded attribute for better performance
+      imgElement.setAttribute('decoded', 'true');
     };
     
     img.onerror = function() {
@@ -122,11 +161,53 @@
         imgElement.src = 'https://via.placeholder.com/300x300?text=No+Image';
         imgElement.classList.add('error-image');
         imgElement.classList.remove('loading-skeleton');
+        
+        // Remove blur filter
+        if (settings.blurPlaceholders) {
+          imgElement.style.filter = 'none';
+        }
       }
     };
     
-    // Start loading
-    img.src = src;
+    // Use WebP if supported and enabled
+    if (settings.useWebP && src.match(/\.(jpe?g|png)$/i) && isWebPSupported()) {
+      // Check if WebP version exists
+      const webpSrc = src.replace(/\.(jpe?g|png)$/i, '.webp');
+      
+      // Try to load WebP version first
+      const webpImg = new Image();
+      webpImg.onload = function() {
+        img.src = webpSrc;
+      };
+      webpImg.onerror = function() {
+        // Fallback to original format
+        img.src = src;
+      };
+      webpImg.src = webpSrc;
+    } else {
+      // Start loading original format
+      img.src = src;
+    }
+    
+    // Use srcset if available and enabled
+    if (settings.useSrcset && imgElement.dataset.srcset) {
+      img.srcset = imgElement.dataset.srcset;
+      img.sizes = imgElement.dataset.sizes || '100vw';
+    }
+    
+    // Set loading priority if needed
+    if (settings.priorityLoading && imgElement.dataset.priority === 'high') {
+      img.fetchPriority = 'high';
+    }
+  }
+  
+  // Check if WebP is supported
+  function isWebPSupported() {
+    const canvas = document.createElement('canvas');
+    if (canvas.getContext && canvas.getContext('2d')) {
+      return canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+    }
+    return false;
   }
 
   // Preload important images

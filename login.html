@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dairy-Lift - Login/Register</title>
+  <meta name="description" content="Dairy-Lift - Dairy Investment Platform" />
+  <meta name="author" content="Dairy-Lift" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Additional Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Ensure auth.js is properly initialized
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+      } else {
+        console.error('Auth script not loaded properly');
+        // Try to load it again
+        var script = document.createElement('script');
+        script.src = 'js/auth.js';
+        script.onload = function() {
+          console.log('Auth script loaded dynamically');
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.initAuth();
+          }
+        };
+        document.head.appendChild(script);
+      }
+    });
+
+    // Listen for auth.js loaded event
+    document.addEventListener('dairyLiftAuthLoaded', function(event) {
+      console.log('Auth script loaded event received');
+      if (window.DairyLiftAuth) {
+        window.DairyLiftAuth.initAuth();
+      }
+    });
+  </script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ad6ef5",
+            secondary: "#8A2BE2",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --primary: #ad6ef5;
+      --primary-foreground: #f8fafc;
+      --primary-light: rgba(173, 110, 245, 0.2);
+      --secondary: #8A2BE2;
+      --background: #ffffff;
+      --foreground: #020617;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+      --input: #e2e8f0;
+      --ring: #ad6ef5;
+      --radius: 0.5rem;
+    }
+
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    /* Video overlay */
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.85);
+      z-index: -1;
+      backdrop-filter: blur(3px);
+    }
+
+    /* Reset and base styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.5;
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
+    /* Layout */
+    .min-h-screen {
+      min-height: calc(100vh - 10px);
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .flex-col {
+      flex-direction: column;
+    }
+
+    .flex-grow {
+      flex-grow: 1;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-center {
+      justify-content: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .py-12 {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .px-6 {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .py-4 {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .pt-6 {
+      padding-top: 1.5rem;
+    }
+
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+
+    .max-w-md {
+      max-width: 28rem;
+    }
+
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .space-y-6 > * + * {
+      margin-top: 1.5rem;
+    }
+
+    .space-y-4 > * + * {
+      margin-top: 1rem;
+    }
+
+    .space-y-2 > * + * {
+      margin-top: 0.5rem;
+    }
+
+    .space-y-1 > * + * {
+      margin-top: 0.25rem;
+    }
+
+    .gap-3 {
+      gap: 0.75rem;
+    }
+
+    .gap-4 {
+      gap: 1rem;
+    }
+
+    .gap-2 {
+      gap: 0.5rem;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #ad6ef5;
+      min-width: 180px;
+      text-align: left;
+      margin-right: auto;
+      display: inline-block;
+    }
+
+    .desktop-nav {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      background: none;
+      border: none;
+      color: #ad6ef5;
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    .mobile-menu-toggle:hover {
+      background-color: rgba(173, 110, 245, 0.2);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(173, 110, 245, 0.2);
+    }
+
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .hamburger-lines {
+      width: 22px;
+      height: 18px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger-line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: #ad6ef5;
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: center;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      width: 22px;
+    }
+
+    .mobile-menu-toggle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(173, 110, 245, 0.2);
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-toggle:hover::after {
+      transform: scale(1);
+    }
+
+    .menu-toggle-ripple {
+      position: absolute;
+      background-color: rgba(173, 110, 245, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-in {
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: white;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #e2e8f0;
+    }
+
+    .mobile-menu.active {
+      transform: translateX(280px);
+    }
+
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+      color: #020617;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: #f1f5f9;
+      transform: translateX(5px);
+    }
+
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background-color: #ad6ef5;
+      transition: width 0.3s ease;
+    }
+
+    .mobile-nav-link:hover::after {
+      width: 30%;
+    }
+
+    .mobile-nav-link-primary {
+      color: #ad6ef5;
+      font-weight: 600;
+      background-color: rgba(173, 110, 245, 0.2);
+      margin-top: 0.75rem;
+    }
+
+    .mobile-nav-link-primary:hover {
+      background-color: rgba(173, 110, 245, 0.2);
+      transform: translateX(5px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(173, 110, 245, 0.15);
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 1rem;
+    }
+
+    .mobile-menu-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: #ad6ef5;
+      text-decoration: none;
+    }
+
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-close:hover {
+      background-color: #f1f5f9;
+      color: #020617;
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+        color: #020617;
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: #ad6ef5;
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #ad6ef5;
+        transition: width 0.3s;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .icon-link {
+        padding: 0.5rem;
+        color: #020617;
+        transition: color 0.3s;
+      }
+
+      .icon-link:hover {
+        color: #ad6ef5;
+      }
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .tabs-list {
+      background-color: #f1f5f9;
+      border-radius: 0.75rem;
+      padding: 0.35rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      overflow: hidden;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .tab-trigger {
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: center;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      background: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab-trigger[data-state="active"] {
+      background-color: white;
+      color: var(--foreground);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      font-weight: 600;
+    }
+
+    .tab-trigger[data-state="inactive"] {
+      color: #64748b;
+    }
+
+    .tab-trigger:hover {
+      color: var(--foreground);
+    }
+
+    .tab-trigger::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .tab-trigger[data-state="active"]::after {
+      width: 30%;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content[data-state="active"] {
+      display: block;
+    }
+
+    /* Card */
+    .card {
+      background-color: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      overflow: hidden;
+      border: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(226, 232, 240, 0.7);
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .card-footer {
+      padding: 1rem 1.5rem;
+      background-color: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* Typography */
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+      color: #111827;
+    }
+
+    p {
+      color: #64748b;
+      margin: 0;
+    }
+
+    .text-sm {
+      font-size: 0.875rem;
+    }
+
+    .text-xs {
+      font-size: 0.75rem;
+    }
+
+    .font-medium {
+      font-weight: 500;
+    }
+
+    .text-gray-600 {
+      color: #4b5563;
+    }
+
+    .text-gray-700 {
+      color: #374151;
+    }
+
+    .text-primary {
+      color: var(--primary);
+    }
+
+    .text-white {
+      color: #ffffff;
+    }
+
+    .text-lg {
+      font-size: 1.125rem;
+    }
+
+    .leading-none {
+      line-height: 1;
+    }
+
+    /* Form controls */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #374151;
+    }
+
+    .relative {
+      position: relative;
+    }
+
+    .input {
+      width: 100%;
+      height: 3rem;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 0.5rem;
+      background-color: white;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      color: #020617;
+    }
+
+    .input:hover {
+      border-color: #cbd5e1;
+    }
+
+    .pl-10 {
+      padding-left: 2.5rem;
+    }
+
+    .pr-10 {
+      padding-right: 2.5rem;
+    }
+
+    .h-11 {
+      height: 2.75rem;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .absolute {
+      position: absolute;
+    }
+
+    .left-3 {
+      left: 0.75rem;
+    }
+
+    .right-3 {
+      right: 0.75rem;
+    }
+
+    .top-1\/2 {
+      top: 50%;
+    }
+
+    .-translate-y-1\/2 {
+      transform: translateY(-50%);
+    }
+
+    .h-4 {
+      height: 1rem;
+    }
+
+    .w-4 {
+      width: 1rem;
+    }
+
+    .text-gray-500 {
+      color: #6b7280;
+    }
+
+    .hover\:text-gray-700:hover {
+      color: #374151;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: scale(0);
+      opacity: 0;
+      border-radius: inherit;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .btn:active::after {
+      transform: scale(2);
+      opacity: 1;
+      transition: 0s;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 10px rgba(173, 110, 245, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(173, 110, 245, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(173, 110, 245, 0.3);
+    }
+
+    .btn-link {
+      background-color: transparent;
+      color: var(--primary);
+      border: none;
+      padding: 0;
+      font-weight: 600;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .btn-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .btn-link:hover::after {
+      width: 100%;
+    }
+
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .h-auto {
+      height: auto;
+    }
+
+    .p-0 {
+      padding: 0;
+    }
+
+    .hover\:underline:hover {
+      text-decoration: underline;
+    }
+
+    /* Account type selection */
+    .grid {
+      display: grid;
+    }
+
+    .grid-cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .p-3 {
+      padding: 0.75rem;
+    }
+
+    .rounded-lg {
+      border-radius: 0.5rem;
+    }
+
+    .border {
+      border: 1px solid #e2e8f0;
+    }
+
+    .border-primary {
+      border-color: var(--primary);
+    }
+
+    .bg-primary {
+      background-color: var(--primary);
+    }
+
+    .bg-white {
+      background-color: white;
+    }
+
+    .hover\:bg-gray-50:hover {
+      background-color: #f9fafb;
+    }
+
+    .cursor-pointer {
+      cursor: pointer;
+    }
+
+    .h-24 {
+      height: 6rem;
+    }
+
+    .transition-colors {
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Account info box */
+    .p-4 {
+      padding: 1rem;
+    }
+
+    .bg-gray-50 {
+      background-color: #f9fafb;
+    }
+
+    .border-gray-100 {
+      border-color: #f3f4f6;
+    }
+
+    .items-start {
+      align-items: flex-start;
+    }
+
+    /* Footer - These styles are now handled by Tailwind CSS */
+
+    /* Toast notifications */
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 9999;
+    }
+
+    .toast {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      max-width: 24rem;
+      animation: toast-in 0.3s ease-out;
+    }
+
+    .toast-success {
+      border-left: 4px solid #10b981;
+    }
+
+    .toast-error {
+      border-left: 4px solid #ef4444;
+    }
+
+    .toast-content {
+      flex-grow: 1;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-message {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    .toast-close:hover {
+      color: #64748b;
+    }
+
+    @keyframes toast-in {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Reset for buttons */
+    button {
+      background: none;
+      color: inherit;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      outline: inherit;
+    }
+
+    /* Custom styles for this specific page */
+    .bg-gray-50 {
+      background-color: #f9fafb;
+    }
+
+    .block {
+      display: block;
+    }
+
+    .readOnly {
+      background-color: #f3f4f6;
+    }
+
+    /* Footer specific styles */
+    footer.bg-gray-900 {
+      margin-top: 2rem;
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    footer .container {
+      max-width: 100%;
+    }
+
+    footer .text-primary {
+      color: var(--primary);
+    }
+
+    footer .hover\:bg-primary:hover {
+      background-color: var(--primary);
+    }
+
+    footer .focus\:ring-primary:focus {
+      --tw-ring-color: var(--primary);
+    }
+
+    footer .bg-primary {
+      background-color: var(--primary);
+    }
+
+    footer .hover\:bg-primary\/90:hover {
+      background-color: rgba(173, 110, 245, 0.9);
+    }
+
+    footer .rounded-button {
+      border-radius: 0.5rem;
+    }
+
+    footer .hover\:text-white:hover {
+      color: white !important;
+      transition: color 0.3s ease;
+    }
+
+    footer .transition-colors {
+      transition: color 0.3s ease, background-color 0.3s ease;
+    }
+
+    footer .space-y-3 > * + * {
+      margin-top: 0.75rem;
+    }
+
+    footer .space-y-4 > * + * {
+      margin-top: 1rem;
+    }
+
+    footer .space-x-4 > * + * {
+      margin-left: 1rem;
+    }
+
+    footer .space-x-6 > * + * {
+      margin-left: 1.5rem;
+    }
+
+    .container {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        max-width: 640px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        max-width: 768px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        max-width: 1024px;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .container {
+        max-width: 1280px;
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .grid-cols-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-cols-2 {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .space-x-6 > * + * {
+        margin-left: 1rem;
+      }
+
+      .pt-16 {
+        padding-top: 3rem;
+      }
+
+      .pb-8 {
+        padding-bottom: 1.5rem;
+      }
+
+      html, body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+      }
+    }
+  </style>
+</head>
+<body>
+    <video autoplay muted loop id="bg-video">
+        <source src="video/login video.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <div class="bg-overlay"></div>
+
+  <div id="app" class="flex flex-col min-h-screen overflow-x-hidden">
+    <!-- Navbar -->
+    <header class="navbar" style="padding:10px; background-color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; z-index: 30; margin-bottom: 20px;">
+      <div class="container" style="margin:0 auto;">
+        <div class="navbar-content">
+          <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+            <div class="hamburger-lines">
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+            </div>
+          </button>
+          <a href="home_page.html" class="logo font-['Pacifico']">Dairy-Lift</a>
+          <nav class="desktop-nav">
+            <a href="home_page.html" class="nav-link">Home</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <a href="home_page.html" class="mobile-menu-logo">Dairy-Lift</a>
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+        <a href="filesforbuycattle/dist/index.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span style="margin-left: 10px;">Buy Cattle</span>
+        </a>
+        <a href="#" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span style="margin-left: 10px;">Bio-Gas</span>
+        </a>
+
+        <a href="farm-vista-scheduler-flow/dist/index.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span style="margin-left: 10px;">Visit Farm</span>
+        </a>
+        <a href="navhome.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <span style="margin-left: 10px;">Insurance</span>
+        </a>
+        <a href="admin-dashboard.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+            <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+          </svg>
+          <span style="margin-left: 10px;">Register Cattle</span>
+        </a>
+        <a href="#" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+          </svg>
+          <span style="margin-left: 10px;">Contact-Us</span>
+        </a>
+        <a href="help/home.html" class="mobile-nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span style="margin-left: 10px;">Support</span>
+        </a>
+        <a href="login.html" class="mobile-nav-link mobile-nav-link-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg>
+          <span style="margin-left: 10px;">Login / Register</span>
+        </a>
+      </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow px-4 relative z-10" style="margin-top: -15px;">
+      <div class="max-w-md mx-auto">
+        <div class="tabs animate-in" style="margin-top: 0;">
+          <div class="tabs-list" style="margin-top: 0;">
+            <button class="tab-trigger" data-state="active" data-tab="login">Login</button>
+            <button class="tab-trigger" data-state="inactive" data-tab="register">Register</button>
+          </div>
+
+          <!-- Login Tab Content -->
+          <div class="tab-content" data-state="active" data-tab="login">
+            <div class="card shadow-xl border border-gray-100 rounded-lg overflow-hidden transform transition-all hover:shadow-2xl" style="background-color: white; border-top: 4px solid #ad6ef5; box-shadow: 0 10px 25px -5px rgba(173, 110, 245, 0.1), 0 10px 10px -5px rgba(173, 110, 245, 0.04);">
+              <div class="card-content pt-5">
+                <div class="text-center mb-5">
+                  <h2 class="text-2xl font-bold text-gray-900">Welcome Back</h2>
+                  <p class="text-sm text-gray-600 mt-1">
+                    Enter your credentials to access your account
+                  </p>
+                </div>
+
+                <form id="login-form" class="space-y-4">
+                  <div class="space-y-2">
+                    <label for="login-email" class="label font-medium">Email Address <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                      <span class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect width="20" height="16" x="2" y="4" rx="2"/>
+                          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                        </svg>
+                      </span>
+                      <input id="login-email" type="email" placeholder="name@example.com" class="input pl-10 h-11 w-full focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+                    </div>
+                  </div>
+
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <label for="login-password" class="label font-medium">Password <span class="text-red-500">*</span></label>
+                      <button type="button" class="btn-link text-xs text-primary hover:text-secondary transition-colors">Forgot password?</button>
+                    </div>
+                    <div class="relative">
+                      <span class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                      </span>
+                      <input id="login-password" type="password" class="input pl-10 pr-10 h-11 w-full focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+                      <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary transition-colors toggle-password">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                          <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                          <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                          <line x1="2" x2="22" y1="2" y2="22"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center mt-2">
+                    <input type="checkbox" id="remember-me" class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary/25">
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary w-full h-11 mt-4 font-medium transition-all hover:shadow-md hover:shadow-primary/20 active:scale-[0.98]">Sign In</button>
+                </form>
+
+                <script>
+                  // Handle login form submission
+                  document.getElementById('login-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const email = document.getElementById('login-email').value;
+                    const password = document.getElementById('login-password').value;
+
+                    // Simple validation
+                    if (!email || !password) {
+                      alert('Please enter both email and password');
+                      return;
+                    }
+
+                    // Create user data object
+                    const userData = {
+                      email: email,
+                      name: email.split('@')[0], // Just use the part before @ as name for demo
+                      lastLogin: new Date().toISOString(),
+                      role: 'investor'
+                    };
+
+                    // Set user as logged in using the auth.js utility
+                    if (window.DairyLiftAuth) {
+                      window.DairyLiftAuth.setLoggedIn(userData);
+
+                      // Show success message
+                      alert('Login successful!');
+
+                      // Redirect to dashboard
+                      setTimeout(function() {
+                        window.location.href = 'dashboard.html';
+                      }, 500);
+                    } else {
+                      console.error('Auth script not loaded properly');
+                      alert('Login failed. Please try again later.');
+                    }
+                  });
+
+                  // Toggle password visibility
+                  document.querySelectorAll('.toggle-password').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                      const input = this.closest('.relative').querySelector('input');
+                      if (input.type === 'password') {
+                        input.type = 'text';
+                        this.innerHTML = `
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                          </svg>
+                        `;
+                      } else {
+                        input.type = 'password';
+                        this.innerHTML = `
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                            <line x1="2" x2="22" y1="2" y2="22"/>
+                          </svg>
+                        `;
+                      }
+                    });
+                  });
+                </script>
+              </div>
+              <div class="card-footer bg-gray-50 rounded-b-lg">
+                <p class="text-sm text-gray-600">
+                  Don't have an account?
+                  <button type="button" class="btn-link text-primary font-medium hover:underline switch-tab" data-tab="register">Sign up</button>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Register Tab Content -->
+          <div class="tab-content" data-state="inactive" data-tab="register">
+            <div class="card">
+              <div class="card-content pt-6">
+                <div class="text-center mb-6">
+                  <h2 class="text-2xl font-bold text-gray-900">Create an Account</h2>
+                  <p class="text-sm text-gray-600 mt-1">
+                    Select your account type and enter your information
+                  </p>
+                </div>
+
+                <form id="register-form" class="space-y-6">
+                  <!-- Account Type Selection -->
+                  <div class="grid grid-cols-3 gap-3">
+                    <div class="p-3 rounded-lg border bg-primary text-white border-primary flex flex-col items-center justify-center h-24 text-center transition-colors" data-type="investor">
+                      <span class="h-5 w-5 mb-2 text-white">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                          <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                      </span>
+                      <span class="text-xs font-medium">Investor</span>
+                    </div>
+
+                    <div class="p-3 rounded-lg border bg-white hover:bg-gray-50 cursor-pointer flex flex-col items-center justify-center h-24 text-center transition-colors" data-type="manager">
+                      <span class="h-5 w-5 mb-2 text-gray-700">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect width="16" height="20" x="4" y="2" rx="2" ry="2"/>
+                          <path d="M9 22v-4h6v4"/>
+                          <path d="M8 6h.01"/>
+                          <path d="M16 6h.01"/>
+                          <path d="M12 6h.01"/>
+                          <path d="M12 10h.01"/>
+                          <path d="M12 14h.01"/>
+                          <path d="M16 10h.01"/>
+                          <path d="M16 14h.01"/>
+                          <path d="M8 10h.01"/>
+                          <path d="M8 14h.01"/>
+                        </svg>
+                      </span>
+                      <span class="text-xs font-medium">Farm Manager</span>
+                    </div>
+
+                    <div class="p-3 rounded-lg border bg-white hover:bg-gray-50 cursor-pointer flex flex-col items-center justify-center h-24 text-center transition-colors" data-type="customer">
+                      <span class="h-5 w-5 mb-2 text-gray-700">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                          <path d="M3 6h18"/>
+                          <path d="M16 10a4 4 0 0 1-8 0"/>
+                        </svg>
+                      </span>
+                      <span class="text-xs font-medium">Customer</span>
+                    </div>
+                  </div>
+
+                  <!-- Personal Information -->
+                  <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div class="space-y-2">
+                        <label for="first-name" class="label">First name</label>
+                        <input id="first-name" placeholder="John" class="input h-11" required>
+                      </div>
+                      <div class="space-y-2">
+                        <label for="last-name" class="label">Last name</label>
+                        <input id="last-name" placeholder="Doe" class="input h-11" required>
+                      </div>
+                    </div>
+
+                    <div class="space-y-2">
+                      <label for="email" class="label">Email</label>
+                      <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="16" x="2" y="4" rx="2"/>
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                          </svg>
+                        </span>
+                        <input id="email" type="email" placeholder="name@example.com" class="input pl-10 h-11" required>
+                      </div>
+                    </div>
+
+                    <div class="space-y-2">
+                      <label for="phone" class="label">Phone number</label>
+                      <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                          </svg>
+                        </span>
+                        <input id="phone" type="tel" placeholder="+1 (555) 000-0000" class="input pl-10 h-11" required>
+                      </div>
+                    </div>
+
+                    <div class="space-y-2">
+                      <label for="password" class="label">Password</label>
+                      <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                          </svg>
+                        </span>
+                        <input id="password" type="password" class="input pl-10 pr-10 h-11" required>
+                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 toggle-password">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                            <line x1="2" x2="22" y1="2" y2="22"/>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="space-y-2">
+                      <label for="confirm-password" class="label">Confirm password</label>
+                      <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                          </svg>
+                        </span>
+                        <input id="confirm-password" type="password" class="input pl-10 pr-10 h-11" required>
+                        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 toggle-password">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                            <line x1="2" x2="22" y1="2" y2="22"/>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Account Type Information -->
+                  <div id="account-info" class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                    <div>
+                      <p class="text-sm font-medium mb-2">As an investor you will be able to:</p>
+                      <ul class="text-sm text-gray-600 space-y-1">
+                        <li class="flex items-start gap-2">
+                          <span class="text-primary text-lg leading-none">•</span>
+                          <span>Purchase cattle as investments</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                          <span class="text-primary text-lg leading-none">•</span>
+                          <span>Track milk production and earnings</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                          <span class="text-primary text-lg leading-none">•</span>
+                          <span>Receive regular updates and reports</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary w-full h-11">Create Account</button>
+                </form>
+              </div>
+              <div class="card-footer">
+                <p class="text-sm text-gray-600">
+                  Already have an account?
+                  <button type="button" class="btn-link text-primary hover:underline switch-tab" data-tab="login">Sign in</button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8 mt-auto relative z-10 w-full">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div>
+            <a href="#" class="text-primary font-['Pacifico'] text-2xl"
+              >Dairy-Lift</a
+            >
+            <p class="mt-4 text-gray-400">
+              Transforming dairy farming into a premium investment opportunity
+              with transparent operations and consistent returns.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
+                aria-label="Facebook"
+              >
+                <i class="ri-facebook-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
+                aria-label="Twitter"
+              >
+                <i class="ri-twitter-x-fill"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/dairy_lift/"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
+                aria-label="Instagram"
+              >
+                <i class="ri-instagram-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
+                aria-label="LinkedIn"
+              >
+                <i class="ri-linkedin-fill"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4 relative inline-block after:absolute after:bottom-[-5px] after:left-0 after:h-[2px] after:w-10 after:bg-primary">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group"
+                >
+                  <i class="ri-arrow-right-s-line mr-1 opacity-0 group-hover:opacity-100 transform translate-x-[-5px] group-hover:translate-x-0 transition-all duration-300"></i>
+                  <span>About Us</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group"
+                >
+                  <i class="ri-arrow-right-s-line mr-1 opacity-0 group-hover:opacity-100 transform translate-x-[-5px] group-hover:translate-x-0 transition-all duration-300"></i>
+                  <span>Investment Options</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group"
+                >
+                  <i class="ri-arrow-right-s-line mr-1 opacity-0 group-hover:opacity-100 transform translate-x-[-5px] group-hover:translate-x-0 transition-all duration-300"></i>
+                  <span>Performance Reports</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group"
+                >
+                  <i class="ri-arrow-right-s-line mr-1 opacity-0 group-hover:opacity-100 transform translate-x-[-5px] group-hover:translate-x-0 transition-all duration-300"></i>
+                  <span>Farm Tours</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group"
+                >
+                  <i class="ri-arrow-right-s-line mr-1 opacity-0 group-hover:opacity-100 transform translate-x-[-5px] group-hover:translate-x-0 transition-all duration-300"></i>
+                  <span>Testimonials</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group"
+                >
+                  <i class="ri-arrow-right-s-line mr-1 opacity-0 group-hover:opacity-100 transform translate-x-[-5px] group-hover:translate-x-0 transition-all duration-300"></i>
+                  <span>FAQs</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+            <ul class="space-y-3">
+              <li class="flex items-start group">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5 group-hover:text-primary transition-colors duration-300"
+                >
+                  <i class="ri-map-pin-line"></i>
+                </div>
+                <span class="ml-2 text-gray-400 group-hover:text-gray-300 transition-colors duration-300 text-sm md:text-base"
+                  >123 Dairy Farm Road, Green Valley, CA 94535</span
+                >
+              </li>
+              <li class="flex items-start group">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5 group-hover:text-primary transition-colors duration-300"
+                >
+                  <i class="ri-phone-line"></i>
+                </div>
+                <span class="ml-2 text-gray-400 group-hover:text-gray-300 transition-colors duration-300 text-sm md:text-base">+1 (555) 123-4567</span>
+              </li>
+              <li class="flex items-start group">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5 group-hover:text-primary transition-colors duration-300"
+                >
+                  <i class="ri-mail-line"></i>
+                </div>
+                <span class="ml-2 text-gray-400 group-hover:text-gray-300 transition-colors duration-300 text-sm md:text-base">dairylift@gmail.com</span>
+              </li>
+              <li class="flex items-start group">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-gray-400 mt-0.5 group-hover:text-primary transition-colors duration-300"
+                >
+                  <i class="ri-time-line"></i>
+                </div>
+                <span class="ml-2 text-gray-400 group-hover:text-gray-300 transition-colors duration-300 text-sm md:text-base">Mon-Fri: 9AM-5PM (PST)</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+            <p class="text-gray-400 mb-4 text-sm md:text-base">
+              Subscribe to receive updates on dairy market trends and investment opportunities.
+            </p>
+            <form class="space-y-4">
+              <div>
+                <input
+                  type="email"
+                  placeholder="Your email address"
+                  class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary text-white transition-all duration-300 hover:border-gray-500"
+                />
+              </div>
+              <button
+                type="submit"
+                class="w-full bg-primary hover:bg-primary/90 text-white py-2 font-medium !rounded-button whitespace-nowrap transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-lg"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+        <div
+          class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center flex-wrap"
+        >
+          <p class="text-gray-400 text-sm flex items-center">
+            <i class="ri-copyright-line mr-1"></i> 2025
+            <span class="text-primary mx-1 font-['Pacifico']">Dairy-Lift</span>. All rights reserved.
+          </p>
+          <div class="mt-4 md:mt-0 flex flex-wrap gap-4">
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-white hover:after:w-full after:transition-all after:duration-300"
+              >Privacy Policy</a
+            >
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-white hover:after:w-full after:transition-all after:duration-300"
+              >Terms of Service</a
+            >
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-white hover:after:w-full after:transition-all after:duration-300"
+              >Cookie Policy</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching
+      const tabTriggers = document.querySelectorAll('.tab-trigger');
+      const tabContents = document.querySelectorAll('.tab-content');
+      const switchTabButtons = document.querySelectorAll('.switch-tab');
+
+      function switchTab(tabId) {
+        // Update tab triggers
+        tabTriggers.forEach(trigger => {
+          if (trigger.dataset.tab === tabId) {
+            trigger.dataset.state = 'active';
+          } else {
+            trigger.dataset.state = 'inactive';
+          }
+        });
+
+        // Update tab contents
+        tabContents.forEach(content => {
+          if (content.dataset.tab === tabId) {
+            content.dataset.state = 'active';
+          } else {
+            content.dataset.state = 'inactive';
+          }
+        });
+      }
+
+      tabTriggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          switchTab(trigger.dataset.tab);
+        });
+      });
+
+      switchTabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          switchTab(button.dataset.tab);
+        });
+      });
+
+      // Password visibility toggle
+      const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+
+      togglePasswordButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const input = button.closest('.relative').querySelector('input');
+          const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+          input.setAttribute('type', type);
+
+          // Toggle icon and add title for accessibility
+          if (type === 'text') {
+            button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+            button.setAttribute('title', 'Hide password');
+            button.classList.add('text-primary');
+          } else {
+            button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>';
+            button.setAttribute('title', 'Show password');
+            button.classList.remove('text-primary');
+          }
+
+          // Add a subtle animation
+          button.classList.add('animate-pulse');
+          setTimeout(() => {
+            button.classList.remove('animate-pulse');
+          }, 300);
+        });
+      });
+
+      // Account type selection
+      const accountTypes = document.querySelectorAll('[data-type]');
+      const accountInfo = document.getElementById('account-info');
+
+      const accountTypeInfo = {
+        investor: `
+          <div>
+            <p class="text-sm font-medium mb-2">As an investor you will be able to:</p>
+            <ul class="text-sm text-gray-600 space-y-1">
+              <li class="flex items-start gap-2">
+                <span class="text-primary text-lg leading-none">•</span>
+                <span>Purchase cattle as investments</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-primary text-lg leading-none">•</span>
+                <span>Track milk production and earnings</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-primary text-lg leading-none">•</span>
+                <span>Receive regular updates and reports</span>
+              </li>
+            </ul>
+          </div>
+        `,
+        manager: `
+          <div>
+            <p class="text-sm font-medium mb-2">As a farm manager you will be able to:</p>
+            <ul class="text-sm text-gray-600 space-y-1">
+              <li class="flex items-start gap-2">
+                <span class="text-primary text-lg leading-none">•</span>
+                <span>Manage cattle health and production data</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-primary text-lg leading-none">•</span>
+                <span>Update investor profiles and returns</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-primary text-lg leading-none">•</span>
+                <span>Access farm management tools</span>
+              </li>
+            </ul>
+          </div>
+        `,
+        customer: `
+          <div>
+            <p class="text-sm font-medium mb-2">As a customer you will be able to:</p>
+            <ul class="text-sm text-gray-600 space-y-1">
+              <li class="flex items-start gap-2">
+                <span class="text-primary text-lg leading-none">•</span>
+                <span>Purchase premium dairy products</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-primary text-lg leading-none">•</span>
+                <span>Access special promotions and discounts</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-primary text-lg leading-none">•</span>
+                <span>Participate in farm tours and events</span>
+              </li>
+            </ul>
+          </div>
+        `
+      };
+
+      accountTypes.forEach(type => {
+        type.addEventListener('click', () => {
+          // Remove active class from all account types
+          accountTypes.forEach(t => {
+            t.classList.remove('bg-primary', 'text-white', 'border-primary');
+            t.classList.add('bg-white', 'hover:bg-gray-50', 'cursor-pointer');
+
+            // Update icon color
+            const icon = t.querySelector('span:first-child');
+            if (icon) {
+              icon.classList.remove('text-white');
+              icon.classList.add('text-gray-700');
+            }
+          });
+
+          // Add active class to clicked account type
+          type.classList.remove('bg-white', 'hover:bg-gray-50');
+          type.classList.add('bg-primary', 'text-white', 'border-primary');
+
+          // Update icon color
+          const icon = type.querySelector('span:first-child');
+          if (icon) {
+            icon.classList.remove('text-gray-700');
+            icon.classList.add('text-white');
+          }
+
+          // Update account info
+          const accountType = type.dataset.type;
+          accountInfo.innerHTML = accountTypeInfo[accountType];
+        });
+      });
+
+      // Form submission
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const rememberMe = document.getElementById('remember-me').checked;
+
+        if (!email || !password) {
+          showToast('Missing information', 'Please fill in all required fields', 'error');
+          return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showToast('Invalid email', 'Please enter a valid email address', 'error');
+          return;
+        }
+
+        // Password validation (minimum 6 characters)
+        if (password.length < 6) {
+          showToast('Invalid password', 'Password must be at least 6 characters', 'error');
+          return;
+        }
+
+        // Simulate login process
+        const submitButton = loginForm.querySelector('button[type="submit"]');
+        submitButton.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Signing in...';
+        submitButton.disabled = true;
+
+        // If remember me is checked, store in localStorage (in a real app, use secure cookies)
+        if (rememberMe) {
+          localStorage.setItem('rememberedEmail', email);
+        } else {
+          localStorage.removeItem('rememberedEmail');
+        }
+
+        // Create user data object
+        const userData = {
+          email: email,
+          name: email.split('@')[0], // Simple name extraction from email
+          profileImage: null, // No profile image by default
+          lastLogin: new Date().toISOString()
+        };
+
+        // Function to handle the login process
+        const processLogin = function() {
+          console.log('Processing login with userData:', userData);
+
+          // Set user as logged in using our auth utility
+          if (window.DairyLiftAuth) {
+            try {
+              console.log('Setting user as logged in:', userData);
+              window.DairyLiftAuth.setLoggedIn(userData);
+
+              showToast('Login successful', 'Welcome back! Redirecting...', 'success');
+
+              // Force UI update
+              window.DairyLiftAuth.updateAuthUI();
+
+              // Redirect to dashboard after successful login
+              setTimeout(() => {
+                window.location.href = 'dashboard.html';
+              }, 1500);
+            } catch (error) {
+              console.error('Error during login:', error);
+              showToast('Login error', 'An error occurred during login. Please try again.', 'error');
+            }
+          } else {
+            console.error('Auth utility not available');
+            showToast('Login error', 'Authentication system not available. Reloading page...', 'error');
+
+            // Try to reload the page to fix the issue
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
+
+          submitButton.innerText = 'Sign In';
+          submitButton.disabled = false;
+        };
+
+        // Check if auth.js is loaded, if not, wait for it
+        if (!window.DairyLiftAuth) {
+          console.log('Auth not available, loading script...');
+
+          // Try to load auth.js
+          var script = document.createElement('script');
+          script.src = 'js/auth.js';
+          script.onload = function() {
+            console.log('Auth script loaded dynamically during login');
+            setTimeout(processLogin, 500); // Give it time to initialize
+          };
+          script.onerror = function() {
+            console.error('Failed to load auth.js');
+            showToast('Login error', 'Failed to load authentication system', 'error');
+            submitButton.innerText = 'Sign In';
+            submitButton.disabled = false;
+          };
+          document.head.appendChild(script);
+        } else {
+          // Auth is available, process login after a short delay
+          setTimeout(processLogin, 500);
+        }
+      });
+
+      registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const firstName = document.getElementById('first-name').value;
+        const lastName = document.getElementById('last-name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+          showToast('Missing information', 'Please fill in all required fields', 'error');
+          return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showToast('Invalid email', 'Please enter a valid email address', 'error');
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showToast('Passwords don\'t match', 'Please make sure your passwords match', 'error');
+          return;
+        }
+
+        // Password validation (minimum 6 characters)
+        if (password.length < 6) {
+          showToast('Invalid password', 'Password must be at least 6 characters', 'error');
+          return;
+        }
+
+        // Simulate registration process
+        const submitButton = registerForm.querySelector('button[type="submit"]');
+        submitButton.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Creating account...';
+        submitButton.disabled = true;
+
+        // Get selected account type
+        let accountType = 'investor'; // Default
+        document.querySelectorAll('[data-type]').forEach(type => {
+          if (type.classList.contains('bg-primary')) {
+            accountType = type.dataset.type;
+          }
+        });
+
+        // Create user data object
+        const userData = {
+          email: email,
+          name: firstName + ' ' + lastName,
+          phone: phone,
+          accountType: accountType,
+          profileImage: null,
+          registrationDate: new Date().toISOString(),
+          lastLogin: new Date().toISOString()
+        };
+
+        // Function to handle the registration process
+        const processRegistration = function() {
+          console.log('Processing registration with userData:', userData);
+
+          // Set user as logged in using our auth utility
+          if (window.DairyLiftAuth) {
+            try {
+              console.log('Registering new user:', userData);
+              window.DairyLiftAuth.setLoggedIn(userData);
+
+              showToast('Registration successful', 'Welcome to Dairy-Lift! Redirecting...', 'success');
+
+              // Force UI update
+              window.DairyLiftAuth.updateAuthUI();
+
+              // Redirect to dashboard after successful registration
+              setTimeout(() => {
+                window.location.href = 'dashboard.html';
+              }, 1500);
+            } catch (error) {
+              console.error('Error during registration:', error);
+              showToast('Registration error', 'An error occurred during registration. Please try again.', 'error');
+            }
+          } else {
+            console.error('Auth utility not available');
+            showToast('Registration error', 'Authentication system not available. Reloading page...', 'error');
+
+            // Try to reload the page to fix the issue
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
+
+          submitButton.innerText = 'Create Account';
+          submitButton.disabled = false;
+        };
+
+        // Check if auth.js is loaded, if not, wait for it
+        if (!window.DairyLiftAuth) {
+          console.log('Auth not available, loading script...');
+
+          // Try to load auth.js
+          var script = document.createElement('script');
+          script.src = 'js/auth.js';
+          script.onload = function() {
+            console.log('Auth script loaded dynamically during registration');
+            setTimeout(processRegistration, 500); // Give it time to initialize
+          };
+          script.onerror = function() {
+            console.error('Failed to load auth.js');
+            showToast('Registration error', 'Failed to load authentication system', 'error');
+            submitButton.innerText = 'Create Account';
+            submitButton.disabled = false;
+          };
+          document.head.appendChild(script);
+        } else {
+          // Auth is available, process registration after a short delay
+          setTimeout(processRegistration, 500);
+        }
+
+
+      });
+
+      // Toast notification function
+      function showToast(title, message, type = 'success') {
+        const toastContainer = document.getElementById('toast-container');
+
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+
+        toast.innerHTML = `
+          <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+          </div>
+          <button class="toast-close">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" x2="6" y1="6" y2="18"/>
+              <line x1="6" x2="18" y1="6" y2="18"/>
+            </svg>
+          </button>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        // Add close button functionality
+        const closeButton = toast.querySelector('.toast-close');
+        closeButton.addEventListener('click', () => {
+          toast.remove();
+        });
+
+        // Auto-remove toast after 5 seconds
+        setTimeout(() => {
+          toast.remove();
+        }, 5000);
+      }
+    });
+
+    // Mobile Menu Toggle
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const body = document.body;
+
+    // Function to open mobile menu
+    function openMobileMenu() {
+      mobileMenu.classList.add('active');
+      mobileMenuOverlay.classList.add('active');
+      mobileMenuToggle.classList.add('active');
+      body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+
+      // Add a subtle ripple effect on click
+      const ripple = document.createElement('span');
+      ripple.classList.add('menu-toggle-ripple');
+      mobileMenuToggle.appendChild(ripple);
+
+      // Position the ripple where the click happened
+      const rect = mobileMenuToggle.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height) * 2;
+
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${-size/4}px`;
+      ripple.style.top = `${-size/4}px`;
+
+      // Remove the ripple after animation completes
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+
+      // Add entrance animation to each nav link
+      const navLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+      navLinks.forEach((link, index) => {
+        link.style.opacity = '0';
+        link.style.transform = 'translateX(-10px)';
+        link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        link.style.transitionDelay = `${0.05 * (index + 1)}s`;
+
+        setTimeout(() => {
+          link.style.opacity = '1';
+          link.style.transform = 'translateX(0)';
+        }, 10);
+      });
+    }
+
+    // Function to close mobile menu
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('active');
+      mobileMenuOverlay.classList.remove('active');
+      mobileMenuToggle.classList.remove('active');
+      body.style.overflow = ''; // Restore scrolling
+    }
+
+    // Toggle menu when clicking the hamburger button
+    mobileMenuToggle.addEventListener('click', function(event) {
+      event.stopPropagation();
+      if (mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+
+    // Close menu when clicking the close button
+    mobileMenuClose.addEventListener('click', closeMobileMenu);
+
+    // Close menu when clicking the overlay
+    mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+    // Close mobile menu when clicking on a link
+    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Close mobile menu when pressing Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+      }
+
+      // Check for remembered email on page load
+      const rememberedEmail = localStorage.getItem('rememberedEmail');
+      if (rememberedEmail) {
+        document.getElementById('login-email').value = rememberedEmail;
+        document.getElementById('remember-me').checked = true;
+      }
+
+      // Add focus effect to input fields
+      const inputFields = document.querySelectorAll('.input');
+      inputFields.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.classList.add('ring-2', 'ring-primary/20');
+        });
+
+        input.addEventListener('blur', function() {
+          this.parentElement.classList.remove('ring-2', 'ring-primary/20');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

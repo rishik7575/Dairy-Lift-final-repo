@@ -26,10 +26,9 @@
         window.DairyLiftAuth.initAuth();
 
         // Check if user is logged in
-        if (!window.DairyLiftAuth || !window.DairyLiftAuth.isLoggedIn()) {
-          console.log('User not logged in, showing login prompt');
-          // Show login prompt instead of redirecting
-          showLoginPrompt();
+        if (!window.DairyLiftAuth.isLoggedIn()) {
+          console.log('User not logged in, redirecting to login page');
+          window.location.href = 'login.html';
         } else {
           // Load user profile data
           const userData = window.DairyLiftAuth.getCurrentUser();
@@ -51,33 +50,6 @@
         console.error('Auth script not loaded properly');
       }
     });
-
-    function showLoginPrompt() {
-      const body = document.body;
-      if (body) {
-        body.innerHTML = `
-          <div class="flex items-center justify-center min-h-screen bg-gray-50">
-            <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
-              <div class="mb-6">
-                <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
-              <h2 class="text-2xl font-bold text-gray-900 mb-4">Profile Access Required</h2>
-              <p class="text-gray-600 mb-6">Please log in to view and manage your profile.</p>
-              <div class="space-y-3">
-                <a href="login.html" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 inline-block">
-                  Log In
-                </a>
-                <a href="index.html" class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition duration-200 inline-block">
-                  Back to Home
-                </a>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-    }
   </script>
   <script>
     tailwind.config = {

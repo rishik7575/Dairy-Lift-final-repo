@@ -352,17 +352,87 @@ class PerformanceManager {
 
   // Preload critical resources
   preloadCriticalResources() {
+    // Critical images
     const criticalImages = [
       'image/profileicone.png',
-      // Add other critical images here
+      'image/logo.png',
+      'image/hero-image.jpg',
+      'image/placeholder.png'
     ];
 
+    // Critical CSS
+    const criticalCSS = [
+      'css/performance-optimizations.css'
+    ];
+
+    // Critical JavaScript
+    const criticalJS = [
+      'js/global-optimizations.js',
+      'js/image-optimizer.js'
+    ];
+
+    // Critical fonts
+    const criticalFonts = [
+      'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+    ];
+
+    // Preload critical images
     criticalImages.forEach(src => {
       const link = document.createElement('link');
       link.rel = 'preload';
       link.as = 'image';
       link.href = src;
+      link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
+    });
+
+    // Preload critical CSS
+    criticalCSS.forEach(src => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'style';
+      link.href = src;
+      document.head.appendChild(link);
+    });
+
+    // Preload critical JavaScript
+    criticalJS.forEach(src => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'script';
+      link.href = src;
+      document.head.appendChild(link);
+    });
+
+    // Preload critical fonts
+    criticalFonts.forEach(src => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'font';
+      link.href = src;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    });
+
+    // Add DNS prefetch for external domains
+    const externalDomains = [
+      'https://fonts.googleapis.com',
+      'https://fonts.gstatic.com',
+      'https://cdn.jsdelivr.net'
+    ];
+
+    externalDomains.forEach(domain => {
+      const link = document.createElement('link');
+      link.rel = 'dns-prefetch';
+      link.href = domain;
+      document.head.appendChild(link);
+
+      // Also add preconnect for important domains
+      const preconnect = document.createElement('link');
+      preconnect.rel = 'preconnect';
+      preconnect.href = domain;
+      preconnect.crossOrigin = 'anonymous';
+      document.head.appendChild(preconnect);
     });
   }
 

@@ -21,6 +21,97 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="js/auth.js"></script>
   <script>
+    // Function to initialize auth and dispatch events
+    function initializeAuth() {
+      console.log('Initializing auth in home page...');
+      if (window.DairyLiftAuth) {
+        console.log('Auth script loaded, initializing...');
+        window.DairyLiftAuth.initAuth();
+
+        // Force UI update after a short delay
+        setTimeout(function() {
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.updateAuthUI();
+          }
+        }, 500);
+      } else {
+        console.error('Auth script not loaded properly');
+        // Try to load it again
+        var script = document.createElement('script');
+        script.src = 'js/auth.js';
+        script.onload = function() {
+          console.log('Auth script loaded dynamically');
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.initAuth();
+
+            // Force UI update after a short delay
+            setTimeout(function() {
+              if (window.DairyLiftAuth) {
+                window.DairyLiftAuth.updateAuthUI();
+              }
+            }, 500);
+          }
+        };
+        document.head.appendChild(script);
+      }
+    }
+
+    // Call initialization on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', initializeAuth);
+
+    // Also call initialization immediately if document is already loaded
+    if (document.readyState !== 'loading') {
+      initializeAuth();
+    }
+
+    // Call initialization on window load
+    window.addEventListener('load', initializeAuth);
+
+    // Listen for auth.js loaded event
+    document.addEventListener('dairyLiftAuthLoaded', function(event) {
+      console.log('Auth script loaded event received');
+      initializeAuth();
+    });
+
+    // Listen for storage events to sync auth state across tabs
+    window.addEventListener('storage', function(event) {
+      if (event.key === 'dairyLift_auth') {
+        console.log('Auth state changed in another tab, updating UI');
+        if (window.DairyLiftAuth) {
+          window.DairyLiftAuth.updateAuthUI();
+
+          // Force UI update after a short delay
+          setTimeout(function() {
+            if (window.DairyLiftAuth) {
+              window.DairyLiftAuth.updateAuthUI();
+            }
+          }, 300);
+        }
+      }
+    });
+
+    // Set up periodic check for auth state
+    setInterval(function() {
+      if (window.DairyLiftAuth) {
+        const isLoggedIn = window.DairyLiftAuth.isLoggedIn();
+        const profileIcon = document.getElementById('profile-icon-link');
+
+        if (isLoggedIn && !profileIcon) {
+          console.log('Periodic check: User is logged in but profile icon not found, updating UI');
+          window.DairyLiftAuth.updateAuthUI();
+        }
+      }
+    }, 1000);
+
+    // Force an update when the user becomes visible (tab focus)
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden && window.DairyLiftAuth) {
+        console.log('Page became visible, forcing UI update');
+        window.DairyLiftAuth.updateAuthUI();
+      }
+    });
+  </script>
+  <script>
     tailwind.config = {
       theme: {
         extend: {
@@ -1453,9 +1544,9 @@
         </div>
         <a href="#" class="logo" style="font-family: 'Pacifico', cursive; color: var(--primary);">Dairy-Lift</a>
         <nav class="desktop-nav">
-          <a href="./home_page.html" class="nav-link">Home</a>
+          <a href="./index.html" class="nav-link">Home</a>
           <a href="./dashboard.html" class="nav-link">Dashboard</a>
-          <a href="YourCattle.html" class="nav-link">All Cattle</a>
+          <a href="YourCattle.html" class="nav-link active">All Cattle</a>
           <a href="./storenew.html" class="nav-link">Store</a>
           <a href="./admin-dashboard.html" class="nav-link">Admin</a>
         </nav>
@@ -1471,7 +1562,6 @@
             </svg>
             Login
           </a>
-        </div>
         </div>
       </div>
     </div>
@@ -1553,13 +1643,7 @@
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="main-content">
-    <div class="container">
-      <div class="header">
-        <h1>Your Cattle Portfolio</h1>
-        <p>Monitor and manage all your cattle investments in one place</p>
-      </div>
+
 
       <div class="filters">
         <div class="filter-group">
@@ -2536,25 +2620,82 @@
       if (window.DairyLiftAuth) {
         console.log('Auth script loaded, initializing...');
         window.DairyLiftAuth.initAuth();
-      } else {
-        console.log('Auth script not loaded, trying to initialize...');
-        // Try to initialize auth after a short delay
+        
+        // Force UI update after a short delay
         setTimeout(function() {
-          if (typeof initAuth === 'function') {
-            initAuth();
-          } else {
-            console.error('Auth initialization function not found');
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.updateAuthUI();
           }
         }, 500);
+      } else {
+        console.error('Auth script not loaded properly');
+        // Try to load it again
+        var script = document.createElement('script');
+        script.src = 'js/auth.js';
+        script.onload = function() {
+          console.log('Auth script loaded dynamically');
+          if (window.DairyLiftAuth) {
+            window.DairyLiftAuth.initAuth();
+
+            // Force UI update after a short delay
+            setTimeout(function() {
+              if (window.DairyLiftAuth) {
+                window.DairyLiftAuth.updateAuthUI();
+              }
+            }, 500);
+          }
+        };
+        document.head.appendChild(script);
       }
     });
 
-    // Also try to initialize on window load
+    // Also call initialization immediately if document is already loaded
+    if (document.readyState !== 'loading') {
+      if (window.DairyLiftAuth) {
+        window.DairyLiftAuth.initAuth();
+        window.DairyLiftAuth.updateAuthUI();
+      }
+    }
+
+    // Call initialization on window load
     window.addEventListener('load', function() {
-      if (typeof initAuth === 'function') {
-        initAuth();
+      if (window.DairyLiftAuth) {
+        window.DairyLiftAuth.initAuth();
+        window.DairyLiftAuth.updateAuthUI();
       }
     });
+
+    // Listen for auth.js loaded event
+    document.addEventListener('dairyLiftAuthLoaded', function(event) {
+      console.log('Auth script loaded event received');
+      if (window.DairyLiftAuth) {
+        window.DairyLiftAuth.initAuth();
+        window.DairyLiftAuth.updateAuthUI();
+      }
+    });
+
+    // Listen for storage events to sync auth state across tabs
+    window.addEventListener('storage', function(event) {
+      if (event.key === 'dairyLift_auth') {
+        console.log('Auth state changed in another tab, updating UI');
+        if (window.DairyLiftAuth) {
+          window.DairyLiftAuth.updateAuthUI();
+        }
+      }
+    });
+
+    // Set up periodic check for auth state
+    setInterval(function() {
+      if (window.DairyLiftAuth) {
+        const isLoggedIn = window.DairyLiftAuth.isLoggedIn();
+        const profileIcon = document.getElementById('profile-icon-link');
+
+        if (isLoggedIn && !profileIcon) {
+          console.log('Periodic check: User is logged in but profile icon not found, updating UI');
+          window.DairyLiftAuth.updateAuthUI();
+        }
+      }
+    }, 1000);
   </script>
 </body>
 </html>

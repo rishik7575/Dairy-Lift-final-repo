@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Dairy-Lift</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .offline-container {
+      max-width: 600px;
+      padding: 40px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      color: #0d6efd;
+      margin-bottom: 20px;
+    }
+    
+    p {
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: #0d6efd;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 500;
+      margin-top: 20px;
+      transition: background-color 0.2s;
+    }
+    
+    .btn:hover {
+      background-color: #0b5ed7;
+    }
+    
+    .cached-pages {
+      margin-top: 30px;
+      width: 100%;
+    }
+    
+    .cached-pages h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    
+    .cached-list {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+    
+    .cached-list li {
+      margin-bottom: 10px;
+    }
+    
+    .cached-list a {
+      color: #0d6efd;
+      text-decoration: none;
+    }
+    
+    .cached-list a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <div class="icon">📶</div>
+    <h1>You're Offline</h1>
+    <p>It looks like you've lost your internet connection. Don't worry, you can still access previously visited pages.</p>
+    <p>Check your connection and try again, or browse the cached pages below.</p>
+    <button class="btn" id="retry-button">Retry Connection</button>
+    
+    <div class="cached-pages">
+      <h2>Available Offline Pages:</h2>
+      <ul class="cached-list" id="cached-pages-list">
+        <!-- This will be populated by JavaScript -->
+        <li><a href="/">Home</a></li>
+        <li><a href="/dashboard.html">Dashboard</a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    // Check connection status
+    function updateOnlineStatus() {
+      if (navigator.onLine) {
+        window.location.href = '/';
+      }
+    }
+    
+    // Add event listeners for online/offline events
+    window.addEventListener('online', updateOnlineStatus);
+    
+    // Add event listener to retry button
+    document.getElementById('retry-button').addEventListener('click', function() {
+      updateOnlineStatus();
+      
+      // If still offline, show message
+      if (!navigator.onLine) {
+        alert('Still offline. Please check your connection and try again.');
+      }
+    });
+    
+    // Populate cached pages list if caches API is available
+    if ('caches' in window) {
+      caches.open('dairy-lift-cache-v1').then(function(cache) {
+        cache.keys().then(function(requests) {
+          const cachedList = document.getElementById('cached-pages-list');
+          cachedList.innerHTML = '';
+          
+          const uniqueUrls = new Set();
+          
+          requests.forEach(function(request) {
+            const url = new URL(request.url);
+            
+            // Only show HTML pages from our origin
+            if (url.origin === location.origin && !url.pathname.includes('.') || url.pathname.endsWith('.html')) {
+              uniqueUrls.add(url.pathname);
+            }
+          });
+          
+          // Add home page first
+          if (uniqueUrls.has('/') || uniqueUrls.has('/index.html')) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = '/';
+            a.textContent = 'Home';
+            li.appendChild(a);
+            cachedList.appendChild(li);
+            uniqueUrls.delete('/');
+            uniqueUrls.delete('/index.html');
+          }
+          
+          // Add other pages
+          uniqueUrls.forEach(function(pathname) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = pathname;
+            
+            // Create a nice name from the pathname
+            let name = pathname.split('/').pop().replace('.html', '');
+            name = name.charAt(0).toUpperCase() + name.slice(1).replace(/-/g, ' ');
+            
+            a.textContent = name;
+            li.appendChild(a);
+            cachedList.appendChild(li);
+          });
+          
+          // If no cached pages, show message
+          if (cachedList.children.length === 0) {
+            cachedList.innerHTML = '<li>No cached pages available</li>';
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
