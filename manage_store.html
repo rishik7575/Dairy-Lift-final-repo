@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DairyVest - Store Manager</title>
+  <title>Dairy-Lift - Store Manager</title>
   <script src="js/auth.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1478,7 +1478,7 @@
   <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
   <div class="mobile-sidebar" id="mobile-sidebar">
     <div class="sidebar-header">
-      <h2 class="text-lg font-medium text-orange-500">DairyVest Admin</h2>
+      <h2 class="text-lg font-medium text-orange-500">Dairy-Lift Admin</h2>
     </div>
     <div class="sidebar-body">
       <nav class="mobile-nav">
@@ -1980,7 +1980,7 @@
     // Load fallback products when database is unavailable
     function loadFallbackProducts() {
       console.log('Loading fallback products...');
-      const storedProducts = localStorage.getItem('dairyvestProducts');
+      const storedProducts = localStorage.getItem('dairyliftProducts');
 
       if (storedProducts) {
         products = JSON.parse(storedProducts, (key, value) => {
@@ -2060,7 +2060,7 @@
 
     // Load product history from localStorage or initialize
     function loadProductHistory() {
-      const storedHistory = localStorage.getItem('dairyvestProductHistory');
+      const storedHistory = localStorage.getItem('dairyliftProductHistory');
 
       if (storedHistory) {
         productHistory = JSON.parse(storedHistory, (key, value) => {
@@ -2087,12 +2087,12 @@
 
     // Save products to localStorage
     function saveProducts() {
-      localStorage.setItem('dairyvestProducts', JSON.stringify(products));
+      localStorage.setItem('dairyliftProducts', JSON.stringify(products));
     }
 
     // Save product history to localStorage
     function saveProductHistory() {
-      localStorage.setItem('dairyvestProductHistory', JSON.stringify(productHistory));
+      localStorage.setItem('dairyliftProductHistory', JSON.stringify(productHistory));
     }
 
     // Add a new product

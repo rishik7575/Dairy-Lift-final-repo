@@ -1549,14 +1549,14 @@
       }
 
       loadFromStorage() {
-        const savedCart = localStorage.getItem('dairyvestCart');
+        const savedCart = localStorage.getItem('dairyliftCart');
         if (savedCart) {
           this.items = JSON.parse(savedCart);
         }
       }
 
       saveToStorage() {
-        localStorage.setItem('dairyvestCart', JSON.stringify(this.items));
+        localStorage.setItem('dairyliftCart', JSON.stringify(this.items));
       }
 
       addItem(productId, quantity = 1) {
@@ -1832,12 +1832,12 @@
 
             if (!savedWishlist) {
               // Try alternative keys
-              savedWishlist = localStorage.getItem('dairyvestWishlist');
+              savedWishlist = localStorage.getItem('dairyliftWishlist');
 
               // If found with old key, migrate to new key
               if (savedWishlist) {
                 localStorage.setItem('Dairy-LiftWishlist', savedWishlist);
-                localStorage.removeItem('dairyvestWishlist');
+                localStorage.removeItem('dairyliftWishlist');
               }
             }
 
